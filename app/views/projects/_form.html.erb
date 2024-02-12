@@ -31,6 +31,17 @@
   <% end %>
   </div>
   <br>
+  <div>
+    <%= form.label :billable_project, class: 'block text-gray-700 font-bold mb-1' %>
+    <%= form.check_box :billable_project, hidden: true %>
+
+    <% @project.errors.full_messages_for(:billable_project).each do |message|%>
+    <div class="text-red-600 italic text-xs mt-1">
+      <%= message %>
+    </div>
+  <% end %>
+  </div>
+  <br>
 <div class="mb-14">
   <% if form.object.new_record? %>
     <%= form.label :task_ids, 'Tasks', class: 'block text-gray-700 font-bold mb-1' %>

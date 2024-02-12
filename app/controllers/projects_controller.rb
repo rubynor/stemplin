@@ -181,9 +181,9 @@ class ProjectsController < ApplicationController
 
   def project_params
     if action_name == 'create'
-      params.require(:project).permit(:client_id, :name, :description, task_ids: [])
+      params.require(:project).permit(:client_id, :name, :description, :billable_project, task_ids: [])
     else
-      params.require(:project).permit(:client_id, :name, :description)
+      params.require(:project).permit(:client_id, :name, :description, :billable_project)
     end
   end
 
