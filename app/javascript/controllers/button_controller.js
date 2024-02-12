@@ -1,21 +1,30 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["billableButton", "nonBillableButton"];
+  static targets = ["button"];
 
   connect() {
-    console.log("Controller connected");
+    this.toggleButtonColor(
+      document.getElementById("billable_project_checkbox").checked
+    );
   }
 
-  toggleActive(event) {
-    const clickedButton = event.currentTarget;
+  toggleActive() {
+    const checkbox = document.getElementById("billable_project_checkbox");
+    checkbox.checked = !checkbox.checked;
+    this.toggleButtonColor(checkbox.checked);
+  }
 
-    // Remove "active-button" class from all buttons
-    this.element
-      .querySelectorAll(".Billable-Button, .Non-Billable-Button")
-      .forEach((btn) => btn.classList.remove("active-button"));
-
-    // Add "active-button" class only to the clicked button
-    clickedButton.classList.add("active-button");
+  toggleButtonColor(checked) {
+    const button = this.element.querySelector("button");
+    if (checked) {
+      button.style.backgroundColor = "lightsalmon";
+      button.style.color = "";
+      button.style.borderColor = "darkorange";
+    } else {
+      button.style.backgroundColor = "";
+      button.style.color = "";
+      button.style.borderColor = "";
+    }
   }
 }
