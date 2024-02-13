@@ -32,14 +32,25 @@
   </div>
   <br>
   <div>
-<%= form.label :billable_project, class: 'block text-gray-700 font-bold mb-1' %>
-<%= form.check_box :billable_project, hidden: true, id: "billable_project_checkbox" %>
 
-<div data-controller="button">
-<button type="button" id="button" data-action="click->button#toggleActive" class="Billable-Button text-center min-w-custom24 ml-20 p-3.5 rounded border-2-black bg-transparent">
-  <strong>Time & Materials</strong>
-  <p>Bill by the hour, with billable rates</p>
-</button>
+
+<div data-controller="checkbox class" data-class-active-class-value="bg-amber-500">
+  <%= form.label :billable_project, class: 'block text-gray-700 font-bold mb-1' %>
+  <%= form.check_box :billable_project, hidden: true, "data-checkbox-target": "checkbox", data: { "class-target": "main", action: "class#updateClass" } %>
+
+
+  <button type="button" data-class-target="setTrue"
+  data-action="click->checkbox#check click->class#updateClass" class="text-center min-w-custom24 ml-20 p-3.5 rounded border-2-black bg-transparent">
+    <strong>Time & Materials</strong>
+    <p>Bill by the hour, with billable rates</p>
+  </button>
+
+
+    <button type="button" data-class-target="setFalse"
+  data-action="click->checkbox#uncheck click->class#updateClass" class="text-center min-w-custom24 ml-20 p-3.5 rounded border-2-black bg-transparent">
+    <strong>Non-Billable</strong>
+    <p>Not Billed to a client</p>
+  </button>
 
 </div>
       

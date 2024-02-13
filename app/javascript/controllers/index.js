@@ -4,6 +4,9 @@
 
 import { application } from "./application";
 
+import CheckboxController from "./checkbox_controller";
+application.register("checkbox", CheckboxController);
+
 import CollapseDeleteController from "./collapse_delete_controller";
 application.register("collapse-delete", CollapseDeleteController);
 
@@ -28,11 +31,14 @@ application.register("report-edit", ReportEditController);
 import TimeTasksController from "./time_tasks_controller";
 application.register("time-tasks", TimeTasksController);
 
+import ClassController from "./class_controller";
+application.register("class", ClassController);
+
+import UserProjectTaskboxesController from "./user_project_taskboxes_controller";
+application.register("user-project-taskboxes", UserProjectTaskboxesController);
+
 import UserReportsBoxesController from "./user_reports_boxes_controller";
 application.register("user-reports-boxes", UserReportsBoxesController);
 
 import UserReportsController from "./user_reports_controller";
 application.register("user-reports", UserReportsController);
-
-import ButtonController from "./button_controller";
-application.register("button", ButtonController);
