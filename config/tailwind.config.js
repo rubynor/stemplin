@@ -17,9 +17,6 @@ module.exports = {
         seaGreenDark: "#285E61",
         seaGreenDarker: "#193c3e",
         dangerRed: "#ff0000",
-
-        lightsalmon: "#FFA07A",
-        orange: "#FFA500",
       },
       fontFamily: {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
@@ -50,7 +47,6 @@ module.exports = {
           "border-color": "#000",
         },
       };
-
       addUtilities(newUtilities, ["responsive", "hover"]);
     },
   ],
