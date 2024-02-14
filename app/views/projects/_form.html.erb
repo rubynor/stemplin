@@ -1,3 +1,4 @@
+<%= javascript_include_tag('numbers_only') %>
 <%= form_with model: @project do |form| %>
   <div>
   <br>
@@ -49,7 +50,12 @@
     <strong>Non-Billable</strong>
     <p>Not Billed to a client</p>
   </button>
-
+  <div class="bg-gray-400 rounded border-2-black p-5 mt-6 h-60" id="billableRates">
+    <strong>Billable rates</strong>
+    <p>We need billable rates to track your project's billable amount</p>
+    <p><strong>Project billable rate </strong>kr <input class="billable-sum w-32" type="text" oninput="restrictInput(event)" maxlength="10"></p>
+  </div>
+</div>
       
     <% @project.errors.full_messages_for(:billable_project).each do |message|%>
     <div class="text-red-600 italic text-xs mt-1">
