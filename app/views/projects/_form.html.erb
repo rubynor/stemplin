@@ -34,23 +34,22 @@
   <div>
 
 
-<div data-controller="checkbox class" data-class-active-class-value="bg-cyan-500">
+<div data-controller="checkbox class" data-class-active-class-value="bg-cyan-500" class="mt-6">
   <%= form.label :billable_project, class: 'block text-gray-700 font-bold mb-1' %>
   <%= form.check_box :billable_project, hidden: true, "data-checkbox-target": "checkbox", data: { "class-target": "main", action: "class#updateClass" } %>
 
   <button type="button" data-class-target="setTrue"
-  data-action="click->checkbox#check click->class#updateClass" class="text-center min-w-custom24 ml-20 p-3.5 rounded border-2-black bg-transparent">
+  data-action="click->checkbox#check click->class#updateClass" class="text-center px-6 ml-8 p-3.5 rounded border-2-black bg-orange-50">
     <strong>Time & Materials</strong>
-    <p>Bill by the hour, with billable rates</p>
+    <p>Bill hourly, rates apply</p>
   </button>
 
-    <button type="button" data-class-target="setFalse"
-  data-action="click->checkbox#uncheck click->class#updateClass" class="text-center min-w-custom24 ml-20 p-3.5 rounded border-2-black bg-transparent mt-6">
+  <button type="button" data-class-target="setFalse"
+  data-action="click->checkbox#uncheck click->class#updateClass" class="text-center px-6 ml-20 p-3.5 rounded border-2-black bg-orange-50">
     <strong>Non-Billable</strong>
     <p>Not Billed to a client</p>
   </button>
 
-</div>
       
     <% @project.errors.full_messages_for(:billable_project).each do |message|%>
     <div class="text-red-600 italic text-xs mt-1">
