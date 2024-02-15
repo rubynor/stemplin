@@ -55,10 +55,11 @@
     <p>We need billable rates to track your project's billable amount</p>
     <p>
       <strong>Project billable rate </strong>kr
-      <input class="rounded w-32" type="text" oninput="restrictInput(event)" maxlength="12">
+      <input class="rounded w-32" type="text" id="input1" oninput="updateInput(event, 'input2')" maxlength="12">
       per hour
     </p>
   </div>
+  <input type="text" id="input2">
 </div>
       
     <% @project.errors.full_messages_for(:billable_project).each do |message|%>

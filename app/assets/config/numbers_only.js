@@ -13,3 +13,13 @@ function formatToNorwegianKrone(value) {
   const formattedValue = parseInt(value).toLocaleString("nb-NO");
   return formattedValue;
 }
+
+function updateInput(event, targetId) {
+  const input = event.target;
+  const value = input.value;
+  const formattedValue = formatToNorwegianKrone(value);
+  input.value = formattedValue;
+
+  const targetInput = document.getElementById(targetId);
+  targetInput.value = formattedValue;
+}
