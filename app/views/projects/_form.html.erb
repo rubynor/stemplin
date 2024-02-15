@@ -37,7 +37,7 @@
 
 <div data-controller="checkbox class" data-class-active-class-value="bg-cyan-500" class="mt-6">
   <%= form.label :billable_project, class: 'block text-gray-700 font-bold mb-1' %>
-  <%= form.check_box :billable_project, hidden: true, "data-checkbox-target": "checkbox", data: { "class-target": "main", action: "class#updateClass" } %>
+  <%= form.check_box :billable_project, "data-checkbox-target": "checkbox", data: { "class-target": "main", action: "class#updateClass" } %>
 
   <button type="button" data-class-target="setTrue"
   data-action="click->checkbox#check click->class#updateClass" class="text-center px-6 ml-8 p-3.5 rounded border-2-black bg-orange-50">
@@ -50,10 +50,13 @@
     <strong>Non-Billable</strong>
     <p>Not Billed to a client</p>
   </button>
-  <div class="bg-gray-400 rounded border-2-black p-5 mt-6 h-60" id="billableRates">
+  <div class="bg-gray-400 rounded border-2-black p-5 mt-6 h-60" data-class-target="billableRates">
     <strong>Billable rates</strong>
     <p>We need billable rates to track your project's billable amount</p>
-    <p><strong>Project billable rate </strong>kr <input class="billable-sum w-32" type="text" oninput="restrictInput(event)" maxlength="10"></p>
+    <p>
+      <strong>Project billable rate </strong>kr 
+      <input class="billable-sum w-32" type="text" oninput="restrictInput(event)" maxlength="10">
+    </p>
   </div>
 </div>
       

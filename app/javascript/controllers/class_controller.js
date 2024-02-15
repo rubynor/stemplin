@@ -6,15 +6,10 @@ export default class extends Controller {
     activeClass: String,
   };
 
-  static targets = ["main", "setTrue", "setFalse"];
+  static targets = ["main", "setTrue", "setFalse", "billableRates"];
 
   connect() {
-    const value = this.mainTarget.checked;
-    if (value) {
-      this.setTrueTarget.classList.add(this.activeClassValue);
-    } else {
-      this.setFalseTarget.classList.add(this.activeClassValue);
-    }
+    this.updateClass();
   }
 
   updateClass() {
@@ -22,9 +17,11 @@ export default class extends Controller {
     if (value) {
       this.setFalseTarget.classList.remove(this.activeClassValue);
       this.setTrueTarget.classList.add(this.activeClassValue);
+      this.billableRatesTarget.classList.remove("hidden");
     } else {
       this.setTrueTarget.classList.remove(this.activeClassValue);
       this.setFalseTarget.classList.add(this.activeClassValue);
+      this.billableRatesTarget.classList.add("hidden");
     }
   }
 }
