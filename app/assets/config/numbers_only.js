@@ -14,12 +14,12 @@ function formatToNorwegianKrone(value) {
   return formattedValue;
 }
 
-function updateInput(event, targetId) {
+function updateInput(event) {
   const input = event.target;
   const value = input.value;
   const formattedValue = formatToNorwegianKrone(value);
   input.value = formattedValue;
 
-  const targetInput = document.getElementById(targetId);
-  targetInput.value = formattedValue;
+  const originalValue = value.replace(/\D/g, "");
+  document.getElementById("input2").value = originalValue / 100;
 }

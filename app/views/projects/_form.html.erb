@@ -58,8 +58,8 @@
       <input class="rounded w-32" type="text" id="input1" oninput="updateInput(event, 'input2')" maxlength="12">
       per hour
     </p>
+    <input type="text" id="input2">
   </div>
-  <input type="text" id="input2">
 </div>
       
     <% @project.errors.full_messages_for(:billable_project).each do |message|%>
