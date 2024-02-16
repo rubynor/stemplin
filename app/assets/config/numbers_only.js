@@ -13,19 +13,25 @@ function restrictInput(event) {
     event.target.value = newValue.slice(0, -1);
   }
 
-  event.target.value = formatToNorwegianKrone(event.target.value);
+  event.target.value = formatInput(event.target.value);
 }
 
-function formatToNorwegianKrone(value) {
+function formatInput(value) {
   return value.replace(/[^\d,]/g, "");
 }
 
 function updateInput(event) {
   const input = event.target;
   const value = input.value;
-  const formattedValue = formatToNorwegianKrone(value);
+  const formattedValue = formatInput(value);
   input.value = formattedValue;
 
-  const originalValue = value.replace(/\D/g, "");
-  document.getElementById("input2").value = originalValue * 100;
+  const numericValue = parseFloat(formattedValue.replace(",", "."));
+  const formattedNumericValue = isNaN(numericValue)
+    ? ""
+    : (numericValue * 100).toLocaleString("nb-NO", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+  document.getElementById("input2").value = formattedNumericValue;
 }
