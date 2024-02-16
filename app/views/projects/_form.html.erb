@@ -35,7 +35,7 @@
   <div>
 
 
-<div data-controller="checkbox class" data-class-active-class-value="bg-cyan-500" class="mt-6">
+<div data-controller="checkbox class" data-class-active-class-value="bg-cyan-400" class="mt-6">
   <%= form.label :billable_project, class: 'block text-gray-700 font-bold mb-1' %>
   <%= form.check_box :billable_project, "data-checkbox-target": "checkbox", data: { "class-target": "main", action: "class#updateClass" } %>
 
@@ -55,10 +55,10 @@
     <p>We need billable rates to track your project's billable amount</p>
     <p>
       <strong>Project billable rate </strong>kr
-      <input class="rounded w-32" type="text" id="input1" oninput="restrictInput(event); updateInput(event)" maxlength="12">
+      <input class="rounded w-32" type="text" id="input1" data-target="class.input1" oninput="restrictInput(event); updateInput(event)" maxlength="12">
       per hour
     </p>
-    <input type="text" id="input2">
+    <input type="text" id="input2" data-target="class.input2">
   </div>
 </div>
       
