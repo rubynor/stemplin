@@ -121,33 +121,38 @@ class ProjectReportsController < ReportsController
     end
   end
 
-  # ********************
-  # AJAX form updates *
-  # *******************
-
-  # updates the form with projects from a specific client
-  # returns a partial
-  def update_projects_selection
+  def update_projects_select
     projects = Project.where(client_id: params[:client_id])
-    render partial: 'projects', locals: { projects: }
+    project_options = select_options(projects, :name)
+
+    if turbo_frame_request?
+      render partial: "project_reports/projects_select", locals: { options: project_options }
+    end
   end
 
-  # updates the form with members from a specific project
-  # returns a partial
   def update_members_checkboxes
-    members = Project.find(params[:project_id]).users
-    render partial: 'checkboxes', locals: { report: ProjectReport.new, checkboxes: members, text: 'member' }
+    members = params[:project_id].present? ? Project.find(params[:project_id]).users : []
+
+    if turbo_frame_request?
+      render partial: "project_reports/members_checkboxes",
+             locals: { report: ProjectReport.new, collection: members, text: "member" }
+    end
   end
 
-  # updates the form with tasks from a specific project
-  # returns a partial
   def update_tasks_checkboxes
-    tasks = Project.find(params[:project_id]).tasks
-    render partial: 'checkboxes', locals: { report: ProjectReport.new, checkboxes: tasks, text: 'task' }
+    tasks = params[:project_id].present? ? Project.find(params[:project_id]).tasks : []
+
+    if turbo_frame_request?
+      render partial: "project_reports/tasks_checkboxes",
+             locals: { report: ProjectReport.new, collection: tasks, text: "task" }
+    end
   end
 
-  # permits only valid attributes
   private
+
+  def select_options(collection, attribute)
+    collection.map { |item| [item.send(attribute), item.id] }
+  end
 
   def project_report_params
     params.require(:project_report).permit(:timeframe, :date_start, :date_end, :client_id, :project_id, member_ids: [],

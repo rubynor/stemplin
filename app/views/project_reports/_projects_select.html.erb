@@ -1,0 +1,22 @@
+<%= turbo_frame_tag :turbo_project_ids do %>
+  <%= select_tag "project_report[project_id]", options_for_select(options),
+     {
+       id: 'project_ids',
+       prompt: 'Select a project',
+       class: 'w-80 mr-8 rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark
+       focus:border-seaGreenDark ring-offset-1 ring-offset-white',
+       data: {
+         action: "form#updateFrame",
+         urls: [
+           update_members_checkboxes_project_reports_path,
+           update_tasks_checkboxes_project_reports_path
+         ],
+         param_name: :project_id,
+         update_frame_ids: [
+           :turbo_members_checkboxes,
+           :turbo_tasks_checkboxes
+         ]
+       }
+     }
+  %>
+<% end %>

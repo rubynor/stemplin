@@ -1,12 +1,14 @@
-<div class="" >
-  <div class="flex flex-wrap">
-    <% if checkboxes.present? %>
-      <%= collection_check_boxes :project_report, "#{text}_ids" , checkboxes, :id, :name do |checkbox|%>
-        <div class="border mr-8 m-1 p-2 rounded-xl border-gray-300" >
-          <%= checkbox.check_box checked: report.send("#{text}_ids".to_sym).include?(checkbox.value.to_s), class: 'text-seaGreenDark focus:ring-seaGreenDark focus:ring-offset-2 focus:ring-opacity-50'%> <!--checks if box was checked earlier-->
-          <%= checkbox.label %>      
-        </div>
-      <% end %>
-    <% end %>      
-  </div>
+<div class="flex flex-wrap">
+  <% if collection.present? %>
+    <%= collection_check_boxes :project_report, "#{text}_ids" , collection, :id, :name do |checkbox|%>
+      <div class="border mr-8 m-1 p-2 rounded-xl border-gray-300" >
+        <%= checkbox.check_box checked: report.send("#{text}_ids".to_sym).include?(checkbox.value.to_s),
+             class: 'text-seaGreenDark focus:ring-seaGreenDark focus:ring-offset-2
+             focus:ring-opacity-50',
+             data: { "checkbox-target": :checkbox, action: "checkbox#uncheckCheckboxAll" }
+        %>
+        <%= checkbox.label %>
+      </div>
+    <% end %>
+  <% end %>
 </div>

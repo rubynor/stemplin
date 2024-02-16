@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["button", "checkbox"];
+  static targets = ["button", "checkbox", "checkboxAll"];
 
   connect() {}
 
@@ -11,5 +11,15 @@ export default class extends Controller {
 
   uncheck() {
     this.checkboxTarget.checked = false;
+  }
+
+  toggleAll(e) {
+    this.checkboxTargets.forEach(checkBox => {
+      checkBox.checked = e.target.checked;
+    })
+  }
+
+  uncheckCheckboxAll() {
+    this.checkboxAllTarget.checked = !this.checkboxTargets.find(checkbox => !checkbox.checked);
   }
 }

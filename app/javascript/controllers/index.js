@@ -2,43 +2,46 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application";
+import { application } from "./application"
 
-import CheckboxController from "./checkbox_controller";
-application.register("checkbox", CheckboxController);
+import CheckboxController from "./checkbox_controller"
+application.register("checkbox", CheckboxController)
 
-import CollapseDeleteController from "./collapse_delete_controller";
-application.register("collapse-delete", CollapseDeleteController);
+import ClassController from "./class_controller"
+application.register("class", ClassController)
 
-import CollapseHoursController from "./collapse_hours_controller";
-application.register("collapse-hours", CollapseHoursController);
+import CollapseDeleteController from "./collapse_delete_controller"
+application.register("collapse-delete", CollapseDeleteController)
 
-import HelloController from "./hello_controller";
-application.register("hello", HelloController);
+import CollapseHoursController from "./collapse_hours_controller"
+application.register("collapse-hours", CollapseHoursController)
 
-import ModalController from "./modal_controller";
-application.register("modal", ModalController);
+import FormController from "./form_controller"
+application.register("form", FormController)
 
-import ProjectReportsController from "./project_reports_controller";
-application.register("project-reports", ProjectReportsController);
+import HelloController from "./hello_controller"
+application.register("hello", HelloController)
 
-import RefreshMinutesController from "./refresh_minutes_controller";
-application.register("refresh-minutes", RefreshMinutesController);
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
 
-import ReportEditController from "./report_edit_controller";
-application.register("report-edit", ReportEditController);
+import RefreshMinutesController from "./refresh_minutes_controller"
+application.register("refresh-minutes", RefreshMinutesController)
 
-import TimeTasksController from "./time_tasks_controller";
-application.register("time-tasks", TimeTasksController);
+import ReportEditController from "./report_edit_controller"
+application.register("report-edit", ReportEditController)
 
-import ClassController from "./class_controller";
-application.register("class", ClassController);
+import TimeTasksController from "./time_tasks_controller"
+application.register("time-tasks", TimeTasksController)
 
-import UserProjectTaskboxesController from "./user_project_taskboxes_controller";
-application.register("user-project-taskboxes", UserProjectTaskboxesController);
+import UserProjectTaskboxesController from "./user_project_taskboxes_controller"
+application.register("user-project-taskboxes", UserProjectTaskboxesController)
 
-import UserReportsBoxesController from "./user_reports_boxes_controller";
-application.register("user-reports-boxes", UserReportsBoxesController);
+import UserReportsBoxesController from "./user_reports_boxes_controller"
+application.register("user-reports-boxes", UserReportsBoxesController)
 
-import UserReportsController from "./user_reports_controller";
-application.register("user-reports", UserReportsController);
+import UserReportsController from "./user_reports_controller"
+application.register("user-reports", UserReportsController)
+
+import VisibilityController from "./visibility_controller"
+application.register("visibility", VisibilityController)
