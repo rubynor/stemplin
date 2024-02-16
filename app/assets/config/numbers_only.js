@@ -1,17 +1,23 @@
 function restrictInput(event) {
-  const allowedChars = /[0-9]/;
+  const allowedChars = /[0-9,]/;
   const inputChar = event.data;
 
   if (!allowedChars.test(inputChar)) {
-    event.target.value = event.target.value.replace(/[^0-9]/g, "");
+    event.target.value = event.target.value.replace(/[^\d,]/g, "");
   }
+
+  const newValue = event.target.value;
+  const commaCount = (newValue.match(/,/g) || []).length;
+
+  if (commaCount > 1 && inputChar === ",") {
+    event.target.value = newValue.slice(0, -1);
+  }
+
   event.target.value = formatToNorwegianKrone(event.target.value);
 }
+
 function formatToNorwegianKrone(value) {
-  value = value.replace(/\D/g, "");
-  if (value.trim() === "") return "";
-  const formattedValue = parseInt(value).toLocaleString("nb-NO");
-  return formattedValue;
+  return value.replace(/[^\d,]/g, "");
 }
 
 function updateInput(event) {
@@ -21,5 +27,5 @@ function updateInput(event) {
   input.value = formattedValue;
 
   const originalValue = value.replace(/\D/g, "");
-  document.getElementById("input2").value = originalValue / 100;
+  document.getElementById("input2").value = originalValue * 100;
 }
