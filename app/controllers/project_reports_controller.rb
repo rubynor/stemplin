@@ -124,27 +124,30 @@ class ProjectReportsController < ReportsController
   def update_projects_select
     projects = Project.where(client_id: params[:client_id])
     project_options = select_options(projects, :name)
+    report = get_report
 
     if turbo_frame_request?
-      render partial: "project_reports/projects_select", locals: { options: project_options }
+      render partial: "project_reports/projects_select", locals: { report: report, options: project_options }
     end
   end
 
   def update_members_checkboxes
-    members = params[:project_id].present? ? Project.find(params[:project_id]).users : []
+    members = get_project_members
+    report = get_report
 
     if turbo_frame_request?
       render partial: "project_reports/members_checkboxes",
-             locals: { report: ProjectReport.new, collection: members, text: "member" }
+             locals: { report: report, collection: members, text: "member" }
     end
   end
 
   def update_tasks_checkboxes
-    tasks = params[:project_id].present? ? Project.find(params[:project_id]).tasks : []
+    tasks = get_project_tasks
+    report = get_report
 
     if turbo_frame_request?
       render partial: "project_reports/tasks_checkboxes",
-             locals: { report: ProjectReport.new, collection: tasks, text: "task" }
+             locals: { report: report, collection: tasks, text: "task" }
     end
   end
 
@@ -152,6 +155,18 @@ class ProjectReportsController < ReportsController
 
   def select_options(collection, attribute)
     collection.map { |item| [item.send(attribute), item.id] }
+  end
+
+  def get_project_members
+    params[:project_id] ? Project.find(params[:project_id]).users : []
+  end
+
+  def get_project_tasks
+    params[:project_id] ? Project.find(params[:project_id]).tasks : []
+  end
+
+  def get_report
+    params[:project_report_id] ? ProjectReport.find(params[:project_report_id]) : ProjectReport.new
   end
 
   def project_report_params

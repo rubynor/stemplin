@@ -5,7 +5,7 @@
         <%= checkbox.check_box checked: report.send("#{text}_ids".to_sym).include?(checkbox.value.to_s),
              class: 'text-seaGreenDark focus:ring-seaGreenDark focus:ring-offset-2
              focus:ring-opacity-50',
-             data: { "checkbox-target": :checkbox, action: "checkbox#uncheckCheckboxAll" }
+             data: { "checkbox-target": :checkbox, action: "checkbox#updateCheckboxAll" }
         %>
         <%= checkbox.label %>
       </div>

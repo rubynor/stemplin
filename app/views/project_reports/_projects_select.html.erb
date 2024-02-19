@@ -1,5 +1,5 @@
 <%= turbo_frame_tag :turbo_project_ids do %>
-  <%= select_tag "project_report[project_id]", options_for_select(options),
+  <%= select_tag "project_report[project_id]", options_for_select(options, report.project_id),
      {
        id: 'project_ids',
        prompt: 'Select a project',

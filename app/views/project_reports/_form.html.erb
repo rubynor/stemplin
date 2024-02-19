@@ -70,7 +70,7 @@
         <%= form.label :project_id, class: 'block text-gray-700 font-bold mb-2' %>
       </div>
       <div>
-        <%= turbo_frame_tag :turbo_project_ids, src: update_projects_select_project_reports_path %>
+        <%= turbo_frame_tag :turbo_project_ids, src: update_projects_select_project_reports_path({client_id: @report.client_id, project_report_id: @report.id}) %>
       </div>
     </div>
   </div>
@@ -93,7 +93,7 @@
       %>
       <%= 'Check all'%>
     </div>
-    <%= turbo_frame_tag :turbo_members_checkboxes, src: update_members_checkboxes_project_reports_path %>
+    <%= turbo_frame_tag :turbo_members_checkboxes, src: update_members_checkboxes_project_reports_path({project_report_id: @report.id, project_id: @report.project_id}) %>
   </div>
 
   <div id="tasks-container" class="clear-both pt-10" data-controller="checkbox">
@@ -114,7 +114,7 @@
       %>
       <%= 'Check all'%>
     </div>
-    <%= turbo_frame_tag :turbo_tasks_checkboxes, src: update_tasks_checkboxes_project_reports_path %>
+    <%= turbo_frame_tag :turbo_tasks_checkboxes, src: update_tasks_checkboxes_project_reports_path({project_report_id: @report.id, project_id: @report.project_id}) %>
   </div>
 
   <div id="submit-container" class="flex justify-center mt-10">
