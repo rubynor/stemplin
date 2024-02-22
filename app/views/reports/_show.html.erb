@@ -4,9 +4,20 @@
       <div class="flex justify-between">
         <h1 class="font-medium italic text-2xl"><%= title %></h1>
       </div>
-      <h1 class="text-2xl mb-4">
+      <h2 class="text-2xl mb-4">
         <%= form_data[:title] %>
-      </h1>
+      </h2>
+      <span class="font-bold">
+        <% if report.timeframe == "allTime" %>
+          (All time)
+        <% else %>
+          (
+            <%= report.date_start.to_formatted_s(:long) %>
+          -
+            <%= report.date_end.to_formatted_s(:long) %>
+          )
+        <% end %>
+      </span>
     </div>
 
     <div class="flex flex-wrap gap-3 items-center">
@@ -19,7 +30,7 @@
         <span class="ml-1">Edit</span>
       </button>
       <%= form_with url: { action: :export, format: :csv }, method: :post, class: "w-full sm:w-fit" do |form| %>
-        <%= form.hidden_field :time_regs_hash, value: @time_regs.to_json %>
+        <%= form.hidden_field :time_regs_hash, value: time_regs.to_json %>
         <%= form.submit 'Export to CSV', class: 'px-5 py-2 h-fit w-full bg-seaGreen hover:bg-seaGreenDark rounded text-white' %>
       <% end %>
     </div>
