@@ -22,6 +22,9 @@ application.register("form", FormController)
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import InputController from "./input_controller"
+application.register("input", InputController)
+
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 
