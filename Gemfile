@@ -35,7 +35,7 @@ gem 'cssbundling-rails'
 gem 'jbuilder'
 
 # Use Redis adapter to run Action Cable in production
-# gem "redis", "~> 4.0"
+gem "redis", "~> 4.0"
 
 gem 'activerecord-import'
 
@@ -62,6 +62,8 @@ group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
 
   gem "pry-rails"
+
+  gem "hotwire-livereload"
 end
 
 group :development do

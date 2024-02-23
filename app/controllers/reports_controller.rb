@@ -19,6 +19,43 @@ class ReportsController < ApplicationController
 
   private
 
+  def group_data_recursively(data, *group_keys)
+    return data if group_keys.empty?
+
+    key = group_keys.first
+    remaining_keys = group_keys[1..]
+
+    data.group_by { |item| item[key] }.to_h do |group_key, group_data|
+      [group_key, group_data_recursively(group_data, *remaining_keys)]
+    end
+  end
+
+  def table_children(grouped_time_regs)
+    return {} if grouped_time_regs.blank?
+
+    def recursive_table_children(data)
+      return if data.blank?
+
+      if !data.is_a?(Hash)
+        sum_children_minutes(data)
+      else
+        data.map do |key, value|
+          result = recursive_table_children(value)
+          if result.is_a?(Array)
+            { title: key, minutes: sum_children_minutes(result), children: result }
+          else
+            { title: key, minutes: result }
+          end
+        end
+      end
+    end
+
+    recursive_table_children(grouped_time_regs)
+  end
+  def sum_children_minutes(struct)
+    struct.sum { |child| child[:minutes] }
+  end
+
   # returns a hash of the correrct timeframe options
   def get_timeframe_options
     thisMonthName = I18n.t('date.month_names')[Date.today.month]

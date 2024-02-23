@@ -6,6 +6,13 @@ class UserReportsController < ReportsController
     @report = UserReport.find(params[:id])
     @time_regs = get_time_regs(@report, @report.user_id, @report.project_ids, @report.task_ids)
     @grouped_report = group_time_regs(@time_regs, @report.group_by)
+    @user = User.find(@report.user_id)
+
+    grouped_time_regs = group_data_recursively(@time_regs, :client, :project, :task)
+    children = table_children(grouped_time_regs)
+
+    @form_data = { title: @user.name, children: children, total: sum_children_minutes(children) }
+
 
     # data for the edit form
     @show_edit_form = false
