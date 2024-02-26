@@ -43,6 +43,7 @@ class ProjectsController < ApplicationController
     @is_in_update = true
     @project = Project.find(params[:id])
     @clients = Client.all
+    @billable_rate = @project.billable_rate / 100
 
     @assigned_tasks = AssignedTask.select('tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id')
                                   .joins(:task)
@@ -181,10 +182,12 @@ class ProjectsController < ApplicationController
 
   def project_params
     if action_name == 'create'
-      params.require(:project).permit(:client_id, :name, :description, :billable_project, task_ids: [])
+      new_params = params.require(:project).permit(:client_id, :name, :description, :billable_project, task_ids: [])
     else
-      params.require(:project).permit(:client_id, :name, :description, :billable_project)
+      new_params = params.require(:project).permit(:client_id, :name, :description, :billable_project)
     end
+    billable_rate = params.require(:project)[:billable_rate].to_i * 100
+    new_params.merge({billable_rate: billable_rate})
   end
 
   def delete_params

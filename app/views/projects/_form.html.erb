@@ -1,4 +1,3 @@
-<%= javascript_include_tag('numbers_only') %>
 <%= form_with model: @project do |form| %>
   <div>
   <br>
@@ -35,30 +34,30 @@
   <div>
 
 
-<div data-controller="checkbox class" data-class-active-class-value="bg-cyan-400" class="mt-6">
+<div data-controller="checkbox class" data-class-active-class-value="bg-seaGreen" class="mt-6">
   <%= form.label :billable_project, class: 'block text-gray-700 font-bold mb-1' %>
-  <%= form.check_box :billable_project, "data-checkbox-target": "checkbox", data: { "class-target": "main", action: "class#updateClass" } %>
+  <%= form.check_box :billable_project, class: "hidden", "data-checkbox-target": "checkbox", data: { "class-target": "main", action: "class#updateClass" } %>
+  <div class= "flex">
+    <button type="button" data-class-target="setTrue"
+    data-action="click->checkbox#check click->class#updateClass" class="text-center px-6 p-3.5 w-full rounded border-2-black">
+      <strong>Time & Materials</strong>
+      <p>Bill hourly, rates apply</p>
+    </button>
 
-  <button type="button" data-class-target="setTrue"
-  data-action="click->checkbox#check click->class#updateClass" class="text-center px-6 ml-8 p-3.5 rounded border-2-black bg-orange-50">
-    <strong>Time & Materials</strong>
-    <p>Bill hourly, rates apply</p>
-  </button>
-
-  <button type="button" data-class-target="setFalse"
-  data-action="click->checkbox#uncheck click->class#updateClass" class="text-center px-6 ml-20 p-3.5 rounded border-2-black bg-orange-50">
-    <strong>Non-Billable</strong>
-    <p>Not Billed to a client</p>
-  </button>
+    <button type="button" data-class-target="setFalse"
+    data-action="click->checkbox#uncheck click->class#updateClass" class="text-center px-6 p-3.5 w-full rounded border-2-black">
+      <strong>Non-Billable</strong>
+      <p>Not Billed to a client</p>
+    </button>
+  </div>
   <div class="bg-gray-400 rounded border-2-black p-5 mt-6 h-60" data-class-target="billableRates">
     <strong>Billable rates</strong>
     <p>We need billable rates to track your project's billable amount</p>
     <p>
       <strong>Project billable rate </strong>kr
-      <input class="rounded w-32" type="text" id="input1" data-target="class.input1" oninput="restrictInput(event); updateInput(event)" maxlength="12">
+      <%=form.text_field :billable_rate, value: billable_rate || nil %>
       per hour
     </p>
-    <input type="text" id="input2" data-target="class.input2">
   </div>
 </div>
       
