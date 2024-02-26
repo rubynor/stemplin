@@ -1,1 +1,1 @@
-<%= render partial: 'reports/show', locals: { title: "User report", report: @report, form_data: @form_data, time_regs: @time_regs, show_edit_form: @show_edit_form  } %>
+<%= render partial: 'reports/show', locals: { title: "User report", report: @report, time_regs: @time_regs, show_edit_form: @show_edit_form, structured_report_data: report_data(title: @user.name, time_regs: @time_regs, keys: [:client, :project, :task]) } %>
