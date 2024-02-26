@@ -28,12 +28,13 @@
           <%= form.text_area :notes, class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
         </div>
 
-        <div class="mb-4">
-          <%= form.label :minutes, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+        <div class="mb-4" data-controller="input">
+          <%= form.label :minutes, "Time", class: 'block text-gray-700 text-sm font-bold mb-2' %>
           <% @time_reg.errors.full_messages_for(:minutes).each do |message| %>
             <div class="text-red-600 italic text-xs mt-1"><%= message %></div>
           <% end %>
-          <%= form.number_field :minutes, value: 0, class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
+          <%= form.hidden_field :minutes, data: { "input-target": "clone" } %>
+          <%= form.text_field :minutes_string, placeholder: "0:00", data: { action: "input#cloneValue" }, class: 'text-end w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
         </div>
 
          <div class="mb-4">
