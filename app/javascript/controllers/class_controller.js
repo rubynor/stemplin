@@ -28,13 +28,6 @@ export default class extends Controller {
       this.setTrueTarget.classList.remove(this.activeClassValue);
       this.setFalseTarget.classList.add(this.activeClassValue);
       this.billableRatesTarget.classList.add("hidden");
-      // Clear input values when checkbox is unchecked
-      this.clearInputValues();
     }
-  }
-  // Clear input values
-  clearInputValues() {
-    this.input1Target.value = "";
-    this.input2Target.value = "";
   }
 }
