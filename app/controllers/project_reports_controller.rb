@@ -9,6 +9,11 @@ class ProjectReportsController < ReportsController
     @time_regs = get_time_regs(@report, @report.member_ids, @report.project_id, @report.task_ids)
     @grouped_report = group_time_regs(@time_regs, @report.group_by)
     @groupes = GROUPES
+    @project = Project.find(@report.project_id)
+
+    grouped_time_regs = group_data_recursively(@time_regs, :task, :user)
+    children = table_children(grouped_time_regs)
+    @form_data = { title: @project.name, children: children, total: sum_children_minutes(children) }
 
     # data for the edit form
     @timeframeOptions = get_timeframe_options
@@ -121,33 +126,53 @@ class ProjectReportsController < ReportsController
     end
   end
 
-  # ********************
-  # AJAX form updates *
-  # *******************
-
-  # updates the form with projects from a specific client
-  # returns a partial
-  def update_projects_selection
+  def update_projects_select
     projects = Project.where(client_id: params[:client_id])
-    render partial: 'projects', locals: { projects: }
+    project_options = select_options(projects, :name)
+    report = get_report
+
+    if turbo_frame_request?
+      render partial: "project_reports/projects_select", locals: { report: report, options: project_options }
+    end
   end
 
-  # updates the form with members from a specific project
-  # returns a partial
   def update_members_checkboxes
-    members = Project.find(params[:project_id]).users
-    render partial: 'checkboxes', locals: { report: ProjectReport.new, checkboxes: members, text: 'member' }
+    members = get_project_members
+    report = get_report
+
+    if turbo_frame_request?
+      render partial: "project_reports/members_checkboxes",
+             locals: { report: report, collection: members, text: "member" }
+    end
   end
 
-  # updates the form with tasks from a specific project
-  # returns a partial
   def update_tasks_checkboxes
-    tasks = Project.find(params[:project_id]).tasks
-    render partial: 'checkboxes', locals: { report: ProjectReport.new, checkboxes: tasks, text: 'task' }
+    tasks = get_project_tasks
+    report = get_report
+
+    if turbo_frame_request?
+      render partial: "project_reports/tasks_checkboxes",
+             locals: { report: report, collection: tasks, text: "task" }
+    end
   end
 
-  # permits only valid attributes
   private
+
+  def select_options(collection, attribute)
+    collection.map { |item| [item.send(attribute), item.id] }
+  end
+
+  def get_project_members
+    params[:project_id] ? Project.find(params[:project_id]).users : []
+  end
+
+  def get_project_tasks
+    params[:project_id] ? Project.find(params[:project_id]).tasks : []
+  end
+
+  def get_report
+    params[:project_report_id] ? ProjectReport.find(params[:project_report_id]) : ProjectReport.new
+  end
 
   def project_report_params
     params.require(:project_report).permit(:timeframe, :date_start, :date_end, :client_id, :project_id, member_ids: [],

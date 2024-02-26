@@ -16,14 +16,14 @@ application.register("collapse-delete", CollapseDeleteController)
 import CollapseHoursController from "./collapse_hours_controller"
 application.register("collapse-hours", CollapseHoursController)
 
+import FormController from "./form_controller"
+application.register("form", FormController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
-
-import ProjectReportsController from "./project_reports_controller"
-application.register("project-reports", ProjectReportsController)
 
 import RefreshMinutesController from "./refresh_minutes_controller"
 application.register("refresh-minutes", RefreshMinutesController)
@@ -42,3 +42,6 @@ application.register("user-reports-boxes", UserReportsBoxesController)
 
 import UserReportsController from "./user_reports_controller"
 application.register("user-reports", UserReportsController)
+
+import VisibilityController from "./visibility_controller"
+application.register("visibility", VisibilityController)

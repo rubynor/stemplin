@@ -1,24 +1,32 @@
-<%= form_with model: @report do |form| %>
-  <div id="timeframe-container">
-    <div id="timeframe-error-container">
+<%= form_with model: @report, data: { controller: "form" } do |form| %>
+  <div data-controller="visibility">
+    <div>
       <% @report.errors.full_messages_for(:timeframe).each do |message| %>
         <div class="text-red-600 italic text-xs mt-1"><%= message %></div>
       <% end %>
     </div>
-    <div id="timeframe-select" class="flex justify-between">
+
+    <div class="flex justify-between">
       <%= form.label :timeframe, class: 'block text-gray-700 font-bold mb-2' %>
-      <%= form.select :timeframe, @timeframeOptions, {} , {class: 'w-80 mr-8 rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'timeframe-selection'} %>
+      <%= form.select :timeframe, @timeframeOptions, {} , {
+        data: {action: "visibility#showTargetsIfCustom"},
+        class: 'w-80 mr-8 rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark
+        focus:border-seaGreenDark ring-offset-1 ring-offset-white',
+        id: 'timeframe-selection'
+      } %>
     </div>
+
     <div id="custom-timeframe-error-container">
       <% @report.errors.full_messages_for(:custom_timeframe).each do |message| %>
         <div class="text-red-600 italic text-xs mt-1"><%= message %></div>
       <% end %>
     </div>
-    <div id="custom-timeframe-container" class="<%= "hidden" unless @show_custom_timeframe %>">
+
+    <div data-visibility-target="hideable" class="<%= "hidden" unless @show_custom_timeframe %>">
       <%= render partial: 'timeframe' %>
-    </div> 
+    </div>
   </div>
- 
+
   <div id="client-container" class="clear-both pt-10">
     <div id="client-error-container">
       <% @report.errors.full_messages_for(:client_id).each do |message| %>
@@ -30,8 +38,24 @@
         <%= form.label :client_id, class: 'block text-gray-700 font-bold mb-2' %>
       </div>
       <div>
-        <%= form.collection_select :client_id, @clients, :id, :name, {include_blank: 'Select a client' }, {class: 'w-80 mr-8 rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'client-selection'} %>   
-      </div>    
+        <%= form.collection_select :client_id, @clients, :id, :name,
+           {
+             include_blank: 'Select a client',
+           },
+           {
+             class: 'w-80 mr-8 rounded-md p-2 border border-gray-300 focus:ring-1focus:ring-seaGreenDark
+             focus:border-seaGreenDark ring-offset-1 ring-offset-white',
+             id: 'client-selection',
+             data: {
+               action: "form#resetFrame form#updateFrame",
+               update_frame_ids: [:turbo_project_ids],
+               reset_frame_ids: [:turbo_members_checkboxes, :turbo_tasks_checkboxes],
+               urls: [update_projects_select_project_reports_path],
+               param_name: :client_id
+             }
+           }
+        %>
+      </div>
     </div>
   </div>
 
@@ -46,13 +70,12 @@
         <%= form.label :project_id, class: 'block text-gray-700 font-bold mb-2' %>
       </div>
       <div>
-        <!--selection gets dynamically re-filled on client change -->
-        <%= form.collection_select :project_id, @projects, :id, :name, {include_blank: 'Select a project' }, {class: 'w-80 mr-8 rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'project-selection'} %>   
-      </div>    
+        <%= turbo_frame_tag :turbo_project_ids, src: update_projects_select_project_reports_path({client_id: @report.client_id, project_report_id: @report.id}) %>
+      </div>
     </div>
   </div>
 
-  <div id="members-container" class="clear-both pt-10">
+  <div id="members-container" class="clear-both pt-10" data-controller="checkbox">
     <div id="members-error-container">
       <% @report.errors.full_messages_for(:member_ids).each do |message| %>
         <div class="text-red-600 italic text-xs mt-1">Please select atleast one user</div>
@@ -62,16 +85,18 @@
       <%= form.label :member_ids, 'Members', class: 'block text-gray-700 font-bold mb-2'%>
     </div>
     <div class="mr-4 font-semibold p-1 w-fit float-left m-1">
-      <%= check_box_tag "check_all_members", 0, false, {id: "check-all-members", class: 'text-seaGreenDark focus:ring-seaGreenDark focus:ring-offset-2 focus:ring-opacity-50' }%>
+      <%= check_box_tag "check_all_members", 0, false,
+          {
+            class: 'text-seaGreenDark focus:ring-seaGreenDark focus:ring-offset-2 focus:ring-opacity-50',
+            data: { action: "checkbox#toggleAll", "checkbox-target": "checkboxAll" }
+          }
+      %>
       <%= 'Check all'%>
     </div>
-    <!--div gets dynamically re-filled with checkboxes on project change -->
-    <div id="members-checkboxes">
-      <%= render partial: 'checkboxes', locals: {report: @report, text: 'member',checkboxes: @members} %>
-    </div>
+    <%= turbo_frame_tag :turbo_members_checkboxes, src: update_members_checkboxes_project_reports_path({project_report_id: @report.id, project_id: @report.project_id}) %>
   </div>
 
-  <div id="tasks-container" class="clear-both pt-10">
+  <div id="tasks-container" class="clear-both pt-10" data-controller="checkbox">
     <div id="tasks-error-container">
       <% @report.errors.full_messages_for(:task_ids).each do |message| %>
         <div class="text-red-600 italic text-xs mt-1">Please select atleast one task</div>
@@ -81,18 +106,18 @@
       <%= form.label :task_ids, 'Tasks', class: 'block text-gray-700 font-bold mb-2'%>
     </div>
     <div class="mr-4 font-semibold p-1 w-fit float-left m-1">
-      <%= check_box_tag "check_all_tasks", 0, false, {id: "check-all-tasks", class: 'text-seaGreenDark focus:ring-seaGreenDark focus:ring-offset-2 focus:ring-opacity-50'} %>
+      <%= check_box_tag "check_all_tasks", 0, false,
+          {
+            class: 'text-seaGreenDark focus:ring-seaGreenDark focus:ring-offset-2 focus:ring-opacity-50',
+            data: { action: "checkbox#toggleAll", "checkbox-target": "checkboxAll" }
+          }
+      %>
       <%= 'Check all'%>
     </div>
-    <!--div gets dynamically re-filled with checkboxes on project change -->
-    <div id="tasks-checkboxes">
-      <%= render partial: 'checkboxes', locals: { report: @report, text: 'task',checkboxes: @tasks } %>
-    </div>
+    <%= turbo_frame_tag :turbo_tasks_checkboxes, src: update_tasks_checkboxes_project_reports_path({project_report_id: @report.id, project_id: @report.project_id}) %>
   </div>
 
   <div id="submit-container" class="flex justify-center mt-10">
-    <span class="bg-seaGreen w-fit rounded p-3 m-2 hover:bg-seaGreenDark shadow">
-      <%= form.submit 'Create report', class: 'rounded bg-seaGreen text-white'  %>
-    </span>
+    <%= form.submit 'Create report', class: 'text-white bg-seaGreen w-fit rounded p-3 m-2 hover:bg-seaGreenDark shadow' %>
   </div>
 <% end %>
