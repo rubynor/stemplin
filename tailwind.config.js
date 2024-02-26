@@ -6,6 +6,12 @@ module.exports = {
     './app/assets/stylesheets/**/*.css',
     './app/javascript/**/*.js'
   ],
+  safelist: [
+      "bg-slate-200",
+    {
+      pattern: /bg-slate-([0-9]+)|pl-([0-9]+)/,
+    }
+  ],
   theme: {
     extend: {
       colors: {
