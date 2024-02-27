@@ -45,6 +45,10 @@ module.exports = {
           "border-width": "2px",
           "border-color": "#000",
         },
+        ".seaGreen-text-white": {
+        backgroundColor: "#319895",
+        color: "#fff",
+        },
       };
       addUtilities(newUtilities, ["responsive", "hover"]);
     },
