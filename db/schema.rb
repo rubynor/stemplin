@@ -61,7 +61,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_081305) do
     t.bigint "client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "billable", default: false, null: false
     t.boolean "billable_project", default: false
     t.integer "billable_rate"
     t.index ["client_id"], name: "index_projects_on_client_id"
