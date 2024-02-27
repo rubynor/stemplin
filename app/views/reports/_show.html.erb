@@ -5,7 +5,7 @@
         <h1 class="font-medium italic text-2xl"><%= title %></h1>
       </div>
       <h2 class="text-2xl mb-4">
-        <%= form_data[:title] %>
+        <%= structured_report_data[:title] %>
       </h2>
       <span class="font-bold">
         <% if report.timeframe == "allTime" %>
@@ -41,6 +41,6 @@
   </div>
 
   <div class="w-full mt-5 px-4">
-    <%= render partial: 'reports/simple_report_data', locals: {form_data: form_data} %>
+    <%= render partial: 'reports/simple_report_data', locals: { structured_report_data: structured_report_data } %>
   </div>
 </div>

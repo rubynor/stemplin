@@ -1,14 +1,14 @@
-<% if form_data[:children].present? %>
-  <table class="w-full bg-slate-50 border-2 border-gray-400">
+<% if structured_report_data[:children].present? %>
+  <table class="w-full bg-slate-50 border border-gray-400">
     <tbody>
-      <%= render partial: "simple_report_section", locals: { children: form_data[:children], level: 0 } %>
-      <tr class="flex justify-between px-6 py-1">
+      <%= render partial: "simple_report_section", locals: { children: structured_report_data[:children], level: 0 } %>
+      <tr class="flex justify-between px-6 py-1 pl-3">
         <td>
           Total
         </td>
         <td>
           <span class="font-bold">
-            <%= minutes_to_float form_data[:total] %>
+            <%= minutes_to_float structured_report_data[:total] %>
           </span>
         </td>
       </tr>

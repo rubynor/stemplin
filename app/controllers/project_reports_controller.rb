@@ -11,10 +11,6 @@ class ProjectReportsController < ReportsController
     @groupes = GROUPES
     @project = Project.find(@report.project_id)
 
-    grouped_time_regs = group_data_recursively(@time_regs, :task, :user)
-    children = table_children(grouped_time_regs)
-    @form_data = { title: @project.name, children: children, total: sum_children_minutes(children) }
-
     # data for the edit form
     @timeframeOptions = get_timeframe_options
     @clients = Client.all
