@@ -190,7 +190,9 @@ class ProjectsController < ApplicationController
     new_params.merge({billable_rate: billable_rate})
   end
 
-
+  def string_to_float(str)
+    str.gsub(",", ".").to_f
+  end
 
   def delete_params
     params.permit(:confirmation, :id)
