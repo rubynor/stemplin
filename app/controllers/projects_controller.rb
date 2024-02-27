@@ -181,13 +181,9 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
-    if action_name == 'create'
-      new_params = params.require(:project).permit(:client_id, :name, :description, :billable_project, task_ids: [])
-    else
-      new_params = params.require(:project).permit(:client_id, :name, :description, :billable_project)
-    end
-    billable_rate = (string_to_float(params.require(:project)[:billable_rate]) * 100).to_i
-    new_params.merge({billable_rate: billable_rate})
+    params
+      .require(:project)
+      .permit(:client_id, :name, :description, :billable_project, :billable_rate_nok, task_ids: [])
   end
 
   def string_to_float(str)

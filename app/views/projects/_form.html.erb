@@ -55,7 +55,7 @@
     <p>We need billable rates to track your project's billable amount</p>
     <p>
       <strong>Project billable rate </strong>kr
-      <%=form.text_field :billable_rate, class: 'mx-2 text-right rounded-md p-2', maxlength: 16, size: 10, value: format_float(billable_rate) || nil %>
+      <%=form.text_field :billable_rate_nok, class: 'mx-2 text-right rounded-md p-2', maxlength: 16, size: 10, value: project.billable_rate_nok || nil %>
       per hour
     </p>
   </div>

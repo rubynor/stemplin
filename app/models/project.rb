@@ -9,4 +9,12 @@ class Project < ApplicationRecord
   has_many :time_regs, through: :memberships
   has_many :assigned_tasks, dependent: :destroy
   has_many :tasks, through: :assigned_tasks
+
+  def billable_rate_nok
+    ConvertKroneOre.out(billable_rate)
+  end
+
+  def billable_rate_nok=(rate_in_nok)
+    self.billable_rate = ConvertKroneOre.in(rate_in_nok)
+  end
 end
