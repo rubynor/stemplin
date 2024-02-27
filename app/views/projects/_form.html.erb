@@ -34,24 +34,32 @@
   <div>
 
 
-<div data-controller="checkbox class" data-class-active-class-value="bg-cyan-500">
+<div data-controller="checkbox class" data-class-active-class-value="seaGreen-text-white" class="mt-6">
   <%= form.label :billable_project, class: 'block text-gray-700 font-bold mb-1' %>
-  <%= form.check_box :billable_project, hidden: true, "data-checkbox-target": "checkbox", data: { "class-target": "main", action: "class#updateClass" } %>
-
-  <button type="button" data-class-target="setTrue"
-  data-action="click->checkbox#check click->class#updateClass" class="text-center min-w-custom24 ml-20 p-3.5 rounded border-2-black bg-transparent">
-    <strong>Time & Materials</strong>
-    <p>Bill by the hour, with billable rates</p>
-  </button>
+  <%= form.check_box :billable_project, class: "hidden", "data-checkbox-target": "checkbox", data: { "class-target": "main", action: "class#updateClass" } %>
+  <div class= "flex">
+    <button type="button" data-class-target="setTrue"
+    data-action="click->checkbox#check click->class#updateClass" class="text-center px-6 p-3.5 w-full rounded border-2-black mr-20">
+      <strong>Time & Materials</strong>
+      <p>Bill hourly, rates apply</p>
+    </button>
 
     <button type="button" data-class-target="setFalse"
-  data-action="click->checkbox#uncheck click->class#updateClass" class="text-center min-w-custom24 ml-20 p-3.5 rounded border-2-black bg-transparent mt-6">
-    <strong>Non-Billable</strong>
-    <p>Not Billed to a client</p>
-  </button>
-
+    data-action="click->checkbox#uncheck click->class#updateClass" class="text-center px-6 p-3.5 w-full rounded border-2-black">
+      <strong>Non-Billable</strong>
+      <p>Not Billed to a client</p>
+    </button>
+  </div>
+  <div class="rounded border-2-black p-5 mt-6 h-60" data-class-target="billableRates">
+    <strong>Billable rates</strong>
+    <p>We need billable rates to track your project's billable amount</p>
+    <p>
+      <strong>Project billable rate </strong>kr
+      <%=form.text_field :billable_rate_nok, class: 'mx-2 text-right rounded-md p-2', maxlength: 16, size: 10, value: project.billable_rate_nok || nil %>
+      per hour
+    </p>
+  </div>
 </div>
-      
     <% @project.errors.full_messages_for(:billable_project).each do |message|%>
     <div class="text-red-600 italic text-xs mt-1">
       <%= message %>

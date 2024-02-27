@@ -10,4 +10,8 @@ module ProjectsHelper
   def user_data(email)
     User.find_by(email:)
   end
+
+  def format_float(number)
+    number.to_s.gsub(".", ",")
+  end
 end
