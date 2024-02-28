@@ -2,10 +2,6 @@ class ProjectsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_membership, only: %i[show edit update destroy]
 
-  def index
-    @clients = current_user.clients
-  end
-
   # viser et enkelt prosjekt til bruker .where(assigned_tasks: { project_id: @project.id }
   def show
     @project = Project.find(params[:id])
