@@ -83,7 +83,7 @@ class ProjectsController < ApplicationController
     if delete_params[:confirmation] == 'DELETE'
       if @project.destroy
         flash[:notice] = 'Project deleted'
-        redirect_to projects_path
+        redirect_to clients_path
       else
         @assigned_tasks = AssignedTask.select('tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id')
                                       .joins(:task)
@@ -109,7 +109,7 @@ class ProjectsController < ApplicationController
     # if file is empty or missing
     if params[:file].blank?
       flash[:alert] = "Please select a file to import."
-      redirect_to projects_path and return
+      redirect_to clients_path and return
     end
 
     file = params[:file].read
@@ -175,7 +175,7 @@ class ProjectsController < ApplicationController
     rescue StandardError => e # If the e-mail is invalid, flash and error and redirect
         flash[:alert] = "Invalid e-mail. Please double check the e-mail column for every row."
     end
-    redirect_to projects_path
+    redirect_to clients_path
   end
 
   private
