@@ -1,0 +1,10 @@
+<% Client.all.each_with_index do |client, index| %>
+project_report_<%= index %>:
+  timeframe: "allTime"
+  client_id: <%= client.id %>
+  project_id: <%= client.projects.first.id %>
+  task_ids: <%= client.projects.first.task_ids %>
+  member_ids: <%= User.ids %>
+  group_by: "date"
+<% end %>
+

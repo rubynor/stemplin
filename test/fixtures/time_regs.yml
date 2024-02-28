@@ -1,0 +1,32 @@
+DEFAULTS: &DEFAULTS
+  notes: "Did some work today"
+  minutes: 120
+  active: false
+  updated: <%= Time.now %>
+
+time_reg_1:
+  assigned_task: e_corp_crm_debug
+  date_worked: <%= Date.today %>
+  membership: e_corp_joe
+  <<: *DEFAULTS
+
+time_reg_2:
+  active: false
+  assigned_task: e_corp_crm_debug
+  date_worked: <%= Date.today - 1 %>
+  membership: e_corp_ron
+  <<: *DEFAULTS
+
+time_reg_3:
+  active: false
+  assigned_task: e_corp_crm_coding
+  date_worked: <%= Date.today - 2 %>
+  membership: e_corp_joe
+  <<: *DEFAULTS
+
+time_reg_4:
+  active: false
+  assigned_task: e_corp_crm_coding
+  date_worked: <%= Date.today - 3 %>
+  membership: e_corp_ron
+  <<: *DEFAULTS

@@ -1,0 +1,7 @@
+e_corp_crm_debug:
+  project: e_corp_crm
+  task: debug
+
+e_corp_crm_coding:
+  project: e_corp_crm
+  task: coding
