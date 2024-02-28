@@ -1,0 +1,9 @@
+<% User.all.each_with_index do |user, index| %>
+project_report_<%= index %>:
+  timeframe: "allTime"
+  user_id: <%= user.id %>
+  project_ids: <%= user.project_ids %>
+  task_ids: <%= user.time_regs.map(&:assigned_task_id) %>
+  group_by: "date"
+<% end %>
+
