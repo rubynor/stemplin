@@ -5,7 +5,7 @@
     <p class="font-semibold">date;client;project;task;notes;minutes;first name;last name;email</p>
     <br>    
     <div >
-      <%= form_with url: projects_import_path do |form| %>
+      <%= form_with url: new_client_path do |form| %>
         <span class="rounded bg-seaGreen p-2 hover:bg-seaGreenDark shadow text-white mr-2">
           <%= submit_tag "Import CSV", class: ''%>
         </span>
