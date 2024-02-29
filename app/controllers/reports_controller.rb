@@ -1,4 +1,6 @@
 class ReportsController < ApplicationController
+  include TimeRegsConverter
+
   before_action :authenticate_user!
 
   # exports the the report as a .CSV
@@ -52,21 +54,7 @@ class ReportsController < ApplicationController
                          .where(assigned_task: { task_id: tasks })
                          .order(date_worked: :desc, created_at: :desc)
 
-    # converts a time_reg to hash and maps it
-    time_regs.map do |time_reg|
-      {
-        date: time_reg.date_worked,
-        client: time_reg.project.client.name,
-        project: time_reg.project.name,
-        task: time_reg.task.name,
-        user: time_reg.user.name,
-        notes: time_reg.notes,
-        minutes: time_reg.minutes,
-        user_first_name: time_reg.user.first_name,
-        user_last_name: time_reg.user.last_name,
-        user_email: time_reg.user.email
-      }
-    end
+    time_regs_to_hashes(time_regs)
   end
 
   # groupes the time_regs for the different columns
