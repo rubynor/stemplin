@@ -22,14 +22,14 @@
       <%= render @assigned_tasks %>
     </div>
 
-    <div class="">
-      <h1 class="font-medium text-lg italic mt-8">Create task</h1>
-      <%= button_tag "Create New Task", type: "button", class: "rounded bg-seaGreen p-2 hover:bg-seaGreenDark text-white mt-2" %><p>
-      <div class="pt-10">
-        <%= text_field_tag :name, nil, style: "w-full rounded-md p-2 border border-gray-300 mr-8 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white" %>
-        <%= button_tag "Click Me", type: "button", class: "rounded bg-seaGreen p-2 hover:bg-seaGreenDark text-white ml-5" %>
-      </div>
-    </div>
+<div data-controller="hidden">
+  <h1 class="font-medium text-lg italic mt-8">Create task</h1>
+  <%= button_tag "Create New Task", type: "button", class: "rounded bg-seaGreen p-2 hover:bg-seaGreenDark text-white mt-2", data: { action: "click->hidden#toggleVisibility" } %>
+  <div class="pt-10 hidden" data-hidden-target="textField">
+    <%= text_field_tag :name, nil, class: "w-full rounded-md p-2 border border-gray-300 mr-8 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white" %>
+  </div>
+  <%= button_tag "Save Task", type: "button", class: "hidden rounded bg-seaGreen p-2 hover:bg-seaGreenDark text-white mt-5", data: { target: "hidden.button" } %>
+</div>
 
     <div>
       <h1 class="font-medium text-lg italic mt-8">Add task</h1>
