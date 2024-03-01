@@ -11,6 +11,11 @@ class ProjectReportsController < ReportsController
     @groupes = GROUPES
     @project = Project.find(@report.project_id)
 
+    @structured_report_data = TimeRegsPresenter.new(@time_regs).report_data(
+      title: @project.name,
+      keys: [:task, :user]
+    )
+
     # data for the edit form
     @timeframeOptions = get_timeframe_options
     @clients = Client.all

@@ -49,11 +49,9 @@ class ReportsController < ApplicationController
     time_regs = time_regs.where(date_worked: report.date_start..report.date_end) unless report.timeframe == 'allTime'
 
     # filters the time_regs to show the correct ones
-    time_regs = time_regs.where(membership: { user_id: users, project_id: projects })
+    time_regs.where(membership: { user_id: users, project_id: projects })
                          .where(assigned_task: { task_id: tasks })
                          .order(date_worked: :desc, created_at: :desc)
-
-    time_regs.map { |time_reg| TimeRegPresenter.new(time_reg) }
   end
 
   # groupes the time_regs for the different columns

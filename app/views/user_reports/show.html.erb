@@ -4,9 +4,6 @@
              report: @report,
              time_regs: @time_regs,
              show_edit_form: @show_edit_form,
-             structured_report_data: report_data(
-               title: @user.name,
-               time_regs: @time_regs,
-               keys: [:client, :project, :task])
+             structured_report_data: @structured_report_data
            }
 %>

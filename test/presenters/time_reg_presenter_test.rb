@@ -1,15 +1,15 @@
-require 'test_helper'
-
-class ReportsHelperTest < ActionView::TestCase
+class TimeRegPresenterTest < ActiveSupport::TestCase
   def setup
     @time_regs = Project.first.time_regs
-    @time_reg_hashes = @time_regs.map { |time_reg| TimeRegPresenter.new(time_reg).as_hash }
+
+    @result = TimeRegsPresenter.new(@time_regs).report_data(
+      title: "Project report",
+      keys: [:project, :task, :user]
+    )
 
     @time_regs_project_names = @time_regs.map(&:project).uniq.map(&:name).sort
     @time_regs_user_names = @time_regs.map(&:user).uniq.map(&:name).sort
     @time_regs_task_names = @time_regs.map(&:task).uniq.map(&:name).sort
-
-    @result = report_data(title: "Project report", time_regs: @time_reg_hashes, keys: [:project, :task, :user])
   end
 
   test "#report_data has correct title" do
@@ -22,7 +22,7 @@ class ReportsHelperTest < ActionView::TestCase
   end
 
   test "#report_data base case has no children" do
-    base_child = report_data(title: "Project report", time_regs: @time_reg_hashes, keys: [])
+    base_child = TimeRegsPresenter.new(@time_regs).report_data(title: "Project report", keys: [])
     assert_empty base_child[:children]
   end
 
@@ -44,7 +44,8 @@ class ReportsHelperTest < ActionView::TestCase
   end
 
   test "#time_reg_report handles blank keys" do
-    children = time_reg_report(@time_reg_hashes, [])
+    time_reg_hashes = TimeRegsPresenter.new(@time_regs).as_hashes
+    children = TimeRegsPresenter.new(@time_regs).time_reg_report(time_reg_hashes, [])
     assert_empty children
   end
 end
