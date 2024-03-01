@@ -1,12 +1,9 @@
 require 'test_helper'
-require "reports_controller"
-
-include TimeRegsConverter
 
 class ReportsHelperTest < ActionView::TestCase
   def setup
     @time_regs = Project.first.time_regs
-    @time_reg_hashes = time_regs_to_hashes(@time_regs)
+    @time_reg_hashes = @time_regs.map { |time_reg| TimeRegPresenter.new(time_reg).as_hash }
 
     @time_regs_project_names = @time_regs.map(&:project).uniq.map(&:name).sort
     @time_regs_user_names = @time_regs.map(&:user).uniq.map(&:name).sort

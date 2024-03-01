@@ -1,5 +1,4 @@
 class ReportsController < ApplicationController
-  include TimeRegsConverter
 
   before_action :authenticate_user!
 
@@ -54,7 +53,7 @@ class ReportsController < ApplicationController
                          .where(assigned_task: { task_id: tasks })
                          .order(date_worked: :desc, created_at: :desc)
 
-    time_regs_to_hashes(time_regs)
+    time_regs.map { |time_reg| TimeRegPresenter.new(time_reg) }
   end
 
   # groupes the time_regs for the different columns
