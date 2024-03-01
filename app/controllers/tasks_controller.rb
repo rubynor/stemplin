@@ -14,7 +14,9 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
+
     if @task.save
+      return render_turbo_frames if turbo_frame_request?
       redirect_to tasks_path
     else
       render :new, status: :unprocessable_entity
@@ -56,6 +58,23 @@ class TasksController < ApplicationController
   end
 
   private
+
+  def render_turbo_frames
+    set_turbo_frame_data 
+
+    render partial: "assigned_tasks/new", locals: {
+      project: @project, 
+      assigned_task: @assigned_task, 
+      task: Task.new, 
+      tasks: @tasks
+    }
+  end
+
+  def set_turbo_frame_data 
+    @project = Project.find(params[:task][:project_id])
+    @assigned_task = @project.assigned_tasks.new
+    @tasks = Task.all.where.not(id: @project.assigned_tasks.select(:task_id)).select(:id, :name)
+  end
 
   def task_params
     params.require(:task).permit(:name)

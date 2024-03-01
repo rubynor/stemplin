@@ -47,6 +47,7 @@ class ProjectsController < ApplicationController
 
     @assigned_task = @project.assigned_tasks.new
     @tasks = Task.all.where.not(id: @project.assigned_tasks.select(:task_id)).select(:id, :name) # no tasks that is already a part om the project
+    @new_task = Task.new
   end
 
   def update

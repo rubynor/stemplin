@@ -1,19 +1,45 @@
-<div class="flex flex-col items-center">
-  <%= form_with model: [@project, @assigned_task] do |form| %>
-    <div class="max-w-md md:min-w-custom35 flex justify-normal h-20">
-      <div class="flex justify-between items-center">
-        <%= form.collection_select :task_id, @tasks, :id, :name, { include_blank: false }, { class: 'pr-40 rounded-md p-2 border border-gray-300 mr-2 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' }  %>
-        <% @assigned_task.errors.full_messages_for(:name).each do |message|%>
-          <div class="text-red-600 italic text-xs mt-1">
-            <%= message %>
+<turbo-frame id="turbo-new-task">
+  <div class="flex flex-col items-center">
+      <%= form_with model: [project, assigned_task] do |form| %>
+      <div class="max-w-md md:min-w-custom35 flex justify-normal h-20">
+          <div class="flex justify-between items-center">
+          <%= form.collection_select :task_id, tasks, :id, :name, { include_blank: false },
+              { class: 'pr-40 rounded-md p-2 border border-gray-300 mr-2 focus:ring-1 
+                focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' 
+              }  
+          %>
+          <% assigned_task.errors.full_messages_for(:name).each do |message|%>
+              <div class="text-red-600 italic text-xs mt-1">
+              <%= message %>
+              </div>
+          <% end %>
           </div>
-        <% end %>
+          <div class="actions text-center flex items-center ml-4">
+          <span class="rounded bg-seaGreen p-2 hover:bg-seaGreenDark text-white">
+              <%= form.submit 'Assign task', class: '' %>
+          </span>
+          </div>  
       </div>
-      <div class="actions text-center flex items-center ml-4">
-        <span class="rounded bg-seaGreen p-2 hover:bg-seaGreenDark text-white">
-          <%= form.submit 'Assign task', class: '' %>
-        </span>
-      </div>  
-    </div>
+      <% end %>
+  </div>
+  <%= form_with model: task do |f| %>
+      <div data-controller="visibility">
+          <h1 class="font-medium text-lg italic mt-8">Create task</h1>
+          <%= button_tag "Create New Task", type: "button", 
+            class: "rounded bg-seaGreen p-2 hover:bg-seaGreenDark text-white mt-2", 
+            data: { action: "click->visibility#toggleTargets" } 
+          %>
+          <div class="pt-10 hidden" data-visibility-target="hideable">
+          <h2 >Type the name of the task here:</h2>
+          <%= f.hidden_field :project_id, value: project.id %>
+          <%= f.text_field :name, 
+            class: "w-full rounded-md p-2 border border-gray-300 mr-8 focus:ring-1 
+            focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white" 
+          %>
+          <%= f.submit "Save Task", 
+            class: "rounded bg-seaGreen p-2 hover:bg-seaGreenDark text-white mt-5"
+          %>
+          </div>
+      </div>
   <% end %>
-</div>
+</turbo-frame>
