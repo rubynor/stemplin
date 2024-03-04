@@ -20,6 +20,7 @@
           </span>
           </div>  
       </div>
+      <p class="text-sm">Want to edit tasks on the project? Click <%= link_to 'here',  tasks_path, data: {turbo_frame: "_top"}, class: 'text-blue-600'%></p>
       <% end %>
   </div>
   <%= form_with model: task do |f| %>
