@@ -6,17 +6,14 @@ class TimeRegsController < ApplicationController
   include TimeRegsHelper
 
   def index
-    begin
-      @chosen_date = params[:date] ? Date.parse(params[:date]) : Date.today
-    rescue Date::Error
-      @chosen_date = Date.today
-    end
+    @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today
+
     @time_regs = current_user.time_regs.where('date(date_worked) = ?', @chosen_date).includes(:project,
                                                                                               :assigned_task).order(created_at: :desc)
     @total_minutes_day = @time_regs.sum(:minutes)
     @minutes_by_day = minutes_by_day_of_week(@chosen_date, current_user)
     @projects = current_user.projects
-    @time_reg = TimeReg.new(date_worked: Date.today)
+    @time_reg = TimeReg.new(date_worked: @chosen_date)
 
     # calculate the start and end date of the week of @chosen_date
     start_date = @chosen_date.beginning_of_week
