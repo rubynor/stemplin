@@ -17,4 +17,8 @@ export default class extends Controller {
   showTargets() {
     this.hideableTargets.forEach(el => el.classList.remove("hidden"));
   }
+
+  toggleTargets() {
+    this.hideableTargets.forEach(el => el.classList.toggle("hidden"));
+  }
 }
