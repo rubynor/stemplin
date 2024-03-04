@@ -1,61 +1,52 @@
-<div class="flex flex-col items-center p-4">
-  <div class="max-w-md">
-    <div class="p-4 my-4" data-controller="time-tasks">
-      <h1 class="font-bold text-2xl mb-4">New time entry:</h1>
-      <%= form_with(model: @time_reg) do |form| %>
-      <%= hidden_field_tag :date, @chosen_date %>
-        <div class="mb-4">
-          <%= form.label :project_id, class: 'block text-gray-700 text-sm font-bold mb-2' %>       
-          <%= form.collection_select :project_id, @projects , :id, :name, { include_blank: "select a project:"}, {class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'timeproject-select'}  %>
-          <% @time_reg.errors.full_messages_for(:membership).any? do |message| %>
-            <div class="text-red-600 text-xs italic mt-1">Please select a project</div>
-          <% end %>
-        </div>
+<div class="flex flex-col items-center p-4 max-w-md">
+  <div class="px-4 py-2 my-1" data-controller="time-tasks">
+  <span class="mb-8"><%= format_date @time_reg.date_worked %></span>
+    <h1 class="font-bold text-2xl mb-1">New time entry:</h1>
+    <%= form_with(model: @time_reg) do |form| %>
+    <%= hidden_field_tag :date, @chosen_date %>
+      <div class="mb-4">
+        <%= form.label :project_id, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+        <%= form.collection_select :project_id, @projects , :id, :name, { include_blank: "select a project:"}, {class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'timeproject-select'}  %>
+        <% @time_reg.errors.full_messages_for(:membership).any? do |message| %>
+          <div class="text-red-600 text-xs italic mt-1">Please select a project</div>
+        <% end %>
+      </div>
 
-        <div class="mb-4">
-          <%= form.label :assigned_task_id, class: 'block text-gray-700 text-sm font-bold mb-2' %>
-          <%= form.collection_select :assigned_task_id, {}, :id, :name, {}, {class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'timetask-select'}  %>
-          <% @time_reg.errors.full_messages_for(:assigned_task_id).each do |message| %>
-            <div class="text-red-600 italic text-xs mt-1">Please select a task</div>
-          <% end %>
-        </div>
+      <div class="mb-4">
+        <%= form.label :assigned_task_id, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+        <%= form.collection_select :assigned_task_id, {}, :id, :name, {}, {class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'timetask-select'}  %>
+        <% @time_reg.errors.full_messages_for(:assigned_task_id).each do |message| %>
+          <div class="text-red-600 italic text-xs mt-1">Please select a task</div>
+        <% end %>
+      </div>
 
-        <div class="mb-4">
-          <%= form.label :notes, class: 'block text-gray-700 text-sm font-bold mb-2' %>       
-          <% @time_reg.errors.full_messages_for(:notes).each do |message| %>
-            <div  class="text-red-600 text-xs italic mt-1"><%= message %></div>
-          <% end %>
-          <%= form.text_area :notes, class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
-        </div>
+      <div class="mb-4">
+        <%= form.label :notes, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+        <% @time_reg.errors.full_messages_for(:notes).each do |message| %>
+          <div  class="text-red-600 text-xs italic mt-1"><%= message %></div>
+        <% end %>
+        <%= form.text_area :notes, class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
+      </div>
 
-        <div class="mb-4" data-controller="input">
-          <%= form.label :minutes, "Time", class: 'block text-gray-700 text-sm font-bold mb-2' %>
-          <% @time_reg.errors.full_messages_for(:minutes).each do |message| %>
-            <div class="text-red-600 italic text-xs mt-1"><%= message %></div>
-          <% end %>
-          <%= form.hidden_field :minutes, data: { "input-target": "clone" } %>
-          <%= form.text_field :minutes_string, placeholder: "0:00", data: { action: "input#cloneValue" }, class: 'text-end w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
-        </div>
+      <div class="mb-4" data-controller="input">
+        <%= form.label :minutes, "Time", class: 'block text-gray-700 text-sm font-bold mb-2' %>
+        <% @time_reg.errors.full_messages_for(:minutes).each do |message| %>
+          <div class="text-red-600 italic text-xs mt-1"><%= message %></div>
+        <% end %>
+        <%= form.hidden_field :minutes, data: { "input-target": "clone" } %>
+        <%= form.text_field :minutes_string, placeholder: "0:00", autocomplete: "off", data: { action: "input#cloneValue" }, class: 'text-end w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
+      </div>
 
-         <div class="mb-4">
-          <%= form.label :date_worked, class: 'block text-gray-700 text-sm font-bold mb-2' %>
-          <% @time_reg.errors.full_messages_for(:date_worked).each do |message| %>
-            <div class="text-red-600 italic text-xs mt-1"><%= message %></div>
-          <% end %>
-          <div class="flex justify-between">
-            <%= form.date_field :date_worked, class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
-          </div>
-        </div>
+      <%= form.hidden_field :date_worked %>
 
-        <div class="flex justify-center mt-8 px-4">
-          <span class="rounded bg-seaGreen p-2 m-2 shadow text-white hover:bg-seaGreenDark">
-            <%= form.submit class: '' %>          
-          </span>
-          <div data-action="click->modal#toggle" class="cursor-pointer rounded bg-tastyWhiteLite p-2 m-2 hover:bg-red-100 shadow">
-            Cancel
-          </div> 
+      <div class="flex justify-center mt-8 px-4">
+        <span class="rounded bg-seaGreen p-2 m-2 shadow text-white hover:bg-seaGreenDark">
+          <%= form.submit class: '' %>
+        </span>
+        <div data-action="click->modal#toggle" class="cursor-pointer rounded bg-tastyWhiteLite p-2 m-2 hover:bg-red-100 shadow">
+          Cancel
         </div>
-      <% end %> 
-    </div>
-  </div>  
+      </div>
+    <% end %>
+  </div>
 </div>

@@ -50,8 +50,8 @@
           </p>
         </div>
       </div>
-      <div class="col-span-3">
 
+      <div class="col-span-3">
         <%= form_tag(root_path, method: "get", class: "flex space-x-2") do %>
           <%= date_field_tag :date, @chosen_date, class: 'focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
           <div class="self-center ml-2 bg-seaGreen hover:bg-seaGreenDark rounded-xl self-center m-auto p-2 text-white flex">
@@ -60,7 +60,6 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
             </svg>
           </div>
-
         <% end %>
       </div>
     </div>
@@ -116,5 +115,3 @@
     </div>
   </div>
 </div>
-</div>
-
