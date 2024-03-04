@@ -39,7 +39,6 @@ class ProjectsController < ApplicationController
     @is_in_update = true
     @project = Project.find(params[:id])
     @clients = Client.all
-    @billable_rate = @project.billable_rate / 100.0
 
     @assigned_tasks = AssignedTask.select('tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id')
                                   .joins(:task)
