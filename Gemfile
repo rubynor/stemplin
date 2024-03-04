@@ -83,3 +83,6 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end
+
+gem "sentry-ruby"
+gem "sentry-rails"
