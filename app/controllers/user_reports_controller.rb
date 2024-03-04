@@ -8,6 +8,11 @@ class UserReportsController < ReportsController
     @grouped_report = group_time_regs(@time_regs, @report.group_by)
     @user = User.find(@report.user_id)
 
+    @structured_report_data = TimeRegsPresenter.new(@time_regs).report_data(
+      title: @user.name,
+      keys: [:client, :project, :task]
+    )
+
     # data for the edit form
     @show_edit_form = false
     @groupes = GROUPES
