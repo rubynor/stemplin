@@ -87,7 +87,7 @@
           <% end %>
           <% date_with_minutes = @chosen_date + diff.days %>
           <% day_minutes = @time_regs_week.select{ |tr| tr.date_worked.wday == (i+1) % 7 }.sum(&:minutes) %>
-          <%= link_to "#{day} #{format_duration(day_minutes)}", root_path(date: date_with_minutes) %><br>
+          <%= link_to "#{day} <br> #{format_duration(day_minutes)}".html_safe, root_path(date: date_with_minutes) %>
 
         </div>
       <% end %>
