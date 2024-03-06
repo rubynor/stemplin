@@ -85,11 +85,13 @@
           <% else %>
             <% diff = current_day_index - @chosen_date.wday %>
           <% end %>
-
-          <%= link_to day, root_path(date: @chosen_date + diff.days) %><br>
+          <% date_with_minutes = @chosen_date + diff.days %>
           <% day_minutes = @time_regs_week.select{ |tr| tr.date_worked.wday == (i+1) % 7 }.sum(&:minutes) %>
-          <%= format_duration(day_minutes) %>
-
+          <%= link_to root_path(date: date_with_minutes) do %>
+	    <%= day %>
+	    <br>
+	    <%= format_duration(day_minutes) %>
+	  <% end %>
         </div>
       <% end %>
       <div class="grid grow">
