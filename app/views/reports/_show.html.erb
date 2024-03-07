@@ -3,7 +3,7 @@
     <div>
       <div class="flex justify-between items-baseline gap-5">
         <h1 class="font-medium italic text-2xl"><%= title %></h1>
-        <%= link_to "See detailed report", detailed_project_report_project_reports_path, class: "text-blue-800 underline" %>
+        <%= link_to "See detailed report", detailed_report_path, class: "text-blue-800 underline" if detailed_report_path %>
       </div>
       <h2 class="text-2xl mb-4">
         <%= structured_report_data[:title] %>
