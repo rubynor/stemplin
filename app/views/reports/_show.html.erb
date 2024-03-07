@@ -1,8 +1,9 @@
 <div class="flex flex-col w-full items-center pt-4 mb-20 max-w-[1200px] mx-auto" data-controller="report-edit">
   <div class="flex flex-col w-full px-2 sm:flex-row sm:justify-between lg:min-w-custom60">
     <div>
-      <div class="flex justify-between">
+      <div class="flex justify-between items-baseline gap-5">
         <h1 class="font-medium italic text-2xl"><%= title %></h1>
+        <%= link_to "See detailed report", detailed_project_report_project_reports_path, class: "text-blue-800 underline" %>
       </div>
       <h2 class="text-2xl mb-4">
         <%= structured_report_data[:title] %>

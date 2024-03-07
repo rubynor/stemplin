@@ -157,6 +157,18 @@ class ProjectReportsController < ReportsController
     end
   end
 
+  def detailed
+    @report = ProjectReport.find(params[:id])
+    @time_regs = get_time_regs(@report, @report.member_ids, @report.project_id, @report.task_ids)
+    @structured_report_data = @time_regs.group_by { |reg| reg[:date_worked] }.sort_by { |key| key  }
+
+    @client = Client.find(@report.client_id)
+    @project = Project.find(@report.project_id)
+    @total_billable_minutes = @project.billable_project ? @time_regs.sum(&:minutes) : 0
+    @total_minutes = @time_regs.sum(&:minutes)
+    @users = User.where(id: @report.member_ids)
+  end
+
   private
 
   def select_options(collection, attribute)
