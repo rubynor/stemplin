@@ -2,7 +2,7 @@
   <h1 class="text-4xl font-medium">
     Detailed time report:  <span class="font-normal"><%= time_frame(report.date_start, report.date_end) %></span>
   </h1>
-  <hr class="border-t-[2px] rounded-xl border-stone-300 my-4" style="print-color-adjust: exact; -webkit-print-color-adjust: exact;">
+  <hr class="border-t-[2px] rounded-xl border-stone-300 my-4 print-color-adjust">
 
   <div class="flex flex-col my-6 w-full space-y-10 md:flex-row print:flex-row">
     <div class="flex-1 flex flex-col justify-center">
@@ -48,7 +48,7 @@
 
   <table class="w-full">
     <thead>
-      <tr class="bg-stone-200 border-y-2 border-stone-300 text-stone-700" style="print-color-adjust: exact; -webkit-print-color-adjust: exact;">
+      <tr class="bg-stone-200 border-y-2 border-stone-300 text-stone-700 print-color-adjust">
         <td class="pl-5">Client</td>
         <td>Project</td>
         <td>Task</td>
@@ -59,7 +59,7 @@
     </thead>
     <tbody>
       <% data.each do |key, value| %>
-        <tr class="bg-stone-200 border-b-2 border-stone-300 text-stone-700" style="print-color-adjust: exact; -webkit-print-color-adjust: exact;">
+        <tr class="bg-stone-200 border-b-2 border-stone-300 text-stone-700 print-color-adjust">
           <td class="pl-5"><%= key %></td>
           <td></td>
           <td></td>
