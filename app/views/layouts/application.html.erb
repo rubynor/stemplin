@@ -14,7 +14,7 @@
   <!-- Navbar -->
     <%= render 'layouts/navbar'%>
 
-    <div class="flex justify-evenly pt-4">
+    <div class="flex justify-evenly pt-4 print:hidden">
       <% if notice %>
         <p class="notice bg-green-300 text-red-900 px-3 py-3 w-fit rounded-full"><%= notice %></p>
       <% end %>
