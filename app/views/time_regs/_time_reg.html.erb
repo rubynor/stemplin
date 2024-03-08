@@ -20,6 +20,7 @@
       <div data-modal-target="modal" class="modal <%= "hidden" unless @show_new %> fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="modal-content bg-white rounded-lg overflow-hidden shadow-xl transform transition-all" data-action="click->modal#preventClose">
           <%= render partial: "time_regs/new", locals: { time_reggie: time_reggie, projects: @projects} %>
+
         </div>
       </div>
       
@@ -43,6 +44,14 @@
           </div>
         <% end %>
       <% end %>
+      <%= 
+        link_to "Delete time entry ", time_reg_path(time_reggie), 
+          class: 'rounded bg-red-400 p-2 hover:bg-red-500', 
+          data:{
+            turbo_method: :delete,
+            turbo_confirm: "Are you sure?"
+          }
+      %>        
     </div> 
     <!-- values for the dynamic minutes updating -->
     <span data-minutes="<%= time_reggie.minutes %>" data-refresh-minutes-target="minutes" class="hidden"></span>
