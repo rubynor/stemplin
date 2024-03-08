@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get 'update_members_checkboxes'
       get 'update_tasks_checkboxes'
       post 'export'
+      get ':id/detailed', to: "project_reports#detailed", as: :detailed_project_report
     end
   end
 

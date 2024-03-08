@@ -14,7 +14,7 @@
   <!-- Navbar -->
     <%= render 'layouts/navbar'%>
 
-    <div class="flex justify-evenly pt-4">
+    <div class="flex justify-evenly pt-4 print:hidden">
       <% if notice %>
         <p class="notice bg-green-300 text-red-900 px-3 py-3 w-fit rounded-full"><%= notice %></p>
       <% end %>
@@ -26,7 +26,7 @@
     <%= yield %>   
 
     <!-- Footer -->
-    <footer class="bottom-0 bg-tastyWhite h-16 items-center flex space-x-2 sm:justify-center fixed w-full">
+    <footer class="print:hidden bottom-0 bg-tastyWhite h-16 items-center flex space-x-2 sm:justify-center fixed w-full">
       <a href="" class="font-bold">Reap</a>
     </footer>
   </body>
