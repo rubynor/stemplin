@@ -1,4 +1,4 @@
-<div class=" p-4 divide-y-2 bg-tastyWhite"  <%= 'data-controller=refresh-minutes' if time_reggie.active %> > 
+<div class=" p-4 divide-y-2 bg-tastyWhite" data-controller="modal"  <%= 'data-controller=refresh-minutes' if time_reggie.active %> > 
   <div class="flex"> 
     <div class="grow">
       <b class="mr-2"> <%= time_reggie.project.name %></b>(<%= time_reggie.project.client.name %>)
@@ -16,7 +16,13 @@
           Edit
         </div>
       </button>
-      <%= render partial: "time_regs/new", locals: { time_reggie: time_reggie, projects: @projects} %>
+
+      <div data-modal-target="modal" class="modal <%= "hidden" unless @show_new %> fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="modal-content bg-white rounded-lg overflow-hidden shadow-xl transform transition-all" data-action="click->modal#preventClose">
+          <%= render partial: "time_regs/new", locals: { time_reggie: time_reggie, projects: @projects} %>
+        </div>
+      </div>
+      
       <% if time_reggie.active %>
         <%= button_to time_reg_toggle_active_path(time_reg_id: time_reggie.id), method: :patch, class: "mr-2" do %>
           <div class="bg-red-300 hover:bg-red-400 p-2 m-2 flex space-x-2 rounded text-black">
