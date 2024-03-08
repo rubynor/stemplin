@@ -2,27 +2,27 @@
   <div class="px-4 py-2 my-1" data-controller="time-tasks">
   <span class="mb-8"><%= format_date @time_reg.date_worked %></span>
     <h1 class="font-bold text-2xl mb-1">New time entry:</h1>
-    <%= form_with(model: @time_reg) do |form| %>
+    <%= form_with(model: time_reggie) do |form| %>
     <%= hidden_field_tag :date, @chosen_date %>
       <div class="mb-4">
         <%= form.label :project_id, class: 'block text-gray-700 text-sm font-bold mb-2' %>
-        <%= form.collection_select :project_id, @projects , :id, :name, { include_blank: "select a project:"}, {class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'timeproject-select'}  %>
-        <% @time_reg.errors.full_messages_for(:membership).any? do |message| %>
+        <%= form.collection_select :project_id, @projects, :id, :name, { include_blank: "select a project:", selected: time_reggie.project&.id }, {class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'timeproject-select'}  %>
+        <% time_reggie.errors.full_messages_for(:membership).any? do |message| %>
           <div class="text-red-600 text-xs italic mt-1">Please select a project</div>
         <% end %>
       </div>
 
       <div class="mb-4">
         <%= form.label :assigned_task_id, class: 'block text-gray-700 text-sm font-bold mb-2' %>
-        <%= form.collection_select :assigned_task_id, {}, :id, :name, {}, {class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'timetask-select'}  %>
-        <% @time_reg.errors.full_messages_for(:assigned_task_id).each do |message| %>
+        <%= form.collection_select :assigned_task_id, (time_reggie.project&.tasks || [] ), :id, :name, { selected: time_reggie.assigned_task&.id }, {class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'timetask-select'}  %>
+        <% time_reggie.errors.full_messages_for(:assigned_task_id).each do |message| %>
           <div class="text-red-600 italic text-xs mt-1">Please select a task</div>
         <% end %>
       </div>
 
       <div class="mb-4">
         <%= form.label :notes, class: 'block text-gray-700 text-sm font-bold mb-2' %>
-        <% @time_reg.errors.full_messages_for(:notes).each do |message| %>
+        <% time_reggie.errors.full_messages_for(:notes).each do |message| %>
           <div  class="text-red-600 text-xs italic mt-1"><%= message %></div>
         <% end %>
         <%= form.text_area :notes, class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
@@ -30,7 +30,7 @@
 
       <div class="mb-4" data-controller="input">
         <%= form.label :minutes, "Time", class: 'block text-gray-700 text-sm font-bold mb-2' %>
-        <% @time_reg.errors.full_messages_for(:minutes).each do |message| %>
+        <% time_reggie.errors.full_messages_for(:minutes).each do |message| %>
           <div class="text-red-600 italic text-xs mt-1"><%= message %></div>
         <% end %>
         <%= form.hidden_field :minutes, data: { "input-target": "clone" } %>

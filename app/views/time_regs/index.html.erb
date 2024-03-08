@@ -104,12 +104,14 @@
     <!-- DIV SHOWING THE NEW FORM-->
     <div data-modal-target="modal" class="modal <%= "hidden" unless @show_new %> fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="modal-content bg-white rounded-lg overflow-hidden shadow-xl transform transition-all" data-action="click->modal#preventClose">
-        <%= render "time_regs/new", time_reg: @time_reg, projects: @projects %>
+        <%= render partial: "time_regs/new", locals: { time_reggie: @time_reg, projects: @projects} %>
       </div>
     </div>
   
     <div class="border-y-2 divide-y-2">
-      <%= render @time_regs %>
+      <% @time_regs.each do |time_reg| %>
+        <%= render partial: "time_regs/time_reg", locals: { time_reggie: time_reg } %>
+      <% end %>
     </div>
 
     <div class='text-end mt-6 mr-24'>
