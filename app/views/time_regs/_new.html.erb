@@ -34,7 +34,7 @@
           <div class="text-red-600 italic text-xs mt-1"><%= message %></div>
         <% end %>
         <%= form.hidden_field :minutes, data: { "input-target": "clone" } %>
-        <%= form.text_field :minutes_string, placeholder: "0:00", autocomplete: "off", data: { action: "input#cloneValue" }, class: 'text-end w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
+        <%= form.text_field :minutes, placeholder: "0:00", autocomplete: "off", data: { action: "input#cloneValue" }, class: 'text-end w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
       </div>
 
       <%= form.hidden_field :date_worked %>
