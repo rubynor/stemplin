@@ -12,9 +12,9 @@ module.exports = {
     },
   },
   safelist: [
-      "bg-slate-200",
+      ...[...Array(100)].flatMap((item, index) => [`pl-[${index +1}px]`]),
     {
-      pattern: /bg-slate-([0-9]+)|pl-([0-9]+)/,
+      pattern: /bg-slate-([0-9]+)/,
     }
   ],
   theme: {
