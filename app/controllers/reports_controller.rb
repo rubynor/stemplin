@@ -21,7 +21,7 @@ class ReportsController < ApplicationController
     scope_task_ids = @task_ids.empty? ? Task.ids : @task_ids
 
     time_regs = TimeReg.with_report_scope(scope_client_ids, scope_project_ids, scope_user_ids, scope_task_ids)
-                       .where(date_worked: (@start_date...@end_date))
+                       .where(date_worked: (@start_date..@end_date))
 
     @structured_report_data = TimeRegsPresenter.new(time_regs).report_data(
       title: nil,
