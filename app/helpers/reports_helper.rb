@@ -14,4 +14,17 @@ module ReportsHelper
   def minutes_to_float(minutes)
     number_with_precision((minutes / 60.0), precision: 2)
   end
+
+  def format_date(date)
+    date.strftime("%d/%m/%Y")
+  end
+
+  def user_names(users)
+    users.map { |u| u.name }.join(", ")
+  end
+
+  def time_frame(start_date, end_date)
+    return "All time" unless start_date && end_date
+    "#{format_date(start_date)} - #{format_date(end_date)}"
+  end
 end

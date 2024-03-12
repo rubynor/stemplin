@@ -6,6 +6,11 @@ module.exports = {
     './app/assets/stylesheets/**/*.css',
     './app/javascript/**/*.js'
   ],
+  extend: {
+    screens: {
+      print: { raw: "print" },
+    },
+  },
   safelist: [
       "bg-slate-200",
     {

@@ -1,0 +1,11 @@
+<%= render partial: "reports/detailed", locals: {
+  data: @structured_report_data,
+  time_regs: @time_regs,
+  total_billable_minutes: @total_billable_minutes,
+  total_minutes: @total_minutes,
+  report: @report,
+  client: @client,
+  project: @project,
+  users: @users,
+}
+%>
