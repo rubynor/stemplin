@@ -43,15 +43,13 @@
             Start
           </div>
         <% end %>
+      <% end %>      
+      <%= button_to time_reg_path(time_reg), method: :delete, class: 'p-2 m-2 flex space-x-2 rounded bg-red-400 p-2 hover:bg-red-500', data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+        </svg> Delete
       <% end %>
-      <%= 
-        link_to "Delete time entry ", time_reg_path(time_reg), 
-          class: 'rounded bg-red-400 p-2 hover:bg-red-500', 
-          data:{
-            turbo_method: :delete,
-            turbo_confirm: "Are you sure?"
-          }
-      %>        
+   
     </div> 
     <!-- values for the dynamic minutes updating -->
     <span data-minutes="<%= time_reg.minutes %>" data-refresh-minutes-target="minutes" class="hidden"></span>
