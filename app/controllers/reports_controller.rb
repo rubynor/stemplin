@@ -2,6 +2,54 @@ class ReportsController < ApplicationController
 
   before_action :authenticate_user!
 
+  def new
+    set_form_data
+    @structured_report_data = {}
+
+    @clients = Client.all
+    @projects = Project.all
+    @tasks = Task.all
+    @users = User.all
+  end
+
+  def update
+    set_form_data
+
+    scope_client_ids = @client_ids.empty? ? Client.ids : @client_ids
+    scope_project_ids = @project_ids.empty? ? Project.ids : @project_ids
+    scope_user_ids = @user_ids.empty? ? User.ids : @user_ids
+    scope_task_ids = @task_ids.empty? ? Task.ids : @task_ids
+
+    time_regs = TimeReg.with_report_scope(scope_client_ids, scope_project_ids, scope_user_ids, scope_task_ids)
+                       .where(date_worked: (@start_date...@end_date))
+
+    @structured_report_data = TimeRegsPresenter.new(time_regs).report_data(
+      title: nil,
+      keys: [:client, :project, :task, :user]
+    )
+
+    @clients = Client.all
+    @projects = Project.all
+    @tasks = Task.all
+    @users = User.all
+
+    if turbo_frame_request?
+      render partial: "form", locals: {
+        clients: @clients,
+        projects: @projects,
+        tasks: @tasks,
+        users: @users,
+        structured_report_data: @structured_report_data,
+        start_date: @start_date,
+        end_date: @end_date,
+        client_ids: @client_ids,
+        project_ids: @project_ids,
+        task_ids: @task_ids,
+        user_ids: @user_ids,
+      }
+    end
+  end
+
   # exports the the report as a .CSV
   def export
     time_regs = JSON.parse(params[:time_regs_hash])
@@ -19,6 +67,21 @@ class ReportsController < ApplicationController
   end
 
   private
+
+  def report_params
+    return params unless params[:report]
+    params.require(:report).permit(:start_date, :end_date, client_ids: [], project_ids: [], task_ids: [], user_ids: [])
+  end
+
+  def set_form_data
+    @start_date = Date.parse(report_params[:start_date]) if report_params[:start_date].present?
+    @end_date = Date.parse(report_params[:end_date]) if report_params[:end_date].present?
+
+    @client_ids = report_params[:client_ids].to_a.map(&:to_i)
+    @project_ids = report_params[:project_ids].to_a.map(&:to_i)
+    @user_ids = report_params[:user_ids].to_a.map(&:to_i)
+    @task_ids = report_params[:task_ids].to_a.map(&:to_i)
+  end
 
   # returns a hash of the correrct timeframe options
   def get_timeframe_options

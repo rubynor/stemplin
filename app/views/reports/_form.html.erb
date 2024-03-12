@@ -1,0 +1,62 @@
+<%= turbo_frame_tag "report_form" do %>
+    <%= form_with scope: :report, url: update_report_path do |f| %>
+      <div class="flex flex-col gap-5">
+        <div class="grid gap-3 grid-cols-2">
+          <h2 class="text-xl">
+            Clients
+          </h2>
+          <div class="flex items-center gap-2">
+            <%= f.collection_check_boxes :client_ids, clients, :id, :name, include_hidden: false do |cb| %>
+              <%= filter_check_box(cb, client_ids.include?(cb.value)) %>
+            <% end %>
+          </div>
+
+          <h2 class="text-xl">
+            Projects
+          </h2>
+          <div class="flex items-center gap-2">
+            <%= f.collection_check_boxes :project_ids, projects, :id, :name, include_hidden: false do |cb| %>
+              <%= filter_check_box(cb, project_ids.include?(cb.value)) %>
+            <% end %>
+          </div>
+
+          <h2 class="text-xl">
+            Tasks
+          </h2>
+          <div class="flex items-center gap-2">
+            <%= f.collection_check_boxes :task_ids, tasks, :id, :name, include_hidden: false do |cb| %>
+              <%= filter_check_box(cb, task_ids.include?(cb.value)) %>
+            <% end %>
+          </div>
+
+          <h2 class="text-xl">
+            Users
+          </h2>
+          <div class="flex items-center gap-2">
+            <%= f.collection_check_boxes :user_ids, users, :id, :name, include_hidden: false do |cb| %>
+              <%= filter_check_box(cb, user_ids.include?(cb.value)) %>
+            <% end %>
+          </div>
+
+          <h2 class="text-xl">
+            Date range
+          </h2>
+          <div>
+            <%= f.date_field :start_date, value: start_date %>
+            <%= f.date_field :end_date, value: end_date %>
+          </div>
+        </div>
+        <%= f.submit "Get report", class: "bg-seaGreen text-white w-fit px-3 py-2 rounded-md self-center" %>
+      </div>
+    <% end %>
+
+  <%= render partial: 'reports/show',
+             locals: {
+               title: "Report",
+               start_date: start_date,
+               end_date: end_date,
+               structured_report_data: structured_report_data,
+               detailed_report_path: nil,
+             }
+  %>
+<% end %>
