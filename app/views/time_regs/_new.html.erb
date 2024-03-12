@@ -4,17 +4,17 @@
     <h1 class="font-bold text-2xl mb-1">New time entry:</h1>
     <%= form_with(model: time_reggie) do |form| %>
     <%= hidden_field_tag :date, @chosen_date %>
-      <div class="mb-4">
+      <div class="mb-4" data-time-tasks-target="project">
         <%= form.label :project_id, class: 'block text-gray-700 text-sm font-bold mb-2' %>
-        <%= form.collection_select :project_id, @projects, :id, :name, { include_blank: "select a project:", selected: time_reggie.project&.id }, {class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'timeproject-select'}  %>
+        <%= form.collection_select :project_id, @projects, :id, :name, { include_blank: "select a project:", selected: time_reggie.project&.id }, {class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'}  %>
         <% time_reggie.errors.full_messages_for(:membership).any? do |message| %>
           <div class="text-red-600 text-xs italic mt-1">Please select a project</div>
         <% end %>
       </div>
 
-      <div class="mb-4">
+      <div class="mb-4" data-time-tasks-target="task">
         <%= form.label :assigned_task_id, class: 'block text-gray-700 text-sm font-bold mb-2' %>
-        <%= form.collection_select :assigned_task_id, (time_reggie.project&.tasks || [] ), :id, :name, { selected: time_reggie.assigned_task&.id }, {class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white', id: 'timetask-select'}  %>
+        <%= form.collection_select :assigned_task_id, (time_reggie.project&.tasks || [] ), :id, :name, { selected: time_reggie.assigned_task&.id }, {class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'}  %>
         <% time_reggie.errors.full_messages_for(:assigned_task_id).each do |message| %>
           <div class="text-red-600 italic text-xs mt-1">Please select a task</div>
         <% end %>

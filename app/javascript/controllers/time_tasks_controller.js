@@ -2,9 +2,11 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="time-tasks"
 export default class extends Controller {
+    static targets = ["project", "task"];
+      
   connect() {
-    const projectSelect = document.querySelector('#timeproject-select');
-    const taskSelect = document.querySelector('#timetask-select');
+    const projectSelect = this.projectTarget.querySelector('select');
+    const taskSelect = this.taskTarget.querySelector('select');
 
 
     // gets every task from a specific project from the project and updates the task selection field
