@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
 
   before_action :authenticate_user!
 
-  def new
+  def show
     set_form_data
     @structured_report_data = {}
   end
@@ -24,7 +24,7 @@ class ReportsController < ApplicationController
     )
 
     if turbo_frame_request?
-      render :new
+      render :show
     end
   end
 

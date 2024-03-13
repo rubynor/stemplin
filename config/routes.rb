@@ -23,8 +23,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get "report", to: "reports#new", as: :report
-  post "report/update", to: "reports#update", as: :update_report
+  resource :report, only: [:show, :update]
 
   resources :clients
 
