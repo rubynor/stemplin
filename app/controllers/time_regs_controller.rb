@@ -1,14 +1,14 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
 
-  require 'activerecord-import/base'
-  require 'csv'
+  require "activerecord-import/base"
+  require "csv"
   include TimeRegsHelper
 
   def index
     @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today
 
-    @time_regs = current_user.time_regs.where('date(date_worked) = ?', @chosen_date).includes(:project,
+    @time_regs = current_user.time_regs.where("date(date_worked) = ?", @chosen_date).includes(:project,
                                                                                               :assigned_task).order(created_at: :desc)
     @total_minutes_day = @time_regs.sum(:minutes)
     @minutes_by_day = minutes_by_day_of_week(@chosen_date, current_user)
@@ -19,7 +19,7 @@ class TimeRegsController < ApplicationController
     start_date = @chosen_date.beginning_of_week
     end_date = @chosen_date.end_of_week
 
-    @time_regs_week = current_user.time_regs.where('date(date_worked) BETWEEN ? AND ?', start_date, end_date)
+    @time_regs_week = current_user.time_regs.where("date(date_worked) BETWEEN ? AND ?", start_date, end_date)
     @total_minutes_week = @time_regs_week.sum(:minutes)
   end
 
@@ -43,12 +43,12 @@ class TimeRegsController < ApplicationController
     @time_reg.updated = Time.now
 
     if @time_reg.save
-      flash[:notice] = 'Time entry has been created'
+      flash[:notice] = "Time entry has been created"
       redirect_to time_regs_path
     else
       @show_new = true
       @chosen_date = params[:date] ? Date.parse(params[:date]) : Date.today
-      @time_regs = current_user.time_regs.where('date(date_worked) = ?', @chosen_date).includes(:project,
+      @time_regs = current_user.time_regs.where("date(date_worked) = ?", @chosen_date).includes(:project,
                                                                                                 :assigned_task).order(created_at: :desc)
 
       @projects = current_user.projects
@@ -60,7 +60,7 @@ class TimeRegsController < ApplicationController
       start_date = @chosen_date.beginning_of_week
       end_date = @chosen_date.end_of_week
 
-      @time_regs_week = current_user.time_regs.where('date(date_worked) BETWEEN ? AND ?', start_date, end_date)
+      @time_regs_week = current_user.time_regs.where("date(date_worked) BETWEEN ? AND ?", start_date, end_date)
       @total_minutes_week = @time_regs_week.sum(:minutes)
 
       render :index, status: :unprocessable_entity
@@ -72,7 +72,7 @@ class TimeRegsController < ApplicationController
     @projects = current_user.projects
     @assigned_tasks = Task.joins(:assigned_tasks)
                           .where(assigned_tasks: { project_id: @time_reg.project.id })
-                          .pluck(:name, 'assigned_tasks.id')
+                          .pluck(:name, "assigned_tasks.id")
   end
 
   def update
@@ -80,12 +80,12 @@ class TimeRegsController < ApplicationController
 
     if @time_reg.update(time_reg_params.except(:project_id))
       redirect_to time_regs_path
-      flash[:notice] = 'Time entry has been updated'
+      flash[:notice] = "Time entry has been updated"
     else
       @projects = current_user.projects
       @assigned_tasks = Task.joins(:assigned_tasks)
                             .where(assigned_tasks: { project_id: @time_reg.project.id })
-                            .pluck(:name, 'assigned_tasks.id')
+                            .pluck(:name, "assigned_tasks.id")
 
       render :edit, status: :unprocessable_entity
     end
@@ -96,14 +96,14 @@ class TimeRegsController < ApplicationController
 
     if @time_reg.destroy
       redirect_to time_regs_path
-      flash[:notice] = 'Time entry has been deleted'
+      flash[:notice] = "Time entry has been deleted"
     else
       @projects = current_user.projects
       @assigned_tasks = Task.joins(:assigned_tasks)
                             .where(assigned_tasks: { project_id: @time_reg.project.id })
-                            .pluck(:name, 'assigned_tasks.id')
+                            .pluck(:name, "assigned_tasks.id")
 
-      flash[:alert] = 'cannot delete time entry'
+      flash[:alert] = "cannot delete time entry"
       render :edit, status: :unprocessable_entity
     end
   end
@@ -153,17 +153,17 @@ class TimeRegsController < ApplicationController
     time_regs = project.time_regs.includes(
       :task,
       :user,
-      membership: [:user],
+      membership: [ :user ],
       assigned_task: %i[project task],
       project: :client
     )
     csv_data = CSV.generate(headers: true) do |csv|
       # Add CSV header row
-      csv << ['date', 'client', 'project', 'task', 'notes', 'minutes', 'first name', 'last name', 'email']
+      csv << [ "date", "client", "project", "task", "notes", "minutes", "first name", "last name", "email" ]
       # Add CSV data rows for each time_reg
       time_regs.each do |time_reg|
-        csv << [time_reg.date_worked, client.name, project.name, time_reg.assigned_task.task.name,
-                time_reg.notes, time_reg.minutes, time_reg.user.first_name, time_reg.user.last_name, time_reg.user.email]
+        csv << [ time_reg.date_worked, client.name, project.name, time_reg.assigned_task.task.name,
+                time_reg.notes, time_reg.minutes, time_reg.user.first_name, time_reg.user.last_name, time_reg.user.email ]
       end
     end
     send_data csv_data, filename: "#{Time.now.to_i}_time_regs_for_#{project.name}.csv"
@@ -172,8 +172,8 @@ class TimeRegsController < ApplicationController
   # changes the selection tasks to show tasks from a specific project
   def update_tasks_select
     @tasks = Task.joins(:assigned_tasks).where(assigned_tasks: { project_id: params[:project_id] }).pluck(:name,
-                                                                                                          'assigned_tasks.id')
-    render partial: '/time_regs/select', locals: { tasks: @tasks }
+                                                                                                          "assigned_tasks.id")
+    render partial: "/time_regs/select", locals: { tasks: @tasks }
   end
 
   private
