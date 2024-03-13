@@ -33,7 +33,7 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
 
     if @task.update(task_params)
-      flash[:notice] = 'Task has been updated'
+      flash[:notice] = "Task has been updated"
       redirect_to tasks_path
     else
       render :edit, status: :unprocessable_entity
@@ -45,14 +45,14 @@ class TasksController < ApplicationController
 
     if @task.assigned_tasks.empty?
       if @task.destroy
-        flash[:notice] = 'Task was successfully deleted.'
+        flash[:notice] = "Task was successfully deleted."
         redirect_to tasks_path
       else
-        flash[:alert] = 'Could not delete task.'
+        flash[:alert] = "Could not delete task."
         redirect_to edit_task_path(@task)
       end
     else
-      flash[:alert] = 'Task is being used in one or more projects.'
+      flash[:alert] = "Task is being used in one or more projects."
       redirect_to edit_task_path(@task)
     end
   end
@@ -60,17 +60,17 @@ class TasksController < ApplicationController
   private
 
   def render_turbo_frames
-    set_turbo_frame_data 
+    set_turbo_frame_data
 
     render partial: "assigned_tasks/new", locals: {
-      project: @project, 
-      assigned_task: @assigned_task, 
-      task: Task.new, 
+      project: @project,
+      assigned_task: @assigned_task,
+      task: Task.new,
       tasks: @tasks
     }
   end
 
-  def set_turbo_frame_data 
+  def set_turbo_frame_data
     @project = Project.find(params[:task][:project_id])
     @assigned_task = @project.assigned_tasks.new
     @tasks = Task.all.where.not(id: @project.assigned_tasks.select(:task_id)).select(:id, :name)

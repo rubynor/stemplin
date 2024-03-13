@@ -4,7 +4,7 @@ class TimeRegPresenterTest < ActiveSupport::TestCase
 
     @result = TimeRegsPresenter.new(@time_regs).report_data(
       title: "Project report",
-      keys: [:project, :task, :user]
+      keys: [ :project, :task, :user ]
     )
 
     @time_regs_project_names = @time_regs.map(&:project).uniq.map(&:name).sort

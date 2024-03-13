@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class ProjectReportTest < ActiveSupport::TestCase
   # test "the truth" do

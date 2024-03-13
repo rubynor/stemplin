@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class ConvertKroneOreTest < ActiveSupport::TestCase
   test "#in converts text to currency (øre)" do
