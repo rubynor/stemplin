@@ -64,6 +64,8 @@ group :development, :test do
   gem "pry-rails"
 
   gem "hotwire-livereload"
+
+  gem "rubocop-rails-omakase", require: false
 end
 
 group :development do
