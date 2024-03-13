@@ -8,7 +8,7 @@ class TimeRegTest < ActiveSupport::TestCase
     users = [users(:joe)].map(&:id)
     tasks = [tasks(:debug)].map(&:id)
 
-    regs = TimeReg.with_report_scope(clients, projects, users, tasks)
+    regs = TimeReg.for_report(clients, projects, users, tasks)
 
     assert_equal 1, regs.count
     assert_equal [time_regs(:time_reg_1)], regs.to_a
