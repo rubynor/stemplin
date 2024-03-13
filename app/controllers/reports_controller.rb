@@ -34,19 +34,7 @@ class ReportsController < ApplicationController
     @users = User.all
 
     if turbo_frame_request?
-      render partial: "form", locals: {
-        clients: @clients,
-        projects: @projects,
-        tasks: @tasks,
-        users: @users,
-        structured_report_data: @structured_report_data,
-        start_date: @start_date,
-        end_date: @end_date,
-        client_ids: @client_ids,
-        project_ids: @project_ids,
-        task_ids: @task_ids,
-        user_ids: @user_ids,
-      }
+      render :new
     end
   end
 
