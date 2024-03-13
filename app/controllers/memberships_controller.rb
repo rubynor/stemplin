@@ -34,9 +34,9 @@ class MembershipsController < ApplicationController
 
     # tries to remove a user from the project
     if @project.memberships.count <= 1
-      flash[:alert] = 'cannot remove last member of the project'
+      flash[:alert] = "cannot remove last member of the project"
     elsif @membership.time_regs.count >= 1
-      flash[:alert] = 'Member has time entries in this project'
+      flash[:alert] = "Member has time entries in this project"
     else
       flash[:notice] = "#{@membership.user.email} has been removed from the project"
       @membership.destroy
@@ -56,7 +56,7 @@ class MembershipsController < ApplicationController
 
     return if project.memberships.exists?(user_id: current_user)
 
-    flash[:alert] = 'Access denied'
+    flash[:alert] = "Access denied"
     redirect_to root_path
   end
 end

@@ -1,6 +1,6 @@
 class ProjectReportsController < ReportsController
-  GROUPES = { 'Task' => 'task', 'Date' => 'date', 'User' => 'user' } # columns to group report by
-  START_GROUP = 'date' # standard grouping when creating new project report
+  GROUPES = { "Task" => "task", "Date" => "date", "User" => "user" } # columns to group report by
+  START_GROUP = "date" # standard grouping when creating new project report
 
   # show report
   def show
@@ -13,7 +13,7 @@ class ProjectReportsController < ReportsController
 
     @structured_report_data = TimeRegsPresenter.new(@time_regs).report_data(
       title: @project.name,
-      keys: [:task, :user]
+      keys: [ :task, :user ]
     )
 
     # data for the edit form
@@ -23,7 +23,7 @@ class ProjectReportsController < ReportsController
     project = @projects.find(@report.project_id)
     @members = project.users
     @tasks = project.tasks
-    @show_custom_timeframe = @report.timeframe == 'custom'
+    @show_custom_timeframe = @report.timeframe == "custom"
   end
 
   def update
@@ -43,7 +43,7 @@ class ProjectReportsController < ReportsController
     @report.project_id = Project.exists?(project_report_params[:project_id]) ? project_report_params[:project_id] : nil
 
     # sets new dates
-    set_dates(@report) unless @report.timeframe == 'custom'
+    set_dates(@report) unless @report.timeframe == "custom"
 
     # tries to update the report with new values
     if @report.save
@@ -52,7 +52,7 @@ class ProjectReportsController < ReportsController
       # sets all data the page needs when re-rendering with errors in the form
       @show_edit_form = true
       @groupes = GROUPES
-      @show_custom_timeframe = @report.timeframe == 'custom'
+      @show_custom_timeframe = @report.timeframe == "custom"
       @timeframeOptions = get_timeframe_options
       @clients = Client.all
       @projects = @report.client_id.present? ? @clients.find(@report.client_id).projects : []
@@ -83,7 +83,7 @@ class ProjectReportsController < ReportsController
   def create
     # creates a new report and sets values from form
     @report = ProjectReport.new(project_report_params)
-    set_dates(@report) unless @report.timeframe == 'custom'
+    set_dates(@report) unless @report.timeframe == "custom"
     @report.group_by = START_GROUP # standard grouping from const
 
     # tries to save the new report
@@ -91,7 +91,7 @@ class ProjectReportsController < ReportsController
       redirect_to @report
     else
       # else: re-renders the new-form with errors
-      @show_custom_timeframe = @report.timeframe == 'custom'
+      @show_custom_timeframe = @report.timeframe == "custom"
       @timeframeOptions = get_timeframe_options
       @clients = Client.all
       @projects = @report.client_id.present? ? Project.where(client_id: @report.client_id) : []
@@ -118,11 +118,11 @@ class ProjectReportsController < ReportsController
       if @report.save
         redirect_to @report
       else
-        flash[:alert] = 'Could not change the grouping'
+        flash[:alert] = "Could not change the grouping"
         redirect_to @report
       end
     else
-      flash[:alert] = 'Invalid group'
+      flash[:alert] = "Invalid group"
       redirect_to @report
     end
   end
@@ -172,7 +172,7 @@ class ProjectReportsController < ReportsController
   private
 
   def select_options(collection, attribute)
-    collection.map { |item| [item.send(attribute), item.id] }
+    collection.map { |item| [ item.send(attribute), item.id ] }
   end
 
   def get_project_members

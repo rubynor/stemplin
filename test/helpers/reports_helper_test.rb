@@ -1,7 +1,6 @@
-require 'test_helper'
+require "test_helper"
 
 class ReportsHelperTest < ActionView::TestCase
-
   test "#format_date returns date (DD/MM/YYYY)" do
     date = Date.new(2024, 3, 7)
     result = format_date(date)
@@ -9,7 +8,7 @@ class ReportsHelperTest < ActionView::TestCase
   end
 
   test "#user_names returns a string of user names" do
-    user_collection = [users(:joe), users(:ron)]
+    user_collection = [ users(:joe), users(:ron) ]
     result = user_names(user_collection)
     assert_equal "Joe Doe, Ron Done", result
   end
@@ -25,5 +24,4 @@ class ReportsHelperTest < ActionView::TestCase
     result = time_frame(nil, nil)
     assert_equal "All time", result
   end
-
 end
