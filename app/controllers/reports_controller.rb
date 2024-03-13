@@ -15,10 +15,10 @@ class ReportsController < ApplicationController
   def update
     set_form_data
 
-    scope_client_ids = @client_ids.empty? ? Client.ids : @client_ids
-    scope_project_ids = @project_ids.empty? ? Project.ids : @project_ids
-    scope_user_ids = @user_ids.empty? ? User.ids : @user_ids
-    scope_task_ids = @task_ids.empty? ? Task.ids : @task_ids
+    scope_client_ids = @client_ids.presence || Client.ids
+    scope_project_ids = @project_ids.presence || Project.ids
+    scope_user_ids = @user_ids.presence || User.ids
+    scope_task_ids = @task_ids.presence || Task.ids
 
     time_regs = TimeReg.with_report_scope(scope_client_ids, scope_project_ids, scope_user_ids, scope_task_ids)
                        .where(date_worked: (@start_date..@end_date))
