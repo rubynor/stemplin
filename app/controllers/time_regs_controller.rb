@@ -44,7 +44,7 @@ class TimeRegsController < ApplicationController
 
     if @time_reg.save
       flash[:notice] = "Time entry has been created"
-      redirect_to time_regs_path
+      redirect_to root_path(date: @time_reg.date_worked)
     else
       @show_new = true
       @chosen_date = params[:date] ? Date.parse(params[:date]) : Date.today
@@ -79,7 +79,7 @@ class TimeRegsController < ApplicationController
     @time_reg = TimeReg.find(params[:id])
 
     if @time_reg.update(time_reg_params.except(:project_id))
-      redirect_to time_regs_path
+      redirect_to root_path(date: @time_reg.date_worked)
       flash[:notice] = "Time entry has been updated"
     else
       @projects = current_user.projects
@@ -95,7 +95,7 @@ class TimeRegsController < ApplicationController
     @time_reg = TimeReg.find(params[:id])
 
     if @time_reg.destroy
-      redirect_to time_regs_path
+      redirect_to root_path(date: @time_reg.date_worked)
       flash[:notice] = "Time entry has been deleted"
     else
       @projects = current_user.projects
