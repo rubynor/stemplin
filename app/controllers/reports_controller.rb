@@ -1,6 +1,32 @@
 class ReportsController < ApplicationController
   before_action :authenticate_user!
 
+  def show
+    set_form_data
+    @structured_report_data = {}
+  end
+
+  def update
+    set_form_data
+
+    client_ids_for_report = @form_data.selected_client_ids.presence || Client.ids
+    project_ids_for_report = @form_data.selected_project_ids.presence || Project.ids
+    user_ids_for_report = @form_data.selected_user_ids.presence || User.ids
+    task_ids_for_report = @form_data.selected_task_ids.presence || Task.ids
+
+    time_regs = TimeReg.for_report(client_ids_for_report, project_ids_for_report, user_ids_for_report, task_ids_for_report)
+                       .where(date_worked: (@selected_start_date..@selected_end_date))
+
+    @structured_report_data = TimeRegsPresenter.new(time_regs).report_data(
+      title: nil,
+      keys: [ :client, :project, :task, :user ]
+    )
+
+    if turbo_frame_request?
+      render :show
+    end
+  end
+
   # exports the the report as a .CSV
   def export
     time_regs = JSON.parse(params[:time_regs_hash])
@@ -18,6 +44,28 @@ class ReportsController < ApplicationController
   end
 
   private
+
+  def report_params
+    return params unless params[:report]
+    params.require(:report).permit(:start_date, :end_date, client_ids: [], project_ids: [], task_ids: [], user_ids: [])
+  end
+
+  def set_form_data
+    @form_data = OpenStruct.new(
+      selectable_clients: Client.all,
+      selectable_projects: Project.all,
+      selectable_tasks: Task.all,
+      selectable_users: User.all,
+
+      selected_client_ids: report_params[:client_ids].to_a.map(&:to_i),
+      selected_project_ids: report_params[:project_ids].to_a.map(&:to_i),
+      selected_user_ids: report_params[:user_ids].to_a.map(&:to_i),
+      selected_task_ids: report_params[:task_ids].to_a.map(&:to_i),
+
+      selected_start_date: (Date.parse(report_params[:start_date]) if report_params[:start_date].present?),
+      selected_end_date: (Date.parse(report_params[:end_date]) if report_params[:end_date].present?),
+    )
+  end
 
   # returns a hash of the correrct timeframe options
   def get_timeframe_options

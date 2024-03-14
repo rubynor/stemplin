@@ -27,4 +27,13 @@ module ReportsHelper
     return "All time" unless start_date && end_date
     "#{format_date(start_date)} - #{format_date(end_date)}"
   end
+
+  def filter_check_box(checkbox, checked)
+    checkbox.label(class: "bg-white px-3 py-1.5 rounded-sm") do
+      checkbox_tag = checkbox.check_box(checked: checked, class: "mr-2")
+      label_text = checkbox.text
+
+      "#{checkbox_tag} #{label_text}".html_safe
+    end
+  end
 end
