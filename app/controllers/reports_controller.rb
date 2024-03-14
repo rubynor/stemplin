@@ -10,12 +10,12 @@ class ReportsController < ApplicationController
   def update
     set_form_data
 
-    clients_to_find_ids = @form_data.selected_client_ids.presence || Client.ids
-    projects_to_find_ids = @form_data.selected_project_ids.presence || Project.ids
-    users_to_find_ids = @form_data.selected_user_ids.presence || User.ids
-    tasks_to_find_ids = @form_data.selected_task_ids.presence || Task.ids
+    client_ids_for_report = @form_data.selected_client_ids.presence || Client.ids
+    project_ids_for_report = @form_data.selected_project_ids.presence || Project.ids
+    user_ids_for_report = @form_data.selected_user_ids.presence || User.ids
+    task_ids_for_report = @form_data.selected_task_ids.presence || Task.ids
 
-    time_regs = TimeReg.for_report(clients_to_find_ids, projects_to_find_ids, users_to_find_ids, tasks_to_find_ids)
+    time_regs = TimeReg.for_report(client_ids_for_report, project_ids_for_report, user_ids_for_report, task_ids_for_report)
                        .where(date_worked: (@selected_start_date..@selected_end_date))
 
     @structured_report_data = TimeRegsPresenter.new(time_regs).report_data(
