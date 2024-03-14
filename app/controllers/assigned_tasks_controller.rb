@@ -13,10 +13,10 @@ class AssignedTasksController < ApplicationController
     @assigned_task = @project.assigned_tasks.build(assigned_task_params)
 
     if @assigned_task.save
-      flash[:notice] = 'Task successfully added to project'
+      flash[:notice] = "Task successfully added to project"
       redirect_to edit_project_path(@project)
     else
-      flash[:alert] = 'Task could not be added to the project'
+      flash[:alert] = "Task could not be added to the project"
       redirect_to edit_project_path(@project)
     end
   end
@@ -26,9 +26,9 @@ class AssignedTasksController < ApplicationController
     @assigned_task = @project.assigned_tasks.find(params[:id])
 
     if @assigned_task.time_regs.count >= 1
-      flash[:alert] = 'Cannot remove task with registered time'
+      flash[:alert] = "Cannot remove task with registered time"
     elsif @assigned_task.destroy
-      flash[:notice] = 'Task succesfully removed from project'
+      flash[:notice] = "Task succesfully removed from project"
     end
 
     redirect_to edit_project_path(@project)
@@ -45,7 +45,7 @@ class AssignedTasksController < ApplicationController
 
     return if project.memberships.exists?(user_id: current_user)
 
-    flash[:alert] = 'Access denied'
+    flash[:alert] = "Access denied"
     redirect_to root_path
   end
 end

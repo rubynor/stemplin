@@ -1,5 +1,5 @@
 class TimeReg < ApplicationRecord
-  validates :notes, format: { without: /\r|\n/, message: 'Line breaks are not allowed' }
+  validates :notes, format: { without: /\r|\n/, message: "Line breaks are not allowed" }
 
   belongs_to :membership
   belongs_to :assigned_task

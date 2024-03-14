@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
     if request.headers[:Turbo_Frame]
       nil
     else
-      'application'
+      "application"
     end
   end
 
