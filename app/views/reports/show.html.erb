@@ -1,15 +1,6 @@
 <div class="flex flex-col w-full items-center pt-4 mb-20 max-w-[1200px] mx-auto" >
   <%= render partial: "form", locals: {
-    clients: @selectable_clients,
-    projects: @selectable_projects,
-    tasks: @selectable_tasks,
-    users: @selectable_users,
-    start_date: @selected_start_date,
-    end_date: @selected_end_date,
-    client_ids: @selected_client_ids,
-    project_ids: @selected_project_ids,
-    task_ids: @selected_task_ids,
-    user_ids: @selected_user_ids,
-    structured_report_data: @structured_report_data
+    structured_report_data: @structured_report_data,
+    form_data: @form_data
   } %>
 </div>

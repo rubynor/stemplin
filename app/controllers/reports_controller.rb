@@ -10,10 +10,10 @@ class ReportsController < ApplicationController
   def update
     set_form_data
 
-    clients_to_find_ids = @selected_client_ids.presence || Client.ids
-    projects_to_find_ids = @selected_project_ids.presence || Project.ids
-    users_to_find_ids = @selected_user_ids.presence || User.ids
-    tasks_to_find_ids = @selected_task_ids.presence || Task.ids
+    clients_to_find_ids = @form_data.selected_client_ids.presence || Client.ids
+    projects_to_find_ids = @form_data.selected_project_ids.presence || Project.ids
+    users_to_find_ids = @form_data.selected_user_ids.presence || User.ids
+    tasks_to_find_ids = @form_data.selected_task_ids.presence || Task.ids
 
     time_regs = TimeReg.for_report(clients_to_find_ids, projects_to_find_ids, users_to_find_ids, tasks_to_find_ids)
                        .where(date_worked: (@selected_start_date..@selected_end_date))
@@ -52,18 +52,20 @@ class ReportsController < ApplicationController
   end
 
   def set_form_data
-    @selectable_clients = Client.all
-    @selectable_projects = Project.all
-    @selectable_tasks = Task.all
-    @selectable_users = User.all
+    @form_data = OpenStruct.new(
+      selectable_clients: Client.all,
+      selectable_projects: Project.all,
+      selectable_tasks: Task.all,
+      selectable_users: User.all,
 
-    @selected_start_date = Date.parse(report_params[:start_date]) if report_params[:start_date].present?
-    @selected_end_date = Date.parse(report_params[:end_date]) if report_params[:end_date].present?
+      selected_client_ids: report_params[:client_ids].to_a.map(&:to_i),
+      selected_project_ids: report_params[:project_ids].to_a.map(&:to_i),
+      selected_user_ids: report_params[:user_ids].to_a.map(&:to_i),
+      selected_task_ids: report_params[:task_ids].to_a.map(&:to_i),
 
-    @selected_client_ids = report_params[:client_ids].to_a.map(&:to_i)
-    @selected_project_ids = report_params[:project_ids].to_a.map(&:to_i)
-    @selected_user_ids = report_params[:user_ids].to_a.map(&:to_i)
-    @selected_task_ids = report_params[:task_ids].to_a.map(&:to_i)
+      selected_start_date: (Date.parse(report_params[:start_date]) if report_params[:start_date].present?),
+      selected_end_date: (Date.parse(report_params[:end_date]) if report_params[:end_date].present?),
+    )
   end
 
   # returns a hash of the correrct timeframe options
