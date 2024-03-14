@@ -19,7 +19,7 @@ class ReportsController < ApplicationController
 
     @structured_report_data = TimeRegsPresenter.new(time_regs).report_data(
       title: nil,
-      keys: [:client, :project, :task, :user]
+      keys: [ :client, :project, :task, :user ]
     )
 
     if turbo_frame_request?

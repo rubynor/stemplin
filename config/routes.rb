@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :report, only: [:show, :update]
+  resource :report, only: [ :show, :update ]
 
   resources :clients
 

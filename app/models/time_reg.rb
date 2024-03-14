@@ -16,7 +16,7 @@ class TimeReg < ApplicationRecord
   validates :assigned_task_id, presence: true
   validates :date_worked, presence: true
 
-  scope :for_report, -> (client_ids, project_ids, user_ids, task_ids) {
+  scope :for_report, ->(client_ids, project_ids, user_ids, task_ids) {
     joins(:user, :project, :task, :client)
       .where(
         client: { id: client_ids },
