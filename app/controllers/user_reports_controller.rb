@@ -1,6 +1,6 @@
 class UserReportsController < ReportsController
-  GROUPES = { 'Client' => 'client', 'Project' => 'project', 'Task' => 'task', 'Date' => 'date' } # columns to group report by
-  START_GROUP = 'date' # start date when creating a user report
+  GROUPES = { "Client" => "client", "Project" => "project", "Task" => "task", "Date" => "date" } # columns to group report by
+  START_GROUP = "date" # start date when creating a user report
 
   def show
     @report = UserReport.find(params[:id])
@@ -10,7 +10,7 @@ class UserReportsController < ReportsController
 
     @structured_report_data = TimeRegsPresenter.new(@time_regs).report_data(
       title: @user.name,
-      keys: [:client, :project, :task]
+      keys: [ :client, :project, :task ]
     )
 
     # data for the edit form
@@ -20,7 +20,7 @@ class UserReportsController < ReportsController
     @users = User.all
     @grouped_projects = @users.find(@report.user_id).projects.group_by(&:client)
     @tasks = Task.joins(:assigned_tasks).where(assigned_tasks: { project_id: @report.project_ids }).distinct
-    @show_custom_timeframe = @report.timeframe == 'custom'
+    @show_custom_timeframe = @report.timeframe == "custom"
   end
 
   def new
@@ -37,14 +37,14 @@ class UserReportsController < ReportsController
     @report = UserReport.new(user_report_params)
 
     @report.group_by = START_GROUP # sets standard group from a const
-    set_dates(@report) unless @report.timeframe == 'custom' #  sets the correct dates
+    set_dates(@report) unless @report.timeframe == "custom" #  sets the correct dates
 
     # tries to save the report
     if @report.save
       redirect_to @report
     else
       # data for the new form incase of re-rendering
-      @show_custom_timeframe = @report.timeframe == 'custom'
+      @show_custom_timeframe = @report.timeframe == "custom"
       @timeframeOptions = get_timeframe_options
       @users = User.all
       @grouped_projects = @report.user_id.present? ? User.find(@report.user_id).projects.group_by(&:client) : []
@@ -60,7 +60,7 @@ class UserReportsController < ReportsController
     @users = User.all
     @grouped_projects = @users.find(@report.user_id).projects.group_by(&:client)
     @tasks = Task.joins(:assigned_tasks).where(assigned_tasks: { project_id: @report.project_ids }).distinct
-    @show_custom_timeframe = @report.timeframe == 'custom'
+    @show_custom_timeframe = @report.timeframe == "custom"
   end
 
   def update
@@ -76,7 +76,7 @@ class UserReportsController < ReportsController
 
     @report.assign_attributes(user_report_params)
 
-    set_dates(@report) unless @report.timeframe == 'custom' # sets the correct dates
+    set_dates(@report) unless @report.timeframe == "custom" # sets the correct dates
 
     # tries to save the changes
     if @report.save
@@ -85,7 +85,7 @@ class UserReportsController < ReportsController
       # data for the show page incase of re-rendering
       @show_edit_form = true
       @groupes = GROUPES
-      @show_custom_timeframe = @report.timeframe == 'custom'
+      @show_custom_timeframe = @report.timeframe == "custom"
       @timeframeOptions = get_timeframe_options
       @users = User.all
       @grouped_projects = @report.user_id.present? ? User.find(@report.user_id).projects.group_by(&:client) : []
@@ -105,11 +105,11 @@ class UserReportsController < ReportsController
       if @report.save
         redirect_to @report
       else
-        flash[:alert] = 'Could not change the grouping'
+        flash[:alert] = "Could not change the grouping"
         redirect_to @report
       end
     else
-      flash[:alert] = 'Invalid group'
+      flash[:alert] = "Invalid group"
       redirect_to @report
     end
   end
@@ -122,14 +122,14 @@ class UserReportsController < ReportsController
   # returns a partial
   def update_projects_checkboxes
     grouped_projects = User.find(params[:user_id]).projects.group_by(&:client)
-    render partial: 'projects', locals: { report: UserReport.new, grouped_projects: }
+    render partial: "projects", locals: { report: UserReport.new, grouped_projects: }
   end
 
   # updates the report form with tasks from specific projects
   # returns a partial
   def update_tasks_checkboxes
     @tasks = Task.joins(:assigned_tasks).where(assigned_tasks: { project_id: params[:project_ids] }).distinct
-    render partial: 'tasks', locals: { report: UserReport.new, tasks: @tasks }
+    render partial: "tasks", locals: { report: UserReport.new, tasks: @tasks }
   end
 
   # permits only valid attributes

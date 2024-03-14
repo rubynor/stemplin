@@ -32,5 +32,11 @@ bin/dev
 Open your browser and visit <http://localhost:3000>, your project should be running!
 
 
+## Lint
 
+Run linter with:
+
+```shell
+bin/rubocop
+```
 

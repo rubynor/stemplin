@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])
     @tasks = Task.all
-    @assigned_tasks = AssignedTask.select('tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id')
+    @assigned_tasks = AssignedTask.select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                   .joins(:task)
                                   .where(project_id: @project.id)
   end
@@ -40,7 +40,7 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
     @clients = Client.all
 
-    @assigned_tasks = AssignedTask.select('tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id')
+    @assigned_tasks = AssignedTask.select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                   .joins(:task)
                                   .where(project_id: @project.id)
 
@@ -53,18 +53,18 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
 
     if @project.update(project_params)
-      flash[:notice] = 'project has been updated'
+      flash[:notice] = "project has been updated"
       redirect_to @project
     else
       @tasks = Task.all
       @clients = Client.all
       @project = Project.find(delete_params[:id])
       @assigned_task = @project.assigned_tasks.new
-      @assigned_tasks = AssignedTask.select('tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id')
+      @assigned_tasks = AssignedTask.select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                     .joins(:task)
                                     .where(project_id: @project.id)
 
-      flash[:alert] = 'cannot update project'
+      flash[:alert] = "cannot update project"
       render :edit, status: :unprocessable_entity
     end
   end
@@ -76,23 +76,23 @@ class ProjectsController < ApplicationController
     @assigned_task = @project.assigned_tasks.new
 
     # checks the confirmation field before trying to delete
-    if delete_params[:confirmation] == 'DELETE'
+    if delete_params[:confirmation] == "DELETE"
       if @project.destroy
-        flash[:notice] = 'Project deleted'
+        flash[:notice] = "Project deleted"
         redirect_to clients_path
       else
-        @assigned_tasks = AssignedTask.select('tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id')
+        @assigned_tasks = AssignedTask.select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                       .joins(:task)
                                       .where(project_id: @project.id)
 
-        flash[:alert] = 'Could not delete project'
+        flash[:alert] = "Could not delete project"
         render :edit, status: :unprocessable_entity
       end
     else
-      @assigned_tasks = AssignedTask.select('tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id')
+      @assigned_tasks = AssignedTask.select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                     .joins(:task)
                                     .where(project_id: @project.id)
-      flash[:alert] = 'Invalid confirmation'
+      flash[:alert] = "Invalid confirmation"
       render :edit, status: :unprocessable_entity
     end
   end
@@ -111,42 +111,42 @@ class ProjectsController < ApplicationController
     file = params[:file].read
     begin
       CSV.parse(file, headers: true) do |row|
-        time_reg_params = row.to_hash.slice('date', 'client', 'project', 'task', 'notes', 'minutes', 'first name', 'last name', 'email')
-  
+        time_reg_params = row.to_hash.slice("date", "client", "project", "task", "notes", "minutes", "first name", "last name", "email")
+
         # "Renames" date column to date_worked, which is the name used in the database.
-        time_reg_params['date_worked'] = row['date']
-        time_reg_params.delete('date')
+        time_reg_params["date_worked"] = row["date"]
+        time_reg_params.delete("date")
 
         # Deletes redundant 'client' column and checks if the client exists
-        client = row['client']
+        client = row["client"]
         check_client client
-        time_reg_params.delete('client')
+        time_reg_params.delete("client")
 
         # Deletes redundant 'project' column and checks if the project exists
-        project = row['project']
+        project = row["project"]
         check_project project
-        time_reg_params.delete('project')
+        time_reg_params.delete("project")
 
         # Deletes redundant 'task' column and checks if the task exists
-        task = row['task']
-        check_task task 
-        time_reg_params.delete('task')
+        task = row["task"]
+        check_task task
+        time_reg_params.delete("task")
 
         # Deletes redundant 'assigned_task' column and checks if the task exists
         check_assigned_task task_id: @task.id
-        time_reg_params['assigned_task_id'] = @assigned_task.id
-        
+        time_reg_params["assigned_task_id"] = @assigned_task.id
+
         # Deletes redunant name columns
-        time_reg_params.delete('first name')
-        time_reg_params.delete('last name')
+        time_reg_params.delete("first name")
+        time_reg_params.delete("last name")
 
         # Checks if the e-mail and user is valid, and deletes redundant e-mail column
-        email = row['email']
+        email = row["email"]
         @user = User.find_by(email: email)
         @membership = Membership.find_or_create_by(user_id: @user.id, project_id: @project.id)
-        time_reg_params.delete('email')
-        time_reg_params['membership_id'] = @membership.id
-      
+        time_reg_params.delete("email")
+        time_reg_params["membership_id"] = @membership.id
+
         # Checks if the time entries are valid and adds them to the array if they are
         # Also adds 1 to the valid_entries variable
         imported_time_reg = @project.time_regs.new(time_reg_params)
@@ -161,7 +161,7 @@ class ProjectsController < ApplicationController
         end
       end
 
-        # If any valid time entries have been added, import them
+      # If any valid time entries have been added, import them
       if imported_time_regs.present?
         TimeReg.import(imported_time_regs)
         flash[:notice] = "#{valid_entries} time entries imported successfully."
@@ -196,14 +196,14 @@ class ProjectsController < ApplicationController
 
     return if project.memberships.exists?(user_id: current_user)
 
-    flash[:alert] = 'Access denied'
+    flash[:alert] = "Access denied"
     redirect_to root_path
   end
 
   # Checks to see if the client already exists, and creates it if it doesn't
   def check_client(client)
     if !Client.exists?(name: client)
-      client_params = { 'name' => client, 'description' => 'Description.' }
+      client_params = { "name" => client, "description" => "Description." }
       @client = Client.new(client_params)
       @client.save
     else
@@ -214,7 +214,7 @@ class ProjectsController < ApplicationController
   # Checks to see if the project already exists, and creates it if it doesn't
   def check_project(project)
     if !@client.projects.exists?(name: project)
-      project_params = { 'client_id' => @client.id, 'name' => project, 'description' => 'Description.' }
+      project_params = { "client_id" => @client.id, "name" => project, "description" => "Description." }
       @project = @client.projects.new(project_params)
       @project.save
     else
@@ -235,7 +235,7 @@ class ProjectsController < ApplicationController
   # Checks to see if the assigned task already exists, and creates it if it doesn't
   def check_assigned_task(task_id)
     if !@project.assigned_tasks.exists?(task_id)
-      @assigned_task = @project.assigned_tasks.build('task_id' => @task.id)
+      @assigned_task = @project.assigned_tasks.build("task_id" => @task.id)
       @assigned_task.save
     else
       @assigned_task = @project.assigned_tasks.find_by(task_id: @task.id)

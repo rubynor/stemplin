@@ -1,6 +1,6 @@
 <% if children.present? %>
   <% children.each do |group| %>
-    <tr class="flex justify-between border-b border-slate-300 px-6 py-1.5 pl-<%= (level * 4) + 3 %> bg-slate-<%= level * 100 %>">
+    <tr class="flex justify-between border-b border-slate-400 py-1.5 pr-6 pl-[<%= (level * 10) + 25 %>px] bg-slate-<%= level * 100 %>">
       <td>
         <span>
           <%= group[:title] %>
