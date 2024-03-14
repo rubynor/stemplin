@@ -47,21 +47,20 @@
         <div class="flex lg:text-3xl text-xl w-3/4  max-[800px]:hidden w-full">
           <% if @chosen_date == Date.today %>
             <p class="font-medium mr-4">
-            Today: 
+            Today:
             </p>
-          <% end %>
-          <p class="  ">
-          <%= @chosen_date.strftime("%A, %d %B") %>
-          </p>
-        </div>
-                  <button data-controller="date-redirect" data-action="click->date-redirect#redirectToToday">
-            <div class="self-center ml-2 bg-seaGreen hover:bg-seaGreenDark rounded-xl self-center m-auto p-2 text-white flex">
-              <%= submit_tag "Go to today", class: "" %>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" ml-2 mr-2 w-4 h-4 self-center">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-              </svg>
+            <p class="  ">
+              <%= @chosen_date.strftime("%A, %d %B") %>
+            </p>
+          <% else %>
+            <%= @chosen_date.strftime("%A, %d %B") %>
+          <button data-controller="date-redirect" data-action="click->date-redirect#redirectToToday">
+            <div class="ml-2 text-blue-600 ">
+              <%= submit_tag "Go to today", class: "text-lg underline underline-offset-2 cursor-pointer" %>
             </div>
           </button>
+          <% end %>
+        </div>
       </div>
 
       <div class="col-span-3">
