@@ -40,7 +40,7 @@
         %>
       </div>
 
-      <div class="mb-4" data-controller="input">
+      <%= content_tag :div, data: { controller: "input", "input-active_text_value": "Create Time reg", "input-inactive_text_value": "Start timer" } do %>
         <%= form.label :minutes, "Time", class: 'block text-gray-700 text-sm font-bold mb-2' %>
         <% time_reg.errors.full_messages_for(:minutes).each do |message| %>
           <div class="text-red-600 italic text-xs mt-1" data-refresh-minutes-target="output"><%= message %></div>
@@ -51,18 +51,18 @@
           class: 'text-end w-full rounded-md p-2 border border-gray-300 focus:ring-1 
           ocus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' 
         %>
-      </div>
+        <%= form.hidden_field :date_worked %>
 
-      <%= form.hidden_field :date_worked %>
-
-      <div class="flex justify-center mt-8 px-4">
+        <div class="flex justify-center mt-8 px-4">
         <span class="rounded bg-seaGreen p-2 m-2 shadow text-white hover:bg-seaGreenDark">
-          <%= form.submit class: '' %>
+          <%= form.submit class: '', data: { input_target: "submitButton" } %>
         </span>
-        <div data-action="click->modal#toggle" class="cursor-pointer rounded bg-tastyWhiteLite p-2 m-2 hover:bg-red-100 shadow">
-          Cancel
+          <div data-action="click->modal#toggle" class="cursor-pointer rounded bg-tastyWhiteLite p-2 m-2 hover:bg-red-100 shadow">
+            Cancel
+          </div>
         </div>
-      </div>
+      <% end %>
+
     <% end %>
   </div>
 </div>

@@ -1,5 +1,6 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_time_reg, only: [:toggle_active]
 
   require "activerecord-import/base"
   require "csv"
@@ -39,7 +40,7 @@ class TimeRegsController < ApplicationController
       @time_reg = TimeReg.new(time_reg_params.except(:project_id))
     end
 
-    @time_reg.active = @time_reg.minutes == 0 # start as active?
+    @time_reg.active = @time_reg.minutes.nil? # start as active?
     @time_reg.updated = Time.now
 
     if @time_reg.save
@@ -109,41 +110,13 @@ class TimeRegsController < ApplicationController
   end
 
   def toggle_active
-    @time_reg = TimeReg.find(params[:time_reg_id])
     @project = @time_reg.project
 
-    if @time_reg.minutes < 1440
-      # if time_reg is active, it toggles off and updates the minutes += the minutes passed since the timer started
-      if @time_reg.active
-        new_timestamp = Time.now
-
-        old_time = @time_reg.updated.to_i
-        new_time = new_timestamp.to_i
-
-        worked_minutes = (new_time - old_time) / 60
-
-        if (@time_reg.minutes + worked_minutes) < 1440
-          @time_reg.minutes += worked_minutes
-        else
-          @time_reg.minutes = 1440
-        end
-
-        @time_reg.active = false
-      # if not active, it starts the timer
-      else
-        @time_reg.updated = Time.now
-        @time_reg.active = true
-      end
-
-      # tries to save the changes
-      if @time_reg.save
-        redirect_to time_regs_path
-      else
-        redirect_to time_regs_path
-      end
-    else
-      redirect_to time_regs_path
+    if @time_reg.minutes >= TimeReg::MINUTES_IN_A_DAY
+      return redirect_to time_regs_path, alert: "Time entry cannot exceed 24 hours"
     end
+
+    update_time_reg(current_status: @time_reg.active)
   end
 
   # exports the time_regs in a project to a .CSV
@@ -180,5 +153,22 @@ class TimeRegsController < ApplicationController
 
   def time_reg_params
     params.require(:time_reg).permit(:notes, :minutes, :assigned_task_id, :date_worked, :project_id)
+  end
+
+  def update_time_reg(current_status:)
+    if current_status
+      worked_minutes = (Time.now.to_i - @time_reg.updated.to_i) / 60
+      @time_reg.minutes = [@time_reg.minutes + worked_minutes, TimeReg::MINUTES_IN_A_DAY].min
+    else
+      @time_reg.updated = Time.now
+    end
+
+    @time_reg.active = !current_status
+
+    redirect_to time_regs_path, notice: "Timer has been toggled #{current_status ? "off": "on"}" if @time_reg.save
+  end
+
+  def set_time_reg
+    @time_reg = TimeReg.find(params[:time_reg_id])
   end
 end
