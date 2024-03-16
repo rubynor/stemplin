@@ -1,3 +1,5 @@
+@import "./unicons.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,3 +10,4 @@
         -webkit-print-color-adjust: exact;
     }
 }
+
