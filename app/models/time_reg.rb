@@ -30,6 +30,14 @@ class TimeReg < ApplicationRecord
       )
   }
 
+  scope :on_date, ->(given_date) {
+    where("date(date_worked) = ?", given_date).includes(:project, :assigned_task).order(created_at: :desc)
+  }
+
+  scope :between_dates, ->(start_date, end_date) {
+    where("date(date_worked) BETWEEN ? AND ?", start_date, end_date)
+  }
+
   def set_default_minutes
     self.minutes ||= 0
   end
