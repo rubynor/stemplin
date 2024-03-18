@@ -1,4 +1,6 @@
 class TimeReg < ApplicationRecord
+  MINUTES_IN_A_DAY = 1.day.in_minutes.to_i
+
   validates :notes, format: { without: /\r|\n/, message: "Line breaks are not allowed" }
 
   belongs_to :membership
@@ -24,5 +26,13 @@ class TimeReg < ApplicationRecord
         user: { id: user_ids },
         task: { id: task_ids },
       )
+  }
+
+  scope :on_date, ->(given_date) {
+    where("date(date_worked) = ?", given_date).includes(:project, :assigned_task).order(created_at: :desc)
+  }
+
+  scope :between_dates, ->(start_date, end_date) {
+    where("date(date_worked) BETWEEN ? AND ?", start_date, end_date)
   }
 end
