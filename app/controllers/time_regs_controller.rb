@@ -36,7 +36,7 @@ class TimeRegsController < ApplicationController
       @time_reg = TimeReg.new(time_reg_params.except(:project_id))
     end
 
-    @time_reg.active = @time_reg.minutes.nil? # start as active?
+    @time_reg.active = @time_reg.minutes.zero? # start as active?
     @time_reg.updated = Time.now
 
     if @time_reg.save

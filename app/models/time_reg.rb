@@ -1,8 +1,6 @@
 class TimeReg < ApplicationRecord
   MINUTES_IN_A_DAY = 1.day.in_minutes.to_i
 
-  before_validation :set_default_minutes
-
   validates :notes, format: { without: /\r|\n/, message: "Line breaks are not allowed" }
 
   belongs_to :membership
@@ -37,8 +35,4 @@ class TimeReg < ApplicationRecord
   scope :between_dates, ->(start_date, end_date) {
     where("date(date_worked) BETWEEN ? AND ?", start_date, end_date)
   }
-
-  def set_default_minutes
-    self.minutes ||= 0
-  end
 end

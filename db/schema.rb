@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_04_143621) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_18_161808) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -74,7 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_04_143621) do
 
   create_table "time_regs", force: :cascade do |t|
     t.text "notes"
-    t.integer "minutes"
+    t.integer "minutes", default: 0, null: false
     t.bigint "membership_id", null: false
     t.bigint "assigned_task_id", null: false
     t.datetime "created_at", null: false
