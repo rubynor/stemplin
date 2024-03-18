@@ -54,11 +54,9 @@
             </p>
           <% else %>
             <%= @chosen_date.strftime("%A, %d %B") %>
-          <button data-controller="date-redirect" data-action="click->date-redirect#redirectToToday">
             <div class="ml-2 text-blue-600">
               <%= link_to "Go to today", root_path, class: "text-lg underline underline-offset-2" %>
             </div>
-          </button>
           <% end %>
         </div>
       </div>
