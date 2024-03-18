@@ -1,0 +1,23 @@
+@font-face {
+  font-family: 'unicons';
+  src: url(./unicons/unicons.eot?45242598);
+  src: url(./unicons/unicons.eot?45242598#iefix)
+      format('embedded-opentype'),
+    url(./unicons/unicons.woff?45242598) format('woff'),
+    url(./unicons/unicons.ttf?45242598) format('truetype'),
+    url(./unicons/unicons.svg?45242598#unicons) format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.uc-icon {
+  font-family: 'unicons';
+  font-style: normal;
+  font-weight: normal;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  speak: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
