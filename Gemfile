@@ -90,3 +90,4 @@ end
 gem "sentry-ruby"
 gem "sentry-rails"
 
+gem "dotenv-rails", "~> 2.1", ">= 2.1.1"
