@@ -1,0 +1,30 @@
+<%= content_tag(:div, **wrapper_options) do %>
+  <%= show_button %>
+  <%= content_tag(:div, **backdrop_options) do %>
+    <%= content_tag(:div, class: class_names("dialog-content-base pb-8", modal_size), data: {"#{stimulus_controller}_target" => :content}) do %>
+      <%= content_tag(:div, class: "flex justify-end w-full pr-2 pt-2") do %>
+        <% if allow_close? %>
+          <%= button_tag("button", type: :button, class: "p-4 flex justify-center items-center", data: {action: "#{stimulus_controller}#hide"}) do %>
+            <%= image_tag("times.svg", class: "h-4 w-4") %>
+          <% end %>
+        <% end %>
+        <%= content_tag(:div, class: "px-8 py-4") do %>
+          <%= header %>
+          <% if content.present? %>
+            <%= content %>
+          <% else %>
+            <%= body %>
+          <% end %>
+          <% if actions.present? %>
+            <%= content_tag(:div, class: class_names("dialog-action-holder pt-8")) do %>
+              <% actions.each do |action| %>
+                <%= action %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <%= footer if footer.present? %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

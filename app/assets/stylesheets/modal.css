@@ -28,3 +28,14 @@
   }
 }
 
+@layer components {
+  .dialog-backdrop {
+    @apply z-100 overflow-y-auto overflow-x-hidden fixed bg-black inset-0 bg-opacity-70 flex flex-col justify-items-center items-center;
+  }
+  .dialog-content-base {
+    @apply relative pb-8 w-full max-w-md h-auto mx-auto my-auto rounded-2xl bg-white
+  }
+  .dialog-action-holder {
+    @apply flex items-center justify-center flex-wrap gap-4
+  }
+}
