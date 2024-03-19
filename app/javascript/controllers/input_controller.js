@@ -2,13 +2,21 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="input"
 export default class extends Controller {
-  static targets = ["clone"];
+  static targets = ["clone", "submitButton"];
+
+  static values = {
+    activeText: { type: String, default: '' },
+    inactiveText: { type: String, default: '' },
+  };
+
   connect() {
+    this.handleSubmitButtonValue(this.cloneTarget.value);
   }
 
   cloneValue(e) {
     const eventTargetValue = e.target.value;
     this.cloneTarget.value = this.stringToTime(eventTargetValue);
+    this.handleSubmitButtonValue(eventTargetValue);
   }
 
   stringToTime(inputString) {
@@ -18,5 +26,11 @@ export default class extends Controller {
     const [hours, minutes] = inputString.split(":").map(str => parseInt(str) || 0);
 
     return (hours * 60) + (minutes || 0);
+  }
+
+  handleSubmitButtonValue(inputValue) {
+    if(this.hasSubmitButtonTarget) {
+      this.submitButtonTarget.value = (!!inputValue && inputValue !== "0") ? this.activeTextValue : this.inactiveTextValue;
+    }
   }
 }

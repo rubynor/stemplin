@@ -30,3 +30,9 @@ time_reg_4:
   date_worked: <%= Date.today - 3 %>
   membership: e_corp_ron
   <<: *DEFAULTS
+
+time_reg_5:
+  assigned_task: task_1
+  date_worked: <%= Date.today - 1 %>
+  membership: e_corp_joe
+  <<: *DEFAULTS

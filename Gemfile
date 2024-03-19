@@ -84,7 +84,10 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
+  gem "rails-controller-testing"
 end
 
 gem "sentry-ruby"
 gem "sentry-rails"
+
+gem "dotenv-rails", "~> 2.1", ">= 2.1.1"
