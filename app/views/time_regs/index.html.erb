@@ -47,12 +47,17 @@
         <div class="flex lg:text-3xl text-xl w-3/4  max-[800px]:hidden w-full">
           <% if @chosen_date == Date.today %>
             <p class="font-medium mr-4">
-            Today: 
+            Today:
             </p>
+            <p>
+              <%= @chosen_date.strftime("%A, %d %B") %>
+            </p>
+          <% else %>
+            <%= @chosen_date.strftime("%A, %d %B") %>
+            <div class="ml-2 text-blue-600">
+              <%= link_to "Go to today", root_path, class: "text-lg underline underline-offset-2" %>
+            </div>
           <% end %>
-          <p class="  ">
-          <%= @chosen_date.strftime("%A, %d %B") %>
-          </p>
         </div>
       </div>
 
