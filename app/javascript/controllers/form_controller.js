@@ -1,3 +1,4 @@
+import Rails from "@rails/ujs";
 import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="form"
@@ -27,5 +28,9 @@ export default class extends Controller {
 
       frame.innerHTML = "";
     });
+  }
+
+  submit() {
+    Rails.fire(this.element, 'submit');
   }
 }

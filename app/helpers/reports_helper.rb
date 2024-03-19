@@ -28,9 +28,9 @@ module ReportsHelper
     "#{format_date(start_date)} - #{format_date(end_date)}"
   end
 
-  def filter_check_box(checkbox, checked)
+  def filter_check_box(checkbox, checked, options = {})
     checkbox.label(class: "bg-white px-3 py-1.5 rounded-sm") do
-      checkbox_tag = checkbox.check_box(checked: checked, class: "mr-2")
+      checkbox_tag = checkbox.check_box(checked: checked, class: "mr-2", **options)
       label_text = checkbox.text
 
       "#{checkbox_tag} #{label_text}".html_safe
