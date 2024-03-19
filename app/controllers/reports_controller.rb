@@ -69,19 +69,23 @@ class ReportsController < ApplicationController
       selected_end_date: (Date.parse(report_params[:end_date]) if report_params[:end_date].present?),
     )
 
-    @form_data.selectable_clients = Client.all.order(:name)
+    if @form_data.selected_client_ids.any?
+      @form_data.selectable_projects = Project.joins(:client)
+                                              .where(client: { id: @form_data.selected_client_ids })
+                                              .distinct.order(:name)
+    end
 
-    @form_data.selectable_projects = Project.joins(:client)
-                                            .where(client: { id: @form_data.selected_client_ids })
-                                            .distinct.order(:name) if @form_data.selected_client_ids.any?
+    if @form_data.selected_project_ids.any?
+      @form_data.selectable_tasks = Task.joins(:projects)
+                                        .where(projects: { id: @form_data.selected_project_ids })
+                                        .distinct.order(:name)
+    end
 
-    @form_data.selectable_tasks = Task.joins(:projects)
-                                      .where(projects: { id: @form_data.selected_project_ids })
-                                      .distinct.order(:name) if @form_data.selected_project_ids.any?
-
-    @form_data.selectable_users = User.joins(:projects)
-                                      .where(projects: { id: @form_data.selected_project_ids })
-                                      .distinct.order(:last_name) if @form_data.selected_project_ids.any?
+    if @form_data.selected_project_ids.any?
+      @form_data.selectable_users = User.joins(:projects)
+                                        .where(projects: { id: @form_data.selected_project_ids })
+                                        .distinct.order(:last_name)
+    end
   end
 
   # returns a hash of the correrct timeframe options
