@@ -16,9 +16,6 @@ application.register("collapse-delete", CollapseDeleteController)
 import CollapseHoursController from "./collapse_hours_controller"
 application.register("collapse-hours", CollapseHoursController)
 
-import DateRedirectController from "./date_redirect_controller"
-application.register("date-redirect", DateRedirectController)
-
 import FormController from "./form_controller"
 application.register("form", FormController)
 
