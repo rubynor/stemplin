@@ -3,7 +3,7 @@
   - d.with_show_button(label: "Show Dialog")
   - d.with_body do
     %p Some content
-  - d.footer do
+  - d.with_footer do
     = button_tag "cancel"
     = button_tag "submit"
 
@@ -13,7 +13,7 @@
     - d.with_body do
       = form.label :name
       = form.text_field :name
-    - d.footer do
+    - d.with_footer do
       = button_tag "cancel"
       = form.submit
 

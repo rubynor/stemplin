@@ -37,7 +37,7 @@ module Dialog
       wrapper_options = { class: "dialog-wrapper" }
       data = {}
 
-      data[:controller] = token_list({bridge_controller => @use_bridge_controller}, stimulus_controller)
+      data[:controller] = stimulus_controller
       data[:dialog_open_value] = open.to_s
       wrapper_options[:data] = data
 

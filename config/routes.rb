@@ -36,8 +36,9 @@ Rails.application.routes.draw do
       get "export"
       post "import"
       get "update_tasks_select"
-      get "new_modal", to: "time_regs#new", as: :new_modal
     end
+    post :new_modal, on: :collection
+    put :edit_modal, on: :member
   end
 
   resources :projects, except: [ :index ] do

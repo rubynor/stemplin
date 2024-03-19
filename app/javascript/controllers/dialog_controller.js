@@ -21,6 +21,7 @@ export default class extends Controller {
   hide() {
     this.openValue = false;
     this.backdropTarget.classList.add("hidden");
+    document?.getElementById("modal")?.remove();
   }
 
   closeBackground(e) {

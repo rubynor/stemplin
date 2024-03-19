@@ -1,27 +1,23 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_time_reg, only: [ :toggle_active ]
+  before_action :set_projects, only: [ :index, :new_modal, :create ]
+  before_action :set_chosen_date, only: [ :index, :new_modal, :create ]
 
   require "activerecord-import/base"
   require "csv"
   include TimeRegsHelper
 
   def index
-    @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today
-
     @time_regs_week = current_user.time_regs.between_dates(@chosen_date.beginning_of_week, @chosen_date.end_of_week)
-
     @time_regs = @time_regs_week.on_date(@chosen_date)
     @total_minutes_day = @time_regs.sum(:minutes)
     @minutes_by_day = minutes_by_day_of_week(@chosen_date, current_user)
-    @projects = current_user.projects
     @time_reg = TimeReg.new(date_worked: @chosen_date)
-
     @total_minutes_week = @time_regs_week.sum(:minutes)
   end
 
-  def new
-    @projects = current_user.projects
+  def new_modal
     @time_reg = TimeReg.new
   end
 
@@ -39,28 +35,13 @@ class TimeRegsController < ApplicationController
     @time_reg.active = @time_reg.minutes.zero? # start as active?
     @time_reg.updated = Time.now
 
-    if @time_reg.save
-      flash[:notice] = "Time entry has been created"
-      redirect_to root_path(date: @time_reg.date_worked)
-    else
-      @show_new = true
-      @chosen_date = params[:date] ? Date.parse(params[:date]) : Date.today
-      @time_regs = current_user.time_regs.where("date(date_worked) = ?", @chosen_date).includes(:project,
-                                                                                                :assigned_task).order(created_at: :desc)
-
-      @projects = current_user.projects
-
-      @total_minutes_day = @time_regs.sum(:minutes)
-      @minutes_by_day = minutes_by_day_of_week(@chosen_date, current_user)
-
-      # calculate the start and end date of the week of @chosen_date
-      start_date = @chosen_date.beginning_of_week
-      end_date = @chosen_date.end_of_week
-
-      @time_regs_week = current_user.time_regs.where("date(date_worked) BETWEEN ? AND ?", start_date, end_date)
-      @total_minutes_week = @time_regs_week.sum(:minutes)
-
-      render :index, status: :unprocessable_entity
+    respond_to do |format|
+      if @time_reg.save
+        format.html { redirect_to root_path(date: @time_reg.date_worked), notice: "Time entry has been created" }
+      else
+        format.turbo_stream
+        format.html { redirect_to root_path(date: @time_reg.date_worked), status: :unprocessable_entity }
+      end
     end
   end
 
@@ -145,6 +126,9 @@ class TimeRegsController < ApplicationController
     render partial: "/time_regs/select", locals: { tasks: @tasks }
   end
 
+  def edit_modal
+  end
+
   private
 
   def time_reg_params
@@ -166,5 +150,12 @@ class TimeRegsController < ApplicationController
 
   def set_time_reg
     @time_reg = TimeReg.find(params[:time_reg_id])
+  end
+
+  def set_projects
+    @projects ||= current_user.projects
+    end
+  def set_chosen_date
+    @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today
   end
 end

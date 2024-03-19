@@ -48,3 +48,8 @@ application.register("user-reports", UserReportsController)
 
 import VisibilityController from "./visibility_controller"
 application.register("visibility", VisibilityController)
+
+import DialogController from "./dialog_controller";
+application.register("dialog", DialogController);
+
+// TODO: fetch controllers from app/javascript/controllers/**/*_controller.js and load/register everything automatically, the filename of the controller will then be used as the controller identifier in the DOM

@@ -5,24 +5,16 @@
       <%= content_tag(:div, class: "flex justify-end w-full pr-2 pt-2") do %>
         <% if allow_close? %>
           <%= button_tag("button", type: :button, class: "p-4 flex justify-center items-center", data: {action: "#{stimulus_controller}#hide"}) do %>
-            <%= image_tag("times.svg", class: "h-4 w-4") %>
+            <i class="uc-icon text-xl">&#xeb8e;</i>
           <% end %>
         <% end %>
-        <%= content_tag(:div, class: "px-8 py-4") do %>
-          <%= header %>
-          <% if content.present? %>
-            <%= content %>
-          <% else %>
-            <%= body %>
-          <% end %>
-          <% if actions.present? %>
-            <%= content_tag(:div, class: class_names("dialog-action-holder pt-8")) do %>
-              <% actions.each do |action| %>
-                <%= action %>
-              <% end %>
-            <% end %>
-          <% end %>
-          <%= footer if footer.present? %>
+      <% end %>
+      <%= content_tag(:div, class: "px-8 py-4") do %>
+        <%= header %>
+        <% if content.present? %>
+          <%= content %>
+        <% else %>
+          <%= body %>
         <% end %>
       <% end %>
     <% end %>
