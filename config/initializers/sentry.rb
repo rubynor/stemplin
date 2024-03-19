@@ -1,5 +1,4 @@
 Sentry.init do |config|
-  binding.pry
   config.dsn = ENV["SENTRY_KEY"]
   config.breadcrumbs_logger = [ :active_support_logger, :http_logger ]
 
