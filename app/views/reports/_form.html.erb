@@ -2,10 +2,10 @@
     <%= form_with scope: :report, url: report_path, method: :put, data: { controller: :form } do |f| %>
       <div class="flex flex-col gap-5">
         <div class="grid gap-3 grid-cols-2">
-          <h2 class="text-xl">
+          <h2 class="text-xl ">
             Clients
           </h2>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex flex-wrap ">
             <%= f.collection_check_boxes :client_ids, form_data.selectable_clients, :id, :name, include_hidden: false do |cb| %>
               <%= filter_check_box(cb, form_data.selected_client_ids.include?(cb.value), {"data-action": "form#submit"}) %>
             <% end %>
@@ -14,7 +14,7 @@
           <h2 class="text-xl">
             Projects
           </h2>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex flex-wrap">
             <%= f.collection_check_boxes :project_ids, form_data.selectable_projects, :id, :name, include_hidden: false do |cb| %>
               <%= filter_check_box(cb, form_data.selected_project_ids.include?(cb.value), {"data-action": "form#submit"}) %>
             <% end %>
@@ -23,7 +23,7 @@
           <h2 class="text-xl">
             Tasks
           </h2>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex flex-wrap">
             <%= f.collection_check_boxes :task_ids, form_data.selectable_tasks, :id, :name, include_hidden: false do |cb| %>
               <%= filter_check_box(cb, form_data.selected_task_ids.include?(cb.value), {"data-action": "form#submit"}) %>
             <% end %>
@@ -32,7 +32,7 @@
           <h2 class="text-xl">
             Users
           </h2>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex flex-wrap">
             <%= f.collection_check_boxes :user_ids, form_data.selectable_users, :id, :name, include_hidden: false do |cb| %>
               <%= filter_check_box(cb, form_data.selected_user_ids.include?(cb.value), {"data-action": "form#submit"}) %>
             <% end %>
