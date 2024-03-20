@@ -19,8 +19,8 @@ module ReportsHelper
     date.strftime("%d/%m/%Y")
   end
 
-  def user_names(users)
-    users.map { |u| u.name }.join(", ")
+  def concat_names(collection, key = "name")
+    collection.map(&key.to_sym).join(", ")
   end
 
   def time_frame(start_date, end_date)

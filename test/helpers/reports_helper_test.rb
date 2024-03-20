@@ -7,10 +7,16 @@ class ReportsHelperTest < ActionView::TestCase
     assert_equal "07/03/2024", result
   end
 
-  test "#user_names returns a string of user names" do
-    user_collection = [ users(:joe), users(:ron) ]
-    result = user_names(user_collection)
+  test "#concat_names returns a string of names" do
+    collection = [ users(:joe), users(:ron) ]
+    result = concat_names(collection)
     assert_equal "Joe Doe, Ron Done", result
+  end
+
+  test "#concat_names returns a string, based on a custom method" do
+    collection = [ users(:joe), users(:ron) ]
+    result = concat_names(collection, "last_name")
+    assert_equal "Doe, Done", result
   end
 
   test "#time_frame returns human readable date range" do
