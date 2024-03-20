@@ -46,7 +46,7 @@
           <div class="text-red-600 italic text-xs mt-1" data-refresh-minutes-target="output"><%= message %></div>
         <% end %>
         <%= form.hidden_field :minutes, data: { "input-target": "clone" } %>
-        <%= form.text_field :minutes_string, placeholder: "0:00", type: "time", autocomplete: "off",
+        <%= form.text_field :minutes_string, placeholder: "0:00", autocomplete: "off",
           data: { action: "input#cloneValue" }, value: convert_time_int(time_reg.minutes), 
           class: 'text-end w-full rounded-md p-2 border border-gray-300 focus:ring-1 
           ocus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' 
