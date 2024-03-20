@@ -1,7 +1,7 @@
 module Dialog
   module Helpers
     def stimulus_controller
-      @stimulus_controller ||= "dialog"
+      @stimulus_controller ||= "custom-dialog"
     end
 
     def call_to_action_class_names

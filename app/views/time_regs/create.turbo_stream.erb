@@ -1,1 +1,6 @@
-<%= turbo_stream.replace :modal, partial: "time_regs/form", locals: { time_reg: @time_reg, chosen_date: @chosen_date, projects: @projects, title: "New time entry" } %>
+<% if @time_reg.errors.any? %>
+  <%= turbo_stream.replace :modal, partial: "time_regs/form", locals: { time_reg: @time_reg, chosen_date: @chosen_date, projects: @projects, title: "New time entry", assigned_tasks: @time_reg.project&.tasks } %>
+<% else %>
+  <%= turbo_stream.remove :modal %>
+  <%= turbo_stream.append "time_regs_list", partial: "time_regs/time_reg", locals: { time_reg: @time_reg } %>
+<% end %>

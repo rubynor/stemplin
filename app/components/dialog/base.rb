@@ -13,7 +13,7 @@ module Dialog
     renders_one :body, "Dialog::Body"
     renders_one :footer, "Dialog::Footer"
 
-    def initialize(title:, subtitle: nil, text: nil, id: "dialog-#{rand(36**4).to_s(36)}", open: false, allow_close: true, size: nil)
+    def initialize(title:, subtitle: nil, text: nil, id: "custom-dialog-#{rand(36**4).to_s(36)}", open: false, allow_close: true, size: nil)
       @id = id.to_s
       @title = title
       @subtitle = subtitle
@@ -38,7 +38,7 @@ module Dialog
       data = {}
 
       data[:controller] = stimulus_controller
-      data[:dialog_open_value] = open.to_s
+      data[:custom_dialog_open_value] = open.to_s
       wrapper_options[:data] = data
 
       wrapper_options
@@ -46,7 +46,7 @@ module Dialog
 
     def backdrop_options
       backdrop_options = { id: id, class: class_names("dialog-backdrop", hidden: !open) }
-      data = { dialog_target: :backdrop }
+      data = { custom_dialog_target: :backdrop }
 
       data[:action] = "click@window->#{stimulus_controller}#closeBackground" if close_on_background_click?
       backdrop_options[:data] = data

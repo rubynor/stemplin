@@ -101,10 +101,13 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    diff-lcs (1.5.1)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
       railties (>= 3.2)
+    erb (4.0.4)
+      cgi (>= 0.3.3)
     erubi (1.12.0)
     ffi (1.16.3)
     globalid (1.1.0)

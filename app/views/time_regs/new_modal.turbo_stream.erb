@@ -1,1 +1,1 @@
-<%= render partial: "time_regs/form", locals: { time_reg: @time_reg, chosen_date: @chosen_date, projects: @projects, title: "New time entry" } %>
+<%= render partial: "time_regs/form", locals: { time_reg: @time_reg, chosen_date: @chosen_date, projects: @projects, title: "New time entry", assigned_tasks: @time_reg.project&.tasks  } %>

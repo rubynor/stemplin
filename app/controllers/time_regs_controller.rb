@@ -1,8 +1,8 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_time_reg, only: [ :toggle_active ]
-  before_action :set_projects, only: [ :index, :new_modal, :create ]
-  before_action :set_chosen_date, only: [ :index, :new_modal, :create ]
+  before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update ]
+  before_action :set_projects, only: [ :index, :new_modal, :create, :edit_modal ]
+  before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal ]
 
   require "activerecord-import/base"
   require "csv"
@@ -37,6 +37,7 @@ class TimeRegsController < ApplicationController
 
     respond_to do |format|
       if @time_reg.save
+        format.turbo_stream
         format.html { redirect_to root_path(date: @time_reg.date_worked), notice: "Time entry has been created" }
       else
         format.turbo_stream
@@ -54,18 +55,14 @@ class TimeRegsController < ApplicationController
   end
 
   def update
-    @time_reg = TimeReg.find(params[:id])
-
-    if @time_reg.update(time_reg_params.except(:project_id))
-      redirect_to root_path(date: @time_reg.date_worked)
-      flash[:notice] = "Time entry has been updated"
-    else
-      @projects = current_user.projects
-      @assigned_tasks = Task.joins(:assigned_tasks)
-                            .where(assigned_tasks: { project_id: @time_reg.project.id })
-                            .pluck(:name, "assigned_tasks.id")
-
-      render :edit, status: :unprocessable_entity
+    respond_to do |format|
+      if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
+        format.turbo_stream
+        format.html { redirect_to root_path(date: @time_reg.date_worked), notice: "Time entry has been updated" }
+      else
+        format.turbo_stream
+        format.html { redirect_to root_path(date: @time_reg.date_worked), status: :unprocessable_entity }
+      end
     end
   end
 
@@ -127,6 +124,7 @@ class TimeRegsController < ApplicationController
   end
 
   def edit_modal
+    @assigned_tasks = Task.assigned_tasks(@time_reg.project.id)
   end
 
   private
@@ -149,7 +147,7 @@ class TimeRegsController < ApplicationController
   end
 
   def set_time_reg
-    @time_reg = TimeReg.find(params[:time_reg_id])
+    @time_reg = TimeReg.find(params[:time_reg_id] || params[:id])
   end
 
   def set_projects
