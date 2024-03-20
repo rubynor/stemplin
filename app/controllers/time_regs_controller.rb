@@ -25,11 +25,11 @@ class TimeRegsController < ApplicationController
     # gives the time_reg all the attributes
     if Project.exists?(time_reg_params[:project_id])
       @project = Project.find(time_reg_params[:project_id])
-      @time_reg = @project.time_regs.build(time_reg_params.except(:project_id))
+      @time_reg = @project.time_regs.build(time_reg_params.except(:project_id, :minutes_string))
       membership = @project.memberships.find_by(user_id: current_user.id, project_id: @project.id)
       @time_reg.membership_id = membership.id
     else
-      @time_reg = TimeReg.new(time_reg_params.except(:project_id))
+      @time_reg = TimeReg.new(time_reg_params.except(:project_id, :minutes_string))
     end
 
     @time_reg.active = @time_reg.minutes.zero? # start as active?
@@ -132,7 +132,7 @@ class TimeRegsController < ApplicationController
   private
 
   def time_reg_params
-    params.require(:time_reg).permit(:notes, :minutes, :assigned_task_id, :date_worked, :project_id)
+    params.require(:time_reg).permit(:notes, :minutes, :assigned_task_id, :date_worked, :project_id, :minutes_string)
   end
 
   def update_time_reg(current_status:)

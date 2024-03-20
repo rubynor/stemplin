@@ -1,3 +1,10 @@
+// For importing tailwind styles from phlex_ui/phlex_ui_pro gem
+const execSync = require('child_process').execSync;
+
+// Import phlex_ui gem path (To make sure Tailwind loads classes used by phlex_ui gem)
+const outputPhlexUI = execSync('bundle show phlex_ui', { encoding: 'utf-8' });
+const phlex_ui_path = outputPhlexUI.trim() + '/**/*.rb';
+
 const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
   content: [
@@ -5,7 +12,8 @@ module.exports = {
     './app/helpers/**/*.rb',
     './app/assets/stylesheets/**/*.css',
     './app/javascript/**/*.js',
-    './app/components/**/*.{erb,haml,html,slim,rb}'
+    './app/components/**/*.{erb,haml,html,slim,rb}',
+    phlex_ui_path
   ],
   extend: {
     screens: {
