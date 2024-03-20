@@ -1,6 +1,6 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_time_reg, only: [:toggle_active]
+  before_action :set_time_reg, only: [ :toggle_active ]
 
   require "activerecord-import/base"
   require "csv"
@@ -154,14 +154,14 @@ class TimeRegsController < ApplicationController
   def update_time_reg(current_status:)
     if current_status
       worked_minutes = (Time.now.to_i - @time_reg.updated.to_i) / 60
-      @time_reg.minutes = [@time_reg.minutes + worked_minutes, TimeReg::MINUTES_IN_A_DAY].min
+      @time_reg.minutes = [ @time_reg.minutes + worked_minutes, TimeReg::MINUTES_IN_A_DAY ].min
     else
       @time_reg.updated = Time.now
     end
 
     @time_reg.active = !current_status
 
-    redirect_to time_regs_path, notice: "Timer has been toggled #{current_status ? "off": "on"}" if @time_reg.save
+    redirect_to root_path(date: @time_reg.date_worked), notice: "Timer has been toggled #{current_status ? "off": "on"}" if @time_reg.save
   end
 
   def set_time_reg
