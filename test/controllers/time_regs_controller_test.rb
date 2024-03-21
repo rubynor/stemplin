@@ -26,15 +26,15 @@ class TimeRegsControllerTest < ActionController::TestCase
   end
 
   test "should destroy time_reg" do
-    assert_difference('TimeReg.count', -1) do
-      delete :destroy , params: { id: @time_reg.id }
+    assert_difference("TimeReg.count", -1) do
+      delete :destroy, params: { id: @time_reg.id }
     end
 
     assert_redirected_to root_path(date: @time_reg.date_worked)
   end
 
   test "should record time_reg when valid" do
-    assert_difference('TimeReg.count') do
+    assert_difference("TimeReg.count") do
       post :create, params: { time_reg: { date_worked: @current_date, minutes: 60, project_id: @user.projects.first.id, assigned_task_id: assigned_task(:task_1) } }
     end
 
@@ -43,7 +43,7 @@ class TimeRegsControllerTest < ActionController::TestCase
   end
 
   test "should record time_reg when valid and start timer when minutes where not provided" do
-    assert_difference('TimeReg.count') do
+    assert_difference("TimeReg.count") do
       post :create, params: { time_reg: { date_worked: @current_date, project_id: @user.projects.first.id, assigned_task_id: assigned_task(:task_2) } }
     end
 
@@ -52,7 +52,7 @@ class TimeRegsControllerTest < ActionController::TestCase
   end
 
   test "should not record time_reg when invalid" do
-    assert_no_difference('TimeReg.count') do
+    assert_no_difference("TimeReg.count") do
       post :create, params: { time_reg: { date_worked: @current_date, minutes: 0, project_id: nil, assigned_task_id: nil } }
     end
 
