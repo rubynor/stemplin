@@ -1,0 +1,57 @@
+name: "Test"
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11-alpine
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: rails_test
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: password
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+    strategy:
+      matrix:
+        node: ['21.5.x']
+        ruby: ['3.2.2']
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install gems
+        run: bundle install
+      - name: Precompile assets
+        run: bin/rake assets:precompile
+      - name: Set up database schema
+        run: bin/rails db:schema:load
+      - name: Run tests
+        run: bin/rake test
+
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: ['3.2.2']
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Lint Ruby files
+        run: bin/rubocop --parallel

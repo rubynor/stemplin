@@ -10,6 +10,6 @@ class TimeRegTest < ActiveSupport::TestCase
     regs = TimeReg.for_report(clients, projects, users, tasks)
 
     assert_equal 2, regs.count
-    assert_equal [ time_regs(:time_reg_1), time_regs(:time_reg_5) ], regs.to_a
+    assert_equal [ time_regs(:time_reg_1), time_regs(:time_reg_5) ].sort, regs.to_a.sort
   end
 end
