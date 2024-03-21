@@ -17,11 +17,11 @@ class TimeRegsControllerTest < ActionController::TestCase
     assert_equal @user.time_regs.between_dates(@current_date.beginning_of_week, @current_date.end_of_week), assigns(:time_regs_week)
   end
 
-  test "should toggle_active time_reg" do
+  test "should toggle_active time_reg and redirect to the prior chosen date" do
     assert_not @time_reg.active
 
     patch :toggle_active, params: { time_reg_id: @time_reg.id }
-    assert_redirected_to time_regs_path
+    assert_redirected_to root_path(date: @time_reg.date_worked)
     assert @time_reg.reload.active
   end
 

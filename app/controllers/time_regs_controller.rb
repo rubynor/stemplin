@@ -109,7 +109,7 @@ class TimeRegsController < ApplicationController
     @project = @time_reg.project
 
     if @time_reg.minutes >= TimeReg::MINUTES_IN_A_DAY
-      return redirect_to time_regs_path, alert: "Time entry cannot exceed 24 hours"
+      return redirect_to root_path(date: @time_reg.date_worked), alert: "Time entry cannot exceed 24 hours"
     end
 
     update_time_reg(current_status: @time_reg.active)
