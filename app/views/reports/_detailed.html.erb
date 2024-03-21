@@ -1,6 +1,6 @@
-<div class="w-full min-w-[900px] px-2 md:px-8">
+<div class="w-full px-2 md:px-8">
   <h1 class="text-4xl font-medium">
-    Detailed time report:  <span class="font-normal"><%= time_frame(report.date_start, report.date_end) %></span>
+    Detailed time report:  <span class="font-normal"><%= time_frame(start_date, end_date) %></span>
   </h1>
   <hr class="border-t-[2px] rounded-xl border-stone-300 my-4 print-color-adjust">
 
@@ -8,39 +8,39 @@
     <div class="flex-1 flex flex-col justify-center">
       <h2 class="text-xl">Total billable hours</h2>
       <span class="font-bold text-4xl">
-        <%= minutes_to_float total_billable_minutes %>
+        <%= minutes_to_float detailed_report_data.total_billable_minutes %>
       </span>
       <h2 class="text-xl">Total hours</h2>
       <span class="text-2xl">
-        <%= minutes_to_float total_minutes %>
+        <%= minutes_to_float detailed_report_data.total_minutes %>
       </span>
     </div>
 
     <div class="flex-1 flex text-xl">
       <div class="grid grid-cols-2 h-full w-fit">
         <span>
-          Client
+          <%= pluralize detailed_report_data.clients.count, 'Client' %>
         </span>
         <span class="font-bold">
-          <%= client.name %>
+          <%= concat_names detailed_report_data.clients %>
         </span>
         <span>
-          Project
+          <%= pluralize detailed_report_data.projects.count, 'Project' %>
         </span>
         <span class="font-bold">
-          <%= project.name %>
+          <%= concat_names detailed_report_data.projects %>
         </span>
         <span>
-          Tasks
+          <%= pluralize detailed_report_data.tasks.count, 'Task' %>
         </span>
         <span class="font-bold">
-          All tasks
+          <%= concat_names detailed_report_data.tasks %>
         </span>
         <span>
-          <%= pluralize users.count, 'Person' %>
+          <%= pluralize detailed_report_data.users.count, 'Person' %>
         </span>
         <span class="font-bold">
-          <%= user_names users %>
+          <%= concat_names detailed_report_data.users %>
         </span>
       </div>
     </div>
@@ -58,7 +58,7 @@
       </tr>
     </thead>
     <tbody>
-      <% data.each do |key, value| %>
+      <% structured_report_data.each do |key, value| %>
         <tr class="bg-stone-200 border-b-2 border-stone-300 text-stone-700 print-color-adjust">
           <td class="pl-5"><%= key %></td>
           <td></td>
@@ -102,7 +102,7 @@
           <span class="font-bold pr-3">Total</span>
         </td>
         <td class="text-end">
-          <span class="font-bold"><%= minutes_to_float total_minutes %></span>
+          <span class="font-bold"><%= minutes_to_float detailed_report_data.total_minutes %></span>
         </td>
         <td></td>
       </tr>

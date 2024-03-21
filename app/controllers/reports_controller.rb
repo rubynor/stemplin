@@ -17,11 +17,34 @@ class ReportsController < ApplicationController
     time_regs = TimeReg.for_report(client_ids_for_report, project_ids_for_report, user_ids_for_report, task_ids_for_report)
                        .where(date_worked: (@selected_start_date..@selected_end_date))
 
-    @structured_report_data = TimeRegsPresenter.new(time_regs).report_data(
-      title: nil,
-      keys: [ :client, :project, :task, :user ]
-    )
+    if @form_data.detailed_report
 
+      @structured_report_data = time_regs.group_by { |reg| reg[:date_worked] }.sort_by { |key| key  }
+
+      clients = Client.joins(:time_regs).where(time_regs: { id: time_regs }).distinct
+      projects = Project.joins(:time_regs).where(time_regs: { id: time_regs }).distinct
+      tasks = Task.joins(:time_regs).where(time_regs: { id: time_regs }).distinct
+      users = User.joins(:time_regs).where(time_regs: { id: time_regs }).distinct
+      total_billable_minutes = time_regs.joins(:project).where(project: { billable_project: true }).sum(:minutes)
+      total_minutes = time_regs.sum(:minutes)
+
+      @detailed_report_data = OpenStruct.new(
+        time_regs: time_regs,
+        total_billable_minutes: total_billable_minutes,
+        total_minutes: total_minutes,
+        clients: clients,
+        projects: projects,
+        tasks: tasks,
+        users: users,
+      )
+
+    else
+
+      @structured_report_data = TimeRegsPresenter.new(time_regs).report_data(
+        title: nil,
+        keys: [ :client, :project, :task, :user ]
+      )
+    end
     if turbo_frame_request?
       render :show
     end
@@ -67,6 +90,8 @@ class ReportsController < ApplicationController
 
       selected_start_date: (Date.parse(report_params[:start_date]) if report_params[:start_date].present?),
       selected_end_date: (Date.parse(report_params[:end_date]) if report_params[:end_date].present?),
+
+      detailed_report: !!params[:detailed_report],
     )
 
     if @form_data.selected_client_ids.any?
