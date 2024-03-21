@@ -3,7 +3,7 @@ const execSync = require('child_process').execSync;
 
 // Import phlex_ui gem path (To make sure Tailwind loads classes used by phlex_ui gem)
 const outputPhlexUI = execSync('bundle show phlex_ui', { encoding: 'utf-8' });
-const phlex_ui_path = outputPhlexUI.trim() + '/**/*.rb';
+const phlexUIPath = outputPhlexUI.trim() + '/**/*.rb';
 
 const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
     './app/assets/stylesheets/**/*.css',
     './app/javascript/**/*.js',
     './app/components/**/*.{erb,haml,html,slim,rb}',
-    phlex_ui_path
+    phlexUIPath
   ],
   extend: {
     screens: {
