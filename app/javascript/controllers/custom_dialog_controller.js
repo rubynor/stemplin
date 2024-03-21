@@ -1,35 +1,17 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-    static targets = ["backdrop", "content"];
+    static targets = ["trigger"];
 
-    static values = { open: { type: Boolean, default: false } };
-
-    toggle() {
-        if (this.openValue) {
-            this.hide();
-        } else {
-            this.show();
-        }
+    connect() {
+     this.showPhlexModal();
     }
 
-    show() {
-        this.openValue = true;
-        this.backdropTarget.classList.remove("hidden");
-    }
+    showPhlexModal() {
+        // let's get all divs that have data-controller="dismissable" and remove them from the DOM
+        const dismissableDivs = document.querySelectorAll('div[data-controller="dismissable"]');
+        dismissableDivs?.forEach((el) => el?.remove());
 
-    hide() {
-        this.openValue = false;
-        this.backdropTarget.classList.add("hidden");
-        document?.getElementById("modal")?.remove();
-    }
-
-    closeBackground(e) {
-        if (
-            !this.contentTarget.contains(e.target)
-            && this.backdropTarget.contains(e.target)
-        ) {
-            this.hide();
-        }
+        this.triggerTarget.click();
     }
 }

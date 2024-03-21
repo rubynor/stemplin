@@ -1,6 +1,6 @@
 <% if @time_reg.errors.any? %>
   <%= turbo_stream.replace :modal, partial: "time_regs/form", locals: { time_reg: @time_reg, chosen_date: @chosen_date, projects: @projects, title: "Edit time entry", assigned_tasks: @assigned_tasks } %>
 <% else %>
-  <%= turbo_stream.remove :modal %>
+  <turbo-stream action="remove_modal" target="modal"></turbo-stream>
   <%= turbo_stream.replace dom_id(@time_reg), partial: "time_regs/time_reg", locals: { time_reg: @time_reg } %>
 <% end %>
