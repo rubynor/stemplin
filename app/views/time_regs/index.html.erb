@@ -1,11 +1,11 @@
 <% t = Time.new %>
 
-<div class="flex flex-row self-center m-auto w-full max-w-[75rem]">
+<div class="flex flex-row self-center m-auto w-full max-w-[75rem]" data-controller="modal">
   <div class=" justify-items-center max-[800px]:hidden mt-[3vh]">
     <div class="content-center self-center justify-items-center ">
 
       <div class="flex flex-col self-center ">
-        <div class="text-xs mt-2 m-auto self-center" data-controller="modal">
+        <div class="text-xs mt-2 m-auto self-center">
           <!-- NORMAL BUTTON FOR SHOWING THE NEW FORM-->
           <button data-action="click->modal#toggle">
             <div class="bg-seaGreen hover:bg-seaGreenDark h-16 w-16 px-1 py-1 rounded-xl self-center m-auto ">
@@ -16,11 +16,6 @@
             <p class='mt-4 text-lg'>
             Track time</p>
           </button>
-              <div data-modal-target="modal" class="modal <%= "hidden" unless @show_new %> fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div class="modal-content bg-white rounded-lg overflow-hidden shadow-xl transform transition-all" data-action="click->modal#preventClose">
-                  <%= render partial: "time_regs/new", locals: { time_reg: @time_reg, projects: @projects} %>
-                </div>
-              </div>
         </div>
       </div>
     </div>
@@ -82,6 +77,11 @@
             Track time
           </div>
         </button>
+      </div>
+    </div>
+    <div data-modal-target="modal" class="modal <%= "hidden" unless @show_new %> fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="modal-content bg-white rounded-lg overflow-hidden shadow-xl transform transition-all" data-action="click->modal#preventClose">
+        <%= render partial: "time_regs/new", locals: { time_reg: @time_reg, projects: @projects} %>
       </div>
     </div>
 
