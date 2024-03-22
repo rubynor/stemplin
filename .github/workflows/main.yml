@@ -31,8 +31,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-      - name: Install gems
-        run: bundle install
       - name: Precompile assets
         run: bin/rake assets:precompile
       - name: Set up database schema
