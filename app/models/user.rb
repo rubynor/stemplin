@@ -11,6 +11,8 @@ class User < ApplicationRecord
 
   validates :key, inclusion: { in: [ ENV["AUTENTICATION_KEY"] ], message: "is Invalid" }
 
+  enum :role, %i[ user admin ]
+
   def name
     "#{first_name} #{last_name}"
   end
