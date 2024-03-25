@@ -85,10 +85,10 @@ class ReportsController < ApplicationController
     @selected_end_date = Date.parse(report_params[:end_date]) if report_params[:end_date].present?
 
     @form_data = OpenStruct.new(
-      selectable_clients: Client.all.order(:name),
-      selectable_projects: Project.all.order(:name),
-      selectable_tasks: Task.all.order(:name),
-      selectable_users: User.all.order(:last_name),
+      selectable_clients: available_clients.order(:name),
+      selectable_projects: available_projects.order(:name),
+      selectable_tasks: available_tasks.order(:name),
+      selectable_users: available_users.order(:last_name),
 
       selected_client_ids: report_params[:client_ids].to_a.map(&:to_i),
       selected_project_ids: report_params[:project_ids].to_a.map(&:to_i),
@@ -102,19 +102,19 @@ class ReportsController < ApplicationController
     )
 
     if @form_data.selected_client_ids.any?
-      @form_data.selectable_projects = Project.joins(:client)
+      @form_data.selectable_projects = available_projects.joins(:client)
                                               .where(client: { id: @form_data.selected_client_ids })
                                               .distinct.order(:name)
     end
 
     if @form_data.selected_project_ids.any?
-      @form_data.selectable_tasks = Task.joins(:projects)
+      @form_data.selectable_tasks = available_tasks.joins(:projects)
                                         .where(projects: { id: @form_data.selected_project_ids })
                                         .distinct.order(:name)
     end
 
     if @form_data.selected_project_ids.any?
-      @form_data.selectable_users = User.joins(:projects)
+      @form_data.selectable_users = available_users.joins(:projects)
                                         .where(projects: { id: @form_data.selected_project_ids })
                                         .distinct.order(:last_name)
     end
