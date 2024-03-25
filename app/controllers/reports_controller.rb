@@ -1,5 +1,6 @@
 class ReportsController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :authorize_admin!
 
   def show
     set_form_data
@@ -14,7 +15,7 @@ class ReportsController < ApplicationController
     user_ids_for_report = @form_data.selected_user_ids.presence || User.ids
     task_ids_for_report = @form_data.selected_task_ids.presence || Task.ids
 
-    time_regs = TimeReg.for_report(client_ids_for_report, project_ids_for_report, user_ids_for_report, task_ids_for_report)
+    time_regs = available_time_regs.for_report(client_ids_for_report, project_ids_for_report, user_ids_for_report, task_ids_for_report)
                        .where(date_worked: (@selected_start_date..@selected_end_date))
 
     if @form_data.detailed_report
@@ -67,6 +68,12 @@ class ReportsController < ApplicationController
   end
 
   private
+
+  def available_time_regs
+    return TimeReg.none if current_user.nil?
+    return TimeReg.all if current_user.admin?
+    current_user.time_regs
+  end
 
   def report_params
     return params unless params[:report]
