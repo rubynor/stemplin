@@ -1,28 +1,24 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_time_reg, only: [ :toggle_active ]
   skip_before_action :authorize_admin!
+  before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update ]
+  before_action :set_projects, only: [ :index, :new_modal, :create, :edit_modal ]
+  before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal ]
 
   require "activerecord-import/base"
   require "csv"
   include TimeRegsHelper
 
   def index
-    @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today
-
     @time_regs_week = current_user.time_regs.between_dates(@chosen_date.beginning_of_week, @chosen_date.end_of_week)
-
     @time_regs = @time_regs_week.on_date(@chosen_date)
     @total_minutes_day = @time_regs.sum(:minutes)
     @minutes_by_day = minutes_by_day_of_week(@chosen_date, current_user)
-    @projects = current_user.projects
     @time_reg = TimeReg.new(date_worked: @chosen_date)
-
     @total_minutes_week = @time_regs_week.sum(:minutes)
   end
 
-  def new
-    @projects = current_user.projects
+  def new_modal
     @time_reg = TimeReg.new
   end
 
@@ -30,38 +26,24 @@ class TimeRegsController < ApplicationController
     # gives the time_reg all the attributes
     if Project.exists?(time_reg_params[:project_id])
       @project = Project.find(time_reg_params[:project_id])
-      @time_reg = @project.time_regs.build(time_reg_params.except(:project_id))
+      @time_reg = @project.time_regs.build(time_reg_params.except(:project_id, :minutes_string))
       membership = @project.memberships.find_by(user_id: current_user.id, project_id: @project.id)
       @time_reg.membership_id = membership.id
     else
-      @time_reg = TimeReg.new(time_reg_params.except(:project_id))
+      @time_reg = TimeReg.new(time_reg_params.except(:project_id, :minutes_string))
     end
 
     @time_reg.active = @time_reg.minutes.zero? # start as active?
     @time_reg.updated = Time.now
 
-    if @time_reg.save
-      flash[:notice] = "Time entry has been created"
-      redirect_to root_path(date: @time_reg.date_worked)
-    else
-      @show_new = true
-      @chosen_date = params[:date] ? Date.parse(params[:date]) : Date.today
-      @time_regs = current_user.time_regs.where("date(date_worked) = ?", @chosen_date).includes(:project,
-                                                                                                :assigned_task).order(created_at: :desc)
-
-      @projects = current_user.projects
-
-      @total_minutes_day = @time_regs.sum(:minutes)
-      @minutes_by_day = minutes_by_day_of_week(@chosen_date, current_user)
-
-      # calculate the start and end date of the week of @chosen_date
-      start_date = @chosen_date.beginning_of_week
-      end_date = @chosen_date.end_of_week
-
-      @time_regs_week = current_user.time_regs.where("date(date_worked) BETWEEN ? AND ?", start_date, end_date)
-      @total_minutes_week = @time_regs_week.sum(:minutes)
-
-      render :index, status: :unprocessable_entity
+    respond_to do |format|
+      if @time_reg.save
+        format.turbo_stream
+        format.html { redirect_to root_path(date: @time_reg.date_worked), notice: "Time entry has been created" }
+      else
+        format.turbo_stream
+        format.html { redirect_to root_path(date: @time_reg.date_worked), status: :unprocessable_entity }
+      end
     end
   end
 
@@ -74,18 +56,14 @@ class TimeRegsController < ApplicationController
   end
 
   def update
-    @time_reg = TimeReg.find(params[:id])
-
-    if @time_reg.update(time_reg_params.except(:project_id))
-      redirect_to root_path(date: @time_reg.date_worked)
-      flash[:notice] = "Time entry has been updated"
-    else
-      @projects = current_user.projects
-      @assigned_tasks = Task.joins(:assigned_tasks)
-                            .where(assigned_tasks: { project_id: @time_reg.project.id })
-                            .pluck(:name, "assigned_tasks.id")
-
-      render :edit, status: :unprocessable_entity
+    respond_to do |format|
+      if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
+        format.turbo_stream
+        format.html { redirect_to root_path(date: @time_reg.date_worked), notice: "Time entry has been updated" }
+      else
+        format.turbo_stream
+        format.html { redirect_to root_path(date: @time_reg.date_worked), status: :unprocessable_entity }
+      end
     end
   end
 
@@ -146,10 +124,14 @@ class TimeRegsController < ApplicationController
     render partial: "/time_regs/select", locals: { tasks: @tasks }
   end
 
+  def edit_modal
+    @assigned_tasks = Task.assigned_tasks(@time_reg.project.id)
+  end
+
   private
 
   def time_reg_params
-    params.require(:time_reg).permit(:notes, :minutes, :assigned_task_id, :date_worked, :project_id)
+    params.require(:time_reg).permit(:notes, :minutes, :assigned_task_id, :date_worked, :project_id, :minutes_string)
   end
 
   def update_time_reg(current_status:)
@@ -166,6 +148,13 @@ class TimeRegsController < ApplicationController
   end
 
   def set_time_reg
-    @time_reg = TimeReg.find(params[:time_reg_id])
+    @time_reg = TimeReg.find(params[:time_reg_id] || params[:id])
+  end
+
+  def set_projects
+    @projects ||= current_user.projects
+    end
+  def set_chosen_date
+    @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today
   end
 end
