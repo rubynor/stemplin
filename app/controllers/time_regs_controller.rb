@@ -1,6 +1,7 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_time_reg, only: [ :toggle_active ]
+  skip_before_action :authorize_admin!
 
   require "activerecord-import/base"
   require "csv"
