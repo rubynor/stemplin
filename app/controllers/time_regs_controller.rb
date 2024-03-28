@@ -143,7 +143,13 @@ class TimeRegsController < ApplicationController
 
     @time_reg.active = !current_status
 
-    redirect_to root_path(date: @time_reg.date_worked), notice: "Timer has been toggled #{current_status ? "off": "on"}" if @time_reg.save
+    if @time_reg.save
+      flash[:success] = {
+        title: "Success", body: "Timer has been toggled #{current_status ? "off": "on"}"
+      }
+
+      redirect_to root_path(date: @time_reg.date_worked)
+    end
   end
 
   def set_time_reg

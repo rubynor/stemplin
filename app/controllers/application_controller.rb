@@ -18,4 +18,10 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name key])
     devise_parameter_sanitizer.permit(:account_update, keys: %i[first_name last_name])
   end
+
+  # data can either be a hash or a string
+  def turbo_flash(type:, data:)
+    flash[type] = data
+    turbo_stream.replace "flash", partial: "shared/flash_messages"
+  end
 end
