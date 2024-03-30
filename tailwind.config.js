@@ -73,7 +73,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ["Inter var", ...defaultTheme.fontFamily.sans],
+        montserrat: ["Montserrat", ...defaultTheme.fontFamily.sans],
       },
       borderRadius: {
         lg: `var(--radius)`,
