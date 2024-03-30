@@ -1,0 +1,13 @@
+<%= content_tag(:div, id: "#{@chosen_date}_empty_illustration", class: "flex flex-col items-center justify-center py-8 lg:py-16 gap-y-4") do %>
+  <%= image_tag "empty.svg" %>
+  <div class="gap-y-2 flex flex-col text-center w-full md:w-3/4 lg:w-1/2 mx-auto">
+    <span class="font-semibold text-lg">No time registrations on this day</span>
+    <span class="text-base text-gray-500">There were no time registrations recorded on this day, if you wish to record a time registration, click the button bellow</span>
+  </div>
+  <div>
+    <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: @chosen_date), method: :post, variant: :secondary) do %>
+      <span class="mr-2">Log time</span>
+      <i class="uc-icon text-xl">&#xeb5b;</i>
+    <% end %>
+  </div>
+<% end %>
