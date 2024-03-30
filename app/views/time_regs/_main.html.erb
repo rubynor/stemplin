@@ -1,0 +1,32 @@
+<div class="py-4 lg:py-6 px-4 lg:px-0">
+  <div class="max-w-7xl mx-auto flex flex-col gap-y-4">
+    <div>
+      <span class="text-base lg:text-lg">From <%= @chosen_date.beginning_of_week&.strftime("%B %d, %Y") %> - <%= @chosen_date.end_of_week&.strftime("%B %d, %Y") %></span>
+    </div>
+    <%= render CardComponent.new(class: "!p-0 flex flex-col") do %>
+      <div class="grid grid-cols-7 divide-x divide-gray-50 lg:divide-gray-200 border-b border-gray-100">
+        <% (@chosen_date.beginning_of_week..@chosen_date.end_of_week).each do |given_date| %>
+          <div class="relative">
+            <%= link_to root_path(date: given_date), class: class_names("flex flex-col items-center lg:items-start p-2 md:p-4 lg:p-6 transition duration-300 ease-in-out", given_date == @chosen_date ? "bg-gradient-to-t lg:bg-none from-pink-50 lg:bg-pink-100" : "lg:bg-gray-50") do %>
+              <%= content_tag(:span, given_date.strftime("%d"), class: class_names("text-base md:text-xl lg:text-2xl font-regular text-gray-400 transition duration-300 ease-in-out", "text-gray-600 font-semibold": given_date == @chosen_date) ) %>
+              <%= content_tag(:span, given_date.strftime("%A"), class: class_names("hidden lg:block text-sm font-semibold transition duration-300 ease-in-out", "text-primary": given_date == @chosen_date) ) %>
+              <%= content_tag(:span, given_date.strftime("%a"), class: class_names("lg:hidden text-sm font-semibold transition duration-300 ease-in-out", "text-primary": given_date == @chosen_date) ) %>
+            <% end %>
+            <% if given_date == @chosen_date %>
+              <div class="w-full h-1 bg-primary absolute bottom-0 transition duration-300 ease-in-out"></div>
+            <% end %>
+          </div>
+      <% end %>
+      </div>
+      <div id="time_regs_list" class="p-4 flex flex-col gap-y-4">
+        <% if @time_regs.empty? %>
+          <%= render partial: "time_regs/empty" %>
+        <% else %>
+          <% @time_regs.each do |time_reg| %>
+            <%= render partial: "time_regs/time_reg", locals: { time_reg: time_reg } %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+    </div>
+</div>
