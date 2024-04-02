@@ -16,25 +16,16 @@
   </head>
   <body class="font-montserrat">
   <!-- Navbar -->
-    <%= render 'layouts/navbar'%>
     <%= render partial: "shared/flash_messages" %>
 
-    <div class="flex justify-evenly pt-4 print:hidden">
-      <% if notice %>
-        <p class="notice bg-green-300 text-red-900 px-3 py-3 w-fit rounded-full"><%= notice %></p>
-      <% end %>
-      <% if alert %>
-        <p class="alert bg-red-300 text-red-900 px-3 py-3 w-fit rounded-full"><%= alert %></p>
-      <% end %>
-    </div>
-
+    <%= render 'layouts/navbar'%>
     <main>
       <%= yield %>
     </main>
 
     <!-- Footer -->
-    <footer class="print:hidden bottom-0 h-16 items-center flex space-x-2 sm:justify-center fixed w-full">
-      <a href="" class="font-bold">Reap</a>
+    <footer class="print:hidden bottom-0 h-16 items-center flex space-x-2 justify-center items-center fixed w-full text-center">
+      <a href="" class="font-regular text-sm text-gray-400">Reap <%= Date.current.year %></a>
     </footer>
   </body>
 </html>
