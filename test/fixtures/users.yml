@@ -5,10 +5,12 @@ joe:
   email: joe@example.com
   first_name: Joe
   last_name: Doe
+  role: :user
   <<: *DEFAULTS
 
 ron:
   email: ron@example.com
   first_name: Ron
   last_name: Done
+  role: :admin
   <<: *DEFAULTS

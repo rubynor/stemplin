@@ -1,5 +1,6 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :authorize_admin!
   before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update ]
   before_action :set_projects, only: [ :index, :new_modal, :create, :edit_modal ]
   before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal ]

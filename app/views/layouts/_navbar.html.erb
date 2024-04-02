@@ -51,9 +51,11 @@
             <li>
               <%= link_to "Times", time_regs_path, class: "md:p-4 py-2 block hover:text-seaGreen" %>
             </li>
+            <% if current_user.admin? %>
             <li>
               <%= link_to "Projects", clients_path, class: "md:p-4 py-2 block hover:text-seaGreen" %>
             </li>
+            <% end %>
             <li>
               <%= link_to "Reports", report_path, class: "md:p-4 py-2 block hover:text-seaGreen"%>
             </li>
