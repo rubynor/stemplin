@@ -5,7 +5,7 @@
   <%= render PhlexUI::Dialog::Content.new(class: "bg-white") do %>
     <%= content = capture do %>
       <%= turbo_frame_tag :modal do %>
-        <%= form_with(model: time_reg, id: dom_id(time_reg), method: time_reg.new_record? ? :post : :put, data: { controller: "input", "input-active_text_value": time_reg.new_record? ? "Create Time reg" : "Update Time reg", "input-inactive_text_value": "Start timer"  }) do |form| %>
+        <%= form_with(model: time_reg, id: dom_id(time_reg), method: time_reg.new_record? ? :post : :put, data: { controller: "custom-input", "custom-input-active_text_value": time_reg.new_record? ? "Create Time reg" : "Update Time reg", "custom-input-inactive_text_value": "Start timer"  }) do |form| %>
           <%= render PhlexUI::Dialog::Header.new do %>
             <%= render PhlexUI::Dialog::Title.new { title } %>
             <%= render PhlexUI::Dialog::Description.new { format_date(chosen_date) } %>
@@ -51,9 +51,9 @@
                   <% time_reg.errors.full_messages_for(:minutes).each do |message| %>
                     <div class="text-red-600 italic text-xs mt-1" data-refresh-minutes-target="output"><%= message %></div>
                   <% end %>
-                  <%= form.hidden_field :minutes, data: { "input-target": "clone" } %>
+                  <%= form.hidden_field :minutes, data: { "custom-input-target": "clone" } %>
                   <%= form.text_field :minutes_string, placeholder: "0:00", autocomplete: "off", data: {
-                    action: "input#cloneValue"
+                    action: "custom-input#cloneValue"
                   }, value: convert_time_int(time_reg.minutes),
                                       class: 'text-end w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
                   %>
@@ -66,7 +66,7 @@
             <%= button_tag type: 'button', data: {action: "click->dismissable#dismiss"}, class: "bg-white shadow p-4 rounded-md flex justify-center items-center" do %>
               Cancel
             <% end %>
-            <%= form.submit "", data: { input_target: "submitButton" }, class: "bg-seaGreen shadow text-white hover:bg-seaGreenDark p-4 rounded-md flex justify-center items-center cursor-pointer" %>
+            <%= form.submit "", data: { custom_input_target: "submitButton" }, class: "bg-seaGreen shadow text-white hover:bg-seaGreenDark p-4 rounded-md flex justify-center items-center cursor-pointer" %>
           <% end %>
         <% end %>
       <% end %>
