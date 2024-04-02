@@ -1,19 +1,20 @@
 class MembershipsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_membership
+  before_action :authorize!
 
   def new
-    @project = Project.find(params[:id])
+    @project = authorized_scope(Project, type: :relation).find(params[:id])
   end
 
   # adds a member to the project
   def create
     @email = membership_params[:email]
-    @project = Project.find(params[:project_id])
+    @project = authorized_scope(Project, type: :relation).find(params[:project_id])
 
     # checks if the user exists
-    if User.exists?(email: @email)
-      @user = User.find_by(email: @email)
+    if authorized_scope(User, type: :relation).exists?(email: @email)
+      @user = authorized_scope(User, type: :relation).find_by(email: @email)
       @membership = @project.memberships.build(user_id: @user.id)
 
       # checks if the user is already a member
@@ -29,7 +30,7 @@ class MembershipsController < ApplicationController
   end
 
   def destroy
-    @project = Project.find(params[:project_id])
+    @project = authorized_scope(Project, type: :relation).find(params[:project_id])
     @membership = @project.memberships.find(params[:id])
 
     # tries to remove a user from the project
@@ -52,7 +53,7 @@ class MembershipsController < ApplicationController
 
   # ensures that only members have access
   def ensure_membership
-    project = Project.find(params[:project_id])
+    project = authorized_scope(Project, type: :relation).find(params[:project_id])
 
     return if project.memberships.exists?(user_id: current_user)
 

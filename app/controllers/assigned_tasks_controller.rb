@@ -1,15 +1,16 @@
 class AssignedTasksController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_membership
+  before_action :authorize!
 
   def new
-    @project = Project.find(params[:project_id])
+    @project = authorized_scope(Project, type: :relation).find(params[:project_id])
     @assigned_task = @project.assigned_tasks.build
-    @tasks = Task.all.where.not(id: @project.assigned_tasks.select(:task_id)).select(:id, :name)
+    @tasks = authorized_scope(Task, type: :relation).where.not(id: @project.assigned_tasks.select(:task_id)).select(:id, :name)
   end
 
   def create
-    @project = Project.find(params[:project_id])
+    @project = authorized_scope(Project, type: :relation).find(params[:project_id])
     @assigned_task = @project.assigned_tasks.build(assigned_task_params)
 
     if @assigned_task.save
@@ -22,7 +23,7 @@ class AssignedTasksController < ApplicationController
   end
 
   def destroy
-    @project = Project.find(params[:project_id])
+    @project = authorized_scope(Project, type: :relation).find(params[:project_id])
     @assigned_task = @project.assigned_tasks.find(params[:id])
 
     if @assigned_task.time_regs.count >= 1
@@ -41,7 +42,7 @@ class AssignedTasksController < ApplicationController
   end
 
   def ensure_membership
-    project = Project.find(params[:project_id])
+    project = authorized_scope(Project, type: :relation).find(params[:project_id])
 
     return if project.memberships.exists?(user_id: current_user)
 
