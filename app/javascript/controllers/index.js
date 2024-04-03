@@ -55,7 +55,4 @@ application.register("custom-dialog", DialogController);
 import SnackbarController from "./snackbar_controller";
 application.register("snackbar", SnackbarController);
 
-import CustomCalendarController from "./custom_calendar_controller";
-application.register("custom-calendar", CustomCalendarController);
-
 // TODO: fetch controllers from app/javascript/controllers/**/*_controller.js and load/register everything automatically, the filename of the controller will then be used as the controller identifier in the DOM
