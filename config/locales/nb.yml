@@ -7,3 +7,234 @@ nb:
         separator: ','
         precision: 2
         format: '%n%u'
+
+  language:
+    en: "EN"
+    nb: "NO"
+  
+  day:
+    monday: "Mandag"
+    tuesday: "Tirsdag"
+    wednesday: "Onsdag"
+    thursday: "Torsdag"
+    friday: "Fredag"
+    saturday: "Lørdag"
+    sunday: "Søndag"
+    week: "Hele uken"
+  
+  common:
+    doc: "Dokument"
+    image: "Bilde"
+    images: "Bilder"
+    description: "Beskrivelse"
+    edit: "Rediger"
+    delete: "Slett"
+    save: "Lagre"
+    name: "Navn"
+    close: "Lukk"
+    customer: "Kunde"
+    drawing: "Tegning"
+    project: "Prosjekt"
+    allproject: "Alle prosjekter"
+    projectpage: "Prosjekt side"
+    language: "Språk"
+    choosefile: "Velg fil"
+    type: "Type"
+    category: "Kategori"
+    categories: "Kategorier"
+    newproject: "Nytt prosjekt"
+    newdrawing: "Ny tegning"
+    newdoc: "Nytt dokument"
+    newcat: "Ny kategori"
+    newpic: "Nytt bilde"
+    new_pin: "Nytt pin"
+    new: "NY"
+    projectnumber: "Prosjektnummer"
+    projects: "Prosjekter"
+    map: "Kart"
+    open_drawing: "Åpne tegning"
+    open_project: "Åpne prosjekt"
+    open_doc: "Åpne dokument"
+    edit_doc: "Rediger/Vis dokument"
+    create_new_drawing: "Last opp ny tegning"
+    create_new_doc: "Last opp nytt dokument"
+    create_new_pic: "Last opp nytt bilde"
+    create_new_project: "Opprett nytt prosjekt"
+    create_new_pin: "Last opp nytt pin"
+    move_pin: "Flytt pin"
+    cancel_move: "Avbryt flytting"
+    accept_move: "Bekreft ny posisjon"
+    add_new: "Last opp ..."
+    progress: "Progresjon"
+    discard: "Avbryt"
+    back: "Tilbake"
+    delete_verification: "Er du sikker på at vil slette?"
+    my_profile: "Min profil"
+    sketch: "Tegninger"
+    document: "Dokumenter"
+    home: "Hjem"
+    missing_overview_drawing: "Det er ikke funnet noen oversiktstegninger. Trykk på knappen nederst til høyre for å opprette en ny oversiktstegning."
+    next: "Neste"
+    of: "av"
+    new_user: Ny bruker?
+    email: "E-post"
+    navn: "Navn"
+    phone: "Mobil"
+    my_organisation: "Min organisasjon"
+    organisations: "Organisasjoner"
+    address: "Adresse"
+    employees: "Ansatte"
+    worker: "Arbeider"
+    add_employee: "Legg til ansatt"
+    invite_worker: "Inviter ansatt"
+    all_images: "Alle bilder"
+
+    registration:
+      title: "Opprett profil"
+      first_name: "Navn"
+      last_name: "Etternavn"
+      email: "E-post"
+      password: "Passord"
+      confirm_password: "Bekreft passord"
+      organisation_name: "Navn på organisasjon"
+      organisation_number: "Org. nummer"
+      phone_number: "Mobil nr."
+      address: "Adresse"
+      done: "Profil opprettet"
+
+    organisation:
+      single: "Organisasjon"
+      plural: "Organisasjoner"
+      invite: "Inviter bruker"
+      invite_plural: "Inviter brukere"
+      email: "E-post"
+      users_invited: "Inviterte brukere"
+      members: "Medlemmer"
+      revoke: "Opphev"
+      remove: "Fjern"
+      all: "Alle organisasjoner"
+      invitations: "Invitasjoner"
+      new_org: "Ny organisasjon"
+      invite_organisation:  "Inviter organisasjon"
+      logged_in_as: "Logget inn som"
+      accept: "Aksepter"
+      decline: "Avslå"
+      invitation_revoked: "Invitasjon trukket tilbake"
+      error_revoke_inv: "Feil ved tilbaketrekking av invitasjon"
+      user_removed: "Bruker fjernet fra organisasjonen"
+      error_user_removed: "Feil ved fjerning av bruker fra organisasjonen"
+      user_allready_in_org: "Bruker er allerede en del av organisasjonen"
+      user_allready_invited: "Bruker er allerede invitert"
+      user_invited: "Bruker er invitert"
+      error_inviting_user: "Feil ved invitasjon av bruker"
+      user_does_not_exist: "Bruker eksisterer ikke"
+      org_successfully_created: "Organisasjonen ble opprettet"
+      org_successfully_updated: "Organisasjonen ble oppdatert"
+      org_successfully_deleted: "Organisasjonen ble slettet"
+
+    notice:
+      project_created: "Prosjekt opprettet"
+      project_updated: "Prosjekt oppdatert"
+      project_deleted: "Prosjekt slettet"
+      drawing_created: "Tegning opprettet"
+      drawing_updated: "Tegning oppdatert"
+      drawing_deleted: "Tegning slettet"
+      doc_created: "Dokument opprettet"
+      doc_updated: "Dokument oppdatert"
+      doc_deleted: "Dokument slettet"
+      cat_created: "Kategori opprettet"
+      cat_updated: "Kategori oppdatert"
+      cat_deleted: "Kategori slettet"
+      pin_created: "Pin opprettet"
+      pin_updated: "Pin oppdatert"
+      pin_deleted: "Pin slettet"
+      pic_created: "Bilde opprettet"
+      pic_updated: "Bilde oppdatert"
+      pic_deleted: "Bilde slettet"
+      checklist_new_element: "Ny element lagt til"
+      checklist_new_error: "Kunne ikke legge til element"
+      checklist_new: "Sjekkliste opprettet"
+      checklist_updated: "Sjekkliste oppdatert"
+      checklist_deleted: "Sjekkliste slettet"
+
+    checklist:
+      newelement: "Nytt element"
+      single: "Sjekkliste"
+      plural: "Sjekklister"
+      new: "Ny sjekkliste"
+      edit: "Rediger sjekkliste"
+      all: "Alle sjekklister"
+      no_list: "Ingen sjekklister"
+      hyphen: "Sjekk-liste"
+    error: "Det har skjedd en feil:"
+
+  layouts:
+    application:
+      projects: "Prosjekter"
+      projectmanagement: "Prosjektstyring"
+      user: "Bruker"
+      login: "Logg inn"
+      register: "Registrer"
+      logout: "Logg ut"
+      current_project_empty: "Prosjekt: Ingen"
+      current_project: "Prosjekt: "
+
+  projects:
+    invitation:
+      organisation: Organisasjon
+      title: Inviter ny organisasjon
+      choose: Velg prosjekt
+      choose_explanation: Legg ved et prosjekt du vil dele med organisasjonen
+      send_invitation: Send invitasjon
+      invitation_to: Din invitasjon til
+      was_sent: Er sendt
+    form:
+      projectname: "Prosjektnavn"
+      sketchfab_url: "Sketchfab URL"
+
+    drawings:
+      form:
+        drawingtype: "Tegningtype"
+        choosetype: "Velg type"
+
+    application:
+      docs_folder:
+        documents: "Dokumenter"
+      drawings_folder:
+        drawings: "Tegninger"
+
+    docs:
+      doc:
+        project: "Prosjekt"
+        files: "Tilhørende filer"
+      form:
+        showdoc: "Vis dokumenter"
+
+    pictures:
+      pictures_folder:
+        delete_confirm_single: "Er du sikker på at du vil slette dette bildet?"
+        delete_confirm_plural: "Er du sikker på at du vil slette disse bildene?"
+
+    imagepins:
+      index:
+        picturegroup_in: "Bildegrupper i"
+        picturegroup: "Bildegruppe"
+      _imagepin:
+        showimggroup: "Vis bildegruppe"
+        editimggroup: "Rediger bildegruppe"
+      edit:
+        picturegroup: "Bildegruppe"
+        all_picturegroups: "Alle bildegrupper"
+  devise:
+    sessions:
+      user:
+        signed_in: "Du er logget inn."
+
+  users:
+    sessions:
+      new:
+        log_in: Logg inn
+        email: E-post
+        password: Passord
+        remember_me: Husk meg
+        forgot_password: Glemt passord?  

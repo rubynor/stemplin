@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   root "time_regs#index"
 
+  get "/locale", to: "locale#set_locale", as: "locale"
+
   resources :project_reports do
     patch :update_group
     collection do

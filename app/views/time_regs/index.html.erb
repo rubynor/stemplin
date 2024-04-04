@@ -1,4 +1,5 @@
 <% t = Time.new %>
+<%= I18n.locale %>
 
 <div class="flex flex-row self-center m-auto w-full max-w-[75rem]" data-controller="modal">
   <div class=" justify-items-center max-[800px]:hidden mt-[3vh]">
@@ -96,7 +97,7 @@
         </div>
       <% end %>
       <div class="grid grow">
-        Week total
+        <%= t('day.week') %>
         <br />
         <%= format_duration(@total_minutes_week) %>
       </div>

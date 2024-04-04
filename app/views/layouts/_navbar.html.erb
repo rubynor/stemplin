@@ -57,7 +57,9 @@
             <li>
               <%= link_to "Reports", report_path, class: "md:p-4 py-2 block hover:text-seaGreen"%>
             </li>
-
+            <%=  form_tag locale_path, :method => "get" do %>
+              <%= select_tag :locale, options_for_select([['Language', ''],['NO', 'nb'], ['EN', 'en']]), onchange: "this.form.submit();" %>
+            <% end %>
             <li dir="ltr">
               <div class="group relative md:p-4 py-2 block border-s-2 border-gray-100 md: border-s-0 ">
                 <div class="flex text-gray-900 ">

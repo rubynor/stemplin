@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_locale
   layout :layout_by_resource
 
   private
@@ -23,5 +24,10 @@ class ApplicationController < ActionController::Base
   def turbo_flash(type:, data:)
     flash[type] = data
     turbo_stream.replace "flash", partial: "shared/flash_messages"
+  end
+
+  def set_locale
+    locale = params["locale"]
+    I18n.locale = locale
   end
 end

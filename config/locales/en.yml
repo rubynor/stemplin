@@ -31,3 +31,239 @@
 
 en:
   hello: "Hello world"
+
+
+  language:
+    en: "EN"
+    nb: "NO"
+
+
+  day:
+    monday: "Monday"
+    tuesday: "Tuesday"
+    wednesday: "Wednesday"
+    thursday: "Thursday"
+    friday: "Friday"
+    saturday: "Saturday"
+    sunday: "Sunday"
+    week: "Week total"
+
+
+
+  common:
+    doc: "Document"
+    image: "Image"
+    images: "Images"
+    description: "Description"
+    edit: "Edit"
+    delete: "Delete"
+    save: "Save"
+    name: "Name"
+    close: "Close"
+    customer: "Customer"
+    drawing: "Drawing"
+    project: "Project"
+    allproject: "All projects"
+    projectpage: "Project page"
+    language: "Language"
+    choosefile: "Choose file"
+    type: "Type"
+    category: "Category"
+    categories: "Categories"
+    newproject: "New project"
+    newdrawing: "New drawing"
+    newdoc: "New document"
+    newcat: "New category"
+    newpic: "New picture"
+    new_pin: "New pin"
+    new: "NEW"
+    projectnumber: "Project number"
+    projects: "Projects"
+    map: "Map"
+    open_drawing: "Open drawing"
+    open_project: "Open project"
+    open_doc: "Open document"
+    edit_doc: "Edit/Show document"
+    create_new_drawing: "Add new drawing"
+    create_new_doc: "Add new document"
+    create_new_pic: "Add new picture"
+    create_new_project: "Create new project"
+    create_new_pin: "Create new pin"
+    move_pin: "Move pin"
+    cancel_move: "Cancel"
+    accept_move: "Accept new position"
+    add_new: "Add new ..."
+    progress: "Progress"
+    discard: "Discard"
+    back: "Back"
+    delete_verification: "Are you sure you want to delete?"
+    my_profile: "My profile"
+    sketch: "Drawings"
+    document: "Documents"
+    home: "Home"
+    missing_overview_drawing: "It has not been found any overview drawings. Press the button in the bottom right to create a new overview drawing."
+    next: "Next"
+    of: "of"
+    new_user: New user?
+    email: "Email"
+    name: "Name"
+    phone: "Phone"
+    my_organisation: "My organisation"
+    organisations: "Organisations"
+    address: "Address"
+    employees: "Employees"
+    worker: "Worker"
+    add_employee: "Add employee"
+    invite_worker: "Invite worker"
+    all_images: "All images"
+
+    registration:
+      title: "Create profile"
+      first_name: "Name"
+      last_name: "Surname"
+      email: "E-mail"
+      password: "Password"
+      confirm_password: "Confirm password"
+      organisation_name: "Organisation's name"
+      organisation_number: "Org. number"
+      phone_number: "Phone number"
+      address: "Address"
+      done: "Profile registered"
+
+    organisation:
+      single: "Organisation"
+      plural: "Organisations"
+      invite: "Invite user"
+      invite_plural: "Invite users"
+      email: "Email"
+      users_invited: "Users invited"
+      members: "Members"
+      revoke: "Revoke"
+      remove: "Remove"
+      all: "All organisations"
+      invitations: "Invitations"
+      new_org: "New organisation"
+      invite_organisation:  "Invite organisation"
+      logged_in_as: "Logged in as"
+      accept: "Accept"
+      decline: "Decline"
+      invitation_revoked: "Invitation revoked"
+      error_revoke_inv: "Error revoking invitation"
+      user_removed: "User removed from organisation"
+      error_user_removed: "Error removing user from organisation"
+      user_allready_in_org: "User allready in organisation"
+      user_allready_invited: "User allready invited"
+      user_invited: "User invited"
+      error_inviting_user: "Error inviting user"
+      user_does_not_exist: "User does not exist"
+      org_successfully_created: "Organisation was successfully created."
+      org_successfully_updated: "Organisation was successfully updated."
+      org_successfully_deleted: "Organisation was successfully destroyed."
+
+    notice:
+      project_created: "Project created"
+      project_updated: "Project updated"
+      project_deleted: "Project deleted"
+      drawing_created: "Drawing created"
+      drawing_updated: "Drawing updated"
+      drawing_deleted: "Drawing deleted"
+      doc_created: "Document created"
+      doc_updated: "Document updated"
+      doc_deleted: "Dokument deleted"
+      cat_created: "Category created"
+      cat_updated: "Category updated"
+      cat_deleted: "Category deleted"
+      pin_created: "Pin created"
+      pin_updated: "Pin updated"
+      pin_deleted: "Pin deleted"
+      pic_created: "Picture created"
+      pic_updated: "Picture updated"
+      pic_deleted: "Picture deleted"
+      checklist_new_element: "New element added"
+      checklist_new_error: "Could not add element"
+      checklist_new: "Checklist created"
+      checklist_updated: "Checklist updated"
+      checklist_deleted: "Checklist deleted"
+
+    checklist:
+      newelement: "New element"
+      single: "Checklist"
+      plural: "Checklists"
+      new: "New checklist"
+      edit: "Edit checklist"
+      all: "All checklists"
+      no_list: "No checklists"
+      hyphen: "Check-list"
+    error: "An error has occured:"
+
+  layouts:
+    application:
+      projects: "Projects"
+      projectmanagement: "Project Management"
+      user: "User"
+      login: "Login"
+      register: "Register"
+      logout: "Logout"
+      current_project_empty: "Project: none"
+      current_project: "Project: "
+
+  projects:
+    invitation:
+      organisation: Organisation
+      title: Invite new organisation
+      choose: Choose project
+      choose_explanation: Select a project you want to share with the organization
+      send_invitation: Send invitation
+      invitation_to: Invitation to
+      was_sent: Was sent
+    form:
+      projectname: "Project name"
+      sketchfab_url: "Sketchfab URL"
+
+    drawings:
+      form:
+        drawingtype: "Drawing type"
+        choosetype: "Choose type"
+
+    application:
+      docs_folder:
+        documents: "Documents"
+      drawings_folder:
+        drawings: "Drawings"
+
+    docs:
+      doc:
+        project: "Project"
+        files: "Associated files"
+      form:
+        showdoc: "Show documents"
+
+    pictures:
+      pictures_folder:
+        delete_confirm_single: "Are you sure you want to delete this picture?"
+        delete_confirm_multi: "Are you sure you want to delete these pictures?"
+
+    imagepins:
+      index:
+        picturegroup_in: "Picture group in"
+        picturegroup: "Picture group"
+      _imagepin:
+        showimggroup: "Show image group"
+        editimggroup: "Edit image group"
+      edit:
+        picturegroup: "Picture group"
+        all_picturegroups: "All picture groups"
+
+  devise:
+    sessions:
+      user:
+        signed_in: "Successfully signed in."
+
+  users:
+    sessions:
+      new:
+        log_in: Log in
+        email: Email
+        password: Password
+        remember_me: Remember me
+        forgot_password: Forgot your password?
