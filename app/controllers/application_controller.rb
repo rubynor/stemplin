@@ -27,7 +27,10 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    locale = params["locale"]
-    I18n.locale = locale
+    if current_user
+      I18n.locale = current_user.locale
+    else
+      I18n.locale = I18n.default_locale
+    end
   end
 end
