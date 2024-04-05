@@ -13,7 +13,7 @@
       </td>
     </tr>
     <% if group[:children].present? %>
-      <%= render partial: "simple_report_section", locals: { children: group[:children], level: level + 1 } %>
+      <%= render partial: "reports/details/report_section", locals: { children: group[:children], level: level + 1 } %>
     <% end %>
   <% end %>
 <% end %>
