@@ -1,23 +1,23 @@
-<div class="w-full p-4 flex flex-col gap-y-8 lg:gap-y-16">
+<div class="w-full p-4 print:p-0 flex flex-col gap-y-8 lg:gap-y-16 print:gap-y-4">
   <div class="flex flex-col">
     <div class="border-b border-gray-100 pb-4 mb-4">
-      <span class="text-sm font-medium text-gray-500 uppercase">Summary</span>
+      <span class="text-sm print:text-xs font-medium text-gray-500 uppercase">Summary</span>
     </div>
     <div class="flex-1 flex gap-x-16 mb-4">
       <div class="flex flex-row items-start gap-x-2">
-        <i class="uc-icon text-2xl text-gray-400">&#xea95;</i>
+        <i class="uc-icon text-2xl text-gray-400 print:hidden">&#xea95;</i>
         <div>
-          <h2 class="text-base font-regular">Total billable hours</h2>
-          <span class="font-semibold text-2xl text-primary">
+          <h2 class="text-base print:text-sm font-regular">Total billable hours</h2>
+          <span class="font-semibold text-2xl print:text-lg text-primary print:text-gray-900">
             <%= minutes_to_float detailed_report_data.total_billable_minutes %>
           </span>
         </div>
       </div>
       <div class="flex flex-row items-start gap-x-2">
-        <i class="uc-icon text-2xl text-gray-400">&#xeb5b;</i>
+        <i class="uc-icon text-2xl text-gray-400 print:hidden">&#xeb5b;</i>
         <div>
-          <h2 class="text-base font-regular">Total hours</h2>
-          <span class="font-semibold text-2xl text-primary">
+          <h2 class="text-base print:text-sm font-regular">Total hours</h2>
+          <span class="font-semibold text-2xl print:text-lg text-primary print:text-gray-900">
             <%= minutes_to_float detailed_report_data.total_minutes %>
           </span>
         </div>
@@ -26,13 +26,13 @@
   </div>
 
   <div class="flex flex-col">
-    <div class="border-b border-gray-100 pb-4 mb-4">
-      <span class="text-sm font-medium text-gray-500 uppercase">Time registrations</span>
+    <div class="border-b border-gray-100 pb-4 mb-4 print:mb-0 print:border-none">
+      <span class="text-sm print:text-xs font-medium text-gray-500 uppercase">Time registrations</span>
     </div>
     <table class="w-full">
       <thead>
-      <tr class="bg-gray-50 border-y-2 border-gray-100 text-gray-500 print-color-adjust uppercase font-medium text-base">
-        <td class="pl-5 py-4">Client (<%= detailed_report_data.clients.count %>)</td>
+      <tr class="bg-gray-50 border-y-2 border-gray-100 text-gray-500 print-color-adjust uppercase font-medium text-base print:text-xs">
+        <td class="pl-5 py-4 print:pl-1 print:py-1">Client (<%= detailed_report_data.clients.count %>)</td>
         <td>Project (<%= detailed_report_data.projects.count %>)</td>
         <td>Task (<%= detailed_report_data.tasks.count %>)</td>
         <td>Person (<%= detailed_report_data.users.count %>)</td>
@@ -40,51 +40,46 @@
         <td class="w-6"></td>
       </tr>
       </thead>
-      <tbody>
+      <tbody class="print:text-sm">
         <% structured_report_data.each do |key, value| %>
           <tr class="bg-gray-50 border-b-1 border-gray-100 text-gray-600 print-color-adjust">
-            <td class="pl-5 py-4 font-semibold col-span-4"><%= key.strftime("%A, %d %B %Y") %></td>
+            <td class="pl-5 py-4 print:pl-1 print:py-1 font-semibold col-span-4"><%= key %></td>
             <td></td>
             <td></td>
             <td></td>
-            <td class="text-end"><%= minutes_to_float value.sum { |v| v.minutes } %></td>
+            <td class="text-end font-medium"><%= minutes_to_float value.sum { |v| v.minutes } %></td>
             <td></td>
           </tr>
           <% value.each do |child| %>
-            <tr class="">
-              <td class="pl-5 py-4"><%= child.project.client.name %></td>
+            <tr class="text-base print:text-xs border-b last:border-b-0 border-gray-100">
+              <td class="pl-5 print:pl-1 py-4 print:py-1"><%= child.project.client.name %></td>
               <td>
                 <%= child.project.name %>
               </td>
               <td>
                 <div class="flex flex-col gap-3">
-                  <span><%= child.task.name %></span>
+                  <div class="flex flex-col">
+                    <span><%= child.task.name %></span>
+                    <span class="text-gray-500 text-sm print:text-xs"><%= child.notes %></span>
+                  </div>
                 </div>
               </td>
               <td><%= child.user.name %></td>
               <td class="text-end"><%= minutes_to_float child.minutes %></td>
               <td></td>
             </tr>
-            <tr class="border-b last:border-b-0 border-gray-100">
-              <td></td>
-              <td></td>
-              <td class="py-3"><span class="text-gray-500 text-sm"><%= child.notes %></span></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
           <% end %>
         <% end %>
       </tbody>
-      <tfoot class="border-t border-gray-100">
-        <tr class="py-4">
+      <tfoot class="border-t border-gray-100 pt-4">
+        <tr class="py-4 print:py-2">
           <td></td>
           <td></td>
           <td></td>
           <td></td>
           <td class="text-end">
-            <span class="font-medium text-xl">Total</span>
-            <span class="font-semibold text-2xl text-primary"><%= minutes_to_float detailed_report_data.total_minutes %></span>
+            <span class="font-medium text-xl print:text-lg">Total</span>
+            <span class="font-semibold text-2xl print:text-xl text-primary print:text-gray-900"><%= minutes_to_float detailed_report_data.total_minutes %></span>
           </td>
           <td></td>
         </tr>
