@@ -5,11 +5,11 @@
         <span class="uppercase text-sm text-gray-600 font-semibold">Filter</span>
         <div class="flex flex-col lg:flex-row justify-between items-end lg:items-start gap-4">
           <div class="flex flex-row flex-wrap items-center gap-4">
-            <%=# TODO: Extract these repetitions into a a reusasble Filter::Input component  %>
+            <%# TODO: Extract into reusable Filter::Input component %>
             <%# period(from) start %>
             <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
               <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
-                <i class="uc-icon` text-sm text-gray-500">&#xe891;</i>
+                <i class="uc-icon text-sm text-gray-500">&#xe891;</i>
                 <span class="text-gray-500 text-sm">Period - from</span>
                 <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_start_date ? form_data.selected_start_date.strftime("%d %b %y") : "All" } %>
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
@@ -103,7 +103,7 @@
             <% end %>
             <%# team end %>
             <div class="flex flex-col">
-              <span class="text-sm text-gray-500 font-medium">Detailed report</span>
+              <span class="text-xs text-gray-400 font-medium uppercase">Detailed report</span>
               <%= render SwitchComponent.new(form: form, attribute: :detailed_report, initial_value: form_data.detailed_report) %>
             </div>
           </div>

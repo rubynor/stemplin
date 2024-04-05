@@ -1,18 +1,18 @@
-<div data-controller="report-edit" class="flex flex-col p-4">
+<div data-controller="report-edit" class="flex flex-col p-4 print:p-0">
   <div class="w-full">
     <% if structured_report_data[:children].present? %>
-      <div class="gap-y-8 lg:gap-y-16">
-        <div class="border-b border-gray-100 pb-4 mb-4">
-          <span class="text-sm font-medium text-gray-500 uppercase"><%= time_frame(form_data.start_date, form_data.end_date) if structured_report_data[:children].present? %></span>
+      <div class="gap-y-8 lg:gap-y-16 print:gap-y-2">
+        <div class="border-b border-gray-100 pb-4 mb-4 print:mb-0">
+          <span class="text-sm font-medium text-gray-500 print:text-gray-700 uppercase"><%= time_frame(form_data.start_date, form_data.end_date) if structured_report_data[:children].present? %></span>
         </div>
         <table class="w-full">
           <tbody>
-            <%= render partial: "reports/details/report_section", locals: { children: structured_report_data[:children], level: 0 } %>
-            <tr class="flex justify-between py-4 border-t border-gray-100">
+            <%= render partial: "reports/details/row", locals: { children: structured_report_data[:children], level: 0 } %>
+            <tr class="flex justify-between py-4 print:py-2 border-t border-gray-100">
               <td></td>
               <td>
-                <span class="font-medium text-xl">Total</span>
-                <span class="font-semibold text-2xl text-primary"><%= minutes_to_float structured_report_data[:total] %></span>
+                <span class="font-medium text-xl print:text-lg">Total</span>
+                <span class="font-semibold text-2xl print:text-lg text-primary print:text-gray-900"><%= minutes_to_float structured_report_data[:total] %></span>
               </td>
             </tr>
           </tbody>
