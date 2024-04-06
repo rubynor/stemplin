@@ -1,0 +1,29 @@
+<%= render PhlexUI::Dialog.new(open: true, data: { controller: "custom-dialog" }) do %>
+  <%= render PhlexUI::Dialog::Trigger.new(class: "hidden", data: { custom_dialog_target: "trigger" }) do %>
+    <%= render PhlexUI::Button.new { "Open Dialog" } %>
+  <% end %>
+  <%= render PhlexUI::Dialog::Content.new(class: "bg-white", size: :lg) do %>
+    <div class="flex flex-col gap-y-4">
+      <span class="font-semibold text-gray-600 text-lg">Upload file</span>
+      <div class="border-dashed border-2 border-purple-200 w-full rounded-md bg-purple-100">A</div>
+      <div class="bg-gray-100 px-6 py-4 flex flex-row justify-between items-center rounded-md">
+        <div class="flex flex-col gap-y-2 w-full">
+          <div class="flex flex-row items-center gap-x-2">
+            <%= image_tag "xls.svg", class: "w-8" %>
+            <span class="font-medium text-base">Sample format</span>
+          </div>
+          <div class="w-full md:w-4/5">
+            <span class="text-sm text-gray-500">Feel free to grab the sample file below to help you create your own.</span>
+          </div>
+        </div>
+        <div>
+          <%= render ButtonComponent.new(variant: :outline, path: "/downloads/sample_project.xlsx", method: :get) { "Download" } %>
+        </div>
+      </div>
+    </div>
+    <%= render PhlexUI::Dialog::Footer.new(class: "mt-4") do %>
+      <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->dismissable#dismiss' }) { "Cancel" } %>
+      <%= render ButtonComponent.new { "Save" } %>
+    <% end %>
+  <% end %>
+<% end %>

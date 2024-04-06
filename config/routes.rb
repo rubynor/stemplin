@@ -48,9 +48,11 @@ Rails.application.routes.draw do
   end
 
   namespace :workspace do
-    resources :projects
-    resources :clients
-    resources :tasks
-    resources :teams
+    resources :projects, only: [ :index ] do
+      post :import_modal, on: :collection
+    end
+    resources :clients, only: [ :index ]
+    resources :tasks, only: [ :index ]
+    resources :teams, only: [ :index ]
   end
 end
