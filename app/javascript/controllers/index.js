@@ -61,4 +61,7 @@ application.register("custom-dropdown", CustomDropdownController);
 import PrintController from "./print_controller";
 application.register("print", PrintController);
 
+import FileUploadController from "./file_upload_controller";
+application.register("file-upload", FileUploadController);
+
 // TODO: fetch controllers from app/javascript/controllers/**/*_controller.js and load/register everything automatically, the filename of the controller will then be used as the controller identifier in the DOM

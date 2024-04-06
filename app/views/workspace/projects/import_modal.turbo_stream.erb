@@ -5,7 +5,9 @@
   <%= render PhlexUI::Dialog::Content.new(class: "bg-white", size: :lg) do %>
     <div class="flex flex-col gap-y-4">
       <span class="font-semibold text-gray-600 text-lg">Upload file</span>
-      <div class="border-dashed border-2 border-purple-200 w-full rounded-md bg-purple-100">A</div>
+      <%= form_with url: new_client_path do |form| %>
+        <%= render FileUploadComponent.new(form: form, attribute: :new_project_file, caption: "Supported formats: XLS, XLSX", accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") %>
+      <% end %>
       <div class="bg-gray-100 px-6 py-4 flex flex-row justify-between items-center rounded-md">
         <div class="flex flex-col gap-y-2 w-full">
           <div class="flex flex-row items-center gap-x-2">
