@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Reap</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= hotwire_livereload_tags if Rails.env.development? %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  </head>
+  <body class="font-montserrat">
+    <!-- Navbar -->
+    <%= render partial: "shared/flash_messages" %>
+
+    <%= render 'layouts/navbar'%>
+    <div class="max-w-7xl mx-auto flex flex-col gap-y-4 py-4 lg:py-6 px-4">
+      <div class="py-3">
+        <span class="text-base lg:text-lg">Workspace</span>
+      </div>
+      <%= render CardComponent.new(class: "!p-0 grid grid-cols-1 lg:grid-cols-4") do %>
+        <div class="col-span-1 bg-gray-50 p-4">
+          <%= render partial: "workspace/sidenav" %>
+        </div>
+        <div class="col-span-3 shadow-sm p-4">
+          <%= yield %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Footer -->
+    <footer class="print:hidden bottom-0 h-16 items-center flex space-x-2 justify-center fixed w-full text-center z-0">
+      <a href="" class="font-regular text-sm text-gray-400">Reap <%= Date.current.year %></a>
+    </footer>
+  </body>
+</html>

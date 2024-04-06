@@ -1,4 +1,4 @@
-<header class="border-b border-gray-200 shadow px-4 print:hidden">
+<header class="border-b border-gray-200 shadow-sm px-4 print:hidden">
   <nav class="max-w-7xl mx-auto flex justify-between items-center">
     <div>
       <%= link_to root_path, class: "block hover:text-primary" do %>
@@ -15,6 +15,7 @@
         <%= link_to "Home", time_regs_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([root_path, time_regs_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
         <% if current_user.admin? %>
           <%= link_to "Projects", clients_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?(clients_path) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
+          <%= link_to "Workspace", workspace_projects_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?(workspace_projects_path) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
         <% end %>
         <%= link_to "Reports", report_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?(report_path) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
       </div>
@@ -71,6 +72,11 @@
               <%= render PhlexUI::Link.new(href: clients_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
                 <div class="w-full flex justify-start items-center gap-x-1">
                   <%= render PhlexUI::Label.new { "Projects"} %>
+                </div>
+              <% end %>
+              <%= render PhlexUI::Link.new(href: workspace_projects_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+                <div class="w-full flex justify-start items-center gap-x-1">
+                  <%= render PhlexUI::Label.new { "Workspace"} %>
                 </div>
               <% end %>
             <% end %>

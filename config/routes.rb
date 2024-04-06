@@ -46,4 +46,11 @@ Rails.application.routes.draw do
     resources :assigned_tasks
     get "export", to: "projects#export", as: "export_project_time_reg"
   end
+
+  namespace :workspace do
+    resources :projects
+    resources :clients
+    resources :tasks
+    resources :teams
+  end
 end
