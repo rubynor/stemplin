@@ -46,9 +46,37 @@ en:
     friday: "Friday"
     saturday: "Saturday"
     sunday: "Sunday"
+
+  months:
+    january: "January"
+    february: "February"
+    march: "March"
+    april: "April"
+    may: "May"
+    june: "June"
+    july: "July"
+    august: "August"
+    september: "September"
+    october: "October"
+    november: "November"
+    december: "December"
+
+  time:
     week: "Week total"
+    track: "Track time"
+    today: "Today"
+    go_to_today: "Go to today"
+    date_range: "Date range"
+  
+  task:
+    your_projects: "Your projects"
+    new_project: "New Project"
+    new_client: "New Client"
+    detailed_report: "Show detailed report"
 
 
+  nav:
+    time: "Times"
 
   common:
     doc: "Document"
@@ -116,6 +144,11 @@ en:
     add_employee: "Add employee"
     invite_worker: "Invite worker"
     all_images: "All images"
+    clients: "Clients"
+    tasks: "Tasks"
+    users: "Users"
+
+
 
     registration:
       title: "Create profile"

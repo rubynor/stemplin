@@ -20,7 +20,40 @@ nb:
     friday: "Fredag"
     saturday: "Lørdag"
     sunday: "Søndag"
+
+  months:
+    january: "Januar"
+    february: "Februar"
+    march: "Mars"
+    april: "April"
+    may: "Mai"
+    june: "Juni"
+    july: "Juli"
+    august: "August"
+    september: "September"
+    october: "Oktober"
+    november: "November"
+    december: "December"
+
+  time:
     week: "Hele uken"
+    track: "Tell tiden"
+    today: "I dag"
+    go_to_today: "Reis til i dag"
+    date_range: "Datointervall"
+
+
+  task:
+    your_projects: "Dine prosjekter"
+    new_project: "Nytt Prosjekt"
+    new_client: "Ny Client"
+    detailed_report: "Se detaljert rapport"
+
+
+  nav:
+    time: "Tider"
+    reports: "Reports"
+    reports: "Rapporter"
   
   common:
     doc: "Dokument"
@@ -88,6 +121,9 @@ nb:
     add_employee: "Legg til ansatt"
     invite_worker: "Inviter ansatt"
     all_images: "Alle bilder"
+    clients: "Clienter"
+    tasks: "Oppgaver"
+    users: "Brukere"
 
     registration:
       title: "Opprett profil"

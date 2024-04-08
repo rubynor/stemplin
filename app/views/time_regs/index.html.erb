@@ -10,7 +10,8 @@
             <i class="uc-icon text-6xl text-white">&#xead5;</i>
           </div>
           <p class='mt-4 text-lg'>
-            Track time
+            <%= t('time.track') %>
+
           </p>
         <%end %>
       </div>
@@ -38,15 +39,15 @@
         <div class="flex lg:text-3xl text-xl w-3/4  max-[800px]:hidden w-full">
           <% if @chosen_date == Date.today %>
             <p class="font-medium mr-4">
-            Today:
+              <%= t('time.today') %>:
             </p>
             <p>
-              <%= @chosen_date.strftime("%A, %d %B") %>
+              <%= t('day.' + @chosen_date.strftime('%A')) %>,<%= @chosen_date.strftime("%d") %> <%= t('months.' + @chosen_date.strftime('%B').downcase) %>
             </p>
           <% else %>
-            <%= @chosen_date.strftime("%A, %d %B") %>
+            <%= t('day.' + @chosen_date.strftime('%A')) %>, <%= @chosen_date.strftime("%d") %> <%= t('months.' + @chosen_date.strftime('%B').downcase) %>
             <div class="ml-2 text-blue-600">
-              <%= link_to "Go to today", root_path, class: "text-lg underline underline-offset-2" %>
+              <%= link_to t('time.go_to_today'), root_path, class: "text-lg underline underline-offset-2" %>
             </div>
           <% end %>
         </div>
@@ -70,16 +71,16 @@
       <div class="">
         <button data-action="click->modal#toggle">
           <div class="bg-seaGreen mt-4 h-8 w-screen px-1 py-1 rounded-xl self-stretch text-white  ">
-            Track time
+            <%= t('time.track') %>
           </div>
         </button>
       </div>
     </div>
 
     <div class="flex flex-row items-center content-center mt-6 max-[640px]:hidden max-[800px]:my-2">
-      <% Date::DAYNAMES.rotate.each_with_index do |day, i| %>
-        <div class="grid grow max-[800px]:text-xs <%= 'border-b-2 border-red-300' if @chosen_date.wday == (i+1)%7 %>">
-          <% current_day_index = i + 1 %>
+      <% I18n.t('day').each do |key, day| %>
+        <div class="grid grow max-[800px]:text-xs <%= 'border-b-2 border-red-300' if @chosen_date.wday == (Date.parse(key.to_s.capitalize).wday + 1) % 7 %>">
+          <% current_day_index = Date.parse(key.to_s.capitalize).wday + 1 %>
 
           <% if @chosen_date.wday == 0 %>
             <% diff =  current_day_index - 7%>
@@ -87,16 +88,16 @@
             <% diff = current_day_index - @chosen_date.wday %>
           <% end %>
           <% date_with_minutes = @chosen_date + diff.days %>
-          <% day_minutes = @time_regs_week.select{ |tr| tr.date_worked.wday == (i+1) % 7 }.sum(&:minutes) %>
+          <% day_minutes = @time_regs_week.select{ |tr| tr.date_worked.wday == (Date.parse(key.to_s.capitalize).wday + 1) % 7 }.sum(&:minutes) %>
           <%= link_to root_path(date: date_with_minutes) do %>
-	    <%= day %>
-	    <br>
-	    <%= format_duration(day_minutes) %>
-	  <% end %>
+            <%= day %>
+            <br>
+            <%= format_duration(day_minutes) %>
+          <% end %>
         </div>
       <% end %>
       <div class="grid grow">
-        <%= t('day.week') %>
+        <%= t('time.week') %>
         <br />
         <%= format_duration(@total_minutes_week) %>
       </div>
