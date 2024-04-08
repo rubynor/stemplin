@@ -42,10 +42,10 @@
               <%= t('time.today') %>:
             </p>
             <p>
-              <%= t('day.' + @chosen_date.strftime('%A')) %>,<%= @chosen_date.strftime("%d") %> <%= t('months.' + @chosen_date.strftime('%B').downcase) %>
+              <%= t('day.' + @chosen_date.strftime('%A').downcase) %>,<%= @chosen_date.strftime("%d") %> <%= t('months.' + @chosen_date.strftime('%B').downcase) %>
             </p>
           <% else %>
-            <%= t('day.' + @chosen_date.strftime('%A')) %>, <%= @chosen_date.strftime("%d") %> <%= t('months.' + @chosen_date.strftime('%B').downcase) %>
+            <%= t('day.' + @chosen_date.strftime('%A').downcase) %>, <%= @chosen_date.strftime("%d") %> <%= t('months.' + @chosen_date.strftime('%B').downcase) %>
             <div class="ml-2 text-blue-600">
               <%= link_to t('time.go_to_today'), root_path, class: "text-lg underline underline-offset-2" %>
             </div>
@@ -78,18 +78,12 @@
     </div>
 
     <div class="flex flex-row items-center content-center mt-6 max-[640px]:hidden max-[800px]:my-2">
-      <% I18n.t('day').each do |key, day| %>
-        <div class="grid grow max-[800px]:text-xs <%= 'border-b-2 border-red-300' if @chosen_date.wday == (Date.parse(key.to_s.capitalize).wday + 1) % 7 %>">
+      <% I18n.t('day').each_with_index do |(key, day), index| %>
+        <div class="grid grow max-[800px]:text-xs <%= 'border-b-2 border-red-300' if Date::DAYNAMES[@chosen_date.wday].underscore == key.to_s %>">
           <% current_day_index = Date.parse(key.to_s.capitalize).wday + 1 %>
-
-          <% if @chosen_date.wday == 0 %>
-            <% diff =  current_day_index - 7%>
-          <% else %>
-            <% diff = current_day_index - @chosen_date.wday %>
-          <% end %>
-          <% date_with_minutes = @chosen_date + diff.days %>
           <% day_minutes = @time_regs_week.select{ |tr| tr.date_worked.wday == (Date.parse(key.to_s.capitalize).wday + 1) % 7 }.sum(&:minutes) %>
-          <%= link_to root_path(date: date_with_minutes) do %>
+
+          <%= link_to root_path(date: @chosen_date.beginning_of_week + index) do %>
             <%= day %>
             <br>
             <%= format_duration(day_minutes) %>
