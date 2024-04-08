@@ -11,50 +11,24 @@
         <span class="hidden lg:block mr-2">Import</span>
         <i class="uc-icon text-xl">&#xe8ea;</i>
       <% end %>
-      <%= render ButtonComponent.new(path: root_path, method: :get) do %>
+      <%= render ButtonComponent.new(path: new_modal_workspace_projects_path, method: :post) do %>
         <span class="hidden lg:block mr-2">Add New</span>
         <i class="uc-icon text-xl">&#xe9c7;</i>
       <% end %>
     </div>
   </div>
   <div>
-    <%= render PhlexUI::Table::Builder.new(@projects, class: "text-gray-700") do |t| %>
-      <%= t.column("Name") do |project| %>
-        <div class="flex flex-col">
-          <div class="flex flex-row items-center gap-x-1">
-            <span class="font-medium text-gray-700 text-sm"><%= project.name %></span>
-            <%= render PhlexUI::Badge.new(variant: project.billable_project ? :green : :gray, class: "!rounded-full flex gap-x-1") do %>
-              <span><%= project.billable_project ? "Billable" : "Non-Billable" %></span>
-            <% end %>
-          </div>
-          <div class="w-36 lg:w-48 xl:w-64 truncate">
-            <span class="text-gray-500 text-xs"><%= project.description %></span>
-          </div>
-        </div>
+    <%= render PhlexUI::Table.new do %>
+      <%= render PhlexUI::Table::Header.new do %>
+        <%= render PhlexUI::Table::Row.new do %>
+          <%= render PhlexUI::Table::Head.new { "Name" } %>
+          <%= render PhlexUI::Table::Head.new { "Client" } %>
+          <%= render PhlexUI::Table::Head.new { "Rate" } %>
+          <%= render PhlexUI::Table::Head.new { "Actions" } %>
+        <% end %>
       <% end %>
-      <%= t.column("Client") do |project| %>
-        <%= project.client.name %>
-      <% end %>
-      <%= t.column("Rate") do |project| %>
-        <div>
-          <span class="text-gray-400">NOK</span>
-          <span class="font-medium">
-            <%= project.billable_rate_nok %>
-          </span>
-        </div>
-      <% end %>
-      <%= t.column("Actions") do |project| %>
-        <div class="flex flex-row gap-x-2">
-          <%= render ButtonComponent.new(path: project_path(project), method: :get, variant: :outline, class: "!py-3") do %>
-            <i class="uc-icon">&#xe9a8;</i>
-          <% end %>
-          <%= render ButtonComponent.new(path: edit_project_path(project), method: :get, variant: :outline, class: "!py-3") do %>
-            <i class="uc-icon">&#xe972;</i>
-          <% end %>
-          <%= render ButtonComponent.new(path: edit_project_path(project), method: :get, variant: :outline, class: "!py-3") do %>
-            <i class="uc-icon">&#xeb97;</i>
-          <% end %>
-        </div>
+      <%= render PhlexUI::Table::Body.new(id: :organization_projects) do %>
+        <%= render partial: "workspace/projects/project", collection: @projects %>
       <% end %>
     <% end %>
   </div>

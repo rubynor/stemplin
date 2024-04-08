@@ -1,0 +1,77 @@
+<div class="flex flex-col gap-y-8">
+  <div class="flex flex-row justify-between items-start border-b border-gray-100 py-3">
+    <div class="flex flex-row items-start gap-x-2">
+      <%= link_to workspace_projects_path, class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out" do %>
+        <i class="uc-icon text-2xl">&#xe833;</i>
+      <% end %>
+      <div class="flex flex-col gap-y-2">
+        <span class="font-medium text-gray-600 text-lg"><%= @project.name %></span>
+        <span class="text-gray-500 text-sm font-regular"><%= @project.description %></span>
+      </div>
+    </div>
+    <div class="flex flex-row gap-2">
+      <%= render ButtonComponent.new(path: edit_modal_workspace_project_path(@project), method: :put, variant: :outline) do %>
+        <span class="hidden lg:block mr-2">Edit</span>
+        <i class="uc-icon">&#xe972;</i>
+      <% end %>
+      <%= render ButtonComponent.new(path: delete_confirmation_workspace_project_path(@project), method: :post, variant: :destructive) do %>
+        <span class="hidden lg:block mr-2">Delete</span>
+        <i class="uc-icon">&#xeb97;</i>
+      <% end %>
+    </div>
+  </div>
+  <div class="mt-4 flex flex-col gap-y-8 lg:gap-y-12 overflow-y-auto px-4">
+    <div class="divide-y divide-gray-100 flex flex-col">
+      <div>
+        <span class="text-base text-gray-600 font-medium uppercase">Information</span>
+      </div>
+      <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
+        <span class="font-regular">Client</span>
+        <span class="font-semibold"><%= @project.client.name %></span>
+      </div>
+      <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
+        <span class="font-regular">Rate</span>
+        <span class="font-semibold">NOK <%= @project.billable_rate_nok %></span>
+      </div>
+      <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
+        <span class="font-regular">Billing status</span>
+        <%= render PhlexUI::Badge.new(variant: @project.billable_project ? :green : :gray, class: "!rounded-full flex gap-x-1") do %>
+          <span><%= @project.billable_project ? "Billable" : "Non-Billable" %></span>
+        <% end %>
+      </div>
+      <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
+        <span class="font-regular">Created</span>
+        <span class="font-semibold"><%= @project.created_at.strftime("%A, %d %B %Y") %></span>
+      </div>
+    </div>
+    <div class="divide-y divide-gray-100 flex flex-col">
+      <div class="flex justify-between items-center py-2">
+        <span class="text-base text-gray-600 font-medium uppercase">Project Members</span>
+      </div>
+      <%= content_tag(:div, id: "#{dom_id(@project)}_memberships", class: "divide-y divide-gray-50") do %>
+        <%= render partial: "workspace/projects/membership", collection: @project.memberships %>
+      <% end %>
+      <div class="mt-2 py-4 font-medium flex flex-row gap-x-1 justify-end">
+        <span>Need to add more members?</span>
+        <%= render ButtonComponent.new(path: new_modal_workspace_project_membership_path(@project), method: :post, variant: :link, class!: "underline text-primary") do %>
+          <span class="mr-2">Add new</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="divide-y divide-gray-100 flex flex-col">
+      <div class="flex justify-between items-center py-2">
+        <span class="text-base text-gray-600 font-medium uppercase">Tasks</span>
+      </div>
+      <%= content_tag(:div, id: "#{dom_id(@project)}_assigned_tasks", class: "divide-y divide-gray-50") do %>
+        <%= render partial: "workspace/projects/assigned_task", collection: @project.assigned_tasks %>
+      <% end %>
+      <div class="mt-2 py-4 font-medium flex flex-row gap-x-1 justify-end">
+        <span>Need to add more tasks?</span>
+        <%= render ButtonComponent.new(path: new_modal_workspace_project_assigned_task_path(@project), method: :post, variant: :link, class!: "underline text-primary") do %>
+          <span class="mr-2">Add more</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

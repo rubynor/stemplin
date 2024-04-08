@@ -1,7 +1,7 @@
 <%= form_with model: @client do |form|%>
   <br>
   <div>
-    <%= form.label :name, class: 'block text-gray-700 font-bold mb-2' %> 
+    <%= form.label :name, class: "block text-gray-700 font-bold mb-2" %>
     <%= form.text_area :name, class: "w-full rounded-md p-2 border border-gray-300 mr-8 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white" %>
     <% @client.errors.full_messages_for(:name).each do |message|%>
       <div class="text-red-600 italic text-xs mt-1">

@@ -4,7 +4,7 @@
   <% end %>
   <%= render PhlexUI::Dialog::Content.new(class: "bg-white", size: :lg) do %>
     <div class="flex flex-col gap-y-4">
-      <span class="font-semibold text-gray-600 text-lg">Upload file</span>
+      <span class="font-semibold text-gray-600 text-lg">Import project</span>
       <%= form_with url: new_client_path do |form| %>
         <%= render FileUploadComponent.new(form: form, attribute: :new_project_file, caption: "Supported formats: XLS, XLSX", accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") %>
       <% end %>

@@ -1,0 +1,22 @@
+<%# TODO: Convert into reusable turbo_confirm component that can be triggered with `turbo_confirm` %>
+<%= render PhlexUI::AlertDialog.new(open: true, data: { controller: "custom-dialog" }) do %>
+  <%= render PhlexUI::AlertDialog::Trigger.new(class: "hidden", data: { custom_dialog_target: "trigger" }) do %>
+    <%= render PhlexUI::Button.new { "Show dialog" } %>
+  <% end %>
+  <%= render PhlexUI::AlertDialog::Content.new do %>
+    <%= turbo_frame_tag :modal do %>
+      <%= render PhlexUI::AlertDialog::Header.new do %>
+        <%= render PhlexUI::AlertDialog::Title.new { "Are you sure?" } %>
+        <%= render PhlexUI::AlertDialog::Description.new do  %>
+          <span>
+            Do you want to remove <span class="font-semibold text-primary"><%= @assigned_task.task.name %></span>, from the project <span class="font-semibold text-primary"><%= @project.name %></span>
+          </span>
+        <% end %>
+      <% end %>
+      <%= render PhlexUI::AlertDialog::Footer.new do %>
+        <%= render PhlexUI::AlertDialog::Cancel.new(class: "!border-gray-100") { "Cancel" } %>
+        <%= render ButtonComponent.new(variant: :destructive, path: workspace_project_assigned_task_path(id: @assigned_task.id, project_id: @assigned_task.project_id), method: :delete) { "Continue"} %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
