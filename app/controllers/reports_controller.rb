@@ -1,6 +1,6 @@
 class ReportsController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authorize_admin!
+  before_action :authorize!
 
   def show
     set_form_data
@@ -10,22 +10,22 @@ class ReportsController < ApplicationController
   def update
     set_form_data
 
-    client_ids_for_report = @form_data.selected_client_ids.presence || Client.ids
-    project_ids_for_report = @form_data.selected_project_ids.presence || Project.ids
-    user_ids_for_report = @form_data.selected_user_ids.presence || User.ids
-    task_ids_for_report = @form_data.selected_task_ids.presence || Task.ids
+    client_ids_for_report = @form_data.selected_client_ids.presence || authorized_scope(Client, type: :relation).ids
+    project_ids_for_report = @form_data.selected_project_ids.presence || authorized_scope(Project, type: :relation).ids
+    user_ids_for_report = @form_data.selected_user_ids.presence || authorized_scope(User, type: :relation).ids
+    task_ids_for_report = @form_data.selected_task_ids.presence || authorized_scope(Task, type: :relation).ids
 
-    time_regs = available_time_regs.for_report(client_ids_for_report, project_ids_for_report, user_ids_for_report, task_ids_for_report)
+    time_regs = authorized_scope(TimeReg, type: :relation).for_report(client_ids_for_report, project_ids_for_report, user_ids_for_report, task_ids_for_report)
                        .where(date_worked: (@selected_start_date..@selected_end_date))
 
     if @form_data.detailed_report
 
       @structured_report_data = time_regs.group_by { |reg| reg[:date_worked] }.sort_by { |key| key  }
 
-      clients = Client.joins(:time_regs).where(time_regs: { id: time_regs }).distinct
-      projects = Project.joins(:time_regs).where(time_regs: { id: time_regs }).distinct
-      tasks = Task.joins(:time_regs).where(time_regs: { id: time_regs }).distinct
-      users = User.joins(:time_regs).where(time_regs: { id: time_regs }).distinct
+      clients = authorized_scope(Client, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
+      projects = authorized_scope(Project, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
+      tasks = authorized_scope(Task, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
+      users = authorized_scope(User, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
       total_billable_minutes = time_regs.joins(:project).where(project: { billable_project: true }).sum(:minutes)
       total_minutes = time_regs.sum(:minutes)
 
@@ -69,12 +69,6 @@ class ReportsController < ApplicationController
 
   private
 
-  def available_time_regs
-    return TimeReg.none if current_user.nil?
-    return TimeReg.all if current_user.admin?
-    current_user.time_regs
-  end
-
   def report_params
     return params unless params[:report]
     params.require(:report).permit(:start_date, :end_date, client_ids: [], project_ids: [], task_ids: [], user_ids: [])
@@ -83,12 +77,11 @@ class ReportsController < ApplicationController
   def set_form_data
     @selected_start_date = Date.parse(report_params[:start_date]) if report_params[:start_date].present?
     @selected_end_date = Date.parse(report_params[:end_date]) if report_params[:end_date].present?
-
     @form_data = OpenStruct.new(
-      selectable_clients: available_clients.order(:name),
-      selectable_projects: available_projects.order(:name),
-      selectable_tasks: available_tasks.order(:name),
-      selectable_users: available_users.order(:last_name),
+      selectable_clients: authorized_scope(Client, type: :relation).order(:name),
+      selectable_projects: authorized_scope(Project, type: :relation).order(:name),
+      selectable_tasks: authorized_scope(Task, type: :relation).order(:name),
+      selectable_users: authorized_scope(User, type: :relation).order(:last_name),
 
       selected_client_ids: report_params[:client_ids].to_a.map(&:to_i),
       selected_project_ids: report_params[:project_ids].to_a.map(&:to_i),
@@ -102,19 +95,19 @@ class ReportsController < ApplicationController
     )
 
     if @form_data.selected_client_ids.any?
-      @form_data.selectable_projects = available_projects.joins(:client)
+      @form_data.selectable_projects = authorized_scope(Project, type: :relation).joins(:client)
                                               .where(client: { id: @form_data.selected_client_ids })
                                               .distinct.order(:name)
     end
 
     if @form_data.selected_project_ids.any?
-      @form_data.selectable_tasks = available_tasks.joins(:projects)
+      @form_data.selectable_tasks = authorized_scope(Task, type: :relation).joins(:projects)
                                         .where(projects: { id: @form_data.selected_project_ids })
                                         .distinct.order(:name)
     end
 
     if @form_data.selected_project_ids.any?
-      @form_data.selectable_users = available_users.joins(:projects)
+      @form_data.selectable_users = authorized_scope(User, type: :relation).joins(:projects)
                                         .where(projects: { id: @form_data.selected_project_ids })
                                         .distinct.order(:last_name)
     end
@@ -137,7 +130,7 @@ class ReportsController < ApplicationController
   # gets all the time_regs for the report with the filters in the report object
   def get_time_regs(report, users, projects, tasks)
     # includes tables to decrease the number of queries
-    time_regs = TimeReg.includes(
+    time_regs = authorized_scope(TimeReg, type: :relation).includes(
       :task,
       :user,
       membership: [ :user ],
