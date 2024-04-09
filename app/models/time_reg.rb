@@ -10,6 +10,7 @@ class TimeReg < ApplicationRecord
   has_one :task, through: :assigned_task, source: :task
   has_one :user, through: :membership
   has_one :client, through: :project
+  has_one :organization, through: :project
 
   validates :notes, length: { maximum: 255 }
   validates :minutes, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1440 }

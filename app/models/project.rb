@@ -4,6 +4,7 @@ class Project < ApplicationRecord
   validates :billable_rate, numericality: { only_integer: true }
 
   belongs_to :client
+  has_one :organization, through: :client
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
   has_many :time_regs, through: :memberships

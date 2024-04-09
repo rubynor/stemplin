@@ -5,4 +5,5 @@ class Client < ApplicationRecord
 
   has_many :projects
   has_many :time_regs, through: :projects
+  belongs_to :organization
 end
