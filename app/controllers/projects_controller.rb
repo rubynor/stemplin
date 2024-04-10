@@ -24,11 +24,11 @@ class ProjectsController < ApplicationController
     project_params[:task_ids].each do |task_id|
       @project.tasks << authorized_scope(Task, type: :relation).find(task_id) unless task_id.empty?
     end
-    # makes the creater of the project a member
-    @project.users << current_user
 
     # tries to save the project in the db
     if @project.save
+      # makes the creater of the project a member
+      @project.users << current_user
       redirect_to @project
     else
       @clients = authorized_scope(Client, type: :relation).all
