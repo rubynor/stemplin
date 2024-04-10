@@ -3,7 +3,7 @@
       <div class="flex flex-col gap-5 mb-8">
         <div class="grid gap-8 grid-cols-2">
           <h2 class="text-xl">
-            Clients
+            <%= t('common.clients') %>
           </h2>
           <div class="flex items-center gap-2 flex flex-wrap ">
             <%= f.collection_check_boxes :client_ids, form_data.selectable_clients, :id, :name, include_hidden: false do |cb| %>
@@ -12,7 +12,7 @@
           </div>
 
           <h2 class="text-xl">
-            Projects
+            <%= t('common.projects') %>
           </h2>
           <div class="flex items-center gap-2 flex flex-wrap">
             <%= f.collection_check_boxes :project_ids, form_data.selectable_projects, :id, :name, include_hidden: false do |cb| %>
@@ -21,7 +21,7 @@
           </div>
 
           <h2 class="text-xl">
-            Tasks
+            <%= t('common.tasks') %>
           </h2>
           <div class="flex items-center gap-2 flex flex-wrap">
             <%= f.collection_check_boxes :task_ids, form_data.selectable_tasks, :id, :name, include_hidden: false do |cb| %>
@@ -30,7 +30,7 @@
           </div>
 
           <h2 class="text-xl">
-            Users
+            <%= t('common.users') %>
           </h2>
           <div class="flex items-center gap-2 flex flex-wrap">
             <%= f.collection_check_boxes :user_ids, form_data.selectable_users, :id, :name, include_hidden: false do |cb| %>
@@ -39,14 +39,14 @@
           </div>
 
           <h2 class="text-xl">
-            Date range
+            <%= t('time.date_range') %>
           </h2>
           <div>
             <%= f.date_field :start_date, value: form_data.selected_start_date, "data-action": "form#submit" %>
             <%= f.date_field :end_date, value: form_data.selected_end_date, "data-action": "form#submit" %>
           </div>
           <%= label_tag(:detailed_report, class:"col-start-2 flex justify-between items-center px-6 py-3 gap-3 text-xl w-fit bg-white") do %>
-            Show detailed report
+            <%= t('task.detailed_report') %>
             <%= check_box_tag(:detailed_report, 1, form_data.detailed_report, { class: "h-6 w-6", "data-action": "form#submit" }) %>
           <% end %>
         </div>

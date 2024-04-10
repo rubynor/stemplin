@@ -4,7 +4,7 @@
       <h1 class="font-medium italic text-2xl ml-4">Edit <%= @client.name %></h1><br>
       <button data-action="click->collapse-delete#deleteDiv" 
         class="rounded bg-tastyWhiteLite border border-gray-400 p-2 hover:bg-red-400" 
-        data-task-id="delete-button">Delete client
+        data-task-id="delete-button"><%= t('common.client') %>
       </button>
     </div>
     <div class="hidden" data-collapse-delete-target="toggleDiv">

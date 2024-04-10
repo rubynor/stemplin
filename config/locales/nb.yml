@@ -41,230 +41,87 @@ nb:
     today: "I dag"
     go_to_today: "Reis til i dag"
     date_range: "Datointervall"
-
+    New_time_entry: "Ny tidsregistrering"
 
   task:
     your_projects: "Dine prosjekter"
     new_project: "Nytt Prosjekt"
-    new_client: "Ny Client"
+    new_client: "Ny Klient"
     detailed_report: "Se detaljert rapport"
-
-
-  nav:
-    time: "Tider"
-    reports: "Reports"
-    reports: "Rapporter"
+    no_data_in_this_period: "Ingen data i denne perioden"
+    assign_task: "Sett oppgave"
   
   common:
-    doc: "Dokument"
-    image: "Bilde"
-    images: "Bilder"
-    description: "Beskrivelse"
-    edit: "Rediger"
-    delete: "Slett"
-    save: "Lagre"
-    name: "Navn"
-    close: "Lukk"
-    customer: "Kunde"
-    drawing: "Tegning"
-    project: "Prosjekt"
-    allproject: "Alle prosjekter"
-    projectpage: "Prosjekt side"
-    language: "Språk"
-    choosefile: "Velg fil"
-    type: "Type"
-    category: "Kategori"
-    categories: "Kategorier"
-    newproject: "Nytt prosjekt"
-    newdrawing: "Ny tegning"
-    newdoc: "Nytt dokument"
-    newcat: "Ny kategori"
-    newpic: "Nytt bilde"
-    new_pin: "Nytt pin"
-    new: "NY"
-    projectnumber: "Prosjektnummer"
-    projects: "Prosjekter"
-    map: "Kart"
-    open_drawing: "Åpne tegning"
-    open_project: "Åpne prosjekt"
-    open_doc: "Åpne dokument"
-    edit_doc: "Rediger/Vis dokument"
-    create_new_drawing: "Last opp ny tegning"
-    create_new_doc: "Last opp nytt dokument"
-    create_new_pic: "Last opp nytt bilde"
-    create_new_project: "Opprett nytt prosjekt"
-    create_new_pin: "Last opp nytt pin"
-    move_pin: "Flytt pin"
-    cancel_move: "Avbryt flytting"
-    accept_move: "Bekreft ny posisjon"
-    add_new: "Last opp ..."
-    progress: "Progresjon"
-    discard: "Avbryt"
-    back: "Tilbake"
-    delete_verification: "Er du sikker på at vil slette?"
-    my_profile: "Min profil"
-    sketch: "Tegninger"
-    document: "Dokumenter"
-    home: "Hjem"
-    missing_overview_drawing: "Det er ikke funnet noen oversiktstegninger. Trykk på knappen nederst til høyre for å opprette en ny oversiktstegning."
-    next: "Neste"
-    of: "av"
-    new_user: Ny bruker?
-    email: "E-post"
-    navn: "Navn"
-    phone: "Mobil"
-    my_organisation: "Min organisasjon"
-    organisations: "Organisasjoner"
-    address: "Adresse"
-    employees: "Ansatte"
-    worker: "Arbeider"
-    add_employee: "Legg til ansatt"
-    invite_worker: "Inviter ansatt"
-    all_images: "Alle bilder"
-    clients: "Clienter"
+    client: "Klient"
+    clients: "Klienter"
     tasks: "Oppgaver"
     users: "Brukere"
+    times: "Tider"
+    time: "Tid"
+    reports: "Rapporter"
+    projects: "Prosjekter"
+    project: "Prosjekt"
+    notes: "Notater"
+    edit_account: "Endre Brukeren"
+    sign_out: "Logg Ut"
+    go_to_date: "Gå til dato"
+    cancel: "Avbryt"
+    start_timer: "Start klokken"
+    create_time_reg: "Opprett tids reg"
+    Update_Time_reg: "Oppdater Tids reg"
+    edit: "Rediger"
+    stop: "Stop"
+    start: "Start"
+    delete_project: "Fjern prosjekt"
+    delete_client: "Fjern Klient"
+    back_to_project: "Tilbake til prosjekt"
+    name: "Navn"
+    description: "Forklaring"
+    billable_project: "Fakturerbart prosjekt"
+    billable_rates: "Fakturerbare priser"
+    bill_hourly_rates_apply: "Regning hver time, priser gjelder"
+    not_billed_to_a_client: "Ikke fakturert til en klient"
+    track_billable_rates: "Vi trenger fakturerbare priser for å spore prosjektets fakturerbare beløp"
+    project_billable_rate: "Prosjektfakturerbar rate"
+    per_hour: "Hver time"
+    your_projects: "Dine prosjekter"
+    new_project: "Nytt prosjekt"
+    project_tasks: "Prosjekt oppgaver"
+    add_task: "Legg til oppgave"
+    assign_task: "Tildel oppgave"
+    edit_task_on_project: "Vil du endre oppgaven i prosjektet? Trykk"
+    here: "her"
+    create_task: "Lag oppgave"
+    create_New_Task: "Lag ny oppgave"
+    name_of_task: "Skriv navnet på oppgaven her"
+    save_task: "Lagre oppgaven"
+    project_members: "Prosjekt medlemer"
+    add_member: "Legg til medlem"
+    email: "E-post"
+    remove: "Fjern"
+    update_project: "Oppdater Prosjekt"
+    tasks: "Oppgave"
+    create_client: "Lag Klient"
+    edit_user: "Endre Brukere"
+    back: "Tilbake"
+  
+  notice:
+    are_you_sure: "Er du sikker?"
 
-    registration:
-      title: "Opprett profil"
-      first_name: "Navn"
-      last_name: "Etternavn"
-      email: "E-post"
-      password: "Passord"
-      confirm_password: "Bekreft passord"
-      organisation_name: "Navn på organisasjon"
-      organisation_number: "Org. nummer"
-      phone_number: "Mobil nr."
-      address: "Adresse"
-      done: "Profil opprettet"
-
-    organisation:
-      single: "Organisasjon"
-      plural: "Organisasjoner"
-      invite: "Inviter bruker"
-      invite_plural: "Inviter brukere"
-      email: "E-post"
-      users_invited: "Inviterte brukere"
-      members: "Medlemmer"
-      revoke: "Opphev"
-      remove: "Fjern"
-      all: "Alle organisasjoner"
-      invitations: "Invitasjoner"
-      new_org: "Ny organisasjon"
-      invite_organisation:  "Inviter organisasjon"
-      logged_in_as: "Logget inn som"
-      accept: "Aksepter"
-      decline: "Avslå"
-      invitation_revoked: "Invitasjon trukket tilbake"
-      error_revoke_inv: "Feil ved tilbaketrekking av invitasjon"
-      user_removed: "Bruker fjernet fra organisasjonen"
-      error_user_removed: "Feil ved fjerning av bruker fra organisasjonen"
-      user_allready_in_org: "Bruker er allerede en del av organisasjonen"
-      user_allready_invited: "Bruker er allerede invitert"
-      user_invited: "Bruker er invitert"
-      error_inviting_user: "Feil ved invitasjon av bruker"
-      user_does_not_exist: "Bruker eksisterer ikke"
-      org_successfully_created: "Organisasjonen ble opprettet"
-      org_successfully_updated: "Organisasjonen ble oppdatert"
-      org_successfully_deleted: "Organisasjonen ble slettet"
-
-    notice:
-      project_created: "Prosjekt opprettet"
-      project_updated: "Prosjekt oppdatert"
-      project_deleted: "Prosjekt slettet"
-      drawing_created: "Tegning opprettet"
-      drawing_updated: "Tegning oppdatert"
-      drawing_deleted: "Tegning slettet"
-      doc_created: "Dokument opprettet"
-      doc_updated: "Dokument oppdatert"
-      doc_deleted: "Dokument slettet"
-      cat_created: "Kategori opprettet"
-      cat_updated: "Kategori oppdatert"
-      cat_deleted: "Kategori slettet"
-      pin_created: "Pin opprettet"
-      pin_updated: "Pin oppdatert"
-      pin_deleted: "Pin slettet"
-      pic_created: "Bilde opprettet"
-      pic_updated: "Bilde oppdatert"
-      pic_deleted: "Bilde slettet"
-      checklist_new_element: "Ny element lagt til"
-      checklist_new_error: "Kunne ikke legge til element"
-      checklist_new: "Sjekkliste opprettet"
-      checklist_updated: "Sjekkliste oppdatert"
-      checklist_deleted: "Sjekkliste slettet"
-
-    checklist:
-      newelement: "Nytt element"
-      single: "Sjekkliste"
-      plural: "Sjekklister"
-      new: "Ny sjekkliste"
-      edit: "Rediger sjekkliste"
-      all: "Alle sjekklister"
-      no_list: "Ingen sjekklister"
-      hyphen: "Sjekk-liste"
-    error: "Det har skjedd en feil:"
-
-  layouts:
-    application:
-      projects: "Prosjekter"
-      projectmanagement: "Prosjektstyring"
-      user: "Bruker"
-      login: "Logg inn"
-      register: "Registrer"
-      logout: "Logg ut"
-      current_project_empty: "Prosjekt: Ingen"
-      current_project: "Prosjekt: "
-
-  projects:
-    invitation:
-      organisation: Organisasjon
-      title: Inviter ny organisasjon
-      choose: Velg prosjekt
-      choose_explanation: Legg ved et prosjekt du vil dele med organisasjonen
-      send_invitation: Send invitasjon
-      invitation_to: Din invitasjon til
-      was_sent: Er sendt
-    form:
-      projectname: "Prosjektnavn"
-      sketchfab_url: "Sketchfab URL"
-
-    drawings:
-      form:
-        drawingtype: "Tegningtype"
-        choosetype: "Velg type"
-
-    application:
-      docs_folder:
-        documents: "Dokumenter"
-      drawings_folder:
-        drawings: "Tegninger"
-
-    docs:
-      doc:
-        project: "Prosjekt"
-        files: "Tilhørende filer"
-      form:
-        showdoc: "Vis dokumenter"
-
-    pictures:
-      pictures_folder:
-        delete_confirm_single: "Er du sikker på at du vil slette dette bildet?"
-        delete_confirm_plural: "Er du sikker på at du vil slette disse bildene?"
-
-    imagepins:
-      index:
-        picturegroup_in: "Bildegrupper i"
-        picturegroup: "Bildegruppe"
-      _imagepin:
-        showimggroup: "Vis bildegruppe"
-        editimggroup: "Rediger bildegruppe"
-      edit:
-        picturegroup: "Bildegruppe"
-        all_picturegroups: "Alle bildegrupper"
-  devise:
-    sessions:
-      user:
-        signed_in: "Du er logget inn."
+  registration:
+    first_name: "Første navn"
+    last_name: "Siste navn"
+    email: "Epostadresse"
+    password_blank: "passord (la tomt for å beholde gammelt passord)"
+    confirm_password: "Bekreft passord (la tomt for å beholde gammelt passord)"
+    current_password: "Nåværende passord"
+    confirm_changes: "Vi trenger ditt nåværende passord for å bekrefte endringene"
+    update: "Oppdater"
+    unhappy: "Er du ikke fordnøyed"
+    cancel_account: "Avslutt kontoen min"
+    sign_in: "Logg inn"
+    password: "Passord"
+    remember_me: "Husk meg"
 
   users:
     sessions:
