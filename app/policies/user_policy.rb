@@ -1,6 +1,10 @@
 class UserPolicy < ApplicationPolicy
   scope_for :relation do |relation|
-    next relation if user.admin?
-    relation.where(id: user)
+    organization = user.organization
+    if user.admin?
+      relation.where(organization: organization)
+    else
+      relation.where(organization: organization, id: user)
+    end
   end
 end

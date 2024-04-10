@@ -4,11 +4,16 @@ class TimeRegPolicy < ApplicationPolicy
   end
 
   scope_for :relation do |relation|
-    next relation if user.admin?
-    relation.joins(:user).where(user: user)
+    organization = user.organization
+    if user.admin?
+      relation.joins(:organization).where(organizations: organization).distinct
+    else
+      relation.joins(:organization, :user).where(organizations: organization, users: user).distinct
+    end
   end
 
   scope_for :own do |relation|
-    relation.joins(:user).where(users: user)
+    organization = user.organization
+    relation.joins(:organization, :user).where(organizations: organization, users: user).distinct
   end
 end

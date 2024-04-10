@@ -119,13 +119,13 @@ class TimeRegsController < ApplicationController
 
   # changes the selection tasks to show tasks from a specific project
   def update_tasks_select
-    @tasks = authorized_scope(Task, type: :relation).joins(:assigned_tasks).where(assigned_tasks: { project_id: params[:project_id] }).pluck(:name,
+    @tasks = authorized_scope(Task, type: :own).joins(:assigned_tasks).where(assigned_tasks: { project_id: params[:project_id] }).pluck(:name,
                                                                                                           "assigned_tasks.id")
     render partial: "/time_regs/select", locals: { tasks: @tasks }
   end
 
   def edit_modal
-    @assigned_tasks = authorized_scope(Task, type: :relation).assigned_tasks(@time_reg.project.id)
+    @assigned_tasks = authorized_scope(Task, type: :own).assigned_tasks(@time_reg.project.id)
   end
 
   private
@@ -158,7 +158,7 @@ class TimeRegsController < ApplicationController
   end
 
   def set_projects
-    @projects ||= authorized_scope(Project, type: :relation).all
+    @projects ||= authorized_scope(Project, type: :own).all
     end
   def set_chosen_date
     @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today

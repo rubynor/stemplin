@@ -4,7 +4,11 @@ class MembershipPolicy < ApplicationPolicy
   end
 
   scope_for :relation do |relation|
-    next relation if user.admin?
-    relation.where(user: user)
+    organization = user.organization
+    if user.admin?
+      relation.joins(:organization).where(organization: organization).distinct
+    else
+      relation.joins(:organization).where(organization: organization, user: user).distinct
+    end
   end
 end
