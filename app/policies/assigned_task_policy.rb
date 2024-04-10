@@ -6,9 +6,10 @@ class AssignedTaskPolicy < ApplicationPolicy
   scope_for :relation do |relation|
     organization = user.organization
     if user.admin?
-      relation.joins(:organization, :users).where(organizations: organization).distinct
+      relation.joins(:organization).where(organizations: organization).distinct
     else
-      relation.joins(:organization, :users).where(organizations: organization, users: user).distinct
+      authorized_projects = authorized_scope(Project.all, type: :relation)
+      relation.joins(:organization, :project).where(organizations: organization, projects: authorized_projects).distinct
     end
   end
 end

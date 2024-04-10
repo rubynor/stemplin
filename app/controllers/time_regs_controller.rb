@@ -10,16 +10,16 @@ class TimeRegsController < ApplicationController
   include TimeRegsHelper
 
   def index
-    @time_regs_week = authorized_scope(TimeReg, type: :own).between_dates(@chosen_date.beginning_of_week, @chosen_date.end_of_week)
+    @time_regs_week = authorized_scope(TimeReg, type: :relation, as: :own).between_dates(@chosen_date.beginning_of_week, @chosen_date.end_of_week)
     @time_regs = @time_regs_week.on_date(@chosen_date)
     @total_minutes_day = @time_regs.sum(:minutes)
     @minutes_by_day = minutes_by_day_of_week(@chosen_date, current_user)
-    @time_reg = authorized_scope(TimeReg, type: :own).new(date_worked: @chosen_date)
+    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(date_worked: @chosen_date)
     @total_minutes_week = @time_regs_week.sum(:minutes)
   end
 
   def new_modal
-    @time_reg = authorized_scope(TimeReg, type: :own).new
+    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new
   end
 
   def create
@@ -30,7 +30,7 @@ class TimeRegsController < ApplicationController
       membership = @project.memberships.find_by(user_id: current_user.id, project_id: @project.id)
       @time_reg.membership_id = membership.id
     else
-      @time_reg = authorized_scope(TimeReg, type: :own).new(time_reg_params.except(:project_id, :minutes_string))
+      @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(time_reg_params.except(:project_id, :minutes_string))
     end
 
     @time_reg.active = @time_reg.minutes.zero? # start as active?
@@ -48,7 +48,7 @@ class TimeRegsController < ApplicationController
   end
 
   def edit
-    @time_reg = authorized_scope(TimeReg, type: :own).find(params[:id])
+    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).find(params[:id])
     @projects = current_user.projects
     @assigned_tasks = authorized_scope(Task, type: :relation).joins(:assigned_tasks)
                           .where(assigned_tasks: { project_id: @time_reg.project.id })
@@ -68,7 +68,7 @@ class TimeRegsController < ApplicationController
   end
 
   def destroy
-    @time_reg = authorized_scope(TimeReg, type: :own).find(params[:id])
+    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).find(params[:id])
 
     if @time_reg.destroy
       redirect_to root_path(date: @time_reg.date_worked)
@@ -119,13 +119,13 @@ class TimeRegsController < ApplicationController
 
   # changes the selection tasks to show tasks from a specific project
   def update_tasks_select
-    @tasks = authorized_scope(Task, type: :own).joins(:assigned_tasks).where(assigned_tasks: { project_id: params[:project_id] }).pluck(:name,
+    @tasks = authorized_scope(Task, type: :relation, as: :own).joins(:assigned_tasks).where(assigned_tasks: { project_id: params[:project_id] }).pluck(:name,
                                                                                                           "assigned_tasks.id")
     render partial: "/time_regs/select", locals: { tasks: @tasks }
   end
 
   def edit_modal
-    @assigned_tasks = authorized_scope(Task, type: :own).assigned_tasks(@time_reg.project.id)
+    @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg.project.id)
   end
 
   private
@@ -154,11 +154,11 @@ class TimeRegsController < ApplicationController
   end
 
   def set_time_reg
-    @time_reg = authorized_scope(TimeReg, type: :own).find(params[:time_reg_id] || params[:id])
+    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).find(params[:time_reg_id] || params[:id])
   end
 
   def set_projects
-    @projects ||= authorized_scope(Project, type: :own).all
+    @projects ||= authorized_scope(Project, type: :relation, as: :own).all
     end
   def set_chosen_date
     @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today

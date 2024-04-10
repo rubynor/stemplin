@@ -3,9 +3,10 @@ class TaskPolicy < ApplicationPolicy
     define_method(action) { user.admin? }
   end
 
-  scope_for :own do |relation|
+  scope_for :relation, :own do |relation|
     organization = user.organization
-    relation.joins(:users).where(organization: organization, users: user).distinct
+    users_projects = authorized_scope(Project.all, type: :relation).all
+    relation.joins(:projects).where(projects: users_projects).distinct
   end
 
   scope_for :relation do |relation|

@@ -3,7 +3,7 @@ class ProjectPolicy < ApplicationPolicy
     define_method(action) { user.admin? }
   end
 
-  scope_for :own do |relation|
+  scope_for :relation, :own do |relation|
     organization = user.organization
     relation.joins(:organization, :users).where(organizations: organization, users: user).distinct
   end
