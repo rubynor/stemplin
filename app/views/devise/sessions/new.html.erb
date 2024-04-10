@@ -1,41 +1,39 @@
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %> 
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %> 
 <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
   <div class="w-full max-w-md space-y-8">
     <div>
       <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in </h2>
     </div>
-    <form class="mt-8 space-y-6" action="/users" method="POST">
       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
       <div class="-space-y-px rounded-md shadow-sm">
         <div>
-          <label for="email-address" class="sr-only">Email address</label>
-          <input id="email-address" name="user[email]" type="email" autocomplete="email" required class="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6" placeholder="Email address">
+          <%= f.label :email, class: "sr-only" %>
+          <%= f.email_field :email, autocomplete: "email", required: true, placeholder: "Email address", class: "relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6" %>
         </div>
         <div>
-          <label for="password" class="sr-only">Password</label>
-          <input id="password" name="user[password]" type="password" autocomplete="current-password" required class="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6" placeholder="Password">
+          <%= f.label :password, class: "sr-only" %>
+          <%= f.password_field :password, autocomplete: "current-password", required: true, placeholder: "Password", class: "relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6" %>
         </div>
       </div>
 
       <div class="flex items-center justify-between">
         <div class="flex items-center">
-          <input id="remember-me" name="user[remember_me]" type="hidden" value="0" class="h-4 w-4 rounded border-gray-300 text-seaGreenDark focus:ring-seaGreenDark">
-          <input id="remember-me" name="user[remember_me]" type="checkbox" value="1" class="h-4 w-4 rounded border-gray-300 text-seaGreenDark focus:ring-seaGreenDark">
-          <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
+          <%= f.label :remember_me, class: "ml-2 block text-sm text-gray-900" do %>
+            <%= f.check_box :remember_me, class: "h-4 w-4 rounded border-gray-300 text-seaGreenDark focus:ring-seaGreenDark" %>
+            Remember me
+          <% end %>
         </div>
       </div>
       <div>
-        <button type="submit" class="group relative flex w-full justify-center rounded-md !bg-seaGreen py-2 px-3 text-sm font-semibold text-white hover:bg-seaGreenDark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-seaGreenDark">
+        <%= button_tag type: :submit, class: "group relative flex w-full justify-center rounded-md !bg-seaGreen py-2 px-3 text-sm font-semibold text-white hover:bg-seaGreenDark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-seaGreenDark" do %>
           <span class="absolute inset-y-0 left-0 flex items-center pl-3">
             <svg class="h-5 w-5 text-seaGreen group-hover:text-seaGreenDark" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" />
             </svg>
           </span>
           Sign in
-          <%= f.submit " "%>
-        </button>
+        <% end %>
       </div>
-    </form>
   </div>
 </div>
 <% end %>
