@@ -8,7 +8,7 @@ class ClientsController < ApplicationController
 
   def show
     @client = authorized_scope(Client, type: :relation).find(params[:id])
-    @projects = authorized_scope(Projects, type: :relation).where(projects: { client_id: @client.id })
+    @projects = authorized_scope(Project, type: :relation).where(projects: { client_id: @client.id })
   end
 
   def new
