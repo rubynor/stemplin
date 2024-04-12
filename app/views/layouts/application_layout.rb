@@ -8,7 +8,6 @@ class ApplicationLayout < ApplicationView
 
     html do
       head do
-        title { "You're awesome" }
         meta name: "viewport", content: "width=device-width,initial-scale=1"
         csp_meta_tag
         csrf_meta_tags

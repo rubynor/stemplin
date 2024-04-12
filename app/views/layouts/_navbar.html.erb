@@ -1,93 +1,110 @@
-<header class="print:hidden">
-  <nav
-      class="
-             flex flex-wrap
-             items-center
-             justify-between
-             w-full
-             py-4
-             md:py-0
-             px-4
-             text-lg text-gray-900
-             bg-tastyWhite
-             "
-      >
-      <%= link_to root_path, class: "md:p-4 py-2 block hover:text-seaGreen" do %>
-      <div class="flex space-x-4 items-center">
-        <svg class="svg-icon" width="35px" height="35px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-          <path fill="currentColor" d="M257.563 25.156c353.16 276.87 16.918 408.895-87.875 293.25l-40.75 37.125 50.812 50.345c217.562 181.363 524.73-252.058 77.813-380.72zM110.75 364.28c-5.525 1.065-8.975 2.957-11.313 5.25-1.956 1.922-3.248 4.556-4.25 7.564l55.188 52.844c5.468-1.008 9.264-2.796 11.28-4.688 1.997-1.872 3.095-3.864 3.095-7.53l-54-53.44zm-24.72 30.314L30.407 445.28C13.67 472.28 45.1 506.478 81.5 489.94l51.53-50.282-47-45.062z" />
-        </svg>
-        <div>Reap</div>
+<header class="border-b border-gray-200 shadow-sm px-4 print:hidden">
+  <nav class="max-w-7xl mx-auto flex justify-between items-center">
+    <div>
+      <%= link_to root_path, class: "block hover:text-primary" do %>
+        <div class="flex gap-x-4">
+          <svg class="svg-icon" width="35px" height="35px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M257.563 25.156c353.16 276.87 16.918 408.895-87.875 293.25l-40.75 37.125 50.812 50.345c217.562 181.363 524.73-252.058 77.813-380.72zM110.75 364.28c-5.525 1.065-8.975 2.957-11.313 5.25-1.956 1.922-3.248 4.556-4.25 7.564l55.188 52.844c5.468-1.008 9.264-2.796 11.28-4.688 1.997-1.872 3.095-3.864 3.095-7.53l-54-53.44zm-24.72 30.314L30.407 445.28C13.67 472.28 45.1 506.478 81.5 489.94l51.53-50.282-47-45.062z" />
+          </svg>
+          <span class="font-bold text-xl">Reap</span>
+        </div>
+      <% end %>
+    </div>
+    <% if user_signed_in? %>
+      <div class="hidden lg:flex h-full gap-x-12">
+        <%= link_to "Home", time_regs_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([root_path, time_regs_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
+        <% if current_user.admin? %>
+          <%= link_to "Projects", clients_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?(clients_path) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
+          <%= link_to "Workspace", workspace_projects_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([workspace_projects_path, workspace_clients_path, workspace_tasks_path, workspace_teams_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
+        <% end %>
+        <%= link_to "Reports", report_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?(report_path) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
+      </div>
+      <div class="hidden lg:flex items-center gap-x-4 p-2">
+        <%# TODO: Add language picker after introducing locale %>
+        <%= render PhlexUI::Popover.new(options: { placement: "bottom-end" }) do %>
+          <%= render PhlexUI::Popover::Trigger.new(class: "w-full flex flex-row justify-between items-center gap-x-8") do %>
+            <div class="flex flex-row items-center gap-x-2">
+              <div class="bg-gray-100 border border-gray-200 p-2 flex justify-center items-center rounded">
+                <span class="text-base font-semibold text-gray-600">
+                  <%= current_user&.last_name&.first %>
+                </span>
+                <span class="text-base font-semibold text-gray-600">
+                  <%= current_user&.first_name&.first %>
+                </span>
+              </div>
+              <div class=" flex flex-col">
+                <div class="w-32 truncate">
+                  <span class="text-base"><%= current_user&.last_name %><%= current_user&.first_name %></span>
+                </div>
+                <span class="text-xs text-gray-400"><%= current_user&.email %></span>
+              </div>
+            </div>
+            <i class="uc-icon text-base text-gray-500">&#xe81d;</i>
+          <% end  %>
+          <%= render PhlexUI::Popover::Content.new(class: "divide-y divide-gray-50") do %>
+            <%= render PhlexUI::Link.new(href: edit_user_registration_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+              <div class="w-full flex justify-start items-center gap-x-1">
+                <i class="uc-icon text-base text-gray-500">&#xebb2;</i>
+                <%= render PhlexUI::Label.new { "Edit account"} %>
+              </div>
+            <% end %>
+            <%= render ButtonComponent.new(path: destroy_user_session_path, method: :delete, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+              <div class="w-full flex justify-start items-center gap-x-1">
+                <i class="uc-icon text-base text-gray-500">&#xe978;</i>
+                <%= render PhlexUI::Label.new { "Sign out"} %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="lg:hidden p-6 lg:p-8">
+        <%= render PhlexUI::Popover.new(options: { placement: "bottom-end" }) do %>
+          <%= render PhlexUI::Popover::Trigger.new(class: "w-full flex flex-row justify-between items-center gap-x-8") do %>
+            <i class="uc-icon text-xl text-gray-600">&#xe80d;</i>
+          <% end  %>
+          <%= render PhlexUI::Popover::Content.new(class: "divide-y divide-gray-50 w-48") do %>
+            <%= render PhlexUI::Link.new(href: time_regs_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+              <div class="w-full flex justify-start items-center gap-x-1">
+                <%= render PhlexUI::Label.new { "Home"} %>
+              </div>
+            <% end %>
+            <% if current_user.admin? %>
+              <%= render PhlexUI::Link.new(href: clients_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+                <div class="w-full flex justify-start items-center gap-x-1">
+                  <%= render PhlexUI::Label.new { "Projects"} %>
+                </div>
+              <% end %>
+              <%= render PhlexUI::Link.new(href: workspace_projects_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+                <div class="w-full flex justify-start items-center gap-x-1">
+                  <%= render PhlexUI::Label.new { "Workspace"} %>
+                </div>
+              <% end %>
+            <% end %>
+            <%= render PhlexUI::Link.new(href: report_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+              <div class="w-full flex justify-start items-center gap-x-1">
+                <%= render PhlexUI::Label.new { "Reports"} %>
+              </div>
+            <% end %>
+            <%= render PhlexUI::Link.new(href: edit_user_registration_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+              <div class="w-full flex justify-start items-center gap-x-1">
+                <i class="uc-icon text-base text-gray-500">&#xebb2;</i>
+                <%= render PhlexUI::Label.new { "Edit account"} %>
+              </div>
+            <% end %>
+            <%= render ButtonComponent.new(path: destroy_user_session_path, method: :delete, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+              <div class="w-full flex justify-start items-center gap-x-1">
+                <i class="uc-icon text-base text-gray-500">&#xe978;</i>
+                <%= render PhlexUI::Label.new { "Sign out"} %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="flex items-center gap-x-6 p-6 lg:p-8">
+        <%= link_to "Register", new_registration_path(resource_name), class: "text-gray-600 hover:text-primary font-medium" %>
+        <%= link_to "Login", new_user_session_path ,  class: "text-gray-600 hover:text-primary font-medium" %>
       </div>
     <% end %>
-
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        id="menu-button"
-        class="h-6 w-6 cursor-pointer md:hidden block"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        >
-        <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"
-            />
-    </svg>
-
-      <div class="hidden w-full md:flex  md:w-auto " id="menu">
-        <ul
-            class="
-                   pt-4
-                   text-base text-gray-900
-                   md:flex
-                   md:justify-end 
-                   md:pt-0"
-                    
-            >
-            <% if current_user %>
-            <li>
-              <%= link_to "Times", time_regs_path, class: "md:p-4 py-2 block hover:text-seaGreen" %>
-            </li>
-            <% if current_user.admin? %>
-            <li>
-              <%= link_to "Projects", clients_path, class: "md:p-4 py-2 block hover:text-seaGreen" %>
-            </li>
-            <% end %>
-            <li>
-              <%= link_to "Reports", report_path, class: "md:p-4 py-2 block hover:text-seaGreen"%>
-            </li>
-
-            <li dir="ltr">
-              <div class="group relative md:p-4 py-2 block border-s-2 border-gray-100 md: border-s-0 ">
-                <div class="flex text-gray-900 ">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 self-center mr-2">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-</svg>
-                  <button type="button" class="min-w-6"><%= current_user.email%></button>
-                </div>
-                <div class="hidden group-hover:block absolute w-full bg-tastyWhite rounded whitespace-nowrap">
-                  <%= link_to "Edit Account", edit_user_registration_path, class: "block p-1 hover:text-seaGreen text-center" %>
-                  <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "block p-1 hover:text-seaGreen w-full text-center" %>
-                </div>
-              </div>
-            <% else %>
-              <%= link_to "Register", new_registration_path(resource_name), class: "hover:text-seaGreen h-full flex  p-2 self-center" %>
-              <%= link_to "Login", new_user_session_path ,  class: "hover:text-purple-400 h-full flex self-center p-2" %>
-            <% end %>
-            </li>
-        </ul>
-      </div>
   </nav>
 </header>
-<script>
-  var button = document.querySelector('#menu-button');
-  var menu = document.querySelector('#menu');
-
-
-  button.addEventListener('click', () => {
-    menu.classList.toggle('hidden');
-  });
-</script>

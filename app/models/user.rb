@@ -14,6 +14,11 @@ class User < ApplicationRecord
 
   enum :role, %i[ user admin ]
 
+  def organization_clients
+    clients.distinct
+  end
+
+
   def name
     "#{first_name} #{last_name}"
   end

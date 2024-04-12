@@ -9,26 +9,23 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
     <%= hotwire_livereload_tags if Rails.env.development? %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-cream">
+  <body class="font-montserrat">
   <!-- Navbar -->
-    <%= render 'layouts/navbar'%>
     <%= render partial: "shared/flash_messages" %>
 
-    <div class="flex justify-evenly pt-4 print:hidden">
-      <% if notice %>
-        <p class="notice bg-green-300 text-red-900 px-3 py-3 w-fit rounded-full"><%= notice %></p>
-      <% end %>
-      <% if alert %>
-        <p class="alert bg-red-300 text-red-900 px-3 py-3 w-fit rounded-full"><%= alert %></p>
-      <% end %>
-    </div>
-
-    <%= yield %>   
+    <%= render 'layouts/navbar'%>
+    <main>
+      <%= yield %>
+    </main>
 
     <!-- Footer -->
-    <footer class="print:hidden bottom-0 bg-tastyWhite h-16 items-center flex space-x-2 sm:justify-center fixed w-full">
-      <a href="" class="font-bold">Reap</a>
+    <footer class="print:hidden bottom-0 h-16 items-center flex space-x-2 justify-center fixed w-full text-center z-0">
+      <a href="" class="font-regular text-sm text-gray-400">Reap <%= Date.current.year %></a>
     </footer>
   </body>
 </html>

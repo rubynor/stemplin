@@ -1,0 +1,11 @@
+<%= content_tag(:div, class: "py-4 flex justify-between items-center", id: dom_id(assigned_task)) do %>
+  <div class="flex flex-row gap-x-2 items-center">
+    <div class="bg-gray-50 rounded-full w-10 h-10 flex justify-center items-center">
+      <i class="uc-icon text-lg">&#xe8f2;</i>
+    </div>
+    <div class="flex flex-col gap-y-1">
+      <span class="text-sm text-gray-500 font-medium"><%= assigned_task.task.name %></span>
+    </div>
+  </div>
+  <%= render ButtonComponent.new(variant: :link, class: "text-red-700", path: delete_confirmation_workspace_project_assigned_task_path(id: assigned_task.id, project_id: assigned_task.project_id), method: :post) { "Remove" } %>
+<% end %>

@@ -1,0 +1,124 @@
+<div class="bg-gray-100 border-b py-4 border-gray-200 px-4">
+  <%= form_with scope: :report, url: report_path, method: :put, data: { controller: :form }, class: "print:hidden" do |form| %>
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex flex-col gap-y-2">
+        <span class="uppercase text-sm text-gray-600 font-semibold">Filter</span>
+        <div class="flex flex-col lg:flex-row justify-between items-end lg:items-start gap-4">
+          <div class="flex flex-row flex-wrap items-center gap-4">
+            <%# TODO: Extract into reusable Filter::Input component %>
+            <%# period(from) start %>
+            <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
+              <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+                <i class="uc-icon text-sm text-gray-500">&#xe891;</i>
+                <span class="text-gray-500 text-sm">Period - from</span>
+                <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_start_date ? form_data.selected_start_date.strftime("%d %b %y") : "All" } %>
+                <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+              <% end %>
+              <%= render DropdownComponent::Content.new do %>
+                <%= form.hidden_field :start_date, id: "start_date", value: form_data.selected_start_date, data: { controller: "input" } %>
+                <%= render PhlexUI::Calendar.new(selected_date: form_data.selected_start_date, input_id: "#start_date") %>
+              <% end %>
+            <% end %>
+            <%# period(from) end %>
+            <%# period(to) start %>
+            <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
+              <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+                <i class="uc-icon text-sm text-gray-500">&#xe891;</i>
+                <span class="text-gray-500 text-sm">Period - to</span>
+                <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_end_date ? form_data.selected_end_date.strftime("%d %b %y") : "-" } %>
+                <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+              <% end %>
+              <%= render DropdownComponent::Content.new do %>
+                <%= form.hidden_field :end_date, id: "end_date", value: form_data.selected_end_date, data: { controller: "input" } %>
+                <%= render PhlexUI::Calendar.new(selected_date: form_data.selected_end_date, input_id: "#end_date") %>
+              <% end %>
+            <% end %>
+            <%# period(to) end %>
+            <%# clients start %>
+            <%= render DropdownComponent.new do %>
+              <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+                <i class="uc-icon text-sm text-gray-500">&#xe88a;</i>
+                <span class="text-gray-500 text-sm">Clients</span>
+                <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_client_ids.empty? ? form_data.selectable_clients.count : form_data.selected_client_ids.count } %>
+                <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+              <% end %>
+              <%= render DropdownComponent::Content.new do %>
+                <div class="flex flex-col text-sm w-max">
+                  <%= form.collection_check_boxes :client_ids, form_data.selectable_clients, :id, :name, include_hidden: false do |cb| %>
+                    <%= filter_check_box(cb, form_data.selected_client_ids.include?(cb.value)) %>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+            <%# clients end %>
+            <%# projects start %>
+            <%= render DropdownComponent.new do %>
+              <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+                <i class="uc-icon text-sm text-gray-500">&#xe824;</i>
+                <span class="text-gray-500 text-sm">Projects</span>
+                <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_project_ids.empty? ? form_data.selectable_projects.count : form_data.selected_project_ids.count } %>
+                <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+              <% end %>
+              <%= render DropdownComponent::Content.new do %>
+                <div class="flex flex-col text-sm w-max">
+                  <%= form.collection_check_boxes :project_ids, form_data.selectable_projects, :id, :name, include_hidden: false do |cb| %>
+                    <%= filter_check_box(cb, form_data.selected_project_ids.include?(cb.value)) %>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+            <%# projects end %>
+            <%# tasks start %>
+            <%= render DropdownComponent.new do %>
+              <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+                <i class="uc-icon text-sm text-gray-500">&#xe8f2;</i>
+                <span class="text-gray-500 text-sm">Tasks</span>
+                <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_task_ids.empty? ? form_data.selectable_tasks.count : form_data.selected_task_ids.count } %>
+                <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+              <% end %>
+              <%= render DropdownComponent::Content.new do %>
+                <div class="flex flex-col text-sm w-max">
+                  <%= form.collection_check_boxes :task_ids, form_data.selectable_tasks, :id, :name, include_hidden: false do |cb| %>
+                    <%= filter_check_box(cb, form_data.selected_task_ids.include?(cb.value)) %>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+            <%# tasks end %>
+            <%# team start %>
+            <%= render DropdownComponent.new do %>
+              <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+                <i class="uc-icon text-sm text-gray-500">&#xebb3;</i>
+                <span class="text-gray-500 text-sm">Team</span>
+                <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_user_ids.empty? ? form_data.selectable_users.count : form_data.selected_user_ids.count } %>
+                <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+              <% end %>
+              <%= render DropdownComponent::Content.new do %>
+                <div class="flex flex-col text-sm w-max">
+                  <%= form.collection_check_boxes :user_ids, form_data.selectable_users, :id, :name, include_hidden: false do |cb| %>
+                    <%= filter_check_box(cb, form_data.selected_user_ids.include?(cb.value)) %>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+            <%# team end %>
+            <div class="flex flex-col">
+              <span class="text-xs text-gray-400 font-medium uppercase">Detailed report</span>
+              <%= render SwitchComponent.new(form: form, attribute: :detailed_report, initial_value: form_data.detailed_report) %>
+            </div>
+          </div>
+          <div class="flex flex-row items-center gap-x-4">
+            <%= link_to report_path, class: "text-xs text-gray-400 underline text-nowrap" do %>
+              <span>Reset</span>
+              <i class="uc-icon">&#xeb8c;</i>
+            <% end %>
+            <%= render ButtonComponent.new(type: "submit") do %>
+              <span class="mr-2">Filter</span>
+              <i class="uc-icon text-white text-xl">&#xe9d9;</i>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
