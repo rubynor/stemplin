@@ -1,5 +1,6 @@
 @import "./unicons.css";
 @import "./snackbar.css";
+@import "./file_upload.css";
 
 @tailwind base;
 @tailwind components;

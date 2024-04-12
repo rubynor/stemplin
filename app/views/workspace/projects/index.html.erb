@@ -1,1 +1,35 @@
-projects
+<div class="flex flex-col gap-y-8">
+  <div class="flex flex-row justify-between items-center border-b border-gray-100 py-3">
+    <div class="flex flex-row items-center gap-x-2">
+      <span class="font-medium text-gray-600 text-lg">Projects</span>
+      <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
+        <span class="text-gray-700 text-xs font-semibold"><%= @projects.count %></span>
+      </div>
+    </div>
+    <div class="flex flex-row gap-2">
+      <%= render ButtonComponent.new(path: import_modal_workspace_projects_path, method: :post, variant: :secondary) do %>
+        <span class="hidden lg:block mr-2">Import</span>
+        <i class="uc-icon text-xl">&#xe8ea;</i>
+      <% end %>
+      <%= render ButtonComponent.new(path: new_modal_workspace_projects_path, method: :post) do %>
+        <span class="hidden lg:block mr-2">Add New</span>
+        <i class="uc-icon text-xl">&#xe9c7;</i>
+      <% end %>
+    </div>
+  </div>
+  <div>
+    <%= render PhlexUI::Table.new do %>
+      <%= render PhlexUI::Table::Header.new do %>
+        <%= render PhlexUI::Table::Row.new do %>
+          <%= render PhlexUI::Table::Head.new { "Name" } %>
+          <%= render PhlexUI::Table::Head.new { "Client" } %>
+          <%= render PhlexUI::Table::Head.new { "Rate" } %>
+          <%= render PhlexUI::Table::Head.new { "Actions" } %>
+        <% end %>
+      <% end %>
+      <%= render PhlexUI::Table::Body.new(id: :organization_projects) do %>
+        <%= render partial: "workspace/projects/project", collection: @projects %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
