@@ -76,7 +76,7 @@ module Workspace
     end
 
     def set_project
-      @project = Project.find(params[:id])
+      @project = authorized_scope(Project, type: :relation).find(params[:id])
     end
 
     def prepare_form_data

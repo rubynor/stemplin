@@ -5,5 +5,9 @@ module Workspace
         user.admin?
       end
     end
+
+    scope_for :relation do |relation|
+      relation.joins(:memberships).where(memberships: { user: user })
+    end
   end
 end
