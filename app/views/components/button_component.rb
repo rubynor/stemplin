@@ -25,7 +25,7 @@ class ButtonComponent < ApplicationComponent
     {
       **@attrs,
       type: @path.present? && @attrs[:type].nil? ? "submit" : @attrs[:type],
-      class: tokens(@attrs[:class], "py-2", is_outline?: "border !border-gray-100")
+      class: tokens(@attrs[:class], "py-2 !h-12", is_outline?: "border !border-gray-100")
     }
   end
   def is_outline?

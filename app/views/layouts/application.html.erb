@@ -15,15 +15,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body class="font-montserrat">
-  <!-- Navbar -->
     <%= render partial: "shared/flash_messages" %>
 
-    <%= render 'layouts/navbar'%>
+    <%= render "layouts/navbar"%>
     <main>
       <%= yield %>
     </main>
 
-    <!-- Footer -->
     <footer class="print:hidden bottom-0 h-16 items-center flex space-x-2 justify-center fixed w-full text-center z-0">
       <a href="" class="font-regular text-sm text-gray-400">Reap <%= Date.current.year %></a>
     </footer>
