@@ -1,6 +1,6 @@
 class ProjectPolicy < ApplicationPolicy
-  [ :show?, :new?, :create?, :edit?, :update?, :destroy?, :import? ].each do |action|
-    define_method(action) { user.admin? }
+  [ :show?, :new?, :edit?, :update?, :destroy?, :import? ].each do |action|
+    define_method(action) { user.admin? && user.organization == record.organization }
   end
 
   scope_for :relation, :own do |relation|

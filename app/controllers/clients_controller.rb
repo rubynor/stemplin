@@ -1,22 +1,24 @@
 class ClientsController < ApplicationController
   before_action :authenticate_user!
-  before_action :authorize!
+  before_action :set_client, only: %i[ show edit destroy ]
 
   def index
     @clients = authorized_scope(Client, type: :relation).all
+    authorize! @clients
   end
 
   def show
-    @client = authorized_scope(Client, type: :relation).find(params[:id])
     @projects = authorized_scope(Project, type: :relation).where(projects: { client_id: @client.id })
   end
 
   def new
     @client = authorized_scope(Client, type: :relation).new
+    authorize! @client
   end
 
   def create
     @client = authorized_scope(Client, type: :relation).new(client_params)
+    authorize! @client
 
     if @client.save
       redirect_to @client
@@ -25,13 +27,9 @@ class ClientsController < ApplicationController
     end
   end
 
-  def edit
-    @client = authorized_scope(Client, type: :relation).find(params[:id])
-  end
+  def edit; end
 
   def update
-    @client = authorized_scope(Client, type: :relation).find(params[:id])
-
     if @client.update(client_params)
       redirect_to @client
       flash[:notice] = "client has been updated"
@@ -41,8 +39,6 @@ class ClientsController < ApplicationController
   end
 
   def destroy
-    @client = authorized_scope(Client, type: :relation).find(params[:id])
-
     # checks the confirmation field before trying to delete
     if delete_params[:confirmation] == "DELETE"
       if @client.destroy
@@ -66,5 +62,10 @@ class ClientsController < ApplicationController
 
   def delete_params
     params.permit(:confirmation, :id)
+  end
+
+  def set_client
+    @client = Client.find(params[:id])
+    authorize! @client
   end
 end

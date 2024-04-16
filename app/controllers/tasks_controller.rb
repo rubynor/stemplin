@@ -1,13 +1,13 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :authorize!
 
   def index
     @tasks = authorized_scope(Task, type: :relation).all
   end
 
   def show
-    @task = authorized_scope(Task, type: :relation).find(params[:id])
+    @task = Task.find(params[:id])
+    authorize! @task
   end
 
   def new
@@ -16,6 +16,7 @@ class TasksController < ApplicationController
 
   def create
     @task = authorized_scope(Task, type: :relation).new(task_params)
+    authorize! @task
 
     if @task.save
       return render_turbo_frames if turbo_frame_request?
@@ -28,11 +29,13 @@ class TasksController < ApplicationController
   def edit
     @is_in_update = true
 
-    @task = authorized_scope(Task, type: :relation).find(params[:id])
+    @task = Task.find(params[:id])
+    authorize! @task
   end
 
   def update
-    @task = authorized_scope(Task, type: :relation).find(params[:id])
+    @task = Task.find(params[:id])
+    authorize! @task
 
     if @task.update(task_params)
       flash[:notice] = "Task has been updated"
@@ -43,7 +46,8 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task = authorized_scope(Task, type: :relation).find(params[:id])
+    @task = Task.find(params[:id])
+    authorize! @task
 
     if @task.assigned_tasks.empty?
       if @task.destroy

@@ -1,6 +1,10 @@
 class ClientPolicy < ApplicationPolicy
-  [ :index?, :show?, :new?, :create?, :edit?, :update?, :destroy? ].each do |action|
-    define_method(action) { user.admin? }
+  [ :show?, :new?, :create?, :edit?, :update?, :destroy? ].each do |action|
+    define_method(action) { user.admin? && user.organization == record.organization }
+  end
+
+  def index?
+    user.admin?
   end
 
   scope_for :relation do |relation|
@@ -9,7 +13,6 @@ class ClientPolicy < ApplicationPolicy
       relation.where(organization: organization)
     else
       relation.where(organization: organization)
-        .where(organization: organization)
         .joins(:projects)
         .where(projects: user.projects)
         .distinct

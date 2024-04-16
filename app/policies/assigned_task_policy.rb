@@ -1,6 +1,6 @@
 class AssignedTaskPolicy < ApplicationPolicy
   [ :new?, :create?, :destroy? ].each do |action|
-    define_method(action) { user.admin? }
+    define_method(action) { user.admin? && user.organization == record.organization }
   end
 
   scope_for :relation do |relation|

@@ -1,11 +1,10 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
-  before_action :ensure_membership, only: %i[show edit update destroy]
-  before_action :authorize!
+  verify_authorized except: %i[ import ]
 
-  # viser et enkelt prosjekt til bruker .where(assigned_tasks: { project_id: @project.id }
   def show
-    @project = authorized_scope(Project, type: :relation).find(params[:id])
+    @project = Project.find(params[:id])
+    authorize! @project
     @tasks = authorized_scope(Task, type: :relation).all
     @assigned_tasks = authorized_scope(AssignedTask, type: :relation).select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                   .joins(:task)
@@ -14,7 +13,8 @@ class ProjectsController < ApplicationController
 
   def new
     @clients = authorized_scope(Client, type: :relation).all
-    @project = authorized_scope(Project, type: :relation).new
+    @project = authorized_scope(Project, type: :relation).new(client: @clients.first)
+    authorize! @project
   end
 
   def create
@@ -22,8 +22,12 @@ class ProjectsController < ApplicationController
 
     # adds each task to the project
     project_params[:task_ids].each do |task_id|
-      @project.tasks << authorized_scope(Task, type: :relation).find(task_id) unless task_id.empty?
+      next if task_id.empty?
+      task = Task.find(task_id)
+      @project.tasks << task
     end
+
+    authorize! @project
 
     # tries to save the project in the db
     if @project.save
@@ -38,7 +42,9 @@ class ProjectsController < ApplicationController
 
   def edit
     @is_in_update = true
-    @project = authorized_scope(Project, type: :relation).find(params[:id])
+    @project = Project.find(params[:id])
+    authorize! @project
+
     @clients = authorized_scope(Client, type: :relation).all
 
     @assigned_tasks = authorized_scope(AssignedTask, type: :relation).select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
@@ -51,7 +57,8 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    @project = authorized_scope(Project, type: :relation).find(params[:id])
+    @project = Project.find(params[:id])
+    authorize! @project
 
     if @project.update(project_params)
       flash[:notice] = "project has been updated"
@@ -59,7 +66,8 @@ class ProjectsController < ApplicationController
     else
       @tasks = authorized_scope(Task, type: :relation).all
       @clients = authorized_scope(Client, type: :relation).all
-      @project = authorized_scope(Project, type: :relation).find(delete_params[:id])
+      @project = Project.find(delete_params[:id])
+      authorize! @project
       @assigned_task = @project.assigned_tasks.new
       @assigned_tasks = authorized_scope(AssignedTask, type: :relation).select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                     .joins(:task)
@@ -73,7 +81,8 @@ class ProjectsController < ApplicationController
   def destroy
     @tasks = authorized_scope(Task, type: :relation).all
     @clients = authorized_scope(Client, type: :relation).all
-    @project = authorized_scope(Project, type: :relation).find(delete_params[:id])
+    @project = Project.find(delete_params[:id])
+    authorize! @project
     @assigned_task = @project.assigned_tasks.new
 
     # checks the confirmation field before trying to delete
@@ -143,7 +152,7 @@ class ProjectsController < ApplicationController
 
         # Checks if the e-mail and user is valid, and deletes redundant e-mail column
         email = row["email"]
-        @user = authorized_scope(User, type: :relation).find_by(email: email)
+        @user = User.find_by(email: email)
         @membership = authorized_scope(Membership, type: :relation).find_or_create_by(user_id: @user.id, project_id: @project.id)
         time_reg_params.delete("email")
         time_reg_params["membership_id"] = @membership.id
@@ -191,16 +200,6 @@ class ProjectsController < ApplicationController
     params.permit(:confirmation, :id)
   end
 
-  # ensures that only members have access
-  def ensure_membership
-    project = authorized_scope(Project, type: :relation).find(params[:id])
-
-    return if project.memberships.exists?(user_id: current_user)
-
-    flash[:alert] = "Access denied"
-    redirect_to root_path
-  end
-
   # Checks to see if the client already exists, and creates it if it doesn't
   def check_client(client)
     if !authorized_scope(Client, type: :relation).exists?(name: client)
@@ -208,7 +207,7 @@ class ProjectsController < ApplicationController
       @client = authorized_scope(Client, type: :relation).new(client_params)
       @client.save
     else
-      @client = authorized_scope(Client, type: :relation).find_by(name: client)
+      @client = Client.find_by(name: client)
     end
   end
 
@@ -220,6 +219,7 @@ class ProjectsController < ApplicationController
       @project.save
     else
       @project = @client.projects.find_by(name: project)
+      authorize! @project
     end
   end
 
@@ -229,7 +229,7 @@ class ProjectsController < ApplicationController
       @task = authorized_scope(Task, type: :relation).new(name: task)
       @task.save
     else
-      @task = authorized_scope(Task, type: :relation).find_by(name: task)
+      @task = Task.find_by(name: task)
     end
   end
 
