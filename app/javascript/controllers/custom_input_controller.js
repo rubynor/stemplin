@@ -30,7 +30,7 @@ export default class extends Controller {
 
   handleSubmitButtonValue(inputValue) {
     if(this.hasSubmitButtonTarget) {
-      this.submitButtonTarget.value = (!!inputValue && inputValue !== "0") ? this.activeTextValue : this.inactiveTextValue;
+      this.submitButtonTarget.innerText = (!!inputValue && inputValue !== "0") ? this.activeTextValue : this.inactiveTextValue;
     }
   }
 }

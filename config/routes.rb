@@ -56,7 +56,7 @@ Rails.application.routes.draw do
 
       scope module: :projects do
         resources :memberships do
-          post :new_modal, on: :member
+          post :new_modal, on: :collection
           post :delete_confirmation, on: :member
         end
 
