@@ -1,7 +1,30 @@
-<div class="flex flex-col w-full items-center pt-4 mb-20 max-w-[1200px] mx-auto" >
-  <%= render partial: "form", locals: {
-    structured_report_data: @structured_report_data,
-    form_data: @form_data,
-    detailed_report_data: @detailed_report_data,
-  } %>
-</div>
+<%= turbo_frame_tag "report_form" do %>
+  <%= render partial: "reports/filter", locals: { structured_report_data: @structured_report_data, form_data: @form_data, detailed_report_data: @detailed_report_data } %>
+  <div class="py-4 lg:py-6 px-4">
+    <div class="max-w-7xl mx-auto flex flex-col gap-y-4 print:gap-y-2">
+      <div class="flex justify-between items-center py-3 print:py-1">
+        <div>
+          <span class="text-base lg:text-lg">Reports</span>
+        </div>
+        <%= render ButtonComponent.new(class: "print:!hidden", variant: :secondary, data: { controller: "print", action: "print#togglePrintLayout" }) do %>
+          <span class="mr-2">Print</span>
+          <i class="uc-icon text-lg">&#xeaea;</i>
+        <% end %>
+      </div>
+      <%= render CardComponent.new(class: "flex flex-col !p-4 print:!p-0 z-10 print:!border-none print:!shadow-none") do %>
+        <% if @form_data.detailed_report %>
+          <%= render partial: "reports/details/extended", locals: {
+            structured_report_data: @structured_report_data,
+            detailed_report_data: @detailed_report_data,
+          } %>
+        <% else %>
+          <%= render partial: 'reports/details/basic', locals: {
+            form_data: @form_data,
+            structured_report_data: @structured_report_data,
+          }
+          %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

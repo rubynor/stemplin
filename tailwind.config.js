@@ -8,7 +8,7 @@ const phlexUIPath = outputPhlexUI.trim() + '/**/*.rb';
 const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
   content: [
-    './app/views/**/*.html.erb',
+    './app/views/**/*.erb',
     './app/helpers/**/*.rb',
     './app/assets/stylesheets/**/*.css',
     './app/javascript/**/*.js',
@@ -73,7 +73,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ["Inter var", ...defaultTheme.fontFamily.sans],
+        montserrat: ["Montserrat", ...defaultTheme.fontFamily.sans],
       },
       borderRadius: {
         lg: `var(--radius)`,

@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include ActionView::RecordIdentifier
+
   before_action :configure_permitted_parameters, if: :devise_controller?
   layout :layout_by_resource
 

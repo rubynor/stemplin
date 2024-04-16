@@ -1,4 +1,4 @@
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8' }) do |f| %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8' }, turbo: false) do |f| %>
   <div class="w-full max-w-md space-y-8">
     <div>
       <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign up</h2>
@@ -11,28 +11,28 @@
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <div class="-space-y-px rounded-md shadow-sm">
       <div>
-        <label for="first-name" class="sr-only">First name</label>
-        <input id="first-name" name="user[first_name]" type="text" autocomplete="given-name" required class="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6" placeholder="First name">
+        <%= f.label :first_name, class: "sr-only" %>
+        <%= f.text_field :first_name, id: "first-name", autocomplete: "given-name", required: true, class: "relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: "First name" %>
       </div>
       <div>
-        <label for="last-name" class="sr-only">Last name</label>
-        <input id="last-name" name="user[last_name]" type="text" autocomplete="family-name" required class="relative block w-full border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6" placeholder="Last name">
+        <%= f.label :last_name, class: "sr-only" %>
+        <%= f.text_field :last_name, id: "last-name", autocomplete: "family-name", required: true, class: "relative block w-full border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: "Last name" %>
       </div>
       <div>
-        <label for="email-address" class="sr-only">Email address</label>
-        <input id="email-address" name="user[email]" type="email" autocomplete="email" required class="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6" placeholder="Email address">
+        <%= f.label :email, class: "sr-only" %>
+        <%= f.email_field :email, id: "email-address", autocomplete: "email", required: true, class: "relative block w-full border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: "Email address" %>
       </div>
       <div>
-        <label for="password" class="sr-only">Password</label>
-        <input id="password" name="user[password]" type="password" autocomplete="current-password" required class="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6" placeholder="Password">
+        <%= f.label :password, class: "sr-only" %>
+        <%= f.password_field :password, id: "password", autocomplete: "current-password", required: true, class: "relative block w-full border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: "Password" %>
       </div>
       <div>
-        <label for="password_confirm" class="sr-only">Confirm Password</label>
-        <input id="password_confirm" name="user[password_confirmation]" type="password" autocomplete="current-password" required class="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6" placeholder="Confirm password">
+        <%= f.label :password_confirmation, class: "sr-only" %>
+        <%= f.password_field :password_confirmation, id: "password_confirm", autocomplete: "current-password", required: true, class: "relative block w-full border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: "Confirm password" %>
       </div>
       <div>
-          <label for="key" class="sr-only">Key</label>
-          <input id="key" name="user[key]" type="password" required class="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6" placeholder="Enter Key">
+        <%= f.label :key, class: "sr-only" %>
+        <%= f.password_field :key, id: "key", required: true, class: "relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: "Enter Key" %>
       </div>
     </div>
 

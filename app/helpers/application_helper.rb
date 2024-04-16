@@ -8,4 +8,7 @@ module ApplicationHelper
   def format_date(date)
     date.strftime("%A, %d. %b")
   end
+  def is_page_active?(page)
+    Array(page).any? { |p| current_page?(p) }
+  end
 end
