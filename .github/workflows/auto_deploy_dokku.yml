@@ -20,4 +20,3 @@ jobs:
           branch: 'main'
           git_remote_url: 'ssh://dokku@65.109.128.159:22/reap'
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-
