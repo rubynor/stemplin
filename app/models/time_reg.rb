@@ -3,12 +3,11 @@ class TimeReg < ApplicationRecord
 
   validates :notes, format: { without: /\r|\n/, message: "Line breaks are not allowed" }
 
-  belongs_to :membership
+  belongs_to :user
   belongs_to :assigned_task
 
   has_one :project, through: :assigned_task
   has_one :task, through: :assigned_task, source: :task
-  has_one :user, through: :membership
   has_one :client, through: :project
   has_one :organization, through: :project
 

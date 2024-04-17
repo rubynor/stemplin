@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_17_160920) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_17_210206) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -43,44 +43,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_17_160920) do
     t.index ["organization_id"], name: "index_clients_on_organization_id"
   end
 
-  create_table "memberships", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "project_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["project_id"], name: "index_memberships_on_project_id"
-    t.index ["user_id"], name: "index_memberships_on_user_id"
-  end
-
   create_table "organizations", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "project_reports", force: :cascade do |t|
-    t.string "creator"
-    t.string "timeframe"
-    t.date "date_start"
-    t.date "date_end"
-    t.string "client_id"
-    t.string "project_id"
-    t.text "task_ids", default: [], array: true
-    t.text "member_ids", default: [], array: true
-    t.string "group_by"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "projects", force: :cascade do |t|
     t.string "name"
-    t.datetime "startdate", precision: nil
     t.text "description"
     t.bigint "client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "billable_rate", default: 0, null: false
-    t.boolean "billable_project", default: false, null: false
+    t.integer "rate", default: 0, null: false
+    t.boolean "billable", default: false, null: false
     t.index ["client_id"], name: "index_projects_on_client_id"
   end
 
@@ -95,28 +71,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_17_160920) do
   create_table "time_regs", force: :cascade do |t|
     t.text "notes"
     t.integer "minutes", default: 0, null: false
-    t.bigint "membership_id", null: false
     t.bigint "assigned_task_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "active"
-    t.datetime "updated"
     t.date "date_worked"
+    t.datetime "start_time", precision: nil
+    t.bigint "user_id", null: false
     t.index ["assigned_task_id"], name: "index_time_regs_on_assigned_task_id"
-    t.index ["membership_id"], name: "index_time_regs_on_membership_id"
-  end
-
-  create_table "user_reports", force: :cascade do |t|
-    t.string "creator"
-    t.string "timeframe"
-    t.date "date_start"
-    t.date "date_end"
-    t.string "user_id"
-    t.text "task_ids", default: [], array: true
-    t.text "project_ids", default: [], array: true
-    t.string "group_by"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_time_regs_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -130,7 +92,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_17_160920) do
     t.string "first_name"
     t.string "last_name"
     t.string "key"
-    t.integer "role", default: 0
     t.bigint "organization_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organization_id"], name: "index_users_on_organization_id"
@@ -141,9 +102,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_17_160920) do
   add_foreign_key "access_infos", "users"
   add_foreign_key "assigned_tasks", "projects"
   add_foreign_key "assigned_tasks", "tasks"
-  add_foreign_key "memberships", "projects"
-  add_foreign_key "memberships", "users"
+  add_foreign_key "clients", "organizations"
   add_foreign_key "projects", "clients"
+  add_foreign_key "tasks", "organizations"
   add_foreign_key "time_regs", "assigned_tasks"
-  add_foreign_key "time_regs", "memberships"
+  add_foreign_key "time_regs", "users"
 end
