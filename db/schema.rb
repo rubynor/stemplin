@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_09_081110) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_17_160920) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "access_infos", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "organization_id", null: false
+    t.integer "role", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_access_infos_on_organization_id"
+    t.index ["user_id"], name: "index_access_infos_on_user_id"
+  end
 
   create_table "assigned_tasks", force: :cascade do |t|
     t.bigint "project_id", null: false
@@ -127,6 +137,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_09_081110) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "access_infos", "organizations"
+  add_foreign_key "access_infos", "users"
   add_foreign_key "assigned_tasks", "projects"
   add_foreign_key "assigned_tasks", "tasks"
   add_foreign_key "memberships", "projects"
