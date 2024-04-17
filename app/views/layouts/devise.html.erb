@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Reap</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= hotwire_livereload_tags if Rails.env.development? %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  </head>
+  <body class="font-montserrat">
+    <%= render partial: "shared/flash_messages" %>
+    <main>
+      <div class="grid grid-cols-1 lg:grid-cols-2 h-screen">
+        <div class="bg-gray-50 h-full">
+          <div class="max-w-xl mx-auto h-full flex items-center p-4">
+            <%= yield %>
+          </div>
+        </div>
+        <div class="hidden lg:block shadow-xl auth-illustration-wrapper relative">
+          <div class="max-w-xl mx-auto p-4 flex flex-col justify-center items-center h-full">
+            <%= image_tag "feature.svg" %>
+            <div class="absolute bottom-8">
+              <div class="max-w-xl mx-auto h-full flex flex-col gap-y-4 text-center p-4">
+                <span class="text-white text-3xl font-bold">Streamline your Workflow</span>
+                <span class="text-white text-base font-regular">Boost collaboration and simplify project execution. Assign tasks, track time, and generate insightful reports – all in one place. Empower your team and achieve more with streamlined workflows.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
