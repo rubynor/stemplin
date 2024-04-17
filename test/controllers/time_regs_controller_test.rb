@@ -13,8 +13,8 @@ class TimeRegsControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_equal @current_date, assigns(:chosen_date)
-    assert_equal @user.time_regs.on_date(@current_date), assigns(:time_regs)
-    assert_equal @user.time_regs.between_dates(@current_date.beginning_of_week, @current_date.end_of_week), assigns(:time_regs_week)
+    assert_equal @user.time_regs.on_date(@current_date).sort, assigns(:time_regs).sort
+    assert_equal @user.time_regs.between_dates(@current_date.beginning_of_week, @current_date.end_of_week).sort, assigns(:time_regs_week).sort
   end
 
   test "should toggle_active time_reg and redirect to the prior chosen date" do

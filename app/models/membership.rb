@@ -2,6 +2,7 @@ class Membership < ApplicationRecord
   has_many :time_regs
   belongs_to :user
   belongs_to :project
+  has_one :organization, through: :project
 
   validates :user_id, uniqueness: { scope: :project_id, message: "is already a member of the project" }
   validates :user_id, presence: { message: "does not exist" }

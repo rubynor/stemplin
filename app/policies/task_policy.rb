@@ -1,10 +1,20 @@
 class TaskPolicy < ApplicationPolicy
   [ :index?, :show?, :new?, :create?, :edit?, :update?, :destroy? ].each do |action|
-    define_method(action) { user.admin? }
+    define_method(action) { user.admin? && user.organization == record.organization }
+  end
+
+  scope_for :relation, :own do |relation|
+    organization = user.organization
+    users_projects = authorized_scope(Project.all, type: :relation).all
+    relation.joins(:projects).where(projects: users_projects).distinct
   end
 
   scope_for :relation do |relation|
-    next relation if user.admin?
-    relation.joins(:users).where(users: user).distinct
+    organization = user.organization
+    if user.admin?
+      relation.where(organization: organization)
+    else
+      relation.joins(:users).where(organization: organization, users: user).distinct
+    end
   end
 end
