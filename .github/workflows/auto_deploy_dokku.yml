@@ -17,7 +17,6 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
-          trace: 1
           branch: 'master'
-          git_remote_url: 'ssh://dokku@65.109.128.159:22/reap'
+          git_remote_url: 'ssh://dokku@65.109.128.159:22/~/reap'
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
