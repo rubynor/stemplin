@@ -29,7 +29,7 @@ module ReportsHelper
   end
 
   def filter_check_box(checkbox, checked, options = {})
-    checkbox.label(class: "bg-white px-3 py-1.5 rounded-sm") do
+    checkbox.label(class: "bg-white px-3 py-1.5 rounded-sm cursor-pointer") do
       checkbox_tag = checkbox.check_box(checked: checked, class: "mr-2", **options)
       label_text = checkbox.text
 
