@@ -4,16 +4,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :memberships
-  has_many :projects, through: :memberships
-  has_many :time_regs, through: :memberships
-  has_many :tasks, through: :time_regs
-  has_many :clients, through: :projects
-  belongs_to :organization
+  has_many :time_regs
+  has_many :access_infos
+  has_many :organizations, through: :access_infos
 
   validates :key, inclusion: { in: [ ENV["AUTENTICATION_KEY"] ], message: "is Invalid" }
-
-  enum :role, %i[ user admin ]
 
   def organization_clients
     clients.distinct
