@@ -1,0 +1,16 @@
+<%= form_with url: onboarding_index_path, method: :post, scope: organization do |form| %>
+  <div class="flex flex-col gap-y-4">
+    <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
+      <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+        <%= render PhlexUI::Label.new { "Organization Name" } %>
+        <%= form.text_field :name, class: "border-gray-200 rounded-md w-full" %>
+        <% organization.errors.full_messages_for(:name).each do |message|%>
+          <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  <%= render PhlexUI::Dialog::Footer.new(class: "mt-8") do %>
+    <%= render ButtonComponent.new(type: :submit, class: "w-full") { "Create" } %>
+  <% end %>
+<% end %>
