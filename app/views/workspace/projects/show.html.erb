@@ -44,21 +44,6 @@
         <span class="font-semibold"><%= @project.created_at.strftime("%A, %d %B %Y") %></span>
       </div>
     </div>
-    <%# <div class="divide-y divide-gray-100 flex flex-col"> %>
-    <%#   <div class="flex justify-between items-center py-2"> %>
-    <%#     <span class="text-base text-gray-600 font-medium uppercase">Project Members</span> %>
-    <%#   </div> %>
-      <%#= content_tag(:div, id: "#{dom_id(@project)}_users", class: "divide-y divide-gray-50") do %>
-        <%#= render partial: "workspace/projects/membership", collection: @project.users %>
-      <%# end %>
-      <%# <div class="mt-2 py-4 font-medium flex flex-row gap-x-1 justify-end"> %>
-        <%# <span>Need to add more members?</span> %>
-        <%#= render ButtonComponent.new(path: new_modal_workspace_project_memberships_path(@project), method: :post, variant: :link, class!: "underline text-primary") do %>
-          <%# <span class="mr-2">Add new</span> %>
-        <%# end %>
-      <%# </div> %>
-    <%# </div> %>
-
     <div class="divide-y divide-gray-100 flex flex-col">
       <div class="flex justify-between items-center py-2">
         <span class="text-base text-gray-600 font-medium uppercase">Tasks</span>
