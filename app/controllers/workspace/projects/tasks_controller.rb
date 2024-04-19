@@ -4,11 +4,11 @@ module Workspace
       before_action :set_project
 
       def new_modal
-        @task = Task.new
+        @task = authorized_scope(Task, type: :relation).new
       end
 
       def create
-        @task = Task.new(task_params)
+        @task = authorized_scope(Task, type: :relation).new(task_params)
 
         ActiveRecord::Base.transaction do
           if @task.save!
@@ -29,7 +29,7 @@ module Workspace
       private
 
       def set_project
-        @project = Project.find(params[:project_id])
+        @project = authorized_scope(Project, type: :relation).find(params[:project_id])
       end
 
       def task_params

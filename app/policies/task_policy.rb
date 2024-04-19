@@ -10,11 +10,10 @@ class TaskPolicy < ApplicationPolicy
   end
 
   scope_for :relation do |relation|
-    organization = user.organization
-    if user.admin?
-      relation.where(organization: organization)
+    if user.organization_admin?
+      relation.where(organization: user.current_organization)
     else
-      relation.joins(:users).where(organization: organization, users: user).distinct
+      relation.joins(:users).where(organization: user.current_organization, users: user).distinct
     end
   end
 end
