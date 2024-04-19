@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   root "time_regs#index"
 
+  resources :onboarding, only: [ :new, :create ]
+
   resources :project_reports do
     patch :update_group
     collection do
