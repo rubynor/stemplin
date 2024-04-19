@@ -65,7 +65,7 @@
     <% else %>
       <%= render partial: 'reports/show',
                  locals: {
-                   title: "Report",
+                   title: t('common.report'),
                    start_date: form_data.selected_start_date,
                    end_date: form_data.selected_end_date,
                    structured_report_data: structured_report_data,

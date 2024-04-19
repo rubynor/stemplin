@@ -59,6 +59,7 @@ nb:
     times: "Tider"
     time: "Tid"
     reports: "Rapporter"
+    report: "Rapport"
     projects: "Prosjekter"
     project: "Prosjekt"
     notes: "Notater"
@@ -104,9 +105,54 @@ nb:
     create_client: "Lag Klient"
     edit_user: "Endre Brukere"
     back: "Tilbake"
+    provide_a_csv: "Oppgi en CSV-fil med disse kolonnene"
+
   
   notice:
     are_you_sure: "Er du sikker?"
+    project_has_been_updated: "Prosjekt har blit oppdatert"
+    was_added_to_the_project: "ble lagt til prosjektet"
+    has_been_removed_from_the_project: "er fjernet fra prosjektet"
+    project_deleted: "Prosjekt slettet"
+    time_entries_imported_successfully: "tidsoppføringer ble importert."
+    task_successfully_added_to_project: "Oppgaven ble lagt til prosjektet"
+    client_has_been_updated: "klienten har blitt oppdatert"
+    client_deleted: "Klient slettet"
+    could_not_delete_client: "Kunne ikke slette klienten"
+    task_has_been_updated: Oppgaven har blitt oppdatert"
+    task_was_successfully_deleted: "Oppgaven ble slettet."
+    time_entry_has_been_created: "Tidsregistrering er opprettet"
+    time_entry_has_been_updated: "Tidsregistrering er oppdatert"
+    time_entry_has_been_deleted: "Tidsregistrering er slettet"
+    cannot_delete_time_entry: "kan ikke slette tidsregistrering"
+
+
+
+
+
+  alert:
+    does_not_exist: "eksisterer ikke"
+    is_already_a_member_of_the_project: "er allerede medlem av prosjektet"
+    cannot_remove_last_member_of_the_project: "kan ikke fjerne siste medlem av prosjektet"
+    member_has_time_entries_in_this_project: "Medlem har tidsregistreringer i dette prosjektet"
+    access_denied: "Ingen tilgang"
+    cannot_update_project: "kan ikke oppdatere prosjektet"
+    could_not_delete_project: "Kunne ikke slette prosjektet"
+    invalid_confirmation: "Ugyldig bekreftelse"
+    please_select_a_file_to_import: "Velg en fil som skal importeres."
+    no_time_entries_found_in_the_file: "Ingen gyldige tidsoppføringer funnet i filen."
+    douple_check_email: "Ugyldig epost. Vennligst dobbeltsjekk e-postkolonnen for hver rad."
+    task_could_not_be_added_to_the_project: "Oppgaven kunne ikke legges til prosjektet"
+    cannot_remove_task_with_registered_time: "Kan ikke fjerne oppgave med registrert tid"
+    task_succesfully_removed_from_project: "Oppgaven ble fjernet fra prosjektet"
+    could_not_change_the_grouping: "Kunne ikke endre grupperingen"
+    invalid_group: "Ugyldig gruppe"
+    could_not_delete_task: "Kunne ikke slette oppgaven."
+    task_is_being_used_in_one_or_more_projects: "Oppgaven brukes i ett eller flere prosjekter."
+    time_entry_cannot_exceed_24_hours: "Tidsregistrering kan ikke overstige 24 timer"
+
+
+
 
   registration:
     first_name: "Første navn"

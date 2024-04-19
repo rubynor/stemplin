@@ -18,12 +18,12 @@ class MembershipsController < ApplicationController
 
       # checks if the user is already a member
       if @project.memberships.exists?(user_id: @user.id)
-        flash[:alert] = "#{@email} is already a member of the project"
+        flash[:alert] = "#{@email} #{t('alert.is_already_a_member_of_the_project')}"
       elsif @membership.save
-        flash[:notice] = "#{@email} was added to the project"
+        flash[:notice] = "#{@email} #{t('notice.was_added_to_the_project')}"
       end
     else
-      flash[:alert] = "#{@email} does not exist"
+      flash[:alert] = "#{@email} #{t('alert.does_not_exist')}"
     end
     redirect_to request.referrer
   end
@@ -34,11 +34,11 @@ class MembershipsController < ApplicationController
 
     # tries to remove a user from the project
     if @project.memberships.count <= 1
-      flash[:alert] = "cannot remove last member of the project"
+      flash[:alert] = t('alert.cannot_remove_last_member_of_the_project')
     elsif @membership.time_regs.count >= 1
-      flash[:alert] = "Member has time entries in this project"
+      flash[:alert] = t('alert.member_has_time_entries_in_this_project')
     else
-      flash[:notice] = "#{@membership.user.email} has been removed from the project"
+      flash[:notice] = "#{@membership.user.email} #{t('notice.has_been_removed_from_the_project')}"
       @membership.destroy
     end
     redirect_to request.referrer
@@ -56,7 +56,7 @@ class MembershipsController < ApplicationController
 
     return if project.memberships.exists?(user_id: current_user)
 
-    flash[:alert] = "Access denied"
+    flash[:alert] = t('alert.access_denied')
     redirect_to root_path
   end
 end

@@ -4,11 +4,11 @@ class LocaleController < ApplicationController
 
         case option
         when "nb"
-            redirect_to "http://0.0.0.0:3000/?locale=nb"
+            redirect_to "#{root_path}?locale=nb"
             current_user.update!(locale: "nb")
 
         when "en"
-            redirect_to "http://0.0.0.0:3000/?locale=en"
+            redirect_to "#{root_path}?locale=en"
             current_user.update!(locale: "en")
         end
     end

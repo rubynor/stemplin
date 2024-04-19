@@ -33,7 +33,7 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
 
     if @task.update(task_params)
-      flash[:notice] = "Task has been updated"
+      flash[:notice] = t('notice.task_has_been_updated')
       redirect_to tasks_path
     else
       render :edit, status: :unprocessable_entity
@@ -45,14 +45,14 @@ class TasksController < ApplicationController
 
     if @task.assigned_tasks.empty?
       if @task.destroy
-        flash[:notice] = "Task was successfully deleted."
+        flash[:notice] = t('notice.task_was_successfully_deleted')
         redirect_to tasks_path
       else
-        flash[:alert] = "Could not delete task."
+        flash[:alert] = t('alert.could_not_delete_task')
         redirect_to edit_task_path(@task)
       end
     else
-      flash[:alert] = "Task is being used in one or more projects."
+      flash[:alert] = t('alert.task_is_being_used_in_one_or_more_projects')
       redirect_to edit_task_path(@task)
     end
   end

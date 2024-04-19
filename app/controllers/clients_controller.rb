@@ -33,7 +33,7 @@ class ClientsController < ApplicationController
 
     if @client.update(client_params)
       redirect_to @client
-      flash[:notice] = "client has been updated"
+      flash[:notice] = t('notice.client_has_been_updated')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -45,14 +45,14 @@ class ClientsController < ApplicationController
     # checks the confirmation field before trying to delete
     if delete_params[:confirmation] == "DELETE"
       if @client.destroy
-        flash[:notice] = "Client deleted"
+        flash[:notice] = t('notice.client_deleted')
         redirect_to clients_path
       else
-        flash[:alert] = "Could not delete client"
+        flash[:alert] = t('alert.could_not_delete_client')
         redirect_to edit_client_path(@client)
       end
     else
-      flash[:alert] = "Invalid confirmation"
+      flash[:alert] = t('alert.invalid_confirmation')
       redirect_to edit_client_path(@client)
     end
   end

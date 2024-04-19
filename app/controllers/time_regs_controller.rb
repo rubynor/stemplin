@@ -38,7 +38,7 @@ class TimeRegsController < ApplicationController
     respond_to do |format|
       if @time_reg.save
         format.turbo_stream
-        format.html { redirect_to root_path(date: @time_reg.date_worked), notice: "Time entry has been created" }
+        format.html { redirect_to root_path(date: @time_reg.date_worked), notice: t('notice.time_entry_has_been_created') }
       else
         format.turbo_stream
         format.html { redirect_to root_path(date: @time_reg.date_worked), status: :unprocessable_entity }
@@ -58,7 +58,7 @@ class TimeRegsController < ApplicationController
     respond_to do |format|
       if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
         format.turbo_stream
-        format.html { redirect_to root_path(date: @time_reg.date_worked), notice: "Time entry has been updated" }
+        format.html { redirect_to root_path(date: @time_reg.date_worked), notice: t('notice.time_entry_has_been_updated') }
       else
         format.turbo_stream
         format.html { redirect_to root_path(date: @time_reg.date_worked), status: :unprocessable_entity }
@@ -71,14 +71,14 @@ class TimeRegsController < ApplicationController
 
     if @time_reg.destroy
       redirect_to root_path(date: @time_reg.date_worked)
-      flash[:notice] = "Time entry has been deleted"
+      flash[:notice] = t('notice.time_entry_has_been_deleted')
     else
       @projects = current_user.projects
       @assigned_tasks = Task.joins(:assigned_tasks)
                             .where(assigned_tasks: { project_id: @time_reg.project.id })
                             .pluck(:name, "assigned_tasks.id")
 
-      flash[:alert] = "cannot delete time entry"
+      flash[:alert] = t('notice.cannot_delete_time_entry')
       render :edit, status: :unprocessable_entity
     end
   end
@@ -87,7 +87,7 @@ class TimeRegsController < ApplicationController
     @project = @time_reg.project
 
     if @time_reg.minutes >= TimeReg::MINUTES_IN_A_DAY
-      return redirect_to root_path(date: @time_reg.date_worked), alert: "Time entry cannot exceed 24 hours"
+      return redirect_to root_path(date: @time_reg.date_worked), alert: t('alert.time_entry_cannot_exceed_24_hours')
     end
 
     update_time_reg(current_status: @time_reg.active)

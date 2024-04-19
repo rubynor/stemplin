@@ -84,6 +84,7 @@ en:
     times: "Times"
     time: "Time"
     reports: "Reports"
+    report: "Report"
     projects: "Projects"
     project: "Project"
     notes: "Notes"
@@ -129,10 +130,49 @@ en:
     create_client: "Create Client"
     edit_user: "Edit User"
     back: "Back"
+    provide_a_csv: "Provide a CSV file with these columns"
 
   notice:
     are_you_sure: "Are you sure?"
-  
+    project_has_been_updated: "project has been updated"
+    was_added_to_the_project: "was added to the project"
+    has_been_removed_from_the_project: "has been removed from the project"
+    project_deleted: "Project deleted"
+    time_entries_imported_successfully: "time entries imported successfully."
+    task_successfully_added_to_project: "Task successfully added to project"
+    client_has_been_updated: "client has been updated"
+    client_deleted: "Client deleted"
+    task_has_been_updated: "Task has been updated"
+    task_was_successfully_deleted: "Task was successfully deleted."
+    time_entry_has_been_created: "Time entry has been created"
+    time_entry_has_been_updated: "Time entry has been updated"
+    time_entry_has_been_deleted: "Time entry has been deleted"
+    cannot_delete_time_entry: "cannot delete time entry"
+
+
+
+  alert:
+    does_not_exist: "does not exist"
+    is_already_a_member_of_the_project: "is already a member of the project"
+    cannot_remove_last_member_of_the_project: "cannot remove last member of the project"
+    member_has_time_entries_in_this_project: "Member has time entries in this project"
+    access_denied: "Access denied"
+    cannot_update_project: "cannot update project"
+    could_not_delete_project: "Could not delete project"
+    invalid_confirmation: "Invalid confirmation"
+    please_select_a_file_to_import: "Please select a file to import."
+    no_time_entries_found_in_the_file: "No valid time entries found in the file."
+    douple_check_email: "Invalid e-mail. Please double check the e-mail column for every row."
+    task_could_not_be_added_to_the_project: "Task could not be added to the project"
+    cannot_remove_task_with_registered_time: "Cannot remove task with registered time"
+    task_succesfully_removed_from_project: "Task succesfully removed from project"
+    could_not_delete_client: "Could not delete client"
+    could_not_change_the_grouping: "Could not change the grouping"
+    invalid_group: "Invalid group"
+    could_not_delete_task: "Could not delete task."
+    task_is_being_used_in_one_or_more_projects: "Task is being used in one or more projects."
+    time_entry_cannot_exceed_24_hours: "Time entry cannot exceed 24 hours"
+
   registration:
     first_name: "First name"
     last_name: "Last name"
