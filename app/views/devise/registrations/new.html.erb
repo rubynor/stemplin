@@ -32,10 +32,6 @@
             <%= render PhlexUI::Label.new { "Confirm password" } %>
             <%= form.password_field :password_confirmation, id: "password_confirm", autocomplete: "current-password", required: true, placeholder: "Confirm password", class: "border-gray-200 rounded-md w-full" %>
           <% end %>
-          <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-            <%= render PhlexUI::Label.new { "Confirm password" } %>
-            <%= form.password_field :key, id: "key", required: true, placeholder: "Key", class: "border-gray-200 rounded-md w-full" %>
-          <% end %>
         </div>
 
         <%= render ButtonComponent.new(type: "submit") { "Sign up" } %>
