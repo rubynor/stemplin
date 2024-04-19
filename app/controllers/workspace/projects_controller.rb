@@ -73,7 +73,7 @@ module Workspace
     end
 
     def set_project
-      @project = authorized_scope(Project, type: :relation).find(params[:id])
+      @project = Project.find(params[:id])
       authorize! @project
     end
 

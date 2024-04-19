@@ -65,7 +65,8 @@ module Workspace
     end
 
     def set_client
-      @client = authorized_scope(Client, type: :relation).find(params[:id])
+      @client = Client.find(params[:id])
+      authorize! @client
     end
   end
 end
