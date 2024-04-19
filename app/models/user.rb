@@ -8,8 +8,6 @@ class User < ApplicationRecord
   has_many :access_infos
   has_many :organizations, through: :access_infos
 
-  validates :key, inclusion: { in: [ ENV["AUTENTICATION_KEY"] ], message: "is Invalid" }
-
   def organization_clients
     clients.distinct
   end
@@ -31,6 +29,6 @@ class User < ApplicationRecord
   end
 
   def name
-    "#{first_name} #{last_name}"
+    "#{first_name} #{last_name}".strip
   end
 end
