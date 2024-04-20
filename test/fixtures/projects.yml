@@ -1,7 +1,6 @@
 project_1:
-  client: e_corp
   name: E Corp CRM
   description: Lorem
-  billable_project: true
-  billable_rate: 100
-  startdate: <%= Time.now %>
+  client: e_corp
+  billable: true
+  rate: 100

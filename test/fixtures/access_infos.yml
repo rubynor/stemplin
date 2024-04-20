@@ -1,0 +1,9 @@
+access_info_1:
+  user: joe
+  organization: organization_one
+  role: 1
+
+access_info_2:
+  user: ron
+  organization: organization_two
+  role: 1
