@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     end
     post :new_modal, on: :collection
     put :edit_modal, on: :member
+    post :delete_confirmation, on: :member
   end
 
   resources :projects, except: [ :index ] do

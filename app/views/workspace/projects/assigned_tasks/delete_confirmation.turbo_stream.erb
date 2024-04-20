@@ -14,7 +14,7 @@
         <% end %>
       <% end %>
       <%= render PhlexUI::AlertDialog::Footer.new do %>
-        <%= render PhlexUI::AlertDialog::Cancel.new(class: "!border-gray-100") { "Cancel" } %>
+        <%= render PhlexUI::AlertDialog::Cancel.new(class: "!border-gray-100 !h-12") { "Cancel" } %>
         <%= render ButtonComponent.new(variant: :destructive, path: workspace_project_assigned_task_path(id: @assigned_task.id, project_id: @assigned_task.project_id), method: :delete) { "Continue"} %>
       <% end %>
     <% end %>

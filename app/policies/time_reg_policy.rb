@@ -1,5 +1,5 @@
 class TimeRegPolicy < ApplicationPolicy
-  [ :edit?, :update?, :destroy?, :toggle_active?, :export? ].each do |action|
+  [ :edit?, :update?, :destroy?, :toggle_active?, :export?, :delete_confirmation? ].each do |action|
     define_method(action) do
       user == record.user
     end
@@ -14,12 +14,12 @@ class TimeRegPolicy < ApplicationPolicy
   end
 
   def create?
-    user == record.user && user.organization == record.organization
+    user == record.user && user.current_organization == record.organization
   end
 
   scope_for :relation do |relation|
-    organization = user.organization
-    if user.admin?
+    organization = user.current_organization
+    if user.organization_admin?
       relation.joins(:organization).where(organizations: organization).distinct
     else
       relation.joins(:organization, :users).where(organizations: organization, users: user).distinct
@@ -27,7 +27,7 @@ class TimeRegPolicy < ApplicationPolicy
   end
 
   scope_for :relation, :own do |relation|
-    organization = user.organization
+    organization = user.current_organization
     relation.joins(:organization, :user).where(organizations: organization, users: user).distinct
   end
 end

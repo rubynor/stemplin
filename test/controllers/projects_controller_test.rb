@@ -2,8 +2,8 @@ require "test_helper"
 
 class ProjectsControllerTest < ActionController::TestCase
   def setup
-    @user = users(:joe)
-    @admin = users(:ron)
+    @user = users(:ron)
+    @admin = users(:joe)
   end
 
   test "should redirect non-admin users" do

@@ -1,7 +1,0 @@
-<% if @time_reg.errors.any? %>
-  <%= turbo_stream.replace :modal, partial: "time_regs/form", locals: { time_reg: @time_reg, chosen_date: @chosen_date, projects: @projects, title: "New time entry", assigned_tasks: @time_reg.project&.tasks } %>
-<% else %>
-  <turbo-stream action="remove_modal" target="modal"></turbo-stream>
-  <%= turbo_stream.prepend "time_regs_list", partial: "time_regs/time_reg", locals: { time_reg: @time_reg } %>
-  <%= turbo_stream.remove "#{@chosen_date}_empty_illustration" %>
-<% end %>

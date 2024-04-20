@@ -1,7 +1,7 @@
 debug:
   name: Debug
-  organization: one
+  organization: organization_one
 
 coding:
   name: Coding
-  organization: one
+  organization: organization_one

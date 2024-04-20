@@ -1,12 +1,18 @@
 <header class="border-b border-gray-200 shadow-sm px-4 print:hidden">
   <nav class="max-w-7xl mx-auto flex justify-between items-center">
     <div>
-      <%= link_to root_path, class: "block hover:text-primary" do %>
+      <%= link_to root_path, class: "block bg-gray-50 px-6 py-2 rounded-md border border-gray-50 hover:text-primary" do %>
         <div class="flex gap-x-4">
           <svg class="svg-icon" width="35px" height="35px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
             <path fill="currentColor" d="M257.563 25.156c353.16 276.87 16.918 408.895-87.875 293.25l-40.75 37.125 50.812 50.345c217.562 181.363 524.73-252.058 77.813-380.72zM110.75 364.28c-5.525 1.065-8.975 2.957-11.313 5.25-1.956 1.922-3.248 4.556-4.25 7.564l55.188 52.844c5.468-1.008 9.264-2.796 11.28-4.688 1.997-1.872 3.095-3.864 3.095-7.53l-54-53.44zm-24.72 30.314L30.407 445.28C13.67 472.28 45.1 506.478 81.5 489.94l51.53-50.282-47-45.062z" />
           </svg>
-          <span class="font-bold text-xl">Reap</span>
+          <div class="flex flex-col">
+            <span class="font-bold text-xl">Reap</span>
+            <span class="text-sm text-gray-400 font-regular"><%= current_user.current_organization.name %></span>
+          </div>
+          <div class="flex justify-center items-center ml-4">
+            <i class="uc-icon text-lg text-gray-400">&#xe81d;</i>
+          </div>
         </div>
         <%# TODO: let's revamp our logo at the right time  %>
       <% end %>
