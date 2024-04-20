@@ -6,4 +6,4 @@ access_info_1:
 access_info_2:
   user: ron
   organization: organization_two
-  role: 1
+  role: 0

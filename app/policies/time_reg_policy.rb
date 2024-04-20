@@ -19,7 +19,7 @@ class TimeRegPolicy < ApplicationPolicy
 
   scope_for :relation do |relation|
     organization = user.current_organization
-    if user.admin?
+    if user.organization_admin?
       relation.joins(:organization).where(organizations: organization).distinct
     else
       relation.joins(:organization, :users).where(organizations: organization, users: user).distinct

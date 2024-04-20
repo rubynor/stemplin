@@ -8,6 +8,7 @@ class Project < ApplicationRecord
   has_many :assigned_tasks, dependent: :destroy
   has_many :time_regs, through: :assigned_tasks
   has_many :tasks, through: :assigned_tasks
+  has_many :time_regs, through: :assigned_tasks
 
   def rate_nok
     ConvertKroneOre.out(rate)

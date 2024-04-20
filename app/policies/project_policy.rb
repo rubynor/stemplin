@@ -8,14 +8,12 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   scope_for :relation, :own do |relation|
-    relation.joins(:organization, :users).where(organizations: user.current_organization, users: user).distinct
+    organization = user.current_organization
+    relation.joins(client: :organization).where(organizations: organization).distinct
   end
 
   scope_for :relation do |relation|
-    if user.organization_admin?
-      relation.joins(:organization).where(organizations: user.current_organization).distinct
-    else
-      relation.joins(:organization, :users).where(organizations: user.current_organization, users: user).distinct
-    end
+    organization = user.current_organization
+    relation.joins(client: :organization).where(organizations: organization).distinct
   end
 end
