@@ -36,7 +36,7 @@
       <i class="uc-icon text-base">&#xe972;</i>
       <span class="hidden lg:block">Edit</span>
     <% end %>
-    <%= render ButtonComponent.new(path: time_reg_path(time_reg), method: :delete, class: "gap-x-2", variant: :destructive, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }) do %>
+    <%= render ButtonComponent.new(path: delete_confirmation_time_reg_path(time_reg), method: :post, class: "gap-x-2", variant: :destructive) do %>
       <i class="uc-icon text-base">&#xeb97;</i>
       <span class="hidden lg:block">Delete</span>
     <% end %>

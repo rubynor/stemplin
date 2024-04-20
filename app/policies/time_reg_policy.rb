@@ -1,5 +1,5 @@
 class TimeRegPolicy < ApplicationPolicy
-  [ :edit?, :update?, :destroy?, :toggle_active?, :export? ].each do |action|
+  [ :edit?, :update?, :destroy?, :toggle_active?, :export?, :delete_confirmation? ].each do |action|
     define_method(action) do
       user == record.user
     end

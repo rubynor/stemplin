@@ -1,4 +1,4 @@
-<%# TODO: Convert into reusable turbo_confirm component that can be triggered with `turbo_confirm` %>
+<%# TODO: Convert into reusable turbo_confirm component that can be triggered with `turbo_confirm` and remove this duplication %>
 <%= render PhlexUI::AlertDialog.new(open: true, data: { controller: "custom-dialog" }) do %>
   <%= render PhlexUI::AlertDialog::Trigger.new(class: "hidden", data: { custom_dialog_target: "trigger" }) do %>
     <%= render PhlexUI::Button.new { "Show dialog" } %>
@@ -9,13 +9,19 @@
         <%= render PhlexUI::AlertDialog::Title.new { "Are you sure?" } %>
         <%= render PhlexUI::AlertDialog::Description.new do  %>
           <span>
-            Do you want to remove <span class="font-semibold text-primary"><%= @membership.user.name %></span>, from the project <span class="font-semibold text-primary"><%= @membership.project.name %></span>
+            Do you want to proceed with the deletion of the time registration for the project
+            <span class="font-semibold text-primary"><%= @time_reg.project.name %></span>,
+            with a task
+            <span class="font-semibold text-primary"><%= @time_reg.task.name %></span>
+            and
+            <span class="font-semibold text-primary"><%= convert_time_int(@time_reg.minutes) %></span>
+            logged. This action cannot be undone.
           </span>
         <% end %>
       <% end %>
       <%= render PhlexUI::AlertDialog::Footer.new do %>
         <%= render PhlexUI::AlertDialog::Cancel.new(class: "!border-gray-100 !h-12") { "Cancel" } %>
-        <%= render ButtonComponent.new(variant: :destructive, path: workspace_project_membership_path(id: @membership.id, project_id: @membership.project_id), method: :delete) { "Continue"} %>
+        <%= render ButtonComponent.new(variant: :destructive, path: time_reg_path(@time_reg), method: :delete) { "Delete"} %>
       <% end %>
     <% end %>
   <% end %>

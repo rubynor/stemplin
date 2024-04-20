@@ -1,6 +1,6 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update, :destroy ]
+  before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update, :destroy, :delete_confirmation ]
   before_action :set_projects, only: [ :index, :new_modal, :create, :edit_modal ]
   before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal ]
   before_action :set_project, only: [ :create ]
@@ -56,24 +56,19 @@ class TimeRegsController < ApplicationController
     end
   end
 
+  def delete_confirmation
+  end
+
   def destroy
-    # @time_reg = TimeReg.find(params[:id])
-    # authorize! @time_reg
-    #
-    # if @time_reg.destroy
-    #   redirect_to root_path(date: @time_reg.date_worked)
-    #   flash[:notice] = "Time entry has been deleted"
-    # else
-    #   @projects = current_user.projects
-    #   @assigned_tasks = authorized_scope(Task, type: :relation).joins(:assigned_tasks)
-    #                         .where(assigned_tasks: { project_id: @time_reg.project.id })
-    #                         .pluck(:name, "assigned_tasks.id")
-    #
-    #   flash[:alert] = "cannot delete time entry"
-    #   render :edit, status: :unprocessable_entity
-    # end
     @time_reg.destroy!
-    render turbo_stream: turbo_stream.remove(dom_id(@time_reg))
+    render turbo_stream: [
+      turbo_flash(type: :success, data: "Time registration was successfully deleted."),
+      turbo_stream.remove(dom_id(@time_reg)),
+      turbo_stream.action(:remove_modal, :modal)
+    ]
+
+  rescue ActiveRecord::RecordNotDestroyed
+    render turbo_stream: turbo_flash(type: :alert, data: "Unable to delete time registration")
   end
 
   def toggle_active
