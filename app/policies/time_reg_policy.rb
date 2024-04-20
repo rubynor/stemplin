@@ -14,11 +14,11 @@ class TimeRegPolicy < ApplicationPolicy
   end
 
   def create?
-    user == record.user && user.organization == record.organization
+    user == record.user && user.current_organization == record.organization
   end
 
   scope_for :relation do |relation|
-    organization = user.organization
+    organization = user.current_organization
     if user.admin?
       relation.joins(:organization).where(organizations: organization).distinct
     else
@@ -27,7 +27,7 @@ class TimeRegPolicy < ApplicationPolicy
   end
 
   scope_for :relation, :own do |relation|
-    organization = user.organization
+    organization = user.current_organization
     relation.joins(:organization, :user).where(organizations: organization, users: user).distinct
   end
 end

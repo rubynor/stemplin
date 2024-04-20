@@ -5,7 +5,6 @@ class Project < ApplicationRecord
 
   belongs_to :client
   has_one :organization, through: :client
-  has_many :users, through: :organization
   has_many :assigned_tasks, dependent: :destroy
   has_many :time_regs, through: :assigned_tasks
   has_many :tasks, through: :assigned_tasks

@@ -12,16 +12,16 @@ class User < ApplicationRecord
     clients.distinct
   end
 
+  def name
+    "#{first_name} #{last_name}".strip
+  end
+
   def organization_admin?
     access_info.organization_admin?
   end
 
   def current_organization
     access_info.organization
-  end
-
-  def name
-    "#{first_name} #{last_name}".strip
   end
 
   private

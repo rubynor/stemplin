@@ -2,7 +2,7 @@
   <div class="flex flex-row lg:items-center gap-x-4">
     <div class="bg-gray-50 border border-gray-100 rounded flex justify-center items-center w-8 h-8 relative">
       <i class="uc-icon text-base text-gray-400">&#xe8bb;</i>
-      <% if time_reg.active %>
+      <% if time_reg.active? %>
         <div class="absolute -bottom-2 -right-2 bg-yellow-500 rounded-full w-4 h-4 flex justify-center items-center">
           <i class="uc-icon text-xs text-white">&#xead0;</i>
         </div>
@@ -24,13 +24,13 @@
     </div>
   </div>
   <div class="flex gap-x-4 justify-end">
-    <%= render ButtonComponent.new(path: time_reg_toggle_active_path(time_reg), method: :patch, class: "gap-x-2", variant: time_reg.active ? :secondary : :outline) do %>
-      <% if time_reg.active %>
+    <%= render ButtonComponent.new(path: time_reg_toggle_active_path(time_reg), method: :patch, class: "gap-x-2", variant: time_reg.active? ? :secondary : :outline) do %>
+      <% if time_reg.active? %>
         <i class="uc-icon text-base">&#xeb59;</i>
       <% else %>
         <i class="uc-icon text-base">&#xead1;</i>
       <% end %>
-      <span class="hidden lg:block"><%= time_reg.active ? "Stop" : "Start" %></span>
+      <span class="hidden lg:block"><%= time_reg.active? ? "Stop" : "Start" %></span>
     <% end %>
     <%= render ButtonComponent.new(path: edit_modal_time_reg_path(time_reg, date: @chosen_date), method: :put, class: "gap-x-2", variant: :outline) do %>
       <i class="uc-icon text-base">&#xe972;</i>
