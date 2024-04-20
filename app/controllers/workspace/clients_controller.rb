@@ -3,7 +3,7 @@ module Workspace
     before_action :set_client, only: %i[edit_modal update destroy delete_confirmation]
 
     def index
-      @clients = Client.all
+      @clients = authorized_scope(Client, type: :relation).all
       # The association through projects - memberships, prevents us from fetching, all clients affiliated with the user's organization
       # Including those without projects, let's ensure we have a list of all clients affiliated with an organization by using the organization_clients method
       # TODO: Fix me
@@ -11,11 +11,11 @@ module Workspace
     end
 
     def new_modal
-      @client = Client.new
+      @client = authorized_scope(Client, type: :relation).new
     end
 
     def create
-      @client = Client.new(client_params)
+      @client = authorized_scope(Client, type: :relation).new(client_params)
 
       if @client.save
         render turbo_stream: [
@@ -66,6 +66,7 @@ module Workspace
 
     def set_client
       @client = Client.find(params[:id])
+      authorize! @client
     end
   end
 end

@@ -5,12 +5,12 @@ module Workspace
       before_action :set_assigned_task, only: %i[delete_confirmation destroy]
 
       def new_modal
-        @unassigned_tasks = Task.unassigned_tasks(@project.id)
-        @assigned_task = AssignedTask.new
+        @unassigned_tasks = authorized_scope(Task, type: :relation).unassigned_tasks(@project.id)
+        @assigned_task = authorized_scope(AssignedTask, type: :relation).new
       end
 
       def create
-        @assigned_task = AssignedTask.new(project: @project, task_id: assigned_task_params[:task_id])
+        @assigned_task = authorized_scope(AssignedTask, type: :relation).new(project: @project, task_id: assigned_task_params[:task_id])
 
         if @assigned_task.save
           render turbo_stream: [
@@ -19,7 +19,7 @@ module Workspace
             turbo_stream.append("#{dom_id(@project)}_assigned_tasks", partial: "workspace/projects/assigned_task", locals: { assigned_task: @assigned_task })
           ]
         else
-          @unassigned_tasks = Task.unassigned_tasks(@project.id)
+          @unassigned_tasks = authorized_scope(Task, type: :relation).unassigned_tasks(@project.id)
           render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/assigned_tasks/form", locals: { project: @project, assigned_task: @assigned_task, unassigned_tasks: @unassigned_tasks })
         end
       end
@@ -42,7 +42,7 @@ module Workspace
       private
 
       def set_project
-        @project = Project.find(params[:project_id])
+        @project = authorized_scope(Project, type: :relation).find(params[:project_id])
       end
 
       def assigned_task_params
@@ -50,7 +50,7 @@ module Workspace
       end
 
       def set_assigned_task
-        @assigned_task = AssignedTask.find(params[:id])
+        @assigned_task = authorized_scope(AssignedTask, type: :relation).find(params[:id])
       end
     end
   end

@@ -4,13 +4,10 @@ module Workspace
     before_action :prepare_form_data, only: %i[new_modal edit_modal create update]
 
     def create
-      @project = Project.new(project_params)
+      @project = authorized_scope(Project, type: :relation).new(project_params)
 
       ActiveRecord::Base.transaction do
         if @project.save!
-          # TODO: improve this logic, i believe a project should be tied to an organization instead of a user
-          # this is only mimicking current implementation, a proper issue/change request to be raised with details
-          @project.users << current_user
           render turbo_stream: [
             turbo_flash(type: :success, data: "Project was successfully created."),
             turbo_stream.append(:organization_projects, partial: "workspace/projects/project", locals: { project: @project }),
@@ -41,11 +38,11 @@ module Workspace
     end
 
     def index
-      @projects = current_user.projects
+      @projects = authorized_scope(Project, type: :relation).all
     end
 
     def new_modal
-      @project = Project.new
+      @project = authorized_scope(Project, type: :relation).new
     end
 
     def import_modal
@@ -72,16 +69,17 @@ module Workspace
     private
 
     def project_params
-      params.require(:project).permit(:client_id, :name, :description, :billable_project, :billable_rate_nok, task_ids: [])
+      params.require(:project).permit(:client_id, :name, :description, :billable, :rate_nok, task_ids: [])
     end
 
     def set_project
-      @project = authorized_scope(Project, type: :relation).find(params[:id])
+      @project = Project.find(params[:id])
+      authorize! @project
     end
 
     def prepare_form_data
-      @clients = Client.all
-      @tasks = Task.all
+      @clients = authorized_scope(Client, type: :relation).all
+      @tasks = authorized_scope(Task, type: :relation).all
     end
   end
 end

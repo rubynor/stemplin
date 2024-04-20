@@ -4,7 +4,7 @@ module Workspace
 
     COMMON_ACTIONS_FOR_ADMIN.each do |action|
       define_method("#{action}?") do
-        user.admin?
+        user.organization_admin?
       end
     end
   end

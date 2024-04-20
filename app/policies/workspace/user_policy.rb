@@ -1,8 +1,8 @@
 module Workspace
-  class ClientPolicy < WorkspacePolicy
+  class UserPolicy < WorkspacePolicy
     scope_for :relation do |relation|
       if user.organization_admin?
-        relation.where(organization: user.current_organization)
+        relation.joins(:organizations).where(organizations: user.current_organization).distinct
       else
         relation.none
       end

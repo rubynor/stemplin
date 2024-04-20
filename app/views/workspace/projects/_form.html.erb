@@ -8,7 +8,7 @@
       <%= form_with url: project.new_record? ? workspace_projects_path : workspace_project_path, method: project.new_record? ?  :post : :patch, scope: project do |form| %>
         <div class="flex flex-col gap-y-4">
           <span class="font-semibold text-gray-600 text-lg"><%= project.new_record? ? "New Project" : "Edit #{project.name}" %></span>
-          <%= content_tag(:div, class: "flex flex-col gap-y-4", data: { controller: "custom-disable", custom_disable_initial_status_value: project.billable_project }) do %>
+          <%= content_tag(:div, class: "flex flex-col gap-y-4", data: { controller: "custom-disable", custom_disable_initial_status_value: project.billable }) do %>
             <%= render PhlexUI::Form::Item.new do  %>
               <%= render PhlexUI::Label.new { "Client" } %>
               <%= render PhlexUI::Select::Builder.new(project, "client_id", collection: clients.map { |client| [client.name, client.id] }, placeholder: "Select client", trigger_attrs: { class: "!border-gray-200" }) %>
@@ -34,9 +34,9 @@
               <%= render PhlexUI::Label.new { "Billable project" } %>
               <div class="flex flex-row gap-4">
                 <%# TODO: Extract into reusable component %>
-                <%= collection_radio_buttons(nil, :billable_project, [[true, 'Yes'] ,[false, 'No']], :first, :last) do |radio_button| %>
+                <%= collection_radio_buttons(nil, :billable, [[true, 'Yes'] ,[false, 'No']], :first, :last) do |radio_button| %>
                   <%= content_tag(:label, class: "relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm w-full") do %>
-                    <%= form.radio_button(:billable_project, radio_button.value, class: "sr-only peer", checked: radio_button.value == project.billable_project, data: { action: "custom-disable#toggleElement", custom_disable_enable_param: radio_button.value }) %>
+                    <%= form.radio_button(:billable, radio_button.value, class: "sr-only peer", checked: radio_button.value == project.billable, data: { action: "custom-disable#toggleElement", custom_disable_enable_param: radio_button.value }) %>
                     <div class="absolute bg-purple-50 w-full h-full top-0 left-0 rounded-md border-2 border-primary z-0 opacity-0 peer-checked:opacity-100 transition duration-300 ease-in-out"></div>
                     <span class="flex flex-1 z-10">
                       <span class="flex flex-col">
@@ -51,7 +51,7 @@
                   <% end %>
                 <% end %>
               </div>
-              <% project.errors.full_messages_for(:billable_project).each do |message|%>
+              <% project.errors.full_messages_for(:billable).each do |message|%>
                 <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
               <% end %>
             <% end %>
@@ -60,7 +60,7 @@
               <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
                 <%= render PhlexUI::Label.new { "Billable Rates (per hour)" } %>
                 <%= render PhlexUI::Hint.new { "We need billable rates to track your project's billable amount" } %>
-                <%= form.text_field :billable_rate_nok, class: "border-gray-200 rounded-md" %>
+                <%= form.text_field :rate_nok, class: "border-gray-200 rounded-md" %>
               <% end %>
             <% end %>
 

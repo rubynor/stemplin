@@ -31,12 +31,12 @@
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
         <span class="font-regular">Rate</span>
-        <span class="font-semibold">NOK <%= @project.billable_rate_nok %></span>
+        <span class="font-semibold">NOK <%= @project.rate_nok %></span>
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
         <span class="font-regular">Billing status</span>
-        <%= render PhlexUI::Badge.new(variant: @project.billable_project ? :green : :gray, class: "!rounded-full flex gap-x-1") do %>
-          <span><%= @project.billable_project ? "Billable" : "Non-Billable" %></span>
+        <%= render PhlexUI::Badge.new(variant: @project.billable ? :green : :gray, class: "!rounded-full flex gap-x-1") do %>
+          <span><%= @project.billable ? "Billable" : "Non-Billable" %></span>
         <% end %>
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
@@ -44,21 +44,6 @@
         <span class="font-semibold"><%= @project.created_at.strftime("%A, %d %B %Y") %></span>
       </div>
     </div>
-    <div class="divide-y divide-gray-100 flex flex-col">
-      <div class="flex justify-between items-center py-2">
-        <span class="text-base text-gray-600 font-medium uppercase">Project Members</span>
-      </div>
-      <%= content_tag(:div, id: "#{dom_id(@project)}_memberships", class: "divide-y divide-gray-50") do %>
-        <%= render partial: "workspace/projects/membership", collection: @project.memberships %>
-      <% end %>
-      <div class="mt-2 py-4 font-medium flex flex-row gap-x-1 justify-end">
-        <span>Need to add more members?</span>
-        <%= render ButtonComponent.new(path: new_modal_workspace_project_memberships_path(@project), method: :post, variant: :link, class!: "underline text-primary") do %>
-          <span class="mr-2">Add new</span>
-        <% end %>
-      </div>
-    </div>
-
     <div class="divide-y divide-gray-100 flex flex-col">
       <div class="flex justify-between items-center py-2">
         <span class="text-base text-gray-600 font-medium uppercase">Tasks</span>
