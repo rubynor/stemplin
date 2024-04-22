@@ -24,11 +24,30 @@ class User < ApplicationRecord
     access_info.organization
   end
 
+  def set_organization(organization)
+    return false unless access_infos.exists?(organization: organization)
+
+    ActiveRecord::Base.transaction do
+      begin
+        access_info.update(active: false)
+        access_infos.find_by(organization: organization).update(active: true)
+      rescue ActiveRecord::StatementInvalid
+        return false
+      end
+    end
+
+    true
+  end
+
   private
 
   def access_info
-    # For simplicity, the current tie to a organization is set to the first
-    # TODO: Implement a function that lets a user choose between it's associated organizations
-    access_infos.first
+    if access_infos.exists?(active: true)
+      access_infos.find_by(active: true)
+    else
+      access_info = access_infos.first
+      access_info.update(active: true)
+      access_info
+    end
   end
 end
