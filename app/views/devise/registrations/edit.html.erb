@@ -50,7 +50,7 @@
           </div>
         </div>
       </div>
-      <div class="space-y-px mt-8"><%= t('registration.unhappy') %>? <%= button_to t('registration.cancel_account'), registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "btn btn-danger text-red-600 p-1 pb-2 hover:text-red-700" %></div>
+      <div class="space-y-px mt-8"><%= t('registration.unhappy') %>? <%= button_to t('registration.cancel_account'), registration_path(resource_name), data: { confirm: t('notice.are_you_sure'), turbo_confirm: t('notice.are_you_sure') }, method: :delete, class: "btn btn-danger text-red-600 p-1 pb-2 hover:text-red-700" %></div>
       <%= link_to t('common.back'), :back, class: "italic text-gray-600 hover:text-gray-800" %>
     <% end %>  
   </div>
