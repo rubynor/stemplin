@@ -1,10 +1,9 @@
 class UserPolicy < ApplicationPolicy
   scope_for :relation do |relation|
-    organization = user.current_organization
-    if user.admin?
-      relation.where(organization: organization)
+    if user.organization_admin?
+      relation.joins(:organizations).where(organizations: user.current_organization).distinct
     else
-      relation.where(organization: organization, id: user)
+      relation.joins(:organizations).where(organizations: user.current_organization, id: user).distinct
     end
   end
 end
