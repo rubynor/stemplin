@@ -1,15 +1,20 @@
 class LocaleController < ApplicationController
-    def set_locale
-        option =params[:locale]
 
-        case option
-        when "nb"
-            redirect_to "#{root_path}?locale=nb"
-            current_user.update!(locale: "nb")
-
-        when "en"
-            redirect_to "#{root_path}?locale=en"
-            current_user.update!(locale: "en")
-        end
+    
+  def set_locale
+    option = params[:locale]
+    case option
+    when "nb"
+        update_locale_and_redirect("nb")
+    when "en"
+        update_locale_and_redirect("en")
     end
+  end
+
+  private
+
+  def update_locale_and_redirect(locale)
+    current_user.update!(locale: locale)
+    redirect_back(fallback_location: root_path(locale: locale))
+  end
 end
