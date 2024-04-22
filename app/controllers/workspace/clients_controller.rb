@@ -4,10 +4,6 @@ module Workspace
 
     def index
       @clients = authorized_scope(Client, type: :relation).all
-      # The association through projects - memberships, prevents us from fetching, all clients affiliated with the user's organization
-      # Including those without projects, let's ensure we have a list of all clients affiliated with an organization by using the organization_clients method
-      # TODO: Fix me
-      # @clients = current_user.organization_clients
     end
 
     def new_modal

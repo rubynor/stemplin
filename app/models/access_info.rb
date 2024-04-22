@@ -6,4 +6,8 @@ class AccessInfo < ApplicationRecord
 
   validates :user, presence: true
   validates :organization, presence: true
+
+  def self.allowed_organization_roles
+    self.roles.except(:super_admin).keys
+  end
 end

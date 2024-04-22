@@ -1,14 +1,31 @@
-<div class="divide-y divide-gray-100 flex flex-col">
-  <div class="flex justify-between items-center py-2">
-    <span class="text-base text-gray-600 font-medium uppercase">Team Members</span>
+<div class="flex flex-col gap-y-8">
+  <div class="flex flex-row justify-between items-center border-b border-gray-100 py-3">
+    <div class="flex flex-row items-center gap-x-2">
+      <span class="font-medium text-gray-600 text-lg">Team Members</span>
+      <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
+        <span class="text-gray-700 text-xs font-semibold"><%= @users.count %></span>
+      </div>
+    </div>
+    <div class="flex flex-row gap-2">
+      <%= render ButtonComponent.new(path: new_modal_workspace_teams_path, method: :post) do %>
+        <span class="hidden lg:block mr-2">Add New</span>
+        <i class="uc-icon text-xl">&#xebaf;</i>
+      <% end %>
+    </div>
   </div>
-  <%= content_tag(:div, id: "#{dom_id(@organization)}_users", class: "divide-y divide-gray-50") do %>
-    <%= render partial: "workspace/teams/user", locals: { user: @users.first } %>
-  <% end %>
-  <%# <div class="mt-2 py-4 font-medium flex flex-row gap-x-1 justify-end"> %>
-    <%# <span>Need to add more members?</span> %>
-    <%#= render ButtonComponent.new(path: "", method: :post, variant: :link, class!: "underline text-primary") do %>
-      <%# <span class="mr-2">Add new</span> %>
-    <%# end %>
-  <%# </div> %>
+  <div>
+    <%= render PhlexUI::Table.new do %>
+      <%= render PhlexUI::Table::Header.new do %>
+        <%= render PhlexUI::Table::Row.new do %>
+          <%= render PhlexUI::Table::Head.new { "Name" } %>
+          <%= render PhlexUI::Table::Head.new { "Email" } %>
+          <%= render PhlexUI::Table::Head.new { "Added on" } %>
+          <%= render PhlexUI::Table::Head.new { "Actions" } %>
+        <% end %>
+      <% end %>
+      <%= render PhlexUI::Table::Body.new(id: :organization_users) do %>
+        <%= render partial: "workspace/teams/user", collection: @users %>
+      <% end %>
+    <% end %>
+  </div>
 </div>

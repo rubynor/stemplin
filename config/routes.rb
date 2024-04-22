@@ -81,7 +81,9 @@ Rails.application.routes.draw do
       post :edit_modal, on: :member
       post :delete_confirmation, on: :member
     end
-    resources :tasks, only: [ :index ]
-    resources :teams, only: [ :index ]
+    resources :teams, only: [ :index, :create ] do
+      post :new_modal, on: :collection
+      post :delete_confirmation, on: :member
+    end
   end
 end

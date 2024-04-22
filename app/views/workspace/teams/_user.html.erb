@@ -1,12 +1,12 @@
-<%= content_tag(:div, class: "py-4 flex justify-between items-center", id: dom_id(user)) do %>
-  <div class="flex flex-row gap-x-2">
-    <div class="bg-gray-50 rounded-full w-10 h-10 flex justify-center items-center">
-      <i class="uc-icon text-lg">&#xebb2;</i>
+<%= render PhlexUI::Table::Row.new(id: dom_id(user)) do %>
+  <%= render PhlexUI::Table::Cell.new { user.name } %>
+  <%= render PhlexUI::Table::Cell.new { user.email } %>
+  <%= render PhlexUI::Table::Cell.new { user.created_at.strftime("%A, %d %B %Y") } %>
+  <%= render PhlexUI::Table::Cell.new do %>
+    <div class="flex flex-row gap-x-2">
+      <%= render ButtonComponent.new(path: delete_confirmation_workspace_team_path(user), method: :post, variant: :outline, class: "!py-3") do %>
+        <i class="uc-icon">&#xeb97;</i>
+      <% end %>
     </div>
-    <div class="flex flex-col gap-y-1">
-      <span class="text-sm text-gray-500 font-medium"><%= user&.name %></span>
-      <span class="text-xs"><%= user&.email %></span>
-    </div>
-  </div>
-  <%#= render ButtonComponent.new(variant: :link, class: "text-red-700", path: delete_confirmation_workspace_project_membership_path(id: membership.id, project_id: membership.project_id), method: :post) { "Remove" } %>
+  <% end %>
 <% end %>
