@@ -7,6 +7,8 @@ class User < ApplicationRecord
   has_many :time_regs
   has_many :access_infos
   has_many :organizations, through: :access_infos
+  has_many :clients, through: :organizations
+  has_many :projects, through: :clients
 
   def organization_clients
     clients.distinct
