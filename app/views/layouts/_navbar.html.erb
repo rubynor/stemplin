@@ -1,7 +1,7 @@
 <header class="border-b border-gray-200 shadow-sm px-4 print:hidden">
   <nav class="max-w-7xl mx-auto flex justify-between items-center">
     <div>
-      <%= render PhlexUI::Dialog.new(open: true) do %>
+      <%= render PhlexUI::Dialog.new do %>
         <%= render PhlexUI::Dialog::Trigger.new(class: "block bg-gray-50 px-6 py-2 rounded-md border border-gray-50 hover:text-primary cursor-pointer") do %>
           <div class="flex gap-x-4">
             <svg class="svg-icon" width="35px" height="35px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
