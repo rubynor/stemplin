@@ -26,7 +26,7 @@ class ReportsController < ApplicationController
       projects = authorized_scope(Project, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
       tasks = authorized_scope(Task, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
       users = authorized_scope(User, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
-      total_billable_minutes = time_regs.joins(:project).where(project: { billable_project: true }).sum(:minutes)
+      total_billable_minutes = time_regs.joins(:project).where(project: { billable: true }).sum(:minutes)
       total_minutes = time_regs.sum(:minutes)
 
       @detailed_report_data = OpenStruct.new(
