@@ -25,12 +25,6 @@ class User < ApplicationRecord
   end
 
   def access_info
-    if access_infos.exists?(active: true)
-      access_info = access_infos.find_by(active: true)
-    else
-      access_info = access_infos.first
-      access_info.update(active: true)
-    end
-    access_info
+    access_infos.find_by(active: true) || access_infos.first
   end
 end
