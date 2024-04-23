@@ -26,11 +26,7 @@ class User < ApplicationRecord
     access_info.organization
   end
 
-  private
-
   def access_info
-    # For simplicity, the current tie to a organization is set to the first
-    # TODO: Implement a function that lets a user choose between it's associated organizations
-    access_infos.first
+    access_infos.find_by(active: true) || access_infos.first
   end
 end

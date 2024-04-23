@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   resources :onboarding, only: [ :new, :create ]
 
+  post "/set_current_organization/:id" => "organizations#set_current_organization", as: :set_current_organization
+
   resources :project_reports do
     patch :update_group
     collection do
