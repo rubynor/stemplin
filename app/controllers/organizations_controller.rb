@@ -7,11 +7,8 @@ class OrganizationsController < ApplicationController
       access_infos = current_user.access_infos
       active_access_info = current_user.access_info
 
-      begin
-        active_access_info.update(active: false)
-        access_infos.find_by(organization: @organization).update(active: true)
-      rescue ActiveRecord::StatementInvalid
-      end
+      active_access_info.update(active: false)
+      access_infos.find_by(organization: @organization).update(active: true)
     end
 
     redirect_back fallback_location: root_path
