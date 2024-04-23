@@ -4,7 +4,6 @@
   <% end %>
   <%= render PhlexUI::Dialog::Content.new(class: "bg-white") do %>
     <%= turbo_frame_tag :modal do %>
-      <%# TODO: cleanup this funny check with form_with(:model) after cleaning up with the other conflicting controller %>
       <%= form_with url: workspace_teams_path, method: :post, scope: user do |form| %>
         <div class="flex flex-col gap-y-4">
           <span class="font-semibold text-gray-600 text-lg">Add member</span>

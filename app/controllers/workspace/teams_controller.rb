@@ -30,9 +30,6 @@ module Workspace
       User
     end
 
-    def delete_confirmation
-    end
-
     private
 
     def team_member_params

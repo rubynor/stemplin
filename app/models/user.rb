@@ -19,11 +19,11 @@ class User < ApplicationRecord
   end
 
   def organization_admin?
-    access_info.organization_admin?
+    access_info&.organization_admin?
   end
 
   def current_organization
-    access_info.organization
+    access_info&.organization
   end
 
   def access_info

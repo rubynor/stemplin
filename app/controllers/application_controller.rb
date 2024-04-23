@@ -11,7 +11,9 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    new_onboarding_path
+    return new_onboarding_path if current_user.organizations.empty?
+    return edit_password_onboarding_index_path unless current_user.is_verified?
+    root_path
   end
 
   private

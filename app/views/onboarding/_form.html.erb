@@ -10,7 +10,7 @@
       <% end %>
     <% end %>
   </div>
-  <%= render PhlexUI::Dialog::Footer.new(class: "mt-8") do %>
+  <div class="mt-8">
     <%= render ButtonComponent.new(type: :submit, class: "w-full") { "Create" } %>
-  <% end %>
+  </div>
 <% end %>

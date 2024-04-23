@@ -3,7 +3,11 @@ Rails.application.routes.draw do
 
   root "time_regs#index"
 
-  resources :onboarding, only: [ :new, :create ]
+  resources :onboarding, only: [ :new, :create ] do
+    get :skip_and_verify_account, on: :collection
+    get :edit_password, on: :collection
+    put :update_password, on: :collection
+  end
 
   post "/set_current_organization/:id" => "organizations#set_current_organization", as: :set_current_organization
 
@@ -83,7 +87,6 @@ Rails.application.routes.draw do
     end
     resources :teams, only: [ :index, :create ] do
       post :new_modal, on: :collection
-      post :delete_confirmation, on: :member
     end
   end
 end
