@@ -10,6 +10,20 @@ module Workspace
     end
 
     def create
+      ActiveRecord::Base.transaction do
+        @user = User.new(team_member_params.except(:role).merge(is_verified: false))
+        @user.save!
+        AccessInfo.create!(user: @user, organization: current_user.current_organization, role: AccessInfo.roles[team_member_params[:role]])
+      end
+
+      render turbo_stream: [
+        turbo_flash(type: :success, data: "User added to the organization."),
+        turbo_stream.append(:organization_users, partial: "workspace/teams/user", locals: { user: @user }),
+        turbo_stream.action(:remove_modal, :modal)
+      ]
+    rescue => e
+      @roles = AccessInfo.allowed_organization_roles
+      render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/teams/form", locals: { user: @user, roles: @roles })
     end
 
     def implicit_authorization_target
