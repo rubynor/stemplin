@@ -32,7 +32,6 @@
 en:
   hello: "Hello world"
 
-
   language:
     en: "EN"
     nb: "NO"
@@ -66,8 +65,8 @@ en:
     today: "Today"
     go_to_today: "Go to today"
     date_range: "Date range"
-    New_time_entry: "New time entry"
-  
+    new_time_entry: "New time entry"
+
   task:
     your_projects: "Your projects"
     new_project: "New Project"
@@ -94,7 +93,7 @@ en:
     cancel: "Cancel"
     start_timer: "Start timer"
     create_time_reg: "Create Time reg"
-    Update_Time_reg: "Update Time reg"
+    update_time_reg: "Update Time reg"
     edit: "Edit"
     stop: "Stop"
     start: "Start"
@@ -118,7 +117,7 @@ en:
     edit_task_on_project: "Want to edit tasks on the project? Click"
     here: "here"
     create_task: "Create task"
-    create_New_Task: "Create New Task"
+    create_new_task: "Create New Task"
     name_of_task: "Type the name of the task here"
     save_task: "Save task"
     project_members: "project members"
@@ -126,11 +125,27 @@ en:
     email: "Email"
     remove: "Remove"
     update_project: "Update Project"
-    tasks: "Tasks"
+    task: "Tasks"
     create_client: "Create Client"
     edit_user: "Edit User"
     back: "Back"
     provide_a_csv: "Provide a CSV file with these columns"
+    careful_this_action_will: "CAREFUL! this action will:"
+    remove_all_time_entries: "Remove all time entries for every member permanently"
+    remove_every_member_from_the_project: "Remove every member from the project"
+    remove_every_task_from_the_project: "Remove every task from the project"
+    delete_the_project_permanently: "Delete the project permanently"
+    please_enter: "Please enter"
+    delete: "DELETE"
+    to_confirm: "to confirm"
+    delete_the_client_permanently: "Delete the client permanently"
+    cannot_delete_client_with_active_projects: "Cannot delete client with active projects"
+    new_task: "New Task"
+    person: "Person"
+    hours: "Hours"
+    total: "Total"
+    total_billable_hours: "Total billable hours"
+    total_hours: "Total hours"
 
   notice:
     are_you_sure: "Are you sure?"
@@ -148,8 +163,7 @@ en:
     time_entry_has_been_updated: "Time entry has been updated"
     time_entry_has_been_deleted: "Time entry has been deleted"
     cannot_delete_time_entry: "cannot delete time entry"
-
-
+    task_succesfully_removed_from_project: "Task succesfully removed from project"
 
   alert:
     does_not_exist: "does not exist"
@@ -165,13 +179,19 @@ en:
     douple_check_email: "Invalid e-mail. Please double check the e-mail column for every row."
     task_could_not_be_added_to_the_project: "Task could not be added to the project"
     cannot_remove_task_with_registered_time: "Cannot remove task with registered time"
-    task_succesfully_removed_from_project: "Task succesfully removed from project"
     could_not_delete_client: "Could not delete client"
     could_not_change_the_grouping: "Could not change the grouping"
     invalid_group: "Invalid group"
     could_not_delete_task: "Could not delete task."
     task_is_being_used_in_one_or_more_projects: "Task is being used in one or more projects."
     time_entry_cannot_exceed_24_hours: "Time entry cannot exceed 24 hours"
+    please_select_a_project: "Please select a project"
+    please_select_a_task: "Please select a task"
+
+  description:
+    blank: "can't be blank"
+    too_short: "is too short (minimum is %{count} characters)"
+    too_long: "is too long (maximum is %{count} characters)"
 
   registration:
     first_name: "First name"
@@ -191,8 +211,44 @@ en:
   users:
     sessions:
       new:
-        log_in: Log in
-        email: Email
-        password: Password
-        remember_me: Remember me
-        forgot_password: Forgot your password?
+        log_in: "Log in"
+        email: "Email"
+        password: "Password"
+        remember_me: "Remember me"
+        forgot_password: "Forgot your password?"
+
+  activerecord:
+    attributes:
+      client:
+        name: "name"
+        description: "description"
+    errors:
+      models:
+        client:
+          attributes:
+            description:
+              blank: "cannot be empty"
+              too_short: "is too short (minimum is %{count} sign)"
+              too_long: "is too long (maximum is %{count} sign)"
+              taken: "is already in use"
+            name:
+              blank: "cannot be empty"
+              too_short: "is too short (minimum is %{count} sign)"
+              too_long: "is too long (maximum is %{count} sign)"
+              taken: "is already in use"
+        
+        project:
+          attributes:
+            name: "name"
+            description: "description"
+
+            description:
+              blank: "cannot be empty"
+              too_short: "is too short (minimum is %{count} sign)"
+              too_long: "is too long (maximum is %{count} sign)"
+              taken: "is already in use"
+            name:
+              blank: "cannot be empty"
+              too_short: "is too short (minimum is %{count} sign)"
+              too_long: "is too long (maximum is %{count} sign)"
+              taken: "is already in use"

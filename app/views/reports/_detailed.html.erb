@@ -6,11 +6,11 @@
 
   <div class="flex flex-col my-6 w-full space-y-10 md:flex-row print:flex-row">
     <div class="flex-1 flex flex-col justify-center">
-      <h2 class="text-xl">Total billable hours</h2>
+      <h2 class="text-xl"><%= t('common.total_billable_hours') %></h2>
       <span class="font-bold text-4xl">
         <%= minutes_to_float detailed_report_data.total_billable_minutes %>
       </span>
-      <h2 class="text-xl">Total hours</h2>
+      <h2 class="text-xl"><%= t('common.total_hours') %></h2>
       <span class="text-2xl">
         <%= minutes_to_float detailed_report_data.total_minutes %>
       </span>
@@ -19,25 +19,25 @@
     <div class="flex-1 flex text-xl">
       <div class="grid grid-cols-2 h-full w-fit">
         <span>
-          <%= pluralize detailed_report_data.clients.count, 'Client' %>
+          <%= pluralize detailed_report_data.clients.count,  t('common.client')  %>
         </span>
         <span class="font-bold">
           <%= concat_names detailed_report_data.clients %>
         </span>
         <span>
-          <%= pluralize detailed_report_data.projects.count, 'Project' %>
+          <%= pluralize detailed_report_data.projects.count, t('common.project') %>
         </span>
         <span class="font-bold">
           <%= concat_names detailed_report_data.projects %>
         </span>
         <span>
-          <%= pluralize detailed_report_data.tasks.count, 'Task' %>
+          <%= pluralize detailed_report_data.tasks.count, t('common.task') %>
         </span>
         <span class="font-bold">
           <%= concat_names detailed_report_data.tasks %>
         </span>
         <span>
-          <%= pluralize detailed_report_data.users.count, 'Person' %>
+          <%= pluralize detailed_report_data.users.count, t('common.person') %>
         </span>
         <span class="font-bold">
           <%= concat_names detailed_report_data.users %>
@@ -49,11 +49,11 @@
   <table class="w-full">
     <thead>
       <tr class="bg-stone-200 border-y-2 border-stone-300 text-stone-700 print-color-adjust">
-        <td class="pl-5">Client</td>
-        <td>Project</td>
-        <td>Task</td>
-        <td>Person</td>
-        <td class="w-[6rem] text-end">Hours</td>
+        <td class="pl-5"><%= t('common.client') %></td>
+        <td><%= t('common.project') %></td>
+        <td><%= t('common.task') %></td>
+        <td><%= t('common.person') %></td>
+        <td class="w-[6rem] text-end"><%= t('common.hours') %></td>
         <td class="w-6"></td>
       </tr>
     </thead>
@@ -99,7 +99,7 @@
         <td></td>
         <td></td>
         <td class="text-end">
-          <span class="font-bold pr-3">Total</span>
+          <span class="font-bold pr-3"><%= t('common.total') %></span>
         </td>
         <td class="text-end">
           <span class="font-bold"><%= minutes_to_float detailed_report_data.total_minutes %></span>

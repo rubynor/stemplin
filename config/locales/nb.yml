@@ -2,16 +2,16 @@ nb:
   number:
     currency:
       format:
-        unit: ''
-        delimiter: ' '
-        separator: ','
+        unit: ""
+        delimiter: " "
+        separator: ","
         precision: 2
-        format: '%n%u'
+        format: "%n%u"
 
   language:
     en: "EN"
     nb: "NO"
-  
+
   day:
     monday: "Mandag"
     tuesday: "Tirsdag"
@@ -33,7 +33,7 @@ nb:
     september: "September"
     october: "Oktober"
     november: "November"
-    december: "December"
+    december: "Desember"
 
   time:
     week: "Hele uken"
@@ -41,7 +41,7 @@ nb:
     today: "I dag"
     go_to_today: "Reis til i dag"
     date_range: "Datointervall"
-    New_time_entry: "Ny tidsregistrering"
+    new_time_entry: "Ny tidsregistrering"
 
   task:
     your_projects: "Dine prosjekter"
@@ -50,7 +50,7 @@ nb:
     detailed_report: "Se detaljert rapport"
     no_data_in_this_period: "Ingen data i denne perioden"
     assign_task: "Sett oppgave"
-  
+
   common:
     client: "Klient"
     clients: "Klienter"
@@ -69,7 +69,7 @@ nb:
     cancel: "Avbryt"
     start_timer: "Start klokken"
     create_time_reg: "Opprett tids reg"
-    Update_Time_reg: "Oppdater Tids reg"
+    update_time_reg: "Oppdater Tids reg"
     edit: "Rediger"
     stop: "Stop"
     start: "Start"
@@ -101,13 +101,28 @@ nb:
     email: "E-post"
     remove: "Fjern"
     update_project: "Oppdater Prosjekt"
-    tasks: "Oppgave"
+    task: "Oppgave"
     create_client: "Lag Klient"
     edit_user: "Endre Brukere"
     back: "Tilbake"
     provide_a_csv: "Oppgi en CSV-fil med disse kolonnene"
+    careful_this_action_will: "FORSIKTIG! denne handlingen vil:"
+    remove_all_time_entries: "Fjern alle tidsregistreringer for hvert medlem permanent"
+    remove_every_member_from_the_project: "Fjern hvert medlem fra prosjektet"
+    remove_every_task_from_the_project: "Fjern hver oppgave fra prosjektet"
+    delete_the_project_permanently: "Slett prosjektet permanent"
+    please_enter: "Vennligst skriv inn"
+    delete: "SLETT"
+    to_confirm: "for bekreftelse"
+    delete_the_client_permanently: "Slett klienten permanent"
+    cannot_delete_client_with_active_projects: "Kan ikke slette klient med aktive prosjekter"
+    new_task: "Ny oppgave"
+    person: "Person"
+    hours: "Timer"
+    total: "Totalt"
+    total_billable_hours: "Totale fakturerbare timer"
+    total_hours: "Totalt antall timer"
 
-  
   notice:
     are_you_sure: "Er du sikker?"
     project_has_been_updated: "Prosjekt har blit oppdatert"
@@ -125,10 +140,7 @@ nb:
     time_entry_has_been_updated: "Tidsregistrering er oppdatert"
     time_entry_has_been_deleted: "Tidsregistrering er slettet"
     cannot_delete_time_entry: "kan ikke slette tidsregistrering"
-
-
-
-
+    task_succesfully_removed_from_project: "Oppgaven ble fjernet fra prosjektet"
 
   alert:
     does_not_exist: "eksisterer ikke"
@@ -144,15 +156,18 @@ nb:
     douple_check_email: "Ugyldig epost. Vennligst dobbeltsjekk e-postkolonnen for hver rad."
     task_could_not_be_added_to_the_project: "Oppgaven kunne ikke legges til prosjektet"
     cannot_remove_task_with_registered_time: "Kan ikke fjerne oppgave med registrert tid"
-    task_succesfully_removed_from_project: "Oppgaven ble fjernet fra prosjektet"
     could_not_change_the_grouping: "Kunne ikke endre grupperingen"
     invalid_group: "Ugyldig gruppe"
     could_not_delete_task: "Kunne ikke slette oppgaven."
     task_is_being_used_in_one_or_more_projects: "Oppgaven brukes i ett eller flere prosjekter."
     time_entry_cannot_exceed_24_hours: "Tidsregistrering kan ikke overstige 24 timer"
+    please_select_a_project: "Vennligst velg et prosjekt"
+    please_select_a_task: "Vennligst velg en oppgave"
 
-
-
+  description:
+    blank: "kan ikke være blank"
+    too_short: "er for kort (minimum er %{count} tegn)"
+    too_long: "er for lang (maksimum er %{count} tegn)"
 
   registration:
     first_name: "Første navn"
@@ -172,8 +187,44 @@ nb:
   users:
     sessions:
       new:
-        log_in: Logg inn
-        email: E-post
-        password: Passord
-        remember_me: Husk meg
-        forgot_password: Glemt passord?  
+        log_in: "Logg inn"
+        email: "E-post"
+        password: "Passord"
+        remember_me: "Husk meg"
+        forgot_password: "Glemt passord?"
+
+  activerecord:
+    attributes:
+      client:
+        name: "navn"
+        description: "beskrivelse"
+    errors:
+      models:
+        client:
+          attributes:
+            description:
+              blank: "kan ikke være tom"
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+              taken: "er allerede i bruk"
+            name:
+              blank: "kan ikke være tom"
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+              taken: "er allerede i bruk"
+        
+        project:
+          attributes:
+            name: "navn"
+            description: "beskrivelse"
+
+            description:
+              blank: "kan ikke være tom"
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+              taken: "er allerede i bruk"
+            name:
+              blank: "kan ikke være tom"
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+              taken: "er allerede i bruk"

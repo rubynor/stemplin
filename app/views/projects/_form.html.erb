@@ -15,7 +15,7 @@
     <%= form.text_area :name, class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
     <% @project.errors.full_messages_for(:name).each do |message|%>
       <div class="text-red-600 italic text-xs mt-1">
-        <%= message %>
+        <%= t("activerecord.errors.models.project.attributes.description.#{message.downcase}") %>
       </div>
     <% end %>
   </div>
@@ -25,9 +25,9 @@
     <%= form.text_area :description, class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
 
     <% @project.errors.full_messages_for(:description).each do |message|%>
-    <div class="text-red-600 italic text-xs mt-1">
-      <%= message %>
-    </div>            
+      <div class="text-red-600 italic text-xs mt-1">
+        <%= t("activerecord.errors.models.project.attributes.description.#{message.downcase}") %>
+      </div>          
   <% end %>
   </div>
   <br>
@@ -69,7 +69,7 @@
   <br>
 <div class="mb-14">
   <% if form.object.new_record? %>
-    <%= form.label :task_ids, t('common.tasks'), class: 'block text-gray-700 font-bold mb-1' %>
+    <%= form.label :task_ids, t('common.task'), class: 'block text-gray-700 font-bold mb-1' %>
     <div class="mt-2 ml-2 grid grid-cols-2 gap-4">
       <%= form.collection_check_boxes :task_ids, Task.all, :id, :name do |task| %>
         <div class="flex items-center space-x-2">
