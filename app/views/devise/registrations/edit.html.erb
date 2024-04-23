@@ -1,4 +1,4 @@
-<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900"><%= t('common.edit_user') %></h2>
+<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900"><%= t('common.edit_user') %><%= resource_name.to_s.humanize %></h2>
 <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
   <div class="w-full max-w-md space-y-8">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
