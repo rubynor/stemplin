@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :clients, through: :organizations
   has_many :projects, through: :clients
 
+  validates :locale, inclusion: {in: I18n.available_locales.map(&:to_s)}
+
   def organization_clients
     clients.distinct
   end
