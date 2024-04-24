@@ -8,7 +8,7 @@ class TaskTest < ActiveSupport::TestCase
 
   test "name should not be unique accross organizations" do
     @organization_one.tasks.create(name: "Unique task name")
-    assert_changes 'Task.count' do
+    assert_changes "Task.count" do
       @organization_two.tasks.create(name: "Unique task name")
     end
   end
