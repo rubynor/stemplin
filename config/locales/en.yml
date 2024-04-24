@@ -35,29 +35,16 @@ en:
   language:
     en: "EN"
     nb: "NO"
-
-  day:
-    monday: "Monday"
-    tuesday: "Tuesday"
-    wednesday: "Wednesday"
-    thursday: "Thursday"
-    friday: "Friday"
-    saturday: "Saturday"
-    sunday: "Sunday"
-
-  months:
-    january: "January"
-    february: "February"
-    march: "March"
-    april: "April"
-    may: "May"
-    june: "June"
-    july: "July"
-    august: "August"
-    september: "September"
-    october: "October"
-    november: "November"
-    december: "December"
+  
+  date:
+    day_names:
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      - Sunday
 
   time:
     week: "Week total"

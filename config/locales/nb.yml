@@ -12,28 +12,30 @@ nb:
     en: "EN"
     nb: "NO"
 
-  day:
-    monday: "Mandag"
-    tuesday: "Tirsdag"
-    wednesday: "Onsdag"
-    thursday: "Torsdag"
-    friday: "Fredag"
-    saturday: "Lørdag"
-    sunday: "Søndag"
-
-  months:
-    january: "Januar"
-    february: "Februar"
-    march: "Mars"
-    april: "April"
-    may: "Mai"
-    june: "Juni"
-    july: "Juli"
-    august: "August"
-    september: "September"
-    october: "Oktober"
-    november: "November"
-    december: "Desember"
+  date:
+    month_names:
+      - null
+      - "Januar"
+      - "Februar"
+      - "Mars"
+      - "April"
+      - "Mai"
+      - "Juni"
+      - "Juli"
+      - "August"
+      - "September"
+      - "Oktober"
+      - "November"
+      - "Desember"
+  
+    day_names:
+      - "Mandag"
+      - "Tirsdag"
+      - "Onsdag"
+      - "Torsdag"
+      - "Fredag"
+      - "Lørdag"
+      - "Søndag"
 
   time:
     week: "Hele uken"
