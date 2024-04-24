@@ -1,0 +1,36 @@
+<%= render PhlexUI::Dialog.new do %>
+  <%= render PhlexUI::Dialog::Trigger.new(class: "block bg-gray-50 px-6 py-2 rounded-md border border-gray-50 hover:text-primary cursor-pointer") do %>
+    <div class="flex gap-x-4">
+      <svg class="svg-icon" width="35px" height="35px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+        <path fill="currentColor" d="M257.563 25.156c353.16 276.87 16.918 408.895-87.875 293.25l-40.75 37.125 50.812 50.345c217.562 181.363 524.73-252.058 77.813-380.72zM110.75 364.28c-5.525 1.065-8.975 2.957-11.313 5.25-1.956 1.922-3.248 4.556-4.25 7.564l55.188 52.844c5.468-1.008 9.264-2.796 11.28-4.688 1.997-1.872 3.095-3.864 3.095-7.53l-54-53.44zm-24.72 30.314L30.407 445.28C13.67 472.28 45.1 506.478 81.5 489.94l51.53-50.282-47-45.062z" />
+      </svg>
+      <div class="flex flex-col">
+        <span class="font-bold text-xl">Reap</span>
+        <span class="text-sm text-gray-400 font-regular"><%= user.current_organization.name %></span>
+      </div>
+      <div class="flex justify-center items-center ml-4">
+        <i class="uc-icon text-lg text-gray-400">&#xe81d;</i>
+      </div>
+    </div>
+    <%# TODO: let's revamp our logo at the right time  %>
+  <% end %>
+  <%= render PhlexUI::Dialog::Content.new do %>
+    <%= render PhlexUI::Dialog::Header.new do %>
+      <%= render PhlexUI::Dialog::Title.new { "Organizations" } %>
+    <% end %>
+    <%= render PhlexUI::Dialog::Middle.new do %>
+      <%= content_tag(:div, class: "flex flex-col overflow-y-scroll max-h-[600px]") do %>
+        <% user.organizations.order(name: :asc).each do |organization| %>
+          <div class="relative">
+            <%= link_to set_current_organization_path(organization.id), data: { turbo_method: :post }, class: class_names("pointer-events-auto flex flex-col items-center lg:items-start p-2 md:p-4 lg:p-6 transition duration-300 ease-in-out",  "bg-gradient-to-r from-pink-50 lg:from-pink-100": organization == user.current_organization) do %>
+              <%= content_tag(:span, organization.name, class: class_names("text-base md:text-xl lg:text-xl font-regular text-gray-400 transition duration-300 ease-in-out", "text-gray-600 font-semibold": organization == user.current_organization) ) %>
+            <% end %>
+            <% if organization == user.current_organization %>
+              <div class="w-1 h-full bg-primary absolute bottom-0 transition duration-300 ease-in-out"></div>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

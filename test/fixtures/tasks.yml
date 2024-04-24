@@ -1,5 +1,7 @@
 debug:
   name: Debug
+  organization: organization_one
 
 coding:
   name: Coding
+  organization: organization_one

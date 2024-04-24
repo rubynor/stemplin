@@ -1,0 +1,96 @@
+<%= render PhlexUI::Dialog.new(open: true, data: { controller: "custom-dialog" }) do %>
+  <%= render PhlexUI::Dialog::Trigger.new(class: "hidden", data: { custom_dialog_target: "trigger" }) do %>
+    <%= render PhlexUI::Button.new { "Open Dialog" } %>
+  <% end %>
+  <%= render PhlexUI::Dialog::Content.new(class: "bg-white") do %>
+    <%= turbo_frame_tag :modal do %>
+      <%# TODO: cleanup this funny check with form_with(:model) after cleaning up with the other conflicting controller %>
+      <%= form_with url: project.new_record? ? workspace_projects_path : workspace_project_path, method: project.new_record? ?  :post : :patch, scope: project do |form| %>
+        <div class="flex flex-col gap-y-4">
+          <span class="font-semibold text-gray-600 text-lg"><%= project.new_record? ? "New Project" : "Edit #{project.name}" %></span>
+          <%= content_tag(:div, class: "flex flex-col gap-y-4", data: { controller: "custom-disable", custom_disable_initial_status_value: project.billable }) do %>
+            <%= render PhlexUI::Form::Item.new do  %>
+              <%= render PhlexUI::Label.new { "Client" } %>
+              <%= render PhlexUI::Select::Builder.new(project, "client_id", collection: clients.map { |client| [client.name, client.id] }, placeholder: "Select client", trigger_attrs: { class: "!border-gray-200" }) %>
+              <% project.errors.full_messages_for(:client).each do |message|%>
+                <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+              <% end %>
+            <% end %>
+            <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+              <%= render PhlexUI::Label.new { "Name" } %>
+              <%= form.text_field :name, class: "border-gray-200 rounded-md w-full" %>
+              <% project.errors.full_messages_for(:name).each do |message|%>
+                <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+              <% end %>
+            <% end %>
+            <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+              <%= render PhlexUI::Label.new { "Description" } %>
+              <%= form.text_area :description, class: "border-gray-200 rounded-md w-full" %>
+              <% project.errors.full_messages_for(:description).each do |message|%>
+                <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+              <% end %>
+            <% end %>
+            <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+              <%= render PhlexUI::Label.new { "Billable project" } %>
+              <div class="flex flex-row gap-4">
+                <%# TODO: Extract into reusable component %>
+                <%= collection_radio_buttons(nil, :billable, [[true, 'Yes'] ,[false, 'No']], :first, :last) do |radio_button| %>
+                  <%= content_tag(:label, class: "relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm w-full") do %>
+                    <%= form.radio_button(:billable, radio_button.value, class: "sr-only peer", checked: radio_button.value == project.billable, data: { action: "custom-disable#toggleElement", custom_disable_enable_param: radio_button.value }) %>
+                    <div class="absolute bg-purple-50 w-full h-full top-0 left-0 rounded-md border-2 border-primary z-0 opacity-0 peer-checked:opacity-100 transition duration-300 ease-in-out"></div>
+                    <span class="flex flex-1 z-10">
+                      <span class="flex flex-col">
+                        <span class="block text-sm font-medium text-gray-900"><%= radio_button.value ? "Time & Materials" : "Non-Billable" %></span>
+                        <span class="mt-1 flex items-center text-sm text-gray-500"><%= radio_button.value ? "Bill hourly, rates apply" : "Not Billed to a client" %></span>
+                      </span>
+                    </span>
+                    <span class=" absolute right-4 z-10 bg-primary h-4 w-4 opacity-0 peer-checked:opacity-100 text-white flex justify-center items-center rounded-full transition duration-300 ease-in-out">
+                      <i class="uc-icon text-sm text-white">&#xe8b2;</i>
+                    </span>
+                    <div class="absolute right-4 z-10 block h-4 w-4 border border-gray-300 shadow rounded-full peer-checked:opacity-0 transition duration-300 ease-in-out"></div>
+                  <% end %>
+                <% end %>
+              </div>
+              <% project.errors.full_messages_for(:billable).each do |message|%>
+                <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+              <% end %>
+            <% end %>
+
+            <%= content_tag(:div, data: { custom_disable_target: "content" }) do %>
+              <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+                <%= render PhlexUI::Label.new { "Billable Rates (per hour)" } %>
+                <%= render PhlexUI::Hint.new { "We need billable rates to track your project's billable amount" } %>
+                <%= form.text_field :rate_nok, class: "border-gray-200 rounded-md" %>
+              <% end %>
+            <% end %>
+
+            <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+              <%= render PhlexUI::Label.new { "Tasks" } %>
+              <%= render PhlexUI::Hint.new { "Add tasks (optional)" } %>
+              <%= render DropdownComponent.new do %>
+                <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1 flex justify-between") do %>
+                  <span class="text-gray-500 text-sm">Select Tasks</span>
+                  <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+                <% end %>
+                <%= render DropdownComponent::Content.new(class: "w-full !p-4") do %>
+                  <div class="flex flex-col text-sm w-full gap-y-4">
+                    <%= form.collection_check_boxes :task_ids, @tasks, :id, :name do |task| %>
+                      <div class="flex items-center space-x-2">
+                        <%= task.check_box(class: '') %>
+                        <%= task.label(class: 'text-gray-800') %>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+        <%= render PhlexUI::Dialog::Footer.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
+          <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->dismissable#dismiss' }) { "Cancel" } %>
+          <%= render ButtonComponent.new(type: :submit) { "Save" } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

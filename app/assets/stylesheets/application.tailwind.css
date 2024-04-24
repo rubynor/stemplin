@@ -1,5 +1,6 @@
 @import "./unicons.css";
 @import "./snackbar.css";
+@import "./file_upload.css";
 
 @tailwind base;
 @tailwind components;
@@ -79,4 +80,9 @@
   .dialog-action-holder {
     @apply flex items-center justify-center flex-wrap gap-4;
   }
+}
+
+.auth-illustration-wrapper {
+  background: url("pattern.svg") no-repeat center/cover #171E28;
+  /*background: url("pattern.svg") no-repeat center/cover #7e22ce;*/
 }

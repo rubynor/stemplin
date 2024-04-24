@@ -3,6 +3,14 @@ Rails.application.routes.draw do
 
   root "time_regs#index"
 
+  resources :onboarding, only: [ :new, :create ] do
+    get :skip_and_verify_account, on: :collection
+    get :edit_password, on: :collection
+    put :update_password, on: :collection
+  end
+
+  post "/set_current_organization/:id" => "organizations#set_current_organization", as: :set_current_organization
+
   get "/locale", to: "locale#set_locale", as: "locale"
 
   resources :project_reports do
@@ -41,11 +49,46 @@ Rails.application.routes.draw do
     end
     post :new_modal, on: :collection
     put :edit_modal, on: :member
+    post :delete_confirmation, on: :member
   end
 
   resources :projects, except: [ :index ] do
     resources :memberships
     resources :assigned_tasks
     get "export", to: "projects#export", as: "export_project_time_reg"
+  end
+
+  namespace :workspace do
+    resources :projects do
+      post :import_modal, on: :collection
+      post :new_modal, on: :collection
+      post :delete_confirmation, on: :member
+      put :edit_modal, on: :member
+
+      scope module: :projects do
+        resources :memberships do
+          post :new_modal, on: :collection
+          post :delete_confirmation, on: :member
+        end
+
+        resources :assigned_tasks do
+          post :new_modal, on: :member
+          post :delete_confirmation, on: :member
+        end
+
+        resource :tasks do
+          post :new_modal, on: :member
+        end
+      end
+    end
+
+    resources :clients do
+      post :new_modal, on: :collection
+      post :edit_modal, on: :member
+      post :delete_confirmation, on: :member
+    end
+    resources :teams, only: [ :index, :create ] do
+      post :new_modal, on: :collection
+    end
   end
 end

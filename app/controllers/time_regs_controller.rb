@@ -1,96 +1,85 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update ]
+  before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update, :destroy, :delete_confirmation ]
   before_action :set_projects, only: [ :index, :new_modal, :create, :edit_modal ]
   before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal ]
+  before_action :set_project, only: [ :create ]
+  verify_authorized except: %i[ index create update_tasks_select ]
 
   require "activerecord-import/base"
   require "csv"
   include TimeRegsHelper
 
   def index
-    @time_regs_week = current_user.time_regs.between_dates(@chosen_date.beginning_of_week, @chosen_date.end_of_week)
+    @time_regs_week = authorized_scope(TimeReg, type: :relation, as: :own).between_dates(@chosen_date.beginning_of_week, @chosen_date.end_of_week)
     @time_regs = @time_regs_week.on_date(@chosen_date)
     @total_minutes_day = @time_regs.sum(:minutes)
     @minutes_by_day = minutes_by_day_of_week(@chosen_date, current_user)
-    @time_reg = TimeReg.new(date_worked: @chosen_date)
+    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(date_worked: @chosen_date)
     @total_minutes_week = @time_regs_week.sum(:minutes)
   end
 
   def new_modal
-    @time_reg = TimeReg.new
+    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new
+    authorize! @time_reg
   end
 
   def create
-    # gives the time_reg all the attributes
-    if Project.exists?(time_reg_params[:project_id])
-      @project = Project.find(time_reg_params[:project_id])
-      @time_reg = @project.time_regs.build(time_reg_params.except(:project_id, :minutes_string))
-      membership = @project.memberships.find_by(user_id: current_user.id, project_id: @project.id)
-      @time_reg.membership_id = membership.id
+    @time_reg = current_user.time_regs.new(time_reg_params.except(:project_id, :minutes_string))
+
+    if @time_reg.save
+      render turbo_stream: [
+        turbo_flash(type: :success, data: "Time entry has been logged."),
+        turbo_stream.prepend(:time_regs_list, partial: "time_regs/time_reg", locals: { time_reg: @time_reg }),
+        turbo_stream.action(:remove_modal, :modal)
+      ]
     else
-      @time_reg = TimeReg.new(time_reg_params.except(:project_id, :minutes_string))
+      render turbo_stream: turbo_stream.replace(:modal, partial: "time_regs/form", locals: {
+        time_reg: @time_reg, chosen_date: @chosen_date, projects: @projects, title: "New time entry", assigned_tasks: @time_reg.project&.tasks
+      })
     end
-
-    @time_reg.active = @time_reg.minutes.zero? # start as active?
-    @time_reg.updated = Time.now
-
-    respond_to do |format|
-      if @time_reg.save
-        format.turbo_stream
-        format.html { redirect_to root_path(date: @time_reg.date_worked), notice: t('notice.time_entry_has_been_created') }
-      else
-        format.turbo_stream
-        format.html { redirect_to root_path(date: @time_reg.date_worked), status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def edit
-    @time_reg = TimeReg.find(params[:id])
-    @projects = current_user.projects
-    @assigned_tasks = Task.joins(:assigned_tasks)
-                          .where(assigned_tasks: { project_id: @time_reg.project.id })
-                          .pluck(:name, "assigned_tasks.id")
   end
 
   def update
-    respond_to do |format|
-      if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
-        format.turbo_stream
-        format.html { redirect_to root_path(date: @time_reg.date_worked), notice: t('notice.time_entry_has_been_updated') }
-      else
-        format.turbo_stream
-        format.html { redirect_to root_path(date: @time_reg.date_worked), status: :unprocessable_entity }
-      end
+    if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
+      render turbo_stream: [
+        turbo_flash(type: :success, data: t('notice.time_entry_has_been_updated')),
+        turbo_stream.replace(dom_id(@time_reg), partial: "time_regs/time_reg", locals: { time_reg: @time_reg }),
+        turbo_stream.action(:remove_modal, :modal)
+      ]
+    else
+      @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg.project.id)
+
+      render turbo_stream: turbo_stream.replace(:modal, partial: "time_regs/form", locals: {
+        time_reg: @time_reg, chosen_date: @chosen_date, projects: @projects, title: "Edit time entry", assigned_tasks: @time_reg.project&.tasks
+      })
     end
+  end
+
+  def delete_confirmation
   end
 
   def destroy
-    @time_reg = TimeReg.find(params[:id])
+    @time_reg.destroy!
+    render turbo_stream: [
+      turbo_flash(type: :success, data: "Time registration was successfully deleted."),
+      turbo_stream.remove(dom_id(@time_reg)),
+      turbo_stream.action(:remove_modal, :modal)
+    ]
 
-    if @time_reg.destroy
-      redirect_to root_path(date: @time_reg.date_worked)
-      flash[:notice] = t('notice.time_entry_has_been_deleted')
-    else
-      @projects = current_user.projects
-      @assigned_tasks = Task.joins(:assigned_tasks)
-                            .where(assigned_tasks: { project_id: @time_reg.project.id })
-                            .pluck(:name, "assigned_tasks.id")
-
-      flash[:alert] = t('notice.cannot_delete_time_entry')
-      render :edit, status: :unprocessable_entity
-    end
+  rescue ActiveRecord::RecordNotDestroyed
+    render turbo_stream: turbo_flash(type: :alert, data: "Unable to delete time registration")
   end
 
   def toggle_active
-    @project = @time_reg.project
+    @time_reg.toggle_active
+    render turbo_stream: [
+      turbo_flash(type: :success, data: "Time entry has been toggled #{@time_reg.active? ? "on": "off"}"),
+      turbo_stream.replace(dom_id(@time_reg), partial: "time_regs/time_reg", locals: { time_reg: @time_reg })
+    ]
 
-    if @time_reg.minutes >= TimeReg::MINUTES_IN_A_DAY
-      return redirect_to root_path(date: @time_reg.date_worked), alert: t('alert.time_entry_cannot_exceed_24_hours')
-    end
-
-    update_time_reg(current_status: @time_reg.active)
+  rescue ActiveRecord::RecordInvalid => e
+    render turbo_stream: turbo_flash(type: :alert, data: "Unable to toggle time entry")
   end
 
   # exports the time_regs in a project to a .CSV
@@ -118,13 +107,13 @@ class TimeRegsController < ApplicationController
 
   # changes the selection tasks to show tasks from a specific project
   def update_tasks_select
-    @tasks = Task.joins(:assigned_tasks).where(assigned_tasks: { project_id: params[:project_id] }).pluck(:name,
-                                                                                                          "assigned_tasks.id")
-    render partial: "/time_regs/select", locals: { tasks: @tasks }
+    @tasks = authorized_scope(Task, type: :relation, as: :own).all
+    @name_id_pairs = @tasks.joins(:assigned_tasks).where(assigned_tasks: { project_id: params[:project_id] }).pluck(:name, "assigned_tasks.id")
+    render partial: "/time_regs/select", locals: { tasks: @name_id_pairs }
   end
 
   def edit_modal
-    @assigned_tasks = Task.assigned_tasks(@time_reg.project.id)
+    @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg.project.id)
   end
 
   private
@@ -133,33 +122,21 @@ class TimeRegsController < ApplicationController
     params.require(:time_reg).permit(:notes, :minutes, :assigned_task_id, :date_worked, :project_id, :minutes_string)
   end
 
-  def update_time_reg(current_status:)
-    if current_status
-      worked_minutes = (Time.now.to_i - @time_reg.updated.to_i) / 60
-      @time_reg.minutes = [ @time_reg.minutes + worked_minutes, TimeReg::MINUTES_IN_A_DAY ].min
-    else
-      @time_reg.updated = Time.now
-    end
-
-    @time_reg.active = !current_status
-
-    if @time_reg.save
-      flash[:success] = {
-        title: "Success", body: "Timer has been toggled #{current_status ? "off": "on"}"
-      }
-
-      redirect_to root_path(date: @time_reg.date_worked)
-    end
-  end
-
   def set_time_reg
     @time_reg = TimeReg.find(params[:time_reg_id] || params[:id])
+    authorize! @time_reg
   end
 
   def set_projects
-    @projects ||= current_user.projects
-    end
+    @projects ||= authorized_scope(Project, type: :relation, as: :own)
+  end
   def set_chosen_date
     @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today
+  end
+
+  def set_project
+    @project = authorized_scope(Project, type: :relation, as: :own).find(time_reg_params[:project_id])
+  rescue ActiveRecord::RecordNotFound
+    render turbo_stream: turbo_flash(type: :alert, data: "Project not found, kindly select a valid project.")
   end
 end

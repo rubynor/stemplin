@@ -1,20 +1,22 @@
 class MembershipsController < ApplicationController
   before_action :authenticate_user!
-  before_action :ensure_membership
 
   def new
-    @project = Project.find(params[:id])
+    @project = authorized_scope(Project, type: :relation).find(params[:id])
   end
 
   # adds a member to the project
   def create
     @email = membership_params[:email]
-    @project = Project.find(params[:project_id])
+    @project = authorized_scope(Project, type: :relation).find(params[:project_id])
+    @membership = @project.memberships.build
+
+    authorize! @membership
 
     # checks if the user exists
-    if User.exists?(email: @email)
-      @user = User.find_by(email: @email)
-      @membership = @project.memberships.build(user_id: @user.id)
+    if authorized_scope(User, type: :relation).exists?(email: @email)
+      @user = authorized_scope(User, type: :relation).find_by(email: @email)
+      @membership.user_id = @user.id
 
       # checks if the user is already a member
       if @project.memberships.exists?(user_id: @user.id)
@@ -29,8 +31,10 @@ class MembershipsController < ApplicationController
   end
 
   def destroy
-    @project = Project.find(params[:project_id])
+    @project = authorized_scope(Project, type: :relation).find(params[:project_id])
     @membership = @project.memberships.find(params[:id])
+
+    authorize! @membership
 
     # tries to remove a user from the project
     if @project.memberships.count <= 1
@@ -48,15 +52,5 @@ class MembershipsController < ApplicationController
 
   def membership_params
     params.require(:membership).permit(:email)
-  end
-
-  # ensures that only members have access
-  def ensure_membership
-    project = Project.find(params[:project_id])
-
-    return if project.memberships.exists?(user_id: current_user)
-
-    flash[:alert] = t('alert.access_denied')
-    redirect_to root_path
   end
 end

@@ -1,49 +1,44 @@
-<div id="<%= dom_id(time_reg) %>" class=" p-4 divide-y-2 bg-tastyWhite" data-controller="modal"  <%= 'data-controller=refresh-minutes' if time_reg.active %> >
-  <div class="flex"> 
-    <div class="grow">
-      <b class="mr-2"> <%= time_reg.project.name %></b>(<%= time_reg.project.client.name %>)
-      <br>
-      <%= time_reg.notes %>
-    </div>
-    <div class="flex items-center justify-between">
-      <span class="font-semibold" data-refresh-minutes-target="output" ><%= convert_time_int(time_reg.minutes)%></span>
-      <%= button_to edit_modal_time_reg_path(time_reg), method: :put, class: "p-2 m-2 flex flex-row items-center rounded bg-blue-200 hover:bg-blue-300 whitespace-nowrap flex space-x-2" do %>
-        <i class="uc-icon text-lg text-gray-600">&#xe972;</i>
-        <p class='text-base'>
-          <%= t('common.edit') %>
-        </p>
-      <%end %>
-      
-      <% if time_reg.active %>
-        <%= button_to time_reg_toggle_active_path(time_reg_id: time_reg.id), method: :patch, class: "mr-2" do %>
-          <div class="bg-red-300 hover:bg-red-400 p-2 m-2 flex space-x-2 rounded text-black">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9v6m-4.5 0V9M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <%= t('common.stop') %>
-          </div>
-        <% end %>
-      <% else %>
-        <%= button_to time_reg_toggle_active_path(time_reg_id: time_reg.id), method: :patch, class: "mr-2 text-bold" do %>
-          <div class="bg-seaGreen hover:bg-seaGreenDark p-2 m-2 flex space-x-2 rounded text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
-            </svg>
-            <%= t('common.start') %>
-          </div>
-        <% end %>
-      <% end %>      
-      <%= button_to time_reg_path(time_reg), method: :delete, class: 'p-2 m-2 flex space-x-2 rounded bg-red-400 p-2 hover:bg-red-500', data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
-        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
-        </svg>
+<%= content_tag(:div, id: dom_id(time_reg), class: "shadow-sm rounded-md p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-y-4") do %>
+  <div class="flex flex-row lg:items-center gap-x-4">
+    <div class="bg-gray-50 border border-gray-100 rounded flex justify-center items-center w-8 h-8 relative">
+      <i class="uc-icon text-base text-gray-400">&#xe8bb;</i>
+      <% if time_reg.active? %>
+        <div class="absolute -bottom-2 -right-2 bg-yellow-500 rounded-full w-4 h-4 flex justify-center items-center">
+          <i class="uc-icon text-xs text-white">&#xead0;</i>
+        </div>
       <% end %>
-   
-    </div> 
-    <!-- values for the dynamic minutes updating -->
-    <span data-minutes="<%= time_reg.minutes %>" data-refresh-minutes-target="minutes" class="hidden"></span>
-    <span data-updated="<%= time_reg.updated.iso8601 %>" data-refresh-minutes-target="updated" class="hidden"></span> 
-    <!-- Add more cells for other TimeEntry attributes -->
+    </div>
+    <div class="flex flex-row items-start w-full gap-x-2 justify-between">
+      <div class="flex flex-col">
+        <div class="flex flex-col lg:flex-row lg:items-center text-sm lg:text-base text-gray-600 gap-x-2">
+          <span><%= time_reg.task.name %></span>
+          <span class="hidden lg:block">-</span>
+          <span class="font-semibold"><%= time_reg.project.name %></span>
+        </div>
+        <span class="text-xs text-gray-500"><%= time_reg.project.client.name %></span>
+      </div>
+      <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") do %>
+        <i class="uc-icon text-sm text-gray-600">&#xe8bb;</i>
+        <%= convert_time_int(time_reg.minutes) %>
+      <% end %>
+    </div>
   </div>
-</div>
+  <div class="flex gap-x-4 justify-end">
+    <%= render ButtonComponent.new(path: time_reg_toggle_active_path(time_reg), method: :patch, class: "gap-x-2", variant: time_reg.active? ? :secondary : :outline) do %>
+      <% if time_reg.active? %>
+        <i class="uc-icon text-base">&#xeb59;</i>
+      <% else %>
+        <i class="uc-icon text-base">&#xead1;</i>
+      <% end %>
+      <span class="hidden lg:block"><%= time_reg.active? ? "Stop" : "Start" %></span>
+    <% end %>
+    <%= render ButtonComponent.new(path: edit_modal_time_reg_path(time_reg, date: @chosen_date), method: :put, class: "gap-x-2", variant: :outline) do %>
+      <i class="uc-icon text-base">&#xe972;</i>
+      <span class="hidden lg:block">Edit</span>
+    <% end %>
+    <%= render ButtonComponent.new(path: delete_confirmation_time_reg_path(time_reg), method: :post, class: "gap-x-2", variant: :destructive) do %>
+      <i class="uc-icon text-base">&#xeb97;</i>
+      <span class="hidden lg:block">Delete</span>
+    <% end %>
+  </div>
+<% end %>

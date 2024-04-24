@@ -5,7 +5,6 @@ class ButtonComponent < ApplicationComponent
     @attrs = attrs
     @path = path
     @method = method
-    @attrs[:type] = "submit" if @path.present? && @attrs[:type].nil?
   end
 
   def template(&content)
@@ -19,6 +18,17 @@ class ButtonComponent < ApplicationComponent
   private
 
   def render_button(&content)
-    render PhlexUI::Button.new(**@attrs) { content.call }
+    render PhlexUI::Button.new(**default_attrs) { content.call }
+  end
+
+  def default_attrs
+    {
+      **@attrs,
+      type: @path.present? && @attrs[:type].nil? ? "submit" : @attrs[:type],
+      class: tokens(@attrs[:class], "py-2 !h-12", is_outline?: "border !border-gray-100")
+    }
+  end
+  def is_outline?
+    @attrs[:variant] == :outline
   end
 end

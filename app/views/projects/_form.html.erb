@@ -55,9 +55,8 @@
     <p><%= t('common.track_billable_rates') %></p>
     <p>
       <strong><%= t('common.project_billable_rate') %> </strong>kr
-      <%=form.text_field :billable_rate_nok, class: 'mx-2 text-right rounded-md p-2', maxlength: 16, size: 10, value: project.billable_rate_nok || nil %>
+      <%=form.text_field :rate, class: 'mx-2 text-right rounded-md p-2', maxlength: 16, size: 10, value: project.rate_nok || nil %>
       <%= t('common.per_hour') %>
-    </p>
   </div>
 </div>
     <% @project.errors.full_messages_for(:billable_project).each do |message|%>

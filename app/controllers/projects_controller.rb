@@ -1,36 +1,41 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
-  before_action :ensure_membership, only: %i[show edit update destroy]
+  verify_authorized except: %i[ import ]
 
-  # viser et enkelt prosjekt til bruker .where(assigned_tasks: { project_id: @project.id }
   def show
     @project = Project.find(params[:id])
-    @tasks = Task.all
-    @assigned_tasks = AssignedTask.select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
+    authorize! @project
+    @tasks = authorized_scope(Task, type: :relation).all
+    @assigned_tasks = authorized_scope(AssignedTask, type: :relation).select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                   .joins(:task)
                                   .where(project_id: @project.id)
   end
 
   def new
-    @clients = Client.all
-    @project = Project.new
+    @clients = authorized_scope(Client, type: :relation).all
+    @project = authorized_scope(Project, type: :relation).new(client: @clients.first)
+    authorize! @project
   end
 
   def create
-    @project = Project.new(project_params.except(:task_ids))
+    @project = authorized_scope(Project, type: :relation).new(project_params.except(:task_ids))
 
     # adds each task to the project
     project_params[:task_ids].each do |task_id|
-      @project.tasks << Task.find(task_id) unless task_id.empty?
+      next if task_id.empty?
+      task = Task.find(task_id)
+      @project.tasks << task
     end
-    # makes the creater of the project a member
-    @project.users << current_user
+
+    authorize! @project
 
     # tries to save the project in the db
     if @project.save
+      # makes the creater of the project a member
+      @project.users << current_user
       redirect_to @project
     else
-      @clients = Client.all
+      @clients = authorized_scope(Client, type: :relation).all
       render :new, status: :unprocessable_entity
     end
   end
@@ -38,29 +43,33 @@ class ProjectsController < ApplicationController
   def edit
     @is_in_update = true
     @project = Project.find(params[:id])
-    @clients = Client.all
+    authorize! @project
 
-    @assigned_tasks = AssignedTask.select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
+    @clients = authorized_scope(Client, type: :relation).all
+
+    @assigned_tasks = authorized_scope(AssignedTask, type: :relation).select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                   .joins(:task)
                                   .where(project_id: @project.id)
 
     @assigned_task = @project.assigned_tasks.new
-    @tasks = Task.all.where.not(id: @project.assigned_tasks.select(:task_id)).select(:id, :name) # no tasks that is already a part om the project
-    @new_task = Task.new
+    @tasks = authorized_scope(Task, type: :relation).all.where.not(id: @project.assigned_tasks.select(:task_id)).select(:id, :name) # no tasks that is already a part om the project
+    @new_task = authorized_scope(Task, type: :relation).new
   end
 
   def update
     @project = Project.find(params[:id])
+    authorize! @project
 
     if @project.update(project_params)
       flash[:notice] = t('notice.project_has_been_updated')
       redirect_to @project
     else
-      @tasks = Task.all
-      @clients = Client.all
+      @tasks = authorized_scope(Task, type: :relation).all
+      @clients = authorized_scope(Client, type: :relation).all
       @project = Project.find(delete_params[:id])
+      authorize! @project
       @assigned_task = @project.assigned_tasks.new
-      @assigned_tasks = AssignedTask.select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
+      @assigned_tasks = authorized_scope(AssignedTask, type: :relation).select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                     .joins(:task)
                                     .where(project_id: @project.id)
 
@@ -70,9 +79,10 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    @tasks = Task.all
-    @clients = Client.all
+    @tasks = authorized_scope(Task, type: :relation).all
+    @clients = authorized_scope(Client, type: :relation).all
     @project = Project.find(delete_params[:id])
+    authorize! @project
     @assigned_task = @project.assigned_tasks.new
 
     # checks the confirmation field before trying to delete
@@ -81,7 +91,7 @@ class ProjectsController < ApplicationController
         flash[:notice] = t('notice.project_deleted')
         redirect_to clients_path
       else
-        @assigned_tasks = AssignedTask.select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
+        @assigned_tasks = authorized_scope(AssignedTask, type: :relation).select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                       .joins(:task)
                                       .where(project_id: @project.id)
 
@@ -89,7 +99,7 @@ class ProjectsController < ApplicationController
         render :edit, status: :unprocessable_entity
       end
     else
-      @assigned_tasks = AssignedTask.select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
+      @assigned_tasks = authorized_scope(AssignedTask, type: :relation).select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                     .joins(:task)
                                     .where(project_id: @project.id)
       flash[:alert] = t('alert.invalid_confirmation')
@@ -143,7 +153,7 @@ class ProjectsController < ApplicationController
         # Checks if the e-mail and user is valid, and deletes redundant e-mail column
         email = row["email"]
         @user = User.find_by(email: email)
-        @membership = Membership.find_or_create_by(user_id: @user.id, project_id: @project.id)
+        @membership = authorized_scope(Membership, type: :relation).find_or_create_by(user_id: @user.id, project_id: @project.id)
         time_reg_params.delete("email")
         time_reg_params["membership_id"] = @membership.id
 
@@ -163,7 +173,7 @@ class ProjectsController < ApplicationController
 
       # If any valid time entries have been added, import them
       if imported_time_regs.present?
-        TimeReg.import(imported_time_regs)
+        authorized_scope(TimeReg, type: :relation).import(imported_time_regs)
         flash[:notice] = "#{valid_entries} #{t('notice.time_entries_imported_successfully')}"
       else
         flash[:alert] = t('alert.no_time_entries_found_in_the_file')
@@ -190,21 +200,11 @@ class ProjectsController < ApplicationController
     params.permit(:confirmation, :id)
   end
 
-  # ensures that only members have access
-  def ensure_membership
-    project = Project.find(params[:id])
-
-    return if project.memberships.exists?(user_id: current_user)
-
-    flash[:alert] = t('alert.access_denied')
-    redirect_to root_path
-  end
-
   # Checks to see if the client already exists, and creates it if it doesn't
   def check_client(client)
-    if !Client.exists?(name: client)
+    if !authorized_scope(Client, type: :relation).exists?(name: client)
       client_params = { "name" => client, "description" => "Description." }
-      @client = Client.new(client_params)
+      @client = authorized_scope(Client, type: :relation).new(client_params)
       @client.save
     else
       @client = Client.find_by(name: client)
@@ -219,13 +219,14 @@ class ProjectsController < ApplicationController
       @project.save
     else
       @project = @client.projects.find_by(name: project)
+      authorize! @project
     end
   end
 
   # Checks to see if the task already exists, and creates it if it doesn't
   def check_task(task)
-    if !Task.exists?(name: task)
-      @task = Task.new(name: task)
+    if !authorized_scope(Task, type: :relation).exists?(name: task)
+      @task = authorized_scope(Task, type: :relation).new(name: task)
       @task.save
     else
       @task = Task.find_by(name: task)

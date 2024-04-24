@@ -4,14 +4,29 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :memberships
-  has_many :projects, through: :memberships
-  has_many :time_regs, through: :memberships
-  has_many :clients, through: :projects
+  has_many :time_regs
+  has_many :access_infos
+  has_many :organizations, through: :access_infos
+  has_many :clients, through: :organizations
+  has_many :projects, through: :clients
 
-  validates :key, inclusion: { in: [ ENV["AUTENTICATION_KEY"] ], message: "is Invalid" }
+  def organization_clients
+    clients.distinct
+  end
 
   def name
-    "#{first_name} #{last_name}"
+    "#{first_name} #{last_name}".strip
+  end
+
+  def organization_admin?
+    access_info&.organization_admin?
+  end
+
+  def current_organization
+    access_info&.organization
+  end
+
+  def access_info
+    access_infos.find_by(active: true) || access_infos.first
   end
 end

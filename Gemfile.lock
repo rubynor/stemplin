@@ -1,6 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    action_policy (0.6.8)
+      ruby-next-core (>= 1.0)
     actioncable (7.0.4.3)
       actionpack (= 7.0.4.3)
       activesupport (= 7.0.4.3)
@@ -294,6 +296,8 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (1.2.1)
       railties (>= 6.0.0)
+    strong_migrations (1.8.0)
+      activerecord (>= 5.2)
     thor (1.2.1)
     timeout (0.3.2)
     turbo-rails (1.4.0)
@@ -331,6 +335,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  action_policy
   activerecord-import
   bootsnap
   capybara
@@ -355,6 +360,7 @@ DEPENDENCIES
   sentry-ruby
   sprockets-rails
   stimulus-rails
+  strong_migrations
   turbo-rails
   tzinfo-data
   web-console

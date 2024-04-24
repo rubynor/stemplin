@@ -1,0 +1,37 @@
+<div class="bg-gray-100 border-b py-4 border-gray-200 px-4">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <div class="flex flex-row items-center gap-x-4">
+      <div class="bg-white border border-gray-200 rounded flex justify-center items-center px-4 py-3 relative">
+        <i class="uc-icon text-xl text-gray-600">&#xe891;</i>
+        <% if @chosen_date === Date.today %>
+          <div class="absolute -bottom-2 -right-2 bg-green-600 rounded-full w-4 h-4 flex justify-center items-center">
+            <i class="uc-icon text-xs text-white">&#xe8b2;</i>
+          </div>
+        <% end %>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-gray-700 text-base lg:text-lg font-semibold">
+          <span class="hidden lg:block">
+            <%= @chosen_date.strftime("%A, %d %B %Y") %>
+          </span>
+          <span class="lg:hidden">
+            <%= @chosen_date.strftime("%a, %d %b %Y") %>
+          </span>
+        </span>
+        <% if @chosen_date != Date.today %>
+          <%= link_to root_path, class: "text-xs text-gray-400 underline" do %>
+            <span>Reset date</span>
+            <i class="uc-icon">&#xeb8c;</i>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="flex items-center gap-x-4">
+      <%= render partial: "time_regs/date_picker" %>
+      <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: @chosen_date), method: :post, class: "h-full") do %>
+        <span class="hidden lg:block mr-2">Log time</span>
+        <i class="uc-icon text-white text-xl">&#xeb5b;</i>
+      <% end %>
+    </div>
+  </div>
+</div>

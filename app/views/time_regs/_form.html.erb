@@ -11,7 +11,7 @@
             <%= render PhlexUI::Dialog::Description.new { format_date(chosen_date) } %>
           <% end %>
           <%= render PhlexUI::Dialog::Middle.new do %>
-            <%= content_tag(:div, class: "w-full flex flex-col mb-8") do %>
+            <%= content_tag(:div, class: "w-full flex flex-col") do %>
               <div class="block" data-controller="time-tasks">
                 <%= hidden_field_tag :date, chosen_date %>
                 <div class="mb-4" data-time-tasks-target="project">
@@ -25,9 +25,6 @@
                   }, {
                                                class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
                                              } %>
-                  <% time_reg.errors.full_messages_for(:membership).any? do |message| %>
-                    <div class="text-red-600 text-xs italic mt-1"> <%= t('alert.please_select_a_project') %></div>
-                  <% end %>
                 </div>
 
                 <div class="mb-4" data-time-tasks-target="task">
@@ -71,11 +68,9 @@
               </div>
             <% end %>
           <% end %>
-          <%= render PhlexUI::Dialog::Footer.new(class: "flex flex-row items-center") do %>
-            <%= button_tag type: 'button', data: {action: "click->dismissable#dismiss"}, class: "bg-white shadow p-4 rounded-md flex justify-center items-center" do %>
-              <%= t('common.cancel') %>
-            <% end %>
-            <%= form.submit "", data: { custom_input_target: "submitButton" }, class: "bg-seaGreen shadow text-white hover:bg-seaGreenDark p-4 rounded-md flex justify-center items-center cursor-pointer" %>
+          <%= render PhlexUI::Dialog::Footer.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
+            <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->dismissable#dismiss' }) { "Cancel" } %>
+            <%= render ButtonComponent.new(type: :submit, data: { custom_input_target: "submitButton" }) {} %>
           <% end %>
         <% end %>
       <% end %>
