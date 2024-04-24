@@ -105,11 +105,11 @@ class UserReportsController < ReportsController
       if @report.save
         redirect_to @report
       else
-        flash[:alert] = t('alert.could_not_change_the_grouping')
+        flash[:alert] = t("alert.could_not_change_the_grouping")
         redirect_to @report
       end
     else
-      flash[:alert] = t('alert.invalid_group')
+      flash[:alert] = t("alert.invalid_group")
       redirect_to @report
     end
   end

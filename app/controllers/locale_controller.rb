@@ -1,6 +1,4 @@
 class LocaleController < ApplicationController
-
-    
   def set_locale
     option = params[:locale]
     case option

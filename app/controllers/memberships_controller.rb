@@ -38,9 +38,9 @@ class MembershipsController < ApplicationController
 
     # tries to remove a user from the project
     if @project.memberships.count <= 1
-      flash[:alert] = t('alert.cannot_remove_last_member_of_the_project')
+      flash[:alert] = t("alert.cannot_remove_last_member_of_the_project")
     elsif @membership.time_regs.count >= 1
-      flash[:alert] = t('alert.member_has_time_entries_in_this_project')
+      flash[:alert] = t("alert.member_has_time_entries_in_this_project")
     else
       flash[:notice] = "#{@membership.user.email} #{t('notice.has_been_removed_from_the_project')}"
       @membership.destroy

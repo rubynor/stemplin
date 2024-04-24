@@ -43,7 +43,7 @@ class TimeRegsController < ApplicationController
   def update
     if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
       render turbo_stream: [
-        turbo_flash(type: :success, data: t('notice.time_entry_has_been_updated')),
+        turbo_flash(type: :success, data: t("notice.time_entry_has_been_updated")),
         turbo_stream.replace(dom_id(@time_reg), partial: "time_regs/time_reg", locals: { time_reg: @time_reg }),
         turbo_stream.action(:remove_modal, :modal)
       ]
