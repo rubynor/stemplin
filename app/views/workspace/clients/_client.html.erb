@@ -7,7 +7,8 @@
       <%= render ButtonComponent.new(path: edit_modal_workspace_client_path(client), method: :post, variant: :outline, class: "!py-3") do %>
         <i class="uc-icon">&#xe972;</i>
       <% end %>
-      <%= render ButtonComponent.new(path: delete_confirmation_workspace_client_path(client), method: :post, variant: :outline, class: "!py-3") do %>
+      <%- turbo_body = client.projects.any? ? "The client <span class='font-semibold text-primary'>#{client.name}</span> has active associated projects. Please remove all projects before deleting the client." : "Do you want to proceed with the deletion of the project <span class='font-semibold text-primary'>#{client.name}</span>, This action cannot be undone." %>
+      <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_client_path(client), disabled: client.projects.any?, form: { data: { turbo_confirm: turbo_body } }) do %>
         <i class="uc-icon">&#xeb97;</i>
       <% end %>
     </div>
