@@ -1,0 +1,28 @@
+<%# TODO: Convert into reusable turbo_confirm component that can be triggered with `turbo_confirm` and remove this duplication %>
+<%= render PhlexUI::AlertDialog.new(open: true, data: { controller: "custom-dialog" }) do %>
+  <%= render PhlexUI::AlertDialog::Trigger.new(class: "hidden", data: { custom_dialog_target: "trigger" }) do %>
+    <%= render PhlexUI::Button.new { "Show dialog" } %>
+  <% end %>
+  <%= render PhlexUI::AlertDialog::Content.new do %>
+    <%= turbo_frame_tag :modal do %>
+      <%= render PhlexUI::AlertDialog::Header.new do %>
+        <%= render PhlexUI::AlertDialog::Title.new { "Are you sure?" } %>
+        <%= render PhlexUI::AlertDialog::Description.new do  %>
+          <% if @task.assigned_tasks.any? %>
+            <span>
+              The task <span class="font-semibold text-primary"><%= @task.name %></span> is already assigned to a project, Kindly remove associated projects if you wish to proceed with this task deletion.
+            </span>
+          <% else %>
+            <span>
+              Do you want to proceed with the deletion of the task <span class="font-semibold text-primary"><%= @task.name %></span>, This action cannot be undone.
+            </span>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= render PhlexUI::AlertDialog::Footer.new(class: "mt-4") do %>
+        <%= render PhlexUI::AlertDialog::Cancel.new(class: "!border-gray-100 !h-12") { "Cancel" } %>
+        <%= render ButtonComponent.new(variant: :destructive, path: workspace_task_path(@task), method: :delete, disabled: @task.assigned_tasks.any?) { "Continue"} %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
