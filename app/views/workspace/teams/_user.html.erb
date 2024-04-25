@@ -1,5 +1,5 @@
 <%= render PhlexUI::Table::Row.new(id: dom_id(user)) do %>
   <%= render PhlexUI::Table::Cell.new { user.name } %>
   <%= render PhlexUI::Table::Cell.new { user.email } %>
-  <%= render PhlexUI::Table::Cell.new { user.created_at.strftime("%A, %d %B %Y") } %>
+  <%= render PhlexUI::Table::Cell.new { l(user.created_at.beginning_of_week, format: "%A, %d %B %Y") } %>
 <% end %>

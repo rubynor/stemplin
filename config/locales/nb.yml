@@ -29,13 +29,14 @@ nb:
       - "Desember"
   
     day_names:
+      - "Søndag"
       - "Mandag"
       - "Tirsdag"
       - "Onsdag"
       - "Torsdag"
       - "Fredag"
       - "Lørdag"
-      - "Søndag"
+
 
     abbr_month_names:
       - null
@@ -53,13 +54,13 @@ nb:
       - Dec
 
     abbr_day_names:
+      - Søn
       - Man
       - Tir
       - Ons
       - Tor
       - Fre
       - Lør
-      - Søn
 
   time:
     week: "Hele uken"
@@ -138,7 +139,7 @@ nb:
     remove_every_task_from_the_project: "Fjern hver oppgave fra prosjektet"
     delete_the_project_permanently: "Slett prosjektet permanent"
     please_enter: "Vennligst skriv inn"
-    delete: "SLETT"
+    delete: "Fjærn"
     to_confirm: "for bekreftelse"
     delete_the_client_permanently: "Slett klienten permanent"
     cannot_delete_client_with_active_projects: "Kan ikke slette klient med aktive prosjekter"
@@ -157,6 +158,40 @@ nb:
     today_total: "Dagens total"
     week_total: "Ukens total"
     from: "Fra"
+    team_members: "Gruppe medlemmer"
+    add_new: "Lag Ny"
+    import: "Import"
+    rate: "Verdi"
+    actions: "Handlinger"
+    view_more: "Se mere"
+    created_on: "Opprettet"
+    added_on: "Lagt til"
+    select_client: "Velg klient"
+    time_&_materials: "Tid og Materialer"
+    non_billable: "Ikke Fakturerbar"
+    rates_per_hour: "Fakturerbare priser (hver time)"
+    add_tasks_optional: "Velg oppgave (valgrit)"
+    select_tasks: "Velg Oppgave"
+    save: "Lagre"
+    role: "Rolle"
+    select_organization_user: "Vennligst velg organisasjonsbruker, hvis alt denne brukeren vil gjøre er å registrere tidsregistreringer."
+    select_role: "Velg rolle"
+    share_temporary_password_with_user: "Vennligst del dette midlertidige passordet med brukeren for påloggingsformål. De kan endre det senere."
+    deletion_of_the_client: "Ønsker du å fortsette med å slette klienten"
+    delete_all_entries: "Denne handlingen kan ikke angres, og vær oppmerksom på at denne handlingen vil fortsette med å slette alle oppføringer for hvert medlem permanent, Fjern hvert medlem fra prosjektet, Fjern hver oppgave fra prosjektet."
+    continue: "fortsett"
+    unable_to_proceed: "Kan ikke forstette"
+    the_client: "Klienten"
+    active_associated_projects: "har aktive tilknyttede prosjekter. Fjern alle prosjekter før du sletter klienten."
+    proceed_with_the_deletion: "Vil du fortsette med slettingen av prosjektet"
+    cannot_be_undone: "Denne handlingen kan ikke bli tatt tilbake."
+    billable: "Fakturerbar"
+    information: "Information"
+    billing_status: "Faktureringsstatus"
+    created: "Opprettet"
+    need_to_add_more_tasks: "Trenger du å legge til flere oppgaver?"
+    add_more: "Legg til"
+    organizations: "Organisasjoner"
 
   notice:
     are_you_sure: "Er du sikker?"
@@ -218,6 +253,7 @@ nb:
     sign_in: "Logg inn"
     password: "Passord"
     remember_me: "Husk meg"
+    confirm_password: "Bekreft passord"
 
   users:
     sessions:

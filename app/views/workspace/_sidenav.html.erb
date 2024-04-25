@@ -3,19 +3,19 @@
     <li>
       <%= link_to workspace_projects_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?(workspace_projects_path) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
         <i class="uc-icon text-xl">&#xe94f;</i>
-        <span>Projects</span>
+        <span><%= t("common.projects") %></span>
       <% end %>
     </li>
     <li>
       <%= link_to workspace_clients_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?(workspace_clients_path) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
         <i class="uc-icon text-xl">&#xe88a;</i>
-        <span>Clients</span>
+        <span><%= t("common.client") %></span>
       <% end %>
     </li>
     <li>
       <%= link_to workspace_teams_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?(workspace_teams_path) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
         <i class="uc-icon text-xl">&#xebb3;</i>
-        <span>Team members</span>
+        <span><%= t("common.team_members") %></span>
       <% end %>
     </li>
   </ul>

@@ -6,16 +6,16 @@
   <%= render PhlexUI::AlertDialog::Content.new do %>
     <%= turbo_frame_tag :modal do %>
       <%= render PhlexUI::AlertDialog::Header.new do %>
-        <%= render PhlexUI::AlertDialog::Title.new { "Are you sure?" } %>
+        <%= render PhlexUI::AlertDialog::Title.new { t("notice.are_you_sure") } %>
         <%= render PhlexUI::AlertDialog::Description.new do  %>
           <span>
-          Do you want to proceed with the deletion of the client <span class="font-semibold text-primary"><%= @project.name %></span>, This action cannot be undone and please note that this action will proceed to deleting all entries for every member permanently, Remove every member from the project, Remove every task from the project.
+          <%= t("common.deletion_of_the_client") %> <span class="font-semibold text-primary"><%= @project.name %></span>, <%= t("common.delete_all_entries") %>
         </span>
         <% end %>
       <% end %>
       <%= render PhlexUI::AlertDialog::Footer.new do %>
-        <%= render PhlexUI::AlertDialog::Cancel.new(class: "!border-gray-100 !h-12") { "Cancel" } %>
-        <%= render ButtonComponent.new(variant: :destructive, path: workspace_project_path(@project), method: :delete) { "Continue"} %>
+        <%= render PhlexUI::AlertDialog::Cancel.new(class: "!border-gray-100 !h-12") { t("common.cancel") } %>
+        <%= render ButtonComponent.new(variant: :destructive, path: workspace_project_path(@project), method: :delete) { t("common.continue") } %>
       <% end %>
     <% end %>
   <% end %>

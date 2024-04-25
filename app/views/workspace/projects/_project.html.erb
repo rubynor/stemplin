@@ -4,7 +4,7 @@
       <div class="flex flex-row items-center gap-x-1">
         <span class="font-medium text-gray-700 text-sm"><%= project.name %></span>
         <%= render PhlexUI::Badge.new(variant: project.billable ? :green : :gray, class: "!rounded-full flex gap-x-1") do %>
-          <span><%= project.billable ? "Billable" : "Non-Billable" %></span>
+          <span><%= project.billable ? t("common.billable") : t("common.non_billable") %></span>
         <% end %>
       </div>
       <div class="w-36 lg:w-48 xl:w-64 truncate">
@@ -23,7 +23,7 @@
     <%= render PhlexUI::Popover.new(options: { placement: "bottom-end", trigger: "click" }) do %>
       <%= render PhlexUI::Popover::Trigger.new do %>
         <%= render ButtonComponent.new(variant: :outline) do %>
-          <span class="text-gray-500 text-sm">Actions</span>
+          <span class="text-gray-500 text-sm"> <%= t("common.actions") %></span>
           <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
         <% end %>
       <% end %>
@@ -31,15 +31,15 @@
         <div class="flex flex-col divide-y divide-gray-50 w-full">
           <%= render ButtonComponent.new(path: workspace_project_path(project), method: :get, variant: :ghost, class: "!py-3 gap-x-2 !w-full !justify-start hover:bg-gray-100") do %>
             <i class="uc-icon text-gray-500">&#xe9a8;</i>
-            <%= render PhlexUI::Label.new { "View more"} %>
+            <%= render PhlexUI::Label.new { t("common.view_more") } %>
           <% end %>
           <%= render ButtonComponent.new(path: edit_modal_workspace_project_path(project), method: :put, variant: :ghost, class: "!py-3 gap-x-2 !w-full !justify-start hover:bg-gray-100") do %>
             <i class="uc-icon text-gray-500">&#xe972;</i>
-            <%= render PhlexUI::Label.new { "Edit"} %>
+            <%= render PhlexUI::Label.new { t("common.edit") } %>
           <% end %>
           <%= render ButtonComponent.new(path: delete_confirmation_workspace_project_path(project), method: :post, variant: :ghost, class: "!py-3 gap-x-2 !w-full !justify-start hover:bg-gray-100") do %>
             <i class="uc-icon text-gray-500">&#xeb97;</i>
-            <%= render PhlexUI::Label.new { "Delete"} %>
+            <%= render PhlexUI::Label.new { t("common.delete") } %>
           <% end %>
         </div>
       <% end %>

@@ -11,11 +11,11 @@
     </div>
     <div class="flex flex-row gap-2">
       <%= render ButtonComponent.new(path: edit_modal_workspace_project_path(@project), method: :put, variant: :outline) do %>
-        <span class="hidden lg:block mr-2">Edit</span>
+        <span class="hidden lg:block mr-2"><%= t("common.edit")%></span>
         <i class="uc-icon">&#xe972;</i>
       <% end %>
       <%= render ButtonComponent.new(path: delete_confirmation_workspace_project_path(@project), method: :post, variant: :destructive) do %>
-        <span class="hidden lg:block mr-2">Delete</span>
+        <span class="hidden lg:block mr-2"><%= t("common.delete")%></span>
         <i class="uc-icon">&#xeb97;</i>
       <% end %>
     </div>
@@ -23,38 +23,38 @@
   <div class="mt-4 flex flex-col gap-y-8 lg:gap-y-12 overflow-y-auto px-4">
     <div class="divide-y divide-gray-100 flex flex-col">
       <div>
-        <span class="text-base text-gray-600 font-medium uppercase">Information</span>
+        <span class="text-base text-gray-600 font-medium uppercase"><%= t("common.information")%></span>
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
-        <span class="font-regular">Client</span>
+        <span class="font-regular"><%= t("common.client")%></span>
         <span class="font-semibold"><%= @project.client.name %></span>
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
-        <span class="font-regular">Rate</span>
+        <span class="font-regular"><%= t("common.rate")%></span>
         <span class="font-semibold">NOK <%= @project.rate_nok %></span>
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
-        <span class="font-regular">Billing status</span>
+        <span class="font-regular"><%= t("common.billing_status")%></span>
         <%= render PhlexUI::Badge.new(variant: @project.billable ? :green : :gray, class: "!rounded-full flex gap-x-1") do %>
-          <span><%= @project.billable ? "Billable" : "Non-Billable" %></span>
+          <span><%= @project.billable ? t("common.billable") : t("common.non_billable") %></span>
         <% end %>
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
-        <span class="font-regular">Created</span>
-        <span class="font-semibold"><%= @project.created_at.strftime("%A, %d %B %Y") %></span>
+        <span class="font-regular"><%= t("common.created")%></span>
+        <span class="font-semibold"><%= l(@project.created_at, format: "%A, %d %B %Y") %></span>
       </div>
     </div>
     <div class="divide-y divide-gray-100 flex flex-col">
       <div class="flex justify-between items-center py-2">
-        <span class="text-base text-gray-600 font-medium uppercase">Tasks</span>
+        <span class="text-base text-gray-600 font-medium uppercase"><%= t("common.tasks")%></span>
       </div>
       <%= content_tag(:div, id: "#{dom_id(@project)}_assigned_tasks", class: "divide-y divide-gray-50") do %>
         <%= render partial: "workspace/projects/assigned_task", collection: @project.assigned_tasks %>
       <% end %>
       <div class="mt-2 py-4 font-medium flex flex-row gap-x-1 justify-end">
-        <span>Need to add more tasks?</span>
+        <span><%= t("common.need_to_add_more_tasks")%></span>
         <%= render ButtonComponent.new(path: new_modal_workspace_project_assigned_task_path(@project), method: :post, variant: :link, class!: "underline text-primary") do %>
-          <span class="mr-2">Add more</span>
+          <span class="mr-2"><%= t("common.add_more")%></span>
         <% end %>
       </div>
     </div>

@@ -6,22 +6,22 @@
   <%= render PhlexUI::AlertDialog::Content.new do %>
     <%= turbo_frame_tag :modal do %>
       <%= render PhlexUI::AlertDialog::Header.new do %>
-        <%= render PhlexUI::AlertDialog::Title.new { @client.projects.any? ? "Unable to proceed" : "Are you sure?" } %>
+        <%= render PhlexUI::AlertDialog::Title.new { @client.projects.any? ? t("common.unable_to_proceed") : t("notice.are_you_sure") } %>
         <%= render PhlexUI::AlertDialog::Description.new do  %>
           <% if @client.projects.any? %>
             <span>
-              The client <span class="font-semibold text-primary"><%= @client.name %></span> has active associated projects. Please remove all projects before deleting the client.
+              <%= t("common.the_client")%> <span class="font-semibold text-primary"><%= @client.name %></span> <%= t("common.active_associated_projects")%>
             </span>
           <% else %>
             <span>
-              Do you want to proceed with the deletion of the project <span class="font-semibold text-primary"><%= @client.name %></span>, This action cannot be undone.
+              <%= t("common.proceed_with_the_deletion")%> <span class="font-semibold text-primary"><%= @client.name %></span>, <%= t("common.cannot_be_undone")%>
             </span>
           <% end %>
         <% end %>
       <% end %>
       <%= render PhlexUI::AlertDialog::Footer.new do %>
-        <%= render PhlexUI::AlertDialog::Cancel.new(class: "!border-gray-100 !h-12") { "Cancel" } %>
-        <%= render ButtonComponent.new(variant: :destructive, path: workspace_client_path(@client), method: :delete, disabled: @client.projects.any?) { "Continue"} %>
+        <%= render PhlexUI::AlertDialog::Cancel.new(class: "!border-gray-100 !h-12") { t("common.cancel") } %>
+        <%= render ButtonComponent.new(variant: :destructive, path: workspace_client_path(@client), method: :delete, disabled: @client.projects.any?) { t("common.continue") } %>
       <% end %>
     <% end %>
   <% end %>
