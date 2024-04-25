@@ -45,14 +45,15 @@ module Workspace
     end
 
     def destroy
-      if @task.destroy
+      if @task.assigned_tasks.any?
+        render turbo_stream: turbo_flash(type: :error, data: "Unable to proceed, Task is assigned to a project.")
+      else
+        @task.destroy!
         render turbo_stream: [
           turbo_flash(type: :success, data: "Task was successfully deleted."),
           turbo_stream.remove(dom_id(@task)),
           turbo_stream.action(:remove_modal, :modal)
         ]
-      else
-        render turbo_stream: turbo_flash(type: :error, data: "Unable to proceed, could not delete task.")
       end
     end
 

@@ -8,14 +8,20 @@
       <%= render PhlexUI::AlertDialog::Header.new do %>
         <%= render PhlexUI::AlertDialog::Title.new { "Are you sure?" } %>
         <%= render PhlexUI::AlertDialog::Description.new do  %>
-          <span>
-            Do you want to proceed with the deletion of the task <span class="font-semibold text-primary"><%= @task.name %></span>, This action cannot be undone.
-          </span>
+          <% if @task.assigned_tasks.any? %>
+            <span>
+              The task <span class="font-semibold text-primary"><%= @task.name %></span> is already assigned to a project, Kindly remove associated projects if you wish to proceed with this task deletion.
+            </span>
+          <% else %>
+            <span>
+              Do you want to proceed with the deletion of the task <span class="font-semibold text-primary"><%= @task.name %></span>, This action cannot be undone.
+            </span>
+          <% end %>
         <% end %>
       <% end %>
-      <%= render PhlexUI::AlertDialog::Footer.new do %>
+      <%= render PhlexUI::AlertDialog::Footer.new(class: "mt-4") do %>
         <%= render PhlexUI::AlertDialog::Cancel.new(class: "!border-gray-100 !h-12") { "Cancel" } %>
-        <%= render ButtonComponent.new(variant: :destructive, path: workspace_task_path(@task), method: :delete) { "Continue"} %>
+        <%= render ButtonComponent.new(variant: :destructive, path: workspace_task_path(@task), method: :delete, disabled: @task.assigned_tasks.any?) { "Continue"} %>
       <% end %>
     <% end %>
   <% end %>
