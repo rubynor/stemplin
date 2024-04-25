@@ -13,6 +13,12 @@
       <% end %>
     </li>
     <li>
+      <%= link_to workspace_tasks_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?(workspace_tasks_path) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
+        <i class="uc-icon text-xl">&#xe8f2;</i>
+        <span>Tasks</span>
+      <% end %>
+    </li>
+    <li>
       <%= link_to workspace_teams_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?(workspace_teams_path) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
         <i class="uc-icon text-xl">&#xebb3;</i>
         <span><%= t("common.team_members") %></span>

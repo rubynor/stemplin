@@ -7,7 +7,7 @@ module Workspace
       @project = authorized_scope(Project, type: :relation).new(project_params)
 
       ActiveRecord::Base.transaction do
-        if @project.save!
+        if @project.save
           render turbo_stream: [
             turbo_flash(type: :success, data: "Project was successfully created."),
             turbo_stream.append(:organization_projects, partial: "workspace/projects/project", locals: { project: @project }),

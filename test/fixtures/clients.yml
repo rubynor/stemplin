@@ -2,3 +2,8 @@ e_corp:
   name: E Corp
   description: All things paper
   organization: organization_one
+
+f_corp:
+  name: F Corp
+  description: All things flat
+  organization: organization_two

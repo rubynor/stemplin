@@ -90,5 +90,11 @@ Rails.application.routes.draw do
     resources :teams, only: [ :index, :create ] do
       post :new_modal, on: :collection
     end
+
+    resources :tasks do
+      post :new_modal, on: :collection
+      post :edit_modal, on: :member
+      post :delete_confirmation, on: :member
+    end
   end
 end
