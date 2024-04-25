@@ -37,6 +37,30 @@ nb:
       - "Lørdag"
       - "Søndag"
 
+    abbr_month_names:
+      - null
+      - Jan
+      - Feb
+      - Mar
+      - Apr
+      - Mai
+      - Jun
+      - Jul
+      - Aug
+      - Sep
+      - Oct
+      - Nov
+      - Dec
+
+    abbr_day_names:
+      - Man
+      - Tir
+      - Ons
+      - Tor
+      - Fre
+      - Lør
+      - Søn
+
   time:
     week: "Hele uken"
     track: "Tell tiden"
@@ -124,6 +148,15 @@ nb:
     total: "Totalt"
     total_billable_hours: "Totale fakturerbare timer"
     total_hours: "Totalt antall timer"
+    home: "Hjem"
+    workspace: "Arbeidsområde"
+    reset_date: "Tilbakestill dato"
+    no_time_registrations_on_this_day: "Ingen tidsregistrering denne dagen"
+    there_were_no_time_registrations_recorded: "Det var ingen tidsregistreringer registrert denne dagen, hvis du ønsker å registrere en tidsregistrering, klikk på knappen nedenfor"
+    log_time: "Log tiden"
+    today_total: "Dagens total"
+    week_total: "Ukens total"
+    from: "Fra"
 
   notice:
     are_you_sure: "Er du sikker?"

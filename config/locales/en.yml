@@ -133,7 +133,16 @@ en:
     total: "Total"
     total_billable_hours: "Total billable hours"
     total_hours: "Total hours"
-
+    home: "Home"
+    workspace: "Workspace"
+    reset_date: "Reset date"
+    no_time_registrations_on_this_day: "No time registrations on this day"
+    there_were_no_time_registrations_recorded: "There were no time registrations recorded on this day, if you wish to record a time registration, click the button bellow"
+    log_time: "Log time"
+    today_total: "Today's total"
+    week_total: "Week's total"
+    from: "From"
+    
   notice:
     are_you_sure: "Are you sure?"
     project_has_been_updated: "project has been updated"
