@@ -176,6 +176,18 @@ en:
     need_to_add_more_tasks: "Need to add more tasks?"
     add_more: "Add more"
     organizations: "Organizations"
+    no_time_registrations: "No time registrations"
+    No_registrations_were_found: "No time registrations were found matching the current selection. You can try again with a different filter input."
+    reset_filter: "Reset Filter"
+    print: "Print"
+    detailed_report: "detailed report"
+    team: "Team"
+    filter: "Filter"
+    period_from: "Period - from" 
+    period_to: "Period - to"
+    reset: "Reset"
+    all: "All"
+
 
   notice:
     are_you_sure: "Are you sure?"

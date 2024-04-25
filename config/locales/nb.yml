@@ -192,6 +192,18 @@ nb:
     need_to_add_more_tasks: "Trenger du å legge til flere oppgaver?"
     add_more: "Legg til"
     organizations: "Organisasjoner"
+    no_time_registrations: "Ingen tidsregistreringer"
+    No_registrations_were_found: "Ingen tidsregistreringer ble funnet som samsvarer med gjeldende utvalg. Du kan prøve igjen med en annen filter inngang."
+    reset_filter: "Tilbakestill filter"
+    print: "Skriv ut"
+    detailed_report: "detaljert rapport"
+    team: "Gruppe"
+    filter: "Filter"
+    period_from: "Periode - fra"
+    period_to: "Periode - til"
+    reset: "Nullstille"
+    all: "Alle" 
+
 
   notice:
     are_you_sure: "Er du sikker?"
