@@ -1,6 +1,6 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update, :destroy, :delete_confirmation ]
+  before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update, :destroy ]
   before_action :set_projects, only: [ :index, :new_modal, :create, :edit_modal ]
   before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal ]
   before_action :set_project, only: [ :create ]
@@ -54,9 +54,6 @@ class TimeRegsController < ApplicationController
         time_reg: @time_reg, chosen_date: @chosen_date, projects: @projects, title: "Edit time entry", assigned_tasks: @time_reg.project&.tasks
       })
     end
-  end
-
-  def delete_confirmation
   end
 
   def destroy

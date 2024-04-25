@@ -1,6 +1,6 @@
 module Workspace
   class ClientsController < WorkspaceController
-    before_action :set_client, only: %i[edit_modal update destroy delete_confirmation]
+    before_action :set_client, only: %i[edit_modal update destroy]
 
     def index
       @clients = authorized_scope(Client, type: :relation).all
@@ -37,9 +37,6 @@ module Workspace
       else
         render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/clients/form", locals: { client: @client })
       end
-    end
-
-    def delete_confirmation
     end
 
     def destroy

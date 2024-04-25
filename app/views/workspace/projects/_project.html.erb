@@ -1,6 +1,6 @@
 <%= render PhlexUI::Table::Row.new(id: dom_id(project)) do %>
   <%= render PhlexUI::Table::Cell.new do %>
-    <div class="flex flex-col">
+    <%= link_to workspace_project_path(project), class: "flex flex-col" do %>
       <div class="flex flex-row items-center gap-x-1">
         <span class="font-medium text-gray-700 text-sm"><%= project.name %></span>
         <%= render PhlexUI::Badge.new(variant: project.billable ? :green : :gray, class: "!rounded-full flex gap-x-1") do %>
@@ -10,7 +10,7 @@
       <div class="w-36 lg:w-48 xl:w-64 truncate">
         <span class="text-gray-500 text-xs"><%= project.description %></span>
       </div>
-    </div>
+    <% end %>
   <% end %>
   <%= render PhlexUI::Table::Cell.new { project.client.name } %>
   <%= render PhlexUI::Table::Cell.new do %>
