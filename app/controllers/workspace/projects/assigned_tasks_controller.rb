@@ -10,8 +10,7 @@ module Workspace
       end
 
       def create
-        @assigned_task = authorized_scope(AssignedTask, type: :relation).new(project: @project, task_id: assigned_task_params[:task_id])
-
+        @assigned_task = @project.assigned_tasks.new(assigned_task_params)
         if @assigned_task.save
           render turbo_stream: [
             turbo_flash(type: :success, data: "Task added to project."),
@@ -43,7 +42,7 @@ module Workspace
       end
 
       def assigned_task_params
-        params.require(:assigned_task).permit(:task_id)
+        params.require(:assigned_task).permit(:task_id, :rate_nok)
       end
 
       def set_assigned_task

@@ -1,4 +1,6 @@
 class AssignedTask < ApplicationRecord
+  self.ignored_columns += [ "name" ]
+
   belongs_to :project
   belongs_to :task
   has_one :organization, through: :task
@@ -9,4 +11,13 @@ class AssignedTask < ApplicationRecord
 
   validates :project_id, uniqueness: { scope: :task_id, message: "is already assigned to the project" }
   validates :task_id, presence: { message: "is required" }
+  validates :rate, numericality: { only_integer: true }
+
+  def rate_nok
+    ConvertKroneOre.out(rate)
+  end
+
+  def rate_nok=(rate_in_nok)
+    self.rate = ConvertKroneOre.in(rate_in_nok)
+  end
 end
