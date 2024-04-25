@@ -29,11 +29,6 @@ Turbo.setConfirmMethod((message, element) => {
     dialog.showModal();
     document?.body?.classList.add('overflow-hidden');
 
-    const confirmButton = dialog.querySelector('button[value="confirm"]');
-    console.log("---->element", element);
-    console.log("---->element.dataset", element.dataset);
-    confirmButton.disabled = element.dataset.turboConfirmDisabled === "true";
-
     return new Promise((resolve, reject) => {
         dialog.addEventListener("close", () => {
             document?.body?.classList.remove("overflow-hidden");
