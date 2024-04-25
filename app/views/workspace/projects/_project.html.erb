@@ -20,34 +20,22 @@
     </div>
   <% end %>
   <%= render PhlexUI::Table::Cell.new do %>
-    <%= render PhlexUI::Popover.new(options: { placement: "bottom-end", trigger: "click" }) do %>
-      <%= render PhlexUI::Popover::Trigger.new do %>
-        <%= render ButtonComponent.new(variant: :outline) do %>
-          <span class="text-gray-500 text-sm">Actions</span>
-          <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+    <div class="flex flex-row gap-x-2">
+      <%= render ButtonComponent.new(path: workspace_project_path(project), method: :get, variant: :outline) do %>
+        <i class="uc-icon text-gray-500">&#xe9a8;</i>
+      <% end %>
+      <%= render ButtonComponent.new(path: edit_modal_workspace_project_path(project), method: :put, variant: :outline) do %>
+        <i class="uc-icon text-gray-500">&#xe972;</i>
+      <% end %>
+
+      <%- has_time_regs = project.time_regs.any? %>
+      <%- turbo_body = has_time_regs ? "The project <span class='font-semibold text-primary'>#{project.name}</span> has time registrations and can not be deleted." : "Do you want to proceed with the deletion of the project <span class='font-semibold text-primary'>#{project.name}</span>, This action cannot be undone." %>
+
+      <%= render TooltipComponent.new(note: has_time_regs ? "The Project has recorded time registrations, can not be deleted." : nil) do %>
+        <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_project_path(project), disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body } }) do %>
+          <i class="uc-icon">&#xeb97;</i>
         <% end %>
       <% end %>
-      <%= render PhlexUI::Popover::Content.new(class: "!p-0") do %>
-        <div class="flex flex-col divide-y divide-gray-50 w-full">
-          <%= render ButtonComponent.new(path: workspace_project_path(project), method: :get, variant: :ghost, class: "!py-3 gap-x-2 !w-full !justify-start hover:bg-gray-100") do %>
-            <i class="uc-icon text-gray-500">&#xe9a8;</i>
-            <%= render PhlexUI::Label.new { "View more"} %>
-          <% end %>
-          <%= render ButtonComponent.new(path: edit_modal_workspace_project_path(project), method: :put, variant: :ghost, class: "!py-3 gap-x-2 !w-full !justify-start hover:bg-gray-100") do %>
-            <i class="uc-icon text-gray-500">&#xe972;</i>
-            <%= render PhlexUI::Label.new { "Edit"} %>
-          <% end %>
-          <%= render ButtonComponent.new(path: delete_confirmation_workspace_project_path(project), method: :post, variant: :ghost, class: "!py-3 gap-x-2 !w-full !justify-start hover:bg-gray-100") do %>
-            <i class="uc-icon text-gray-500">&#xeb97;</i>
-            <%= render PhlexUI::Label.new { "Delete"} %>
-          <% end %>
-        </div>
-      <% end %>
-    <% end %>
-
-
-
-
-
+    </div>
   <% end %>
 <% end %>

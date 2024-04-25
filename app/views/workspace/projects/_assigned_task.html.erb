@@ -7,5 +7,10 @@
       <span class="text-sm text-gray-500 font-medium"><%= assigned_task.task.name %></span>
     </div>
   </div>
-  <%= render ButtonComponent.new(variant: :link, class: "text-red-700", path: delete_confirmation_workspace_project_assigned_task_path(id: assigned_task.id, project_id: assigned_task.project_id), method: :post) { "Remove" } %>
+  <%- has_time_regs = assigned_task.time_regs.any? %>
+  <%- turbo_body = has_time_regs ? "The task <span class='font-semibold text-primary'>#{assigned_task.task.name}</span> has time registrations and can not be removed from this project." : "Do you want to proceed with the removal of the task <span class='font-semibold text-primary'>#{assigned_task.task.name}</span> from this project, This action cannot be undone." %>
+
+  <%= render TooltipComponent.new(note: has_time_regs ? "The task has recorded time registrations, can not be removed from this project." : nil) do %>
+    <%= render ButtonComponent.new(variant: :link, class: "text-red-700", method: :delete, path: workspace_project_assigned_task_path(id: assigned_task.id, project_id: assigned_task.project_id), disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body } }) { "Remove" } %>
+  <% end %>
 <% end %>
