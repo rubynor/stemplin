@@ -206,6 +206,7 @@ nb:
     drag_and_drop_message: "Dra og slipp filen din her eller"
     all_time: "Alle timer"
     and: "og"
+    edit_time_entry: "Rediger tidsregistrering"
 
 
   notice:
@@ -229,6 +230,12 @@ nb:
     do_you_want_to_proceed_with_deletion: "Ønsker du å gå videre med sletting av timeregistreringen for prosjektet"
     with_a_task: "med oppgaven"
     logged_action_cannot_be_undone: "logget. Denne handlingen kan ikke bli tatt tilbake."
+    registration_was_successfully: "Tidsregistreringen ble velykket slettet."
+    time_entry_has_been_toggled: "Tids teller har blitt slått"
+    _on: "på"
+    _off: "av"
+    unable_to_delete_time_registration: "Kan ikke slette tidsregistrering"
+    unable_to_toggle_time_entry: "Kan ikke bytte tidsregistrering"
 
   alert:
     does_not_exist: "eksisterer ikke"

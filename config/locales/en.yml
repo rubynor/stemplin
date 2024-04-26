@@ -190,6 +190,7 @@ en:
     drag_and_drop_message: "Drag and drop your file here or"
     all_time: "All time"
     and: "and"
+    edit_time_entry: "Edit time entry"    
 
 
   notice:
@@ -212,6 +213,13 @@ en:
     do_you_want_to_proceed_with_deletion: "Do you want to proceed with the deletion of the time registration for the project"
     with_a_task: "with a task"
     logged_action_cannot_be_undone: "logged. This action cannot be undone."
+    registration_was_successfully: "Time registration was successfully deleted."
+    time_entry_has_been_toggled: "Time entry has been toggled"
+    _on: "on"
+    _off: "off"
+    unable_to_delete_time_registration: "Unable to delete time registration"
+    unable_to_toggle_time_entry: "Unable to toggle time entry"
+
 
   alert:
     does_not_exist: "does not exist"
