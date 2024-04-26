@@ -189,6 +189,7 @@ en:
     all: "All"
     drag_and_drop_message: "Drag and drop your file here or"
     all_time: "All time"
+    and: "and"
 
 
   notice:
@@ -208,6 +209,9 @@ en:
     time_entry_has_been_deleted: "Time entry has been deleted"
     cannot_delete_time_entry: "cannot delete time entry"
     task_succesfully_removed_from_project: "Task succesfully removed from project"
+    do_you_want_to_proceed_with_deletion: "Do you want to proceed with the deletion of the time registration for the project"
+    with_a_task: "with a task"
+    logged_action_cannot_be_undone: "logged. This action cannot be undone."
 
   alert:
     does_not_exist: "does not exist"

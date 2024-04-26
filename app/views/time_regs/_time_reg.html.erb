@@ -30,15 +30,15 @@
       <% else %>
         <i class="uc-icon text-base">&#xead1;</i>
       <% end %>
-      <span class="hidden lg:block"><%= time_reg.active? ? "Stop" : "Start" %></span>
+      <span class="hidden lg:block"><%= time_reg.active? ? t("common.stop") : t("common.start") %></span>
     <% end %>
     <%= render ButtonComponent.new(path: edit_modal_time_reg_path(time_reg, date: @chosen_date), method: :put, class: "gap-x-2", variant: :outline) do %>
       <i class="uc-icon text-base">&#xe972;</i>
-      <span class="hidden lg:block">Edit</span>
+      <span class="hidden lg:block"><%= t("common.edit") %></span>
     <% end %>
     <%= render ButtonComponent.new(path: delete_confirmation_time_reg_path(time_reg), method: :post, class: "gap-x-2", variant: :destructive) do %>
       <i class="uc-icon text-base">&#xeb97;</i>
-      <span class="hidden lg:block">Delete</span>
+      <span class="hidden lg:block"><%= t("common.delete") %></span>
     <% end %>
   </div>
 <% end %>

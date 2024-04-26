@@ -98,7 +98,7 @@ nb:
     create_time_reg: "Opprett tids reg"
     update_time_reg: "Oppdater Tids reg"
     edit: "Rediger"
-    stop: "Stop"
+    stop: "Stopp"
     start: "Start"
     delete_project: "Fjern prosjekt"
     delete_client: "Fjern Klient"
@@ -205,6 +205,7 @@ nb:
     all: "Alle"
     drag_and_drop_message: "Dra og slipp filen din her eller"
     all_time: "Alle timer"
+    and: "og"
 
 
   notice:
@@ -225,6 +226,9 @@ nb:
     time_entry_has_been_deleted: "Tidsregistrering er slettet"
     cannot_delete_time_entry: "kan ikke slette tidsregistrering"
     task_succesfully_removed_from_project: "Oppgaven ble fjernet fra prosjektet"
+    do_you_want_to_proceed_with_deletion: "Ønsker du å gå videre med sletting av timeregistreringen for prosjektet"
+    with_a_task: "med oppgaven"
+    logged_action_cannot_be_undone: "logget. Denne handlingen kan ikke bli tatt tilbake."
 
   alert:
     does_not_exist: "eksisterer ikke"
