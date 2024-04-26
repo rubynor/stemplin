@@ -190,7 +190,14 @@ en:
     drag_and_drop_message: "Drag and drop your file here or"
     all_time: "All time"
     and: "and"
-    edit_time_entry: "Edit time entry"    
+    edit_time_entry: "Edit time entry"
+    import_project: "Import project"
+    supported_formats: "Supported formats: XLS, XLSX"
+    sample_format: "Sample format"
+    feel_free_to_grab_sample_file: "Feel free to grab the sample file below to help you create your own."
+    download: "Download"
+    browse_a_file_from_your_computer: "browse a file from your computer"
+    
 
 
   notice:

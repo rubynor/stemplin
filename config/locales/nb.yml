@@ -207,6 +207,12 @@ nb:
     all_time: "Alle timer"
     and: "og"
     edit_time_entry: "Rediger tidsregistrering"
+    import_project: "Importer prosjektet"
+    supported_formats: "Støtter formatene: XLS, XLSX"
+    sample_format: "Eksempel format"
+    feel_free_to_grab_sample_file: "Ta gjerne tak i eksempelfilen nedenfor for å hjelpe deg med å lage din egen."
+    download: "Last Ned"
+    browse_a_file_from_your_computer: "bla gjennom en fil fra datamaskinen din"
 
 
   notice:
