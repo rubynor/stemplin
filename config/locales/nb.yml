@@ -286,13 +286,24 @@ nb:
   activerecord:
     attributes:
       client:
-        name: "navn"
+        name: "Navn"
         description: "beskrivelse"
+      project:
+        name: "Navn"
+        description: "Beskrivelse"
+        client: "Klient"
+      task:
+        name: "Navn"
+        description: "Beskrivelse"
+        client: "Klient"
+      
     errors:
       models:
         client:
           attributes:
+
             description:
+              must_exist: "må finnes"
               blank: "kan ikke være tom"
               too_short: "er for kort (minimum er %{count} tegn)"
               too_long: "er for lang (maksimum er %{count} tegn)"
@@ -307,6 +318,24 @@ nb:
           attributes:
             name: "navn"
             description: "beskrivelse"
+
+            client:
+              required: "må må være valgt"
+
+            description:
+              blank: "kan ikke være tom"
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+              taken: "er allerede i bruk"
+            name:
+              blank: "kan ikke være tom"
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+              taken: "er allerede i bruk"
+          
+        task:
+          attributes:
+            name: "navn"
 
             description:
               blank: "kan ikke være tom"
