@@ -21,3 +21,18 @@ StreamActions.remove_modal = function() {
         document?.body?.classList?.remove("overflow-hidden");
     }
 }
+
+Turbo.setConfirmMethod((message, element) => {
+    const dialog = document.getElementById("turbo-confirm-dialog");
+
+    dialog.querySelector("p").innerHTML = message;
+    dialog.showModal();
+    document?.body?.classList.add('overflow-hidden');
+
+    return new Promise((resolve, reject) => {
+        dialog.addEventListener("close", () => {
+            document?.body?.classList.remove("overflow-hidden");
+            resolve(dialog.returnValue === "confirm");
+        }, { once: true })
+    });
+});

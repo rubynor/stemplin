@@ -48,9 +48,6 @@ module Workspace
     def import_modal
     end
 
-    def delete_confirmation
-    end
-
     def destroy
       if @project.destroy
         render turbo_stream: [

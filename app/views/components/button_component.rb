@@ -9,7 +9,7 @@ class ButtonComponent < ApplicationComponent
 
   def template(&content)
     if @path.present?
-      button_to(@path, method: @method) { render_button(&content) }
+      button_to(@path, method: @method, **@attrs) { render_button(&content) }
     else
       render_button(&content)
     end
@@ -25,10 +25,14 @@ class ButtonComponent < ApplicationComponent
     {
       **@attrs,
       type: @path.present? && @attrs[:type].nil? ? "submit" : @attrs[:type],
-      class: tokens(@attrs[:class], "py-2 !h-12", is_outline?: "border !border-gray-100")
+      class: tokens(@attrs[:class], "py-2 !h-12", is_outline?: "border !border-gray-100", is_disabled?: "!pointer-events-auto !cursor-not-allowed")
     }
   end
   def is_outline?
     @attrs[:variant] == :outline
+  end
+
+  def is_disabled?
+    @attrs[:disabled]
   end
 end

@@ -2,7 +2,7 @@ module Workspace
   module Projects
     class AssignedTasksController < ProjectsController
       before_action :set_project
-      before_action :set_assigned_task, only: %i[delete_confirmation destroy]
+      before_action :set_assigned_task, only: %i[destroy]
 
       def new_modal
         @unassigned_tasks = authorized_scope(Task, type: :relation).unassigned_tasks(@project.id)
@@ -22,9 +22,6 @@ module Workspace
           @unassigned_tasks = authorized_scope(Task, type: :relation).unassigned_tasks(@project.id)
           render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/assigned_tasks/form", locals: { project: @project, assigned_task: @assigned_task, unassigned_tasks: @unassigned_tasks })
         end
-      end
-
-      def delete_confirmation
       end
 
       def destroy

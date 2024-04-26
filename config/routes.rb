@@ -47,7 +47,6 @@ Rails.application.routes.draw do
     end
     post :new_modal, on: :collection
     put :edit_modal, on: :member
-    post :delete_confirmation, on: :member
   end
 
   resources :projects, except: [ :index ] do
@@ -60,18 +59,11 @@ Rails.application.routes.draw do
     resources :projects do
       post :import_modal, on: :collection
       post :new_modal, on: :collection
-      post :delete_confirmation, on: :member
       put :edit_modal, on: :member
 
       scope module: :projects do
-        resources :memberships do
-          post :new_modal, on: :collection
-          post :delete_confirmation, on: :member
-        end
-
         resources :assigned_tasks do
           post :new_modal, on: :member
-          post :delete_confirmation, on: :member
         end
 
         resource :tasks do
@@ -83,8 +75,8 @@ Rails.application.routes.draw do
     resources :clients do
       post :new_modal, on: :collection
       post :edit_modal, on: :member
-      post :delete_confirmation, on: :member
     end
+
     resources :teams, only: [ :index, :create ] do
       post :new_modal, on: :collection
     end
@@ -92,7 +84,6 @@ Rails.application.routes.draw do
     resources :tasks do
       post :new_modal, on: :collection
       post :edit_modal, on: :member
-      post :delete_confirmation, on: :member
     end
   end
 end
