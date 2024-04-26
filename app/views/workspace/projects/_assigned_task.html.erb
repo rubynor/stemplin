@@ -7,5 +7,5 @@
       <span class="text-sm text-gray-500 font-medium"><%= assigned_task.task.name %></span>
     </div>
   </div>
-  <%= render ButtonComponent.new(variant: :link, class: "text-red-700", path: delete_confirmation_workspace_project_assigned_task_path(id: assigned_task.id, project_id: assigned_task.project_id), method: :post) { "Remove" } %>
+  <%= render ButtonComponent.new(variant: :link, class: "text-red-700", path: delete_confirmation_workspace_project_assigned_task_path(id: assigned_task.id, project_id: assigned_task.project_id), method: :post) { t("common.remove") } %>
 <% end %>
