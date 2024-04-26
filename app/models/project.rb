@@ -1,4 +1,6 @@
 class Project < ApplicationRecord
+  include RateConvertible
+
   validates :name, presence: true, length: { minimum: 2, maximum: 30 }, uniqueness: { scope: :client }
   validates :description, presence: true, length: { minimum: 2, maximum: 100 }
   validates :rate, numericality: { only_integer: true }
@@ -9,12 +11,4 @@ class Project < ApplicationRecord
   has_many :time_regs, through: :assigned_tasks
   has_many :tasks, through: :assigned_tasks
   has_many :time_regs, through: :assigned_tasks
-
-  def rate_nok
-    ConvertKroneOre.out(rate)
-  end
-
-  def rate_nok=(rate_in_nok)
-    self.rate = ConvertKroneOre.in(rate_in_nok)
-  end
 end
