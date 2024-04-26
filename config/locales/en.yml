@@ -187,6 +187,8 @@ en:
     period_to: "Period - to"
     reset: "Reset"
     all: "All"
+    drag_and_drop_message: "Drag and drop your file here or"
+    all_time: "All time"
 
 
   notice:
@@ -234,6 +236,11 @@ en:
     blank: "can't be blank"
     too_short: "is too short (minimum is %{count} characters)"
     too_long: "is too long (maximum is %{count} characters)"
+    the_task: "The task"
+    assigned_to_project: "is already assigned to a project, Kindly remove associated projects if you wish to proceed with this task deletion."
+    proceed_deletion_of_the_task: "Do you want to proceed with the deletion of the task"
+    cannot_be_undone: "This action cannot be undone."
+
 
   registration:
     first_name: "First name"

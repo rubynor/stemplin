@@ -6,22 +6,22 @@
   <%= render PhlexUI::AlertDialog::Content.new do %>
     <%= turbo_frame_tag :modal do %>
       <%= render PhlexUI::AlertDialog::Header.new do %>
-        <%= render PhlexUI::AlertDialog::Title.new { "Are you sure?" } %>
+        <%= render PhlexUI::AlertDialog::Title.new { t("notice.are_you_sure") } %>
         <%= render PhlexUI::AlertDialog::Description.new do  %>
           <% if @task.assigned_tasks.any? %>
             <span>
-              The task <span class="font-semibold text-primary"><%= @task.name %></span> is already assigned to a project, Kindly remove associated projects if you wish to proceed with this task deletion.
+              <%= t("description.the_task") %> <span class="font-semibold text-primary"><%= @task.name %></span> <%= t("description.assigned_to_project") %>
             </span>
           <% else %>
             <span>
-              Do you want to proceed with the deletion of the task <span class="font-semibold text-primary"><%= @task.name %></span>, This action cannot be undone.
+              <%= t("description.proceed_deletion_of_the_task")%> <span class="font-semibold text-primary"><%= @task.name %></span>, <%= t("description.cannot_be_undone") %>
             </span>
           <% end %>
         <% end %>
       <% end %>
       <%= render PhlexUI::AlertDialog::Footer.new(class: "mt-4") do %>
-        <%= render PhlexUI::AlertDialog::Cancel.new(class: "!border-gray-100 !h-12") { "Cancel" } %>
-        <%= render ButtonComponent.new(variant: :destructive, path: workspace_task_path(@task), method: :delete, disabled: @task.assigned_tasks.any?) { "Continue"} %>
+        <%= render PhlexUI::AlertDialog::Cancel.new(class: "!border-gray-100 !h-12") { t("common.cancel") } %>
+        <%= render ButtonComponent.new(variant: :destructive, path: workspace_task_path(@task), method: :delete, disabled: @task.assigned_tasks.any?) { t("common.continue") } %>
       <% end %>
     <% end %>
   <% end %>

@@ -24,7 +24,7 @@ module ReportsHelper
   end
 
   def time_frame(start_date, end_date)
-    return "All time" unless start_date && end_date
+    return I18n.t("common.all_time") unless start_date && end_date
     "#{format_date(start_date)} - #{format_date(end_date)}"
   end
 

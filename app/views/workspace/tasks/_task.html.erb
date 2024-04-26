@@ -1,6 +1,6 @@
 <%= render PhlexUI::Table::Row.new(id: dom_id(task)) do %>
   <%= render PhlexUI::Table::Cell.new { task.name } %>
-  <%= render PhlexUI::Table::Cell.new { task.created_at.strftime("%A, %d %B %Y") } %>
+  <%= render PhlexUI::Table::Cell.new { l(task.created_at, format: "%A, %d %B %Y") } %>
   <%= render PhlexUI::Table::Cell.new do %>
     <div class="flex flex-row gap-x-2">
       <%= render ButtonComponent.new(path: edit_modal_workspace_task_path(task), method: :post, variant: :outline, class: "!py-3") do %>

@@ -202,7 +202,9 @@ nb:
     period_from: "Periode - fra"
     period_to: "Periode - til"
     reset: "Nullstille"
-    all: "Alle" 
+    all: "Alle"
+    drag_and_drop_message: "Dra og slipp filen din her eller"
+    all_time: "Alle timer"
 
 
   notice:
@@ -250,6 +252,11 @@ nb:
     blank: "kan ikke være blank"
     too_short: "er for kort (minimum er %{count} tegn)"
     too_long: "er for lang (maksimum er %{count} tegn)"
+    the_task: "Denne oppgaven"
+    assigned_to_project: "allerede er tildelt et prosjekt, fjern tilknyttede prosjekter hvis du ønsker å fortsette med denne oppgaveslettingen."
+    proceed_deletion_of_the_task: "Vil du fortsette med slettingen av oppgaven"
+    cannot_be_undone: "Denne handlingen kan ikke bli tatt tilbake."
+
 
   registration:
     first_name: "Første navn"
