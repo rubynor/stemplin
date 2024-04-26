@@ -231,6 +231,7 @@ en:
     time_entry_cannot_exceed_24_hours: "Time entry cannot exceed 24 hours"
     please_select_a_project: "Please select a project"
     please_select_a_task: "Please select a task"
+    project_not_found: "Project not found, kindly select a valid project."
 
   description:
     blank: "can't be blank"

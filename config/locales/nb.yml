@@ -247,6 +247,7 @@ nb:
     time_entry_cannot_exceed_24_hours: "Tidsregistrering kan ikke overstige 24 timer"
     please_select_a_project: "Vennligst velg et prosjekt"
     please_select_a_task: "Vennligst velg en oppgave"
+    project_not_found: "Finner ikke prosjektet, velg et gyldig prosjekt."
 
   description:
     blank: "kan ikke være blank"
@@ -296,12 +297,13 @@ nb:
         name: "Navn"
         description: "Beskrivelse"
         client: "Klient"
+      time_reg:
+        minutes: "Minutter"
       
     errors:
       models:
         client:
           attributes:
-
             description:
               must_exist: "må finnes"
               blank: "kan ikke være tom"
@@ -347,3 +349,9 @@ nb:
               too_short: "er for kort (minimum er %{count} tegn)"
               too_long: "er for lang (maksimum er %{count} tegn)"
               taken: "er allerede i bruk"
+
+        time_reg:
+          attributes:
+            minutes:
+              not_a_number: "dette er ikke et nommer"
+              less_than_or_equal_to: "må være mindre eller lik 1440"

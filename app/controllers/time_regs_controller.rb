@@ -137,6 +137,6 @@ class TimeRegsController < ApplicationController
   def set_project
     @project = authorized_scope(Project, type: :relation, as: :own).find(time_reg_params[:project_id])
   rescue ActiveRecord::RecordNotFound
-    render turbo_stream: turbo_flash(type: :alert, data: "Project not found, kindly select a valid project.")
+    render turbo_stream: turbo_flash(type: :alert, data: I18n.t("alert.project_not_found"))
   end
 end
