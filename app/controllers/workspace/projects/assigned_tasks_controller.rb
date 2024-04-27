@@ -2,15 +2,17 @@ module Workspace
   module Projects
     class AssignedTasksController < ProjectsController
       before_action :set_project
-      before_action :set_assigned_task, only: %i[destroy]
 
       def new_modal
         @unassigned_tasks = authorized_scope(Task, type: :relation).unassigned_tasks(@project.id)
         @assigned_task = authorized_scope(AssignedTask, type: :relation).new
+        @assigned_task.build_task
       end
 
       def create
-        @assigned_task = @project.assigned_tasks.new(assigned_task_params)
+        @task = authorized_scope(Task, type: :relation).find(assigned_task_params[:task_attributes][:id])
+        @assigned_task = authorized_scope(AssignedTask, type: :relation).new(project: @project, task: @task, rate_nok: assigned_task_params[:rate_nok])
+
         if @assigned_task.save
           render turbo_stream: [
             turbo_flash(type: :success, data: "Task added to project."),
@@ -24,6 +26,7 @@ module Workspace
       end
 
       def destroy
+        @assigned_task = authorized_scope(AssignedTask, type: :relation).find(params[:id])
         if @assigned_task.destroy
           render turbo_stream: [
             turbo_flash(type: :success, data: "Task removed from project."),
@@ -35,6 +38,23 @@ module Workspace
         end
       end
 
+      def edit_modal
+        @assigned_task = authorized_scope(AssignedTask, type: :relation).find(params[:id])
+      end
+
+      def update
+        @assigned_task = authorized_scope(AssignedTask, type: :relation).find(params[:id])
+        if @assigned_task.update(assigned_task_params)
+          render turbo_stream: [
+            turbo_flash(type: :success, data: "Task updated."),
+            turbo_stream.action(:remove_modal, :modal),
+            turbo_stream.replace(dom_id(@assigned_task), partial: "workspace/projects/assigned_task", locals: { assigned_task: @assigned_task })
+          ]
+        else
+          render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/assigned_tasks/form", locals: { project: @project, assigned_task: @assigned_task })
+        end
+      end
+
       private
 
       def set_project
@@ -42,11 +62,7 @@ module Workspace
       end
 
       def assigned_task_params
-        params.require(:assigned_task).permit(:task_id, :rate_nok)
-      end
-
-      def set_assigned_task
-        @assigned_task = authorized_scope(AssignedTask, type: :relation).find(params[:id])
+        params.require(:assigned_task).permit(:rate_nok, task_attributes: [ :id, :name ])
       end
     end
   end

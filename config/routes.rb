@@ -66,6 +66,7 @@ Rails.application.routes.draw do
       scope module: :projects do
         resources :assigned_tasks do
           post :new_modal, on: :member
+          post :edit_modal, on: :member
         end
 
         resource :tasks do

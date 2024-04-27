@@ -15,10 +15,13 @@
                 <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
               <% end %>
             <% end %>
-            <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-              <%= render PhlexUI::Label.new { "Billable Rate (per hour) (NOK)" } %>
-              <%= render PhlexUI::Hint.new { "This is optional, otherwise Project rate should be applied" } %>
-              <%= form.text_field :new_assigned_task_rate_nok, class: "border-gray-200 rounded-md" %>
+            <%= form.fields_for :assigned_tasks do |assigned_task_form| %>
+              <%= assigned_task_form.hidden_field :project_id, value: project.id %>
+              <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+                <%= render PhlexUI::Label.new { "Billable Rate (per hour) (NOK)" } %>
+                <%= render PhlexUI::Hint.new { "This is optional, otherwise Project rate should be applied" } %>
+                <%= assigned_task_form.text_field :rate_nok, class: "border-gray-200 rounded-md" %>
+              <% end %>
             <% end %>
           <% end %>
         </div>
