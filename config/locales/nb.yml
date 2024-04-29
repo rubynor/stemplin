@@ -326,6 +326,10 @@ nb:
         client: "Klient"
       time_reg:
         minutes: "Minutter"
+      user:
+        email: "E-post"
+        password: "Passord"
+        password_confirmation: "Passordbekreftelsen"
       
     errors:
       models:
@@ -382,3 +386,13 @@ nb:
             minutes:
               not_a_number: "dette er ikke et nommer"
               less_than_or_equal_to: "må være mindre eller lik 1440"
+        
+        user:
+          attributes:
+            email:
+              taken: "har allerede blitt tatt"
+            password:
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+            password_confirmation:
+              confirmation: "samsvarer ikke med passordet"
