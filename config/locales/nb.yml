@@ -213,6 +213,7 @@ nb:
     feel_free_to_grab_sample_file: "Ta gjerne tak i eksempelfilen nedenfor for å hjelpe deg med å lage din egen."
     download: "Last Ned"
     browse_a_file_from_your_computer: "bla gjennom en fil fra datamaskinen din"
+    language: "Språk"
 
 
   notice:
