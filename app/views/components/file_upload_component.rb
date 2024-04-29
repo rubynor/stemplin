@@ -20,8 +20,8 @@ class FileUploadComponent < ApplicationComponent
         end
         file_field_tag(@attribute, **@options, **@attrs)
         image_tag("upload_doc.svg", class: "h-16")
-        content_tag(:span, "Drag and drop your file here or", class: "font-regular text-base my-4 text-gray-600")
-        render ButtonComponent.new(variant: :secondary) { "browse a file from your computer" }
+        content_tag(:span, I18n.t("common.drag_and_drop_message"), class: "font-regular text-base my-4 text-gray-600")
+        render ButtonComponent.new(variant: :secondary) { I18n.t("common.browse_a_file_from_your_computer") }
       end
       if @caption
         content_tag(:div, class: "my-4 text-sm text-gray-400") do

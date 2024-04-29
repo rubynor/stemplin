@@ -61,7 +61,7 @@ class ProjectsController < ApplicationController
     authorize! @project
 
     if @project.update(project_params)
-      flash[:notice] = "project has been updated"
+      flash[:notice] = t("notice.project_has_been_updated")
       redirect_to @project
     else
       @tasks = authorized_scope(Task, type: :relation).all
@@ -73,7 +73,7 @@ class ProjectsController < ApplicationController
                                     .joins(:task)
                                     .where(project_id: @project.id)
 
-      flash[:alert] = "cannot update project"
+      flash[:alert] = t("alert.cannot_update_project")
       render :edit, status: :unprocessable_entity
     end
   end
@@ -88,21 +88,21 @@ class ProjectsController < ApplicationController
     # checks the confirmation field before trying to delete
     if delete_params[:confirmation] == "DELETE"
       if @project.destroy
-        flash[:notice] = "Project deleted"
+        flash[:notice] = t("notice.project_deleted")
         redirect_to clients_path
       else
         @assigned_tasks = authorized_scope(AssignedTask, type: :relation).select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                       .joins(:task)
                                       .where(project_id: @project.id)
 
-        flash[:alert] = "Could not delete project"
+        flash[:alert] = t("alert.could_not_delete_project")
         render :edit, status: :unprocessable_entity
       end
     else
       @assigned_tasks = authorized_scope(AssignedTask, type: :relation).select("tasks.name, assigned_tasks.id, assigned_tasks.project_id, assigned_tasks.task_id")
                                     .joins(:task)
                                     .where(project_id: @project.id)
-      flash[:alert] = "Invalid confirmation"
+      flash[:alert] = t("alert.invalid_confirmation")
       render :edit, status: :unprocessable_entity
     end
   end
@@ -114,7 +114,7 @@ class ProjectsController < ApplicationController
 
     # if file is empty or missing
     if params[:file].blank?
-      flash[:alert] = "Please select a file to import."
+      flash[:alert] = t("alert.please_select_a_file_to_import")
       redirect_to clients_path and return
     end
 
@@ -174,12 +174,12 @@ class ProjectsController < ApplicationController
       # If any valid time entries have been added, import them
       if imported_time_regs.present?
         authorized_scope(TimeReg, type: :relation).import(imported_time_regs)
-        flash[:notice] = "#{valid_entries} time entries imported successfully."
+        flash[:notice] = "#{valid_entries} #{t('notice.time_entries_imported_successfully')}"
       else
-        flash[:alert] = "No valid time entries found in the file."
+        flash[:alert] = t("alert.no_time_entries_found_in_the_file")
       end
     rescue StandardError => e # If the e-mail is invalid, flash and error and redirect
-        flash[:alert] = "Invalid e-mail. Please double check the e-mail column for every row."
+        flash[:alert] = t("alert.douple_check_email")
     end
     redirect_to clients_path
   end

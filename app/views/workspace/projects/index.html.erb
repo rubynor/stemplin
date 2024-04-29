@@ -1,18 +1,18 @@
 <div class="flex flex-col gap-y-8">
   <div class="flex flex-row justify-between items-center border-b border-gray-100 py-3">
     <div class="flex flex-row items-center gap-x-2">
-      <span class="font-medium text-gray-600 text-lg">Projects</span>
+      <span class="font-medium text-gray-600 text-lg"><%= t("common.projects") %></span>
       <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
         <span class="text-gray-700 text-xs font-semibold"><%= @projects.count %></span>
       </div>
     </div>
     <div class="flex flex-row gap-2">
       <%= render ButtonComponent.new(path: import_modal_workspace_projects_path, method: :post, variant: :secondary) do %>
-        <span class="hidden lg:block mr-2">Import</span>
+        <span class="hidden lg:block mr-2"><%= t("common.import") %></span>
         <i class="uc-icon text-xl">&#xe8ea;</i>
       <% end %>
       <%= render ButtonComponent.new(path: new_modal_workspace_projects_path, method: :post) do %>
-        <span class="hidden lg:block mr-2">Add New</span>
+        <span class="hidden lg:block mr-2"><%= t("common.add_new") %></span>
         <i class="uc-icon text-xl">&#xe9c7;</i>
       <% end %>
     </div>
@@ -21,10 +21,10 @@
     <%= render PhlexUI::Table.new do %>
       <%= render PhlexUI::Table::Header.new do %>
         <%= render PhlexUI::Table::Row.new do %>
-          <%= render PhlexUI::Table::Head.new { "Name" } %>
-          <%= render PhlexUI::Table::Head.new { "Client" } %>
-          <%= render PhlexUI::Table::Head.new { "Rate" } %>
-          <%= render PhlexUI::Table::Head.new { "Actions" } %>
+          <%= render PhlexUI::Table::Head.new { t("common.name") } %>
+          <%= render PhlexUI::Table::Head.new { t("common.client") } %>
+          <%= render PhlexUI::Table::Head.new { t("common.rate") } %>
+          <%= render PhlexUI::Table::Head.new { t("common.actions") } %>
         <% end %>
       <% end %>
       <%= render PhlexUI::Table::Body.new(id: :organization_projects) do %>

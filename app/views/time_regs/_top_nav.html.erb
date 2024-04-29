@@ -12,15 +12,15 @@
       <div class="flex flex-col">
         <span class="text-gray-700 text-base lg:text-lg font-semibold">
           <span class="hidden lg:block">
-            <%= @chosen_date.strftime("%A, %d %B %Y") %>
+            <%= l(@chosen_date, format: "%A, %d %B %Y") %>
           </span>
           <span class="lg:hidden">
-            <%= @chosen_date.strftime("%a, %d %b %Y") %>
+            <%= l(@chosen_date, format: "%a, %d %b %Y") %>
           </span>
         </span>
         <% if @chosen_date != Date.today %>
           <%= link_to root_path, class: "text-xs text-gray-400 underline" do %>
-            <span>Reset date</span>
+            <span><%= t("common.reset_date") %></span>
             <i class="uc-icon">&#xeb8c;</i>
           <% end %>
         <% end %>
@@ -29,7 +29,7 @@
     <div class="flex items-center gap-x-4">
       <%= render partial: "time_regs/date_picker" %>
       <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: @chosen_date), method: :post, class: "h-full") do %>
-        <span class="hidden lg:block mr-2">Log time</span>
+        <span class="hidden lg:block mr-2"><%= t("common.log_time") %></span>
         <i class="uc-icon text-white text-xl">&#xeb5b;</i>
       <% end %>
     </div>

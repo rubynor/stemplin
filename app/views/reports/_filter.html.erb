@@ -2,7 +2,7 @@
   <%= form_with scope: :report, url: report_path, method: :put, data: { controller: :form }, class: "print:hidden" do |form| %>
     <div class="max-w-7xl mx-auto flex justify-between items-center">
       <div class="flex flex-col gap-y-2">
-        <span class="uppercase text-sm text-gray-600 font-semibold">Filter</span>
+        <span class="uppercase text-sm text-gray-600 font-semibold"><%= t('common.filter') %></span>
         <div class="flex flex-col lg:flex-row justify-between items-end lg:items-start gap-4">
           <div class="flex flex-row flex-wrap items-center gap-4">
             <%# TODO: Extract into reusable Filter::Input component %>
@@ -10,8 +10,8 @@
             <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
               <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
                 <i class="uc-icon text-sm text-gray-500">&#xe891;</i>
-                <span class="text-gray-500 text-sm">Period - from</span>
-                <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_start_date ? form_data.selected_start_date.strftime("%d %b %y") : "All" } %>
+                <span class="text-gray-500 text-sm"><%= t('common.period_from') %></span>
+                <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_start_date ? l(form_data.selected_start_date, format: "%d %b %y") : t('common.all') } %>
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
               <%= render DropdownComponent::Content.new do %>
@@ -24,7 +24,7 @@
             <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
               <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
                 <i class="uc-icon text-sm text-gray-500">&#xe891;</i>
-                <span class="text-gray-500 text-sm">Period - to</span>
+                <span class="text-gray-500 text-sm"><%= t('common.period_to') %></span>
                 <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_end_date ? form_data.selected_end_date.strftime("%d %b %y") : "-" } %>
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
@@ -38,7 +38,7 @@
             <%= render DropdownComponent.new do %>
               <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
                 <i class="uc-icon text-sm text-gray-500">&#xe88a;</i>
-                <span class="text-gray-500 text-sm">Clients</span>
+                <span class="text-gray-500 text-sm"><%= t('common.clients') %></span>
                 <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_client_ids.empty? ? form_data.selectable_clients.count : form_data.selected_client_ids.count } %>
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
@@ -55,7 +55,7 @@
             <%= render DropdownComponent.new do %>
               <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
                 <i class="uc-icon text-sm text-gray-500">&#xe824;</i>
-                <span class="text-gray-500 text-sm">Projects</span>
+                <span class="text-gray-500 text-sm"><%= t('common.projects') %></span>
                 <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_project_ids.empty? ? form_data.selectable_projects.count : form_data.selected_project_ids.count } %>
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
@@ -72,7 +72,7 @@
             <%= render DropdownComponent.new do %>
               <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
                 <i class="uc-icon text-sm text-gray-500">&#xe8f2;</i>
-                <span class="text-gray-500 text-sm">Tasks</span>
+                <span class="text-gray-500 text-sm"><%= t('common.tasks') %></span>
                 <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_task_ids.empty? ? form_data.selectable_tasks.count : form_data.selected_task_ids.count } %>
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
@@ -89,7 +89,7 @@
             <%= render DropdownComponent.new do %>
               <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
                 <i class="uc-icon text-sm text-gray-500">&#xebb3;</i>
-                <span class="text-gray-500 text-sm">Team</span>
+                <span class="text-gray-500 text-sm"><%= t('common.team') %></span>
                 <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { form_data.selected_user_ids.empty? ? form_data.selectable_users.count : form_data.selected_user_ids.count } %>
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
@@ -103,17 +103,17 @@
             <% end %>
             <%# team end %>
             <div class="flex flex-col">
-              <span class="text-xs text-gray-400 font-medium uppercase">Detailed report</span>
+              <span class="text-xs text-gray-400 font-medium uppercase"><%= t('common.detailed_report') %></span>
               <%= render SwitchComponent.new(form: form, attribute: :detailed_report, initial_value: form_data.detailed_report) %>
             </div>
           </div>
           <div class="flex flex-row items-center gap-x-4">
             <%= link_to report_path, class: "text-xs text-gray-400 underline text-nowrap" do %>
-              <span>Reset</span>
+              <span><%= t('common.reset') %></span>
               <i class="uc-icon">&#xeb8c;</i>
             <% end %>
             <%= render ButtonComponent.new(type: "submit") do %>
-              <span class="mr-2">Filter</span>
+              <span class="mr-2"><%= t('common.filter') %></span>
               <i class="uc-icon text-white text-xl">&#xe9d9;</i>
             <% end %>
           </div>

@@ -19,7 +19,7 @@ module Workspace
       end
 
       render turbo_stream: [
-        turbo_flash(type: :success, data: "User added to the organization."),
+        turbo_flash(type: :success, data: t("notice.user_added_to_the_organization")),
         turbo_stream.append(:organization_users, partial: "workspace/teams/user", locals: { user: @user }),
         turbo_stream.action(:remove_modal, :modal)
       ]

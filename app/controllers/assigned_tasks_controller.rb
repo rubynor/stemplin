@@ -14,10 +14,10 @@ class AssignedTasksController < ApplicationController
     authorize! @assigned_task
 
     if @assigned_task.save
-      flash[:notice] = "Task successfully added to project"
+      flash[:notice] = t("notice.task_successfully_added_to_project")
       redirect_to edit_project_path(@project)
     else
-      flash[:alert] = "Task could not be added to the project"
+      flash[:alert] = t("alert.task_could_not_be_added_to_the_project")
       redirect_to edit_project_path(@project)
     end
   end
@@ -28,9 +28,9 @@ class AssignedTasksController < ApplicationController
     authorize! @assigned_task
 
     if @assigned_task.time_regs.count >= 1
-      flash[:alert] = "Cannot remove task with registered time"
+      flash[:alert] = t("alert.cannot_remove_task_with_registered_time")
     elsif @assigned_task.destroy
-      flash[:notice] = "Task succesfully removed from project"
+      flash[:notice] = t("notice.task_succesfully_removed_from_project")
     end
 
     redirect_to edit_project_path(@project)

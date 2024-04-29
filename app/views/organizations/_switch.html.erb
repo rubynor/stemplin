@@ -16,7 +16,7 @@
   <% end %>
   <%= render PhlexUI::Dialog::Content.new do %>
     <%= render PhlexUI::Dialog::Header.new do %>
-      <%= render PhlexUI::Dialog::Title.new { "Organizations" } %>
+      <%= render PhlexUI::Dialog::Title.new { t("common.organizations") } %>
     <% end %>
     <%= render PhlexUI::Dialog::Middle.new do %>
       <%= content_tag(:div, class: "flex flex-col overflow-y-scroll max-h-[600px]") do %>

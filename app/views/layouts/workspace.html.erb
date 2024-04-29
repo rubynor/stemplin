@@ -22,7 +22,7 @@
     <%= render 'layouts/navbar'%>
     <div class="max-w-7xl mx-auto flex flex-col gap-y-4 py-4 lg:py-6 px-4">
       <div class="py-3">
-        <span class="text-base lg:text-lg">Workspace</span>
+        <span class="text-base lg:text-lg"> <%= t("common.workspace") %></span>
       </div>
       <%= render CardComponent.new(class: "!p-0 grid grid-cols-1 lg:grid-cols-4 z-10") do %>
         <div class="col-span-1 bg-gray-50 p-4">

@@ -1,4 +1,4 @@
-<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Edit <%= resource_name.to_s.humanize %></h2>
+<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900"><%= t('common.edit_user') %></h2>
 <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
   <div class="w-full max-w-md space-y-8">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
@@ -11,17 +11,17 @@
         <div class="-space-y-px rounded-md shadow-sm">
           <div>
             <%= f.label :first_name, class: "sr-only" %>
-            <%= f.text_field :first_name, autocomplete: "given-name", required: true, class: "relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: "First name" %>
+            <%= f.text_field :first_name, autocomplete: "given-name", required: true, class: "relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: t('registration.first_name') %>
           </div>
 
           <div>
             <%= f.label :last_name, class: "sr-only" %>
-            <%= f.text_field :last_name, autocomplete: "family-name", required: true, class: "relative block w-full border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: "Last name" %>
+            <%= f.text_field :last_name, autocomplete: "family-name", required: true, class: "relative block w-full border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: t('registration.last_name') %>
           </div>
 
           <div>
             <%= f.label :email, class: "sr-only" %>
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true, class: "relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: "Email address" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true, class: "relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: t('registration.email') %>
           </div>
 
           <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -30,28 +30,28 @@
 
           <div>
             <%= f.label :password, class: "sr-only" %> 
-            <%= f.password_field :password, autocomplete: "new-password", class: "relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: "Password (leave blank to keep old password)" %>
+            <%= f.password_field :password, autocomplete: "new-password", class: "relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: t('registration.password_blank') %>
           </div>
 
           <div>
             <%= f.label :password_confirmation, class: "sr-only" %>
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: "Confirm password (leave blank to keep old password)" %>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: t('registration.confirm_password') %>
           </div>
 
           <div>
             <br>
-            <%= f.label :current_password, class: "sr-only" %> <i>(we need your current password to confirm your changes)</i>
+            <%= f.label :current_password, class: "sr-only" %> <i>(<%= t('registration.confirm_changes') %>)</i>
             <br>
-            <%= f.password_field :current_password, autocomplete: "current-password", class: "relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: "Current password" %>
+            <%= f.password_field :current_password, autocomplete: "current-password", class: "relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: t('registration.current_password') %>
           </div>
 
           <div>
-            <%= f.submit "Update", class: "group relative flex w-full justify-center rounded-md !bg-seaGreen py-2 px-3 text-sm font-semibold text-white !hover:bg-seaGreenDark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-seaGreenDark" %>
+            <%= f.submit t('registration.update'), class: "group relative flex w-full justify-center rounded-md !bg-seaGreen py-2 px-3 text-sm font-semibold text-white !hover:bg-seaGreenDark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-seaGreenDark" %>
           </div>
         </div>
       </div>
-      <div class="space-y-px mt-8">Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "btn btn-danger text-red-600 p-1 pb-2 hover:text-red-700" %></div>
-      <%= link_to "Back", :back, class: "italic text-gray-600 hover:text-gray-800" %>
+      <div class="space-y-px mt-8"><%= t('registration.unhappy') %>? <%= button_to t('registration.cancel_account'), registration_path(resource_name), data: { confirm: t('notice.are_you_sure'), turbo_confirm: t('notice.are_you_sure') }, method: :delete, class: "btn btn-danger text-red-600 p-1 pb-2 hover:text-red-700" %></div>
+      <%= link_to t('common.back'), :back, class: "italic text-gray-600 hover:text-gray-800" %>
     <% end %>  
   </div>
 </div>

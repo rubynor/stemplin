@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include ActionView::RecordIdentifier
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_locale
   layout :layout_by_resource
 
   verify_authorized unless: :devise_controller?
@@ -37,5 +38,13 @@ class ApplicationController < ActionController::Base
   def turbo_flash(type:, data:)
     flash[type] = data
     turbo_stream.replace "flash", partial: "shared/flash_messages"
+  end
+
+  def set_locale
+    if current_user
+      I18n.locale = current_user.locale
+    else
+      I18n.locale = I18n.default_locale
+    end
   end
 end

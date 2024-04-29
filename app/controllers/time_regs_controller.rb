@@ -29,7 +29,7 @@ class TimeRegsController < ApplicationController
 
     if @time_reg.save
       render turbo_stream: [
-        turbo_flash(type: :success, data: "Time entry has been logged."),
+        turbo_flash(type: :success, data: t("notice.time_entry_has_been_logged")),
         turbo_stream.prepend(:time_regs_list, partial: "time_regs/time_reg", locals: { time_reg: @time_reg }),
         turbo_stream.action(:remove_modal, :modal)
       ]
@@ -43,7 +43,7 @@ class TimeRegsController < ApplicationController
   def update
     if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
       render turbo_stream: [
-        turbo_flash(type: :success, data: "Time entry has been updated."),
+        turbo_flash(type: :success, data: t("notice.time_entry_has_been_updated")),
         turbo_stream.replace(dom_id(@time_reg), partial: "time_regs/time_reg", locals: { time_reg: @time_reg }),
         turbo_stream.action(:remove_modal, :modal)
       ]
@@ -59,24 +59,24 @@ class TimeRegsController < ApplicationController
   def destroy
     @time_reg.destroy!
     render turbo_stream: [
-      turbo_flash(type: :success, data: "Time registration was successfully deleted."),
+      turbo_flash(type: :success, data: t("notice.registration_was_successfully")),
       turbo_stream.remove(dom_id(@time_reg)),
       turbo_stream.action(:remove_modal, :modal)
     ]
 
   rescue ActiveRecord::RecordNotDestroyed
-    render turbo_stream: turbo_flash(type: :alert, data: "Unable to delete time registration")
+    render turbo_stream: turbo_flash(type: :alert, data: t("notice.unable_to_delete_time_registration"))
   end
 
   def toggle_active
     @time_reg.toggle_active
     render turbo_stream: [
-      turbo_flash(type: :success, data: "Time entry has been toggled #{@time_reg.active? ? "on": "off"}"),
+      turbo_flash(type: :success, data: "#{t("notice.time_entry_has_been_toggled")} #{@time_reg.active? ? t("notice._on"): t("notice._off")}"),
       turbo_stream.replace(dom_id(@time_reg), partial: "time_regs/time_reg", locals: { time_reg: @time_reg })
     ]
 
   rescue ActiveRecord::RecordInvalid => e
-    render turbo_stream: turbo_flash(type: :alert, data: "Unable to toggle time entry")
+    render turbo_stream: turbo_flash(type: :alert, data: t("notice.unable_to_toggle_time_entry"))
   end
 
   # exports the time_regs in a project to a .CSV
@@ -134,6 +134,6 @@ class TimeRegsController < ApplicationController
   def set_project
     @project = authorized_scope(Project, type: :relation, as: :own).find(time_reg_params[:project_id])
   rescue ActiveRecord::RecordNotFound
-    render turbo_stream: turbo_flash(type: :alert, data: "Project not found, kindly select a valid project.")
+    render turbo_stream: turbo_flash(type: :alert, data: I18n.t("alert.project_not_found"))
   end
 end

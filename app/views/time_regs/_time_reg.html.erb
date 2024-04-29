@@ -30,26 +30,26 @@
       <% else %>
         <i class="uc-icon text-base">&#xead1;</i>
       <% end %>
-      <span class="hidden lg:block"><%= time_reg.active? ? "Stop" : "Start" %></span>
+      <span class="hidden lg:block"><%= time_reg.active? ? t("common.stop") : t("common.start") %></span>
     <% end %>
     <%= render ButtonComponent.new(path: edit_modal_time_reg_path(time_reg, date: @chosen_date), method: :put, class: "gap-x-2", variant: :outline) do %>
       <i class="uc-icon text-base">&#xe972;</i>
-      <span class="hidden lg:block">Edit</span>
+      <span class="hidden lg:block"><%= t("common.edit") %></span>
     <% end %>
 
     <%- turbo_body = "
-      Do you want to proceed with the deletion of the time registration for the project
+      #{t("notice.do_you_want_to_proceed_with_deletion")}
       <span class='font-semibold text-primary'>#{time_reg.project.name}</span>
-      with a task
+      #{t("notice.with_a_task")}
       <span class='font-semibold text-primary'>#{time_reg.task.name}</span>
       and
       <span class='font-semibold text-primary'>#{convert_time_int(time_reg.minutes)}</span>
-      logged. This action cannot be undone.
+      #{t("notice.logged_action_cannot_be_undone")}
     " %>
 
     <%= render ButtonComponent.new(variant: :destructive, method: :delete, path: time_reg_path(time_reg), form: { data: { turbo_confirm: turbo_body } }) do %>
       <i class="uc-icon text-base">&#xeb97;</i>
-      <span class="hidden lg:block">Delete</span>
+      <span class="hidden lg:block"><%= t("common.delete") %></span>
     <% end %>
   </div>
 <% end %>

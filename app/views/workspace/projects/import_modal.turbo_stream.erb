@@ -4,28 +4,28 @@
   <% end %>
   <%= render PhlexUI::Dialog::Content.new(class: "bg-white", size: :lg) do %>
     <div class="flex flex-col gap-y-4">
-      <span class="font-semibold text-gray-600 text-lg">Import project</span>
+      <span class="font-semibold text-gray-600 text-lg"><%= t("common.import_project")%> </span>
       <%= form_with url: new_client_path do |form| %>
-        <%= render FileUploadComponent.new(form: form, attribute: :new_project_file, caption: "Supported formats: XLS, XLSX", accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") %>
+        <%= render FileUploadComponent.new(form: form, attribute: :new_project_file, caption: t("common.supported_formats"), accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") %>
       <% end %>
       <div class="bg-gray-100 px-6 py-4 flex flex-row justify-between items-center rounded-md">
         <div class="flex flex-col gap-y-2 w-full">
           <div class="flex flex-row items-center gap-x-2">
             <%= image_tag "xls.svg", class: "w-8" %>
-            <span class="font-medium text-base">Sample format</span>
+            <span class="font-medium text-base"><%= t("common.sample_format")%></span>
           </div>
           <div class="w-full md:w-4/5">
-            <span class="text-sm text-gray-500">Feel free to grab the sample file below to help you create your own.</span>
+            <span class="text-sm text-gray-500"><%= t("common.feel_free_to_grab_sample_file")%></span>
           </div>
         </div>
         <div>
-          <%= render ButtonComponent.new(variant: :outline, path: "/downloads/sample_project.xlsx", method: :get) { "Download" } %>
+          <%= render ButtonComponent.new(variant: :outline, path: "/downloads/sample_project.xlsx", method: :get) { t("common.download") } %>
         </div>
       </div>
     </div>
     <%= render PhlexUI::Dialog::Footer.new(class: "mt-4") do %>
-      <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->dismissable#dismiss' }) { "Cancel" } %>
-      <%= render ButtonComponent.new { "Save" } %>
+      <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->dismissable#dismiss' }) { t("common.cancel") } %>
+      <%= render ButtonComponent.new { t("common.save") } %>
     <% end %>
   <% end %>
 <% end %>

@@ -1,22 +1,22 @@
 <div class="mt-5 mb-5 bg-tastyWhiteLite border border-gray-400 rounded p-2">
   <div class="">
-    <h4 class="font-semibold text-center">CAREFUL! this action will:</h4>
+    <h4 class="font-semibold text-center"><%= t('common.careful_this_action_will') %></h4>
     <div class="flex justify-center">
       <ul class="italic">
-        <li>- Delete the client permanently</li>
+        <li>- <%= t('common.delete_the_client_permanently') %></li>
       </ul>              
     </div>
   </div>
   <br>
   <% if client.projects.count < 1%>
     <%= form_tag(client_path(client), method: :delete) do %>
-        <span class="flex justify-center pb-2">Please enter "<span class="font-semibold">DELETE</span>" to confirm</span>
+        <span class="flex justify-center pb-2"><%= t('common.please_enter') %> "<span class="font-semibold"><%= t('common.delete') %></span>" <%= t('common.to_confirm') %></span>
         <div class="flex justify-center">
         <%= text_field_tag :confirmation, nil, class: "form-control" %>
         <%= submit_tag "Delete client", class: "ml-2 bg-red-400 p-2 hover:bg-red-500 rounded" %>
         </div>
     <% end %>
   <% else %>
-    <p class="text-center">Cannot delete client with active projects</p>
+    <p class="text-center"><%= t('common.cannot_delete_client_with_active_projects') %></p>
   <% end %>
 </div>  

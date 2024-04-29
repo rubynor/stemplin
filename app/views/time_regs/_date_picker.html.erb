@@ -9,7 +9,7 @@
         <%= render PhlexUI::Popover::Trigger.new(class: "w-full") do %>
           <div class="py-3 flex justify-center items-center">
             <span class="hidden lg:block text-sm">
-              <%= @chosen_date.strftime("%d %b %Y") %>
+              <%= l(@chosen_date, format: "%d %b %Y") %>
             </span>
             <i class="uc-icon text-xl text-gray-600 lg:hidden">&#xe891;</i>
           </div>

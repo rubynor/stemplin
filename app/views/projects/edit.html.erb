@@ -2,13 +2,13 @@
  <div class="flex flex-col items-center pt-4 mb-20"> 
   <div class="max-w-md md:min-w-custom35 my-4 " data-controller="collapse-delete"> 
     <div class="mb-6 ">
-      <%= link_to 'back to project', @project, class: "text-sm italic text-gray-600" %>
+      <%= link_to t('common.back_to_project'), @project, class: "text-sm italic text-gray-600" %>
     </div>
     <div class='flex justify-between mb-8'>
-      <h1 class="font-medium italic text-2xl ml-4">Edit <%= @project.name %></h1><br>
+      <h1 class="font-medium italic text-2xl ml-4"><%= t('common.edit') %> <%= @project.name %></h1><br>
       <button data-action="click->collapse-delete#deleteDiv" 
         class="rounded bg-tastyWhiteLite border border-gray-400 p-2 hover:bg-red-400" 
-        data-task-id="delete-button">Delete project
+        data-task-id="delete-button"><%= t('common.delete_project') %>
       </button>
     </div>
     <div class="hidden" data-collapse-delete-target="toggleDiv">
@@ -18,13 +18,13 @@
 
 
     <div class="pt-10">
-      <h1 class="font-medium border-b border-gray-300 text-lg italic pb-2">Project tasks</h1>
+      <h1 class="font-medium border-b border-gray-300 text-lg italic pb-2"><%= t('common.project_tasks') %></h1>
       <%= render @assigned_tasks %>
     </div>
 
 
     <div>
-      <h1 class="font-medium text-lg italic mt-8">Add task</h1>
+      <h1 class="font-medium text-lg italic mt-8"><%= t('common.add_task') %></h1>
       <%= render partial: 'assigned_tasks/new', locals: {
           project: @project, 
           assigned_task: @assigned_task, 
@@ -35,14 +35,14 @@
     </div>
 
     <div class="pt-10">
-      <h1 class="font-medium border-b border-gray-300 text-lg italic pb-2">Project members</h1>
+      <h1 class="font-medium border-b border-gray-300 text-lg italic pb-2"><%=t('common.project_members') %></h1>
       <div class="bg-tastyWhiteLite">
         <%= render @project.memberships %>
       </div>
     </div>
 
     <div class="pt-10">
-      <h1 class="font-medium text-lg italic pb-2">Add member</h1>
+      <h1 class="font-medium text-lg italic pb-2"><%=t('common.add_member') %></h1>
       <%= render "memberships/new" %>
     </div>
     <br>

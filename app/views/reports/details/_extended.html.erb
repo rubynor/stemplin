@@ -1,13 +1,13 @@
 <div class="w-full p-4 print:p-0 flex flex-col gap-y-8 lg:gap-y-16 print:gap-y-4">
   <div class="flex flex-col">
     <div class="border-b border-gray-100 pb-4 mb-4 print:hidden">
-      <span class="text-sm print:text-xs font-medium text-gray-500 uppercase">Summary</span>
+      <span class="text-sm print:text-xs font-medium text-gray-500 uppercase"><%= t("common.summary")%></span>
     </div>
     <div class="flex-1 flex gap-x-16 mb-4">
       <div class="flex flex-row items-start gap-x-2">
         <i class="uc-icon text-2xl text-gray-400 print:hidden">&#xea95;</i>
         <div>
-          <h2 class="text-base print:text-sm font-regular">Total billable hours</h2>
+          <h2 class="text-base print:text-sm font-regular"><%= t("common.total_billable_hours")%></h2>
           <span class="font-semibold text-2xl print:text-lg text-primary print:text-gray-900">
             <%= minutes_to_float detailed_report_data.total_billable_minutes %>
           </span>
@@ -16,7 +16,7 @@
       <div class="flex flex-row items-start gap-x-2">
         <i class="uc-icon text-2xl text-gray-400 print:hidden">&#xeb5b;</i>
         <div>
-          <h2 class="text-base print:text-sm font-regular">Total hours</h2>
+          <h2 class="text-base print:text-sm font-regular"><%= t("common.total_hours")%></h2>
           <span class="font-semibold text-2xl print:text-lg text-primary print:text-gray-900">
             <%= minutes_to_float detailed_report_data.total_minutes %>
           </span>
@@ -27,16 +27,16 @@
 
   <div class="flex flex-col">
     <div class="border-b border-gray-100 pb-4 mb-4 print:mb-0 print:border-none">
-      <span class="text-sm print:text-xs font-medium text-gray-500 uppercase">Time registrations</span>
+      <span class="text-sm print:text-xs font-medium text-gray-500 uppercase"><%= t("common.time_registrations")%></span>
     </div>
     <table class="w-full">
       <thead>
       <tr class="bg-gray-50 border-y-2 border-gray-100 text-gray-500 print-color-adjust uppercase font-medium text-base print:text-xs">
-        <td class="pl-5 py-4 print:pl-1 print:py-1">Client (<%= detailed_report_data.clients.count %>)</td>
-        <td>Project (<%= detailed_report_data.projects.count %>)</td>
-        <td>Task (<%= detailed_report_data.tasks.count %>)</td>
-        <td>Person (<%= detailed_report_data.users.count %>)</td>
-        <td class="w-[6rem] text-end">Hours</td>
+        <td class="pl-5 py-4 print:pl-1 print:py-1"><%= t("common.client")%> (<%= detailed_report_data.clients.count %>)</td>
+        <td><%= t("common.project")%> (<%= detailed_report_data.projects.count %>)</td>
+        <td><%= t("common.task")%> (<%= detailed_report_data.tasks.count %>)</td>
+        <td><%= t("common.person")%> (<%= detailed_report_data.users.count %>)</td>
+        <td class="w-[6rem] text-end"><%= t("common.hours")%></td>
         <td class="w-6"></td>
       </tr>
       </thead>
@@ -78,7 +78,7 @@
           <td></td>
           <td></td>
           <td class="text-end">
-            <span class="font-medium text-xl print:text-lg">Total</span>
+            <span class="font-medium text-xl print:text-lg"><%= t("common.total")%></span>
             <span class="font-semibold text-2xl print:text-xl text-primary print:text-gray-900"><%= minutes_to_float detailed_report_data.total_minutes %></span>
           </td>
           <td></td>

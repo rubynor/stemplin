@@ -3,7 +3,7 @@
     <div class="p-1 my-2 pt-2" data-controller="collapse-delete">
     <!-- NOT A DELETE BUTTON BUT I USES THE SAME STIMULUS CONTROLLER AS THE DELETE BUTTONS-->
       <div class='flex justify-between mb-8'>
-        <h1 class="font-medium italic text-2xl ml-4">Your projects</h1><br>
+        <h1 class="font-medium italic text-2xl ml-4"><%= t('task.your_projects') %></h1><br>
         <button data-action="click->collapse-delete#deleteDiv" 
           class="rounded bg-seaGreen p-2 hover:bg-seaGreenDark shadow text-white" 
           data-task-id="delete-button">Import
@@ -27,8 +27,8 @@
       <% end %>
     </div>
     <div class="pt-10 flex justify-evenly">
-      <%= link_to "New Project", new_project_path, class: 'rounded bg-seaGreen p-2 hover:bg-seaGreenDark text-white'%>
-      <%= link_to "New client", new_client_path, class: 'rounded bg-seaGreen p-2 hover:bg-seaGreenDark text-white' %>
+      <%= link_to t('task.new_project'),  new_project_path, class: 'rounded bg-seaGreen p-2 hover:bg-seaGreenDark text-white'%>
+      <%= link_to t('task.new_client'), new_client_path, class: 'rounded bg-seaGreen p-2 hover:bg-seaGreenDark text-white' %>
     </div>
   </div>
 </div>
