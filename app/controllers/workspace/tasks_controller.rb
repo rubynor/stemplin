@@ -17,7 +17,7 @@ module Workspace
 
       if @task.save
         render turbo_stream: [
-          turbo_flash(type: :success, data: "Task was successfully created."),
+          turbo_flash(type: :success, data: t("notice.tasks_was_successfully_created")),
           turbo_stream.append(:organization_tasks, partial: "workspace/tasks/task", locals: { task: @task }),
           turbo_stream.action(:remove_modal, :modal)
         ]
@@ -32,7 +32,7 @@ module Workspace
     def update
       if @task.update(task_params)
         render turbo_stream: [
-          turbo_flash(type: :success, data: "Task was successfully updated."),
+          turbo_flash(type: :success, data: t("notice.tasks_was_successfully_updated")),
           turbo_stream.replace(dom_id(@task), partial: "workspace/tasks/task", locals: { task: @task }),
           turbo_stream.action(:remove_modal, :modal)
         ]
@@ -50,7 +50,7 @@ module Workspace
       else
         @task.destroy!
         render turbo_stream: [
-          turbo_flash(type: :success, data: "Task was successfully deleted."),
+          turbo_flash(type: :success, data: t("notice.tasks_was_successfully_deleted")),
           turbo_stream.remove(dom_id(@task)),
           turbo_stream.action(:remove_modal, :modal)
         ]

@@ -226,7 +226,16 @@ en:
     _off: "off"
     unable_to_delete_time_registration: "Unable to delete time registration"
     unable_to_toggle_time_entry: "Unable to toggle time entry"
-
+    project_was_successfully_created: "Project was successfully created."
+    project_was_successfully_deleted: "Project was successfully deleted."
+    project_was_successfully_updated: "Project was successfully updated."
+    client_was_successfully_created: "Client was successfully created."
+    client_was_successfully_deleted: "Client was successfully deleted."
+    client_was_successfully_updated: "Client was successfully updated"
+    tasks_was_successfully_created: "task was successfully updated."
+    tasks_was_successfully_deleted: "task was successfully deleted."
+    tasks_was_successfully_updated: "task was successfully updated"
+    user_added_to_the_organization: "User added to the organization."
 
   alert:
     does_not_exist: "does not exist"

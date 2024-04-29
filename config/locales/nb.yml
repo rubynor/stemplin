@@ -242,6 +242,16 @@ nb:
     _off: "av"
     unable_to_delete_time_registration: "Kan ikke slette tidsregistrering"
     unable_to_toggle_time_entry: "Kan ikke bytte tidsregistrering"
+    project_was_successfully_created: "Prosjektet ble vellykket opprettet."
+    project_was_successfully_deleted: "Prosjektet ble vellykket slettet."
+    project_was_successfully_updated: "Prosjektet ble vellykket oppdatert."
+    client_was_successfully_created: "Klienten ble vellykket opprettet."
+    client_was_successfully_deleted: "Klienten ble vellykket slettet."
+    client_was_successfully_updated: "Klienten ble vellykket oppdatert."
+    tasks_was_successfully_created: "Oppgaven ble vellykket opprettet."
+    tasks_was_successfully_deleted: "Oppgaven ble vellykket slettet."
+    tasks_was_successfully_updated: "Oppgaven ble vellykket oppdatert."
+    user_added_to_the_organization: "Bruker ble lagt til i organisasjonen."
 
   alert:
     does_not_exist: "eksisterer ikke"

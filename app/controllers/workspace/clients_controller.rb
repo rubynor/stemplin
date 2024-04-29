@@ -15,7 +15,7 @@ module Workspace
 
       if @client.save
         render turbo_stream: [
-          turbo_flash(type: :success, data: "Client was successfully created."),
+          turbo_flash(type: :success, data: t("notice.client_was_successfully_created")),
           turbo_stream.append(:organization_clients, partial: "workspace/clients/client", locals: { client: @client }),
           turbo_stream.action(:remove_modal, :modal)
         ]
@@ -30,7 +30,7 @@ module Workspace
     def update
       if @client.update(client_params)
         render turbo_stream: [
-          turbo_flash(type: :success, data: "Client was successfully updated."),
+          turbo_flash(type: :success, data: t("notice.client_was_successfully_updated")),
           turbo_stream.replace(dom_id(@client), partial: "workspace/clients/client", locals: { client: @client }),
           turbo_stream.action(:remove_modal, :modal)
         ]
@@ -45,7 +45,7 @@ module Workspace
     def destroy
       if @client.destroy
         render turbo_stream: [
-          turbo_flash(type: :success, data: "Client was successfully deleted."),
+          turbo_flash(type: :success, data: t("notice.client_was_successfully_deleted")),
           turbo_stream.remove(dom_id(@client)),
           turbo_stream.action(:remove_modal, :modal)
         ]

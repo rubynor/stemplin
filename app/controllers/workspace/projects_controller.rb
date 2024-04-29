@@ -9,7 +9,7 @@ module Workspace
       ActiveRecord::Base.transaction do
         if @project.save
           render turbo_stream: [
-            turbo_flash(type: :success, data: "Project was successfully created."),
+            turbo_flash(type: :success, data: t("notice.project_was_successfully_created")),
             turbo_stream.append(:organization_projects, partial: "workspace/projects/project", locals: { project: @project }),
             turbo_stream.action(:remove_modal, :modal)
           ]
@@ -28,7 +28,7 @@ module Workspace
     def update
       if @project.update(project_params)
         render turbo_stream: [
-          turbo_flash(type: :success, data: "Project was successfully updated."),
+          turbo_flash(type: :success, data: t("notice.project_was_successfully_updated")),
           turbo_stream.replace(dom_id(@project), partial: "workspace/projects/project", locals: { project: @project, tasks: @tasks, clients: @clients }),
           turbo_stream.action(:remove_modal, :modal)
         ]
@@ -54,7 +54,7 @@ module Workspace
     def destroy
       if @project.destroy
         render turbo_stream: [
-          turbo_flash(type: :success, data: "Project was successfully deleted."),
+          turbo_flash(type: :success, data: t("notice.project_was_successfully_deleted")),
           turbo_stream.remove(dom_id(@project)),
           turbo_stream.action(:remove_modal, :modal)
         ]
