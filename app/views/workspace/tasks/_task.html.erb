@@ -6,8 +6,14 @@
       <%= render ButtonComponent.new(path: edit_modal_workspace_task_path(task), method: :post, variant: :outline, class: "!py-3") do %>
         <i class="uc-icon">&#xe972;</i>
       <% end %>
-      <%= render ButtonComponent.new(path: delete_confirmation_workspace_task_path(task), method: :post, variant: :outline, class: "!py-3") do %>
-        <i class="uc-icon">&#xeb97;</i>
+
+      <%- has_been_assigned = task.assigned_tasks.any? %>
+      <%- turbo_body = has_been_assigned ? "The task <span class='font-semibold text-primary'>#{task.name}</span> is already assigned to projects." : "Do you want to proceed with the deletion of the task <span class='font-semibold text-primary'>#{task.name}</span>, This action cannot be undone." %>
+
+      <%= render TooltipComponent.new(note: has_been_assigned ? "The task is already assigned to projects, can not be deleted." : nil) do %>
+        <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_task_path(task), disabled: has_been_assigned, form: { data: { turbo_confirm: turbo_body } }) do %>
+          <i class="uc-icon">&#xeb97;</i>
+        <% end %>
       <% end %>
     </div>
   <% end %>

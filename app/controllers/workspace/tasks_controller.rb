@@ -2,7 +2,7 @@ module Workspace
   # TODO: This controller has similar actions to the clients controller, consider refactoring
   # extract duplicated code to a concern
   class TasksController < WorkspaceController
-    before_action :set_task, only: %i[edit_modal update destroy delete_confirmation]
+    before_action :set_task, only: %i[edit_modal update destroy]
 
     def index
       @tasks = authorized_scope(Task, type: :relation).all
@@ -39,9 +39,6 @@ module Workspace
       else
         render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/tasks/task", locals: { task: @task })
       end
-    end
-
-    def delete_confirmation
     end
 
     def destroy
