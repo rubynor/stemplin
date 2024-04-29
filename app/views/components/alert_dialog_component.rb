@@ -12,7 +12,7 @@ class AlertDialogComponent < ApplicationComponent
               end
               content_tag(:div, class: "mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left") do
                 content_tag(:h2, class: "text-base font-semibold leading-6 text-gray-900") do
-                  "Do you wish to proceed?"
+                  I18n.t("alert.wish_to_proceed")
                 end
                 content_tag(:div, class: "mt-2") do
                   content_tag(:p, class: "text-sm text-gray-500 w-96") do
@@ -24,8 +24,8 @@ class AlertDialogComponent < ApplicationComponent
           end
           content_tag(:div, class: "bg-gray-50 px-4 py-3 flex flex-row-reverse sm:px-6") do
             content_tag(:div, class: "flex flex-row gap-x-2") do
-              render ButtonComponent.new(value: "cancel", variant: :outline) { "Cancel" }
-              render ButtonComponent.new(value: "confirm") { "Accept" }
+              render ButtonComponent.new(value: "cancel", variant: :outline) { I18n.t("common.stop") }
+              render ButtonComponent.new(value: "confirm") { I18n.t("common.accept") }
             end
           end
         end

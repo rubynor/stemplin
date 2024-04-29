@@ -198,6 +198,9 @@ en:
     download: "Download"
     browse_a_file_from_your_computer: "browse a file from your computer"
     language: "Language"
+    accept: "Accept"
+    time_registrations: "Time registrations"
+    summary: "summary"
     
 
 
@@ -237,6 +240,7 @@ en:
     tasks_was_successfully_deleted: "task was successfully deleted."
     tasks_was_successfully_updated: "task was successfully updated"
     user_added_to_the_organization: "User added to the organization."
+    time_entry_has_been_logged: "Time entry has been logged."
 
   alert:
     does_not_exist: "does not exist"
@@ -261,6 +265,7 @@ en:
     please_select_a_project: "Please select a project"
     please_select_a_task: "Please select a task"
     project_not_found: "Project not found, kindly select a valid project."
+    wish_to_proceed: "Do you wish to proceed?"
 
   description:
     blank: "can't be blank"

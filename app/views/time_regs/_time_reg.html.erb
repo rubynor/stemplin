@@ -38,13 +38,13 @@
     <% end %>
 
     <%- turbo_body = "
-      Do you want to proceed with the deletion of the time registration for the project
+      #{t("notice.do_you_want_to_proceed_with_deletion")}
       <span class='font-semibold text-primary'>#{time_reg.project.name}</span>
-      with a task
+      #{t("notice.with_a_task")}
       <span class='font-semibold text-primary'>#{time_reg.task.name}</span>
       and
       <span class='font-semibold text-primary'>#{convert_time_int(time_reg.minutes)}</span>
-      logged. This action cannot be undone.
+      #{t("notice.logged_action_cannot_be_undone")}
     " %>
 
     <%= render ButtonComponent.new(variant: :destructive, method: :delete, path: time_reg_path(time_reg), form: { data: { turbo_confirm: turbo_body } }) do %>

@@ -214,6 +214,9 @@ nb:
     download: "Last Ned"
     browse_a_file_from_your_computer: "bla gjennom en fil fra datamaskinen din"
     language: "Språk"
+    accept: "Fortsett"
+    time_registrations: "Tidsregistreringer"
+    summary: "oppsumert"
 
 
   notice:
@@ -253,6 +256,7 @@ nb:
     tasks_was_successfully_deleted: "Oppgaven ble vellykket slettet."
     tasks_was_successfully_updated: "Oppgaven ble vellykket oppdatert."
     user_added_to_the_organization: "Bruker ble lagt til i organisasjonen."
+    time_entry_has_been_logged: "Tidsregistrering er loggført."
 
   alert:
     does_not_exist: "eksisterer ikke"
@@ -276,6 +280,7 @@ nb:
     please_select_a_project: "Vennligst velg et prosjekt"
     please_select_a_task: "Vennligst velg en oppgave"
     project_not_found: "Finner ikke prosjektet, velg et gyldig prosjekt."
+    wish_to_proceed: "Ønsker du å fortsette?"
 
   description:
     blank: "kan ikke være blank"

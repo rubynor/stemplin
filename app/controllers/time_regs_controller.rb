@@ -29,7 +29,7 @@ class TimeRegsController < ApplicationController
 
     if @time_reg.save
       render turbo_stream: [
-        turbo_flash(type: :success, data: "Time entry has been logged."),
+        turbo_flash(type: :success, data: t("notice.time_entry_has_been_logged")),
         turbo_stream.prepend(:time_regs_list, partial: "time_regs/time_reg", locals: { time_reg: @time_reg }),
         turbo_stream.action(:remove_modal, :modal)
       ]
