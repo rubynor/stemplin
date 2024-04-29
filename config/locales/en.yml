@@ -201,7 +201,9 @@ en:
     accept: "Accept"
     time_registrations: "Time registrations"
     summary: "summary"
-    
+    project_has_recorded_time: "The Project has recorded time registrations, can not be deleted"
+    task_is_already_assigned: "The task is already assigned to projects, can not be deleted."
+    the_client_has_associated_projects: "The Client has associated projects, can not be deleted."
 
 
   notice:
