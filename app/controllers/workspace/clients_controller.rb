@@ -1,6 +1,7 @@
 module Workspace
   class ClientsController < WorkspaceController
-    before_action :set_client, only: %i[edit_modal update destroy]
+    before_action :set_client, only: %i[edit_modal update destroy delete_confirmation]
+    verify_authorized only: %i[edit_modal update destroy delete_confirmation]
 
     def index
       @clients = authorized_scope(Client, type: :relation).all

@@ -2,7 +2,8 @@ module Workspace
   # TODO: This controller has similar actions to the clients controller, consider refactoring
   # extract duplicated code to a concern
   class TasksController < WorkspaceController
-    before_action :set_task, only: %i[edit_modal update destroy]
+    before_action :set_task, only: %i[edit_modal update destroy delete_confirmation]
+    verify_authorized only: %i[edit_modal update destroy delete_confirmation]
 
     def index
       @tasks = authorized_scope(Task, type: :relation).all

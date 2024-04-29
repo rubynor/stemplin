@@ -1,6 +1,7 @@
 module Workspace
   class ProjectsController < WorkspaceController
     before_action :set_project, except: %i[index new_modal create import_modal]
+    verify_authorized except: %i[index new_modal create import_modal]
     before_action :prepare_form_data, only: %i[new_modal edit_modal create update]
 
     def create

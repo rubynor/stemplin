@@ -1,19 +1,21 @@
 module Workspace
   class TeamsController < WorkspaceController
+    skip_verify_authorized
+
     def index
       @users = authorized_scope(User, type: :relation).all
     end
 
     def new_modal
-      @user = User.new
+      @user = authorized_scope(User, type: :relation).new
       @roles = AccessInfo.allowed_organization_roles
     end
 
     def create
       ActiveRecord::Base.transaction do
-        @user = User.new(team_member_params.except(:role).merge(is_verified: false))
+        @user = authorized_scope(User, type: :relation).new(team_member_params.except(:role).merge(is_verified: false))
         @user.save!
-        AccessInfo.create!(user: @user, organization: current_user.current_organization, role: AccessInfo.roles[team_member_params[:role]])
+        authorized_scope(AccessInfo, type: :relation).create!(user: @user, organization: current_user.current_organization, role: AccessInfo.roles[team_member_params[:role]])
       end
 
       render turbo_stream: [
