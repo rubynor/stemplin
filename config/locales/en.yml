@@ -66,8 +66,6 @@ en:
     client: "Client"
     clients: "Clients"
     tasks: "Tasks"
-    users: "Users"
-    times: "Times"
     time: "Time"
     reports: "Reports"
     report: "Report"
@@ -76,7 +74,6 @@ en:
     notes: "Notes"
     edit_account: "Edit Account"
     sign_out: "Sign Out"
-    go_to_date: "Go to date"
     cancel: "Cancel"
     start_timer: "Start timer"
     create_time_reg: "Create Time reg"
@@ -85,7 +82,6 @@ en:
     stop: "Stop"
     start: "Start"
     delete_project: "Delete project"
-    delete_client: Delete Client"
     back_to_project: "Back to project"
     name: "Name"
     description: "Description"
@@ -147,7 +143,6 @@ en:
     import: "Import"
     rate: "Rate"
     actions: "Actions"
-    view_more: "View more"
     created_on: "Created on"
     added_on: "Added on"
     select_client: "Select client"
@@ -162,12 +157,6 @@ en:
     select_role: "Select role"
     share_temporary_password_with_user: "Kindly share this temporary password with the user for login purposes. They can change it later on."
     deletion_of_the_client: "Do you want to proceed with the deletion of the client"
-    delete_all_entries: "This action cannot be undone and please note that this action will proceed to deleting all entries for every member permanently, Remove every member from the project, Remove every task from the project."
-    continue: "continue"
-    unable_to_proceed: "Unable to proceed"
-    the_client: "The client"
-    active_associated_projects: "has active associated projects. Please remove all projects before deleting the client."
-    proceed_with_the_deletion: "Do you want to proceed with the deletion of the project"
     cannot_be_undone: "This action cannot be undone."
     billable: "Billable"
     information: "Information"
@@ -189,7 +178,6 @@ en:
     all: "All"
     drag_and_drop_message: "Drag and drop your file here or"
     all_time: "All time"
-    and: "and"
     edit_time_entry: "Edit time entry"
     import_project: "Import project"
     supported_formats: "Supported formats: XLS, XLSX"
@@ -218,10 +206,7 @@ en:
     client_deleted: "Client deleted"
     task_has_been_updated: "Task has been updated"
     task_was_successfully_deleted: "Task was successfully deleted."
-    time_entry_has_been_created: "Time entry has been created"
     time_entry_has_been_updated: "Time entry has been updated"
-    time_entry_has_been_deleted: "Time entry has been deleted"
-    cannot_delete_time_entry: "cannot delete time entry"
     task_succesfully_removed_from_project: "Task succesfully removed from project"
     do_you_want_to_proceed_with_deletion: "Do you want to proceed with the deletion of the time registration for the project"
     with_a_task: "with a task"
@@ -249,7 +234,6 @@ en:
     is_already_a_member_of_the_project: "is already a member of the project"
     cannot_remove_last_member_of_the_project: "cannot remove last member of the project"
     member_has_time_entries_in_this_project: "Member has time entries in this project"
-    access_denied: "Access denied"
     cannot_update_project: "cannot update project"
     could_not_delete_project: "Could not delete project"
     invalid_confirmation: "Invalid confirmation"
@@ -258,13 +242,10 @@ en:
     douple_check_email: "Invalid e-mail. Please double check the e-mail column for every row."
     task_could_not_be_added_to_the_project: "Task could not be added to the project"
     cannot_remove_task_with_registered_time: "Cannot remove task with registered time"
-    could_not_delete_client: "Could not delete client"
     could_not_change_the_grouping: "Could not change the grouping"
     invalid_group: "Invalid group"
     could_not_delete_task: "Could not delete task."
     task_is_being_used_in_one_or_more_projects: "Task is being used in one or more projects."
-    time_entry_cannot_exceed_24_hours: "Time entry cannot exceed 24 hours"
-    please_select_a_project: "Please select a project"
     please_select_a_task: "Please select a task"
     project_not_found: "Project not found, kindly select a valid project."
     wish_to_proceed: "Do you wish to proceed?"
@@ -303,39 +284,3 @@ en:
         password: "Password"
         remember_me: "Remember me"
         forgot_password: "Forgot your password?"
-
-  activerecord:
-    attributes:
-      client:
-        name: "name"
-        description: "description"
-    errors:
-      models:
-        client:
-          attributes:
-            description:
-              blank: "cannot be empty"
-              too_short: "is too short (minimum is %{count} sign)"
-              too_long: "is too long (maximum is %{count} sign)"
-              taken: "is already in use"
-            name:
-              blank: "cannot be empty"
-              too_short: "is too short (minimum is %{count} sign)"
-              too_long: "is too long (maximum is %{count} sign)"
-              taken: "is already in use"
-        
-        project:
-          attributes:
-            name: "name"
-            description: "description"
-
-            description:
-              blank: "cannot be empty"
-              too_short: "is too short (minimum is %{count} sign)"
-              too_long: "is too long (maximum is %{count} sign)"
-              taken: "is already in use"
-            name:
-              blank: "cannot be empty"
-              too_short: "is too short (minimum is %{count} sign)"
-              too_long: "is too long (maximum is %{count} sign)"
-              taken: "is already in use"
