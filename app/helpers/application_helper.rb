@@ -11,4 +11,10 @@ module ApplicationHelper
   def is_page_active?(page)
     Array(page).any? { |p| current_page?(p) }
   end
+
+  def highlight_missing_translations
+    content_tag(:style) do
+      ".translation_missing { color: red;}"
+    end
+  end
 end
