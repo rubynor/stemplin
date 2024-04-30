@@ -4,8 +4,8 @@
   <% end %>
   <%= render PhlexUI::Dialog::Content.new(class: "bg-white") do %>
     <%= content = capture do %>
-      <%= turbo_frame_tag :modal do %>
-        <%= form_with(model: time_reg, id: dom_id(time_reg), method: time_reg.new_record? ? :post : :put, data: { controller: "custom-input", "custom-input-active_text_value": time_reg.new_record? ? t('common.create_time_reg') : t('common.update_time_reg'), "custom-input-inactive_text_value": t('common.start_timer')  }) do |form| %>
+      <%= turbo_frame_tag :modal, target: :_top do %>
+        <%= form_with(model: time_reg, id: dom_id(time_reg), method: time_reg.new_record? ? :post : :put, data: { controller: "custom-input", "custom-input-active_text_value": time_reg.new_record? ? "Create Time reg" : "Update Time reg", "custom-input-inactive_text_value": "Start timer"  }) do |form| %>
           <%= render PhlexUI::Dialog::Header.new do %>
             <%= render PhlexUI::Dialog::Title.new { title } %>
             <%= render PhlexUI::Dialog::Description.new { format_date(chosen_date) } %>
@@ -20,11 +20,12 @@
                     <%= t('common.project') %>
                   </b>
                   <%= form.collection_select :project_id, (projects || []), :id, :name, {
-                    include_blank: "select a project:",
-                    selected: time_reg.project&.id
+                    disabled: "",
+                    selected: time_reg.project&.id || "",
+                    prompt: "select a project:",
                   }, {
-                                               class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
-                                             } %>
+                    class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
+                  } %>
                 </div>
 
                 <div class="mb-4" data-time-tasks-target="task">
