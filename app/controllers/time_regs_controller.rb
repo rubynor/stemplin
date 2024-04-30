@@ -29,7 +29,7 @@ class TimeRegsController < ApplicationController
 
     if @time_reg.save
       flash[:notice] = "Time entry has been logged."
-      redirect_to time_regs_path
+      redirect_to time_regs_path(date: @time_reg.date_worked)
     else
       render :new_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
     end
@@ -38,7 +38,7 @@ class TimeRegsController < ApplicationController
   def update
     if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
       flash[:notice] = "Time entry has been updated."
-      redirect_to time_regs_path
+      redirect_to time_regs_path(date: @time_reg.date_worked)
     else
       render :edit_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
     end
@@ -47,7 +47,7 @@ class TimeRegsController < ApplicationController
   def destroy
     @time_reg.destroy!
     flash[:notice] = "Time registration was successfully deleted."
-    redirect_to time_regs_path
+    redirect_to time_regs_path(date: @time_reg.date_worked)
 
   rescue ActiveRecord::RecordNotDestroyed
     flash[:alert] = "Unable to delete time registration"
@@ -57,11 +57,11 @@ class TimeRegsController < ApplicationController
   def toggle_active
     @time_reg.toggle_active
     flash[:notice] = "Time entry has been toggled #{@time_reg.active? ? "on": "off"}"
-    redirect_to time_regs_path
+    redirect_to time_regs_path(date: @time_reg.date_worked)
 
   rescue ActiveRecord::RecordInvalid => e
     flash[:alert] = "Unable to toggle time entry"
-    redirect_to time_regs_path
+    redirect_to time_regs_path(date: @time_reg.date_worked)
   end
 
   # exports the time_regs in a project to a .CSV
