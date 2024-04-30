@@ -57,7 +57,7 @@
         </div>
       </div>
       <%= content_tag(:div, id: "#{dom_id(@project)}_assigned_tasks", class: "divide-y divide-gray-100") do %>
-        <%= render partial: "workspace/projects/assigned_task", collection: @project.assigned_tasks %>
+        <%= render partial: "workspace/projects/assigned_task", collection: @project.active_assigned_tasks %>
       <% end %>
       <div class="mt-2 py-4 font-medium flex flex-row gap-x-1 justify-end">
         <span><%= t("common.need_to_add_more_tasks")%></span>
