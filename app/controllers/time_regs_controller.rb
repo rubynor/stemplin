@@ -70,6 +70,7 @@ class TimeRegsController < ApplicationController
 
   def toggle_active
     @time_reg.toggle_active
+    @chosen_date = Date.today
     render turbo_stream: [
       turbo_flash(type: :success, data: "#{t("notice.time_entry_has_been_toggled")} #{@time_reg.active? ? t("notice._on"): t("notice._off")}"),
       turbo_stream.replace(dom_id(@time_reg), partial: "time_regs/time_reg", locals: { time_reg: @time_reg })
