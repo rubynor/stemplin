@@ -11,8 +11,19 @@ class AssignedTask < ApplicationRecord
 
   has_many :users, through: :time_regs
 
-  validates :project_id, uniqueness: { scope: :task_id, message: "is already assigned to the project" }
   validates :rate, numericality: { only_integer: true }
 
   accepts_nested_attributes_for :task
+
+  before_update :handle_rate_change
+
+  private
+
+  def handle_rate_change
+    if rate_changed?
+      self.class.create!(project: project, task: task, rate: rate)
+      self.is_archived = true
+      self.rate = rate_was
+    end
+  end
 end
