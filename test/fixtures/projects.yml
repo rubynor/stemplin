@@ -4,3 +4,10 @@ project_1:
   client: e_corp
   billable: true
   rate: 100
+
+to_be_deleted:
+  name: Billing Application
+  description: Lorem
+  client: e_corp
+  billable: true
+  rate: 100

@@ -1,7 +1,8 @@
 module Workspace
   class ProjectsController < WorkspaceController
     before_action :set_project, except: %i[index new_modal create import_modal]
-    verify_authorized except: %i[index new_modal create import_modal edit_modal update]
+    # TODO: Let's reduce the need to specify exceptions in the verify_authorized below and other places
+    verify_authorized except: %i[index new_modal create import_modal edit_modal update destroy]
     before_action :prepare_form_data, only: %i[new_modal edit_modal create update]
 
     def create
