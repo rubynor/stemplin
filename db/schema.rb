@@ -96,7 +96,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_062759) do
     t.string "last_name"
     t.string "locale", default: "en", null: false
     t.boolean "is_verified", default: true
-    t.string "locale", default: "en", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
