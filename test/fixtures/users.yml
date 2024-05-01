@@ -12,3 +12,15 @@ ron:
   first_name: Ron
   last_name: Done
   <<: *DEFAULTS
+
+organization_admin:
+  email: organization_admin@example.com
+  first_name: organization
+  last_name: admin
+  <<: *DEFAULTS
+
+organization_user:
+  email: organization_user@example.com
+  first_name: organization
+  last_name: user
+  <<: *DEFAULTS

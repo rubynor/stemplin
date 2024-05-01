@@ -15,3 +15,15 @@ access_info_3:
   organization: organization_one
   active: false
   role: 0
+
+access_info_org_admin:
+  user: organization_admin
+  organization: organization_one
+  active: true
+  role: 1
+
+access_info_org_user:
+  user: organization_user
+  organization: organization_one
+  active: true
+  role: 1
