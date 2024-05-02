@@ -3,7 +3,6 @@ module  Workspace
   class TeamsControllerTest < ActionController::TestCase
     setup do
       @organization_admin = users(:organization_admin)
-
       sign_in @organization_admin
     end
 

@@ -24,3 +24,16 @@ organization_user:
   first_name: organization
   last_name: user
   <<: *DEFAULTS
+
+org_admin_without_org:
+  email: org_admin_without_org@example.com
+  first_name: org_admin_without_org
+  last_name: admin
+  <<: *DEFAULTS
+
+newly_invited_user:
+  email: newly_invited_user@example.com
+  first_name: newly invited
+  last_name: user
+  is_verified: false
+  <<: *DEFAULTS
