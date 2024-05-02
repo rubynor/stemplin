@@ -38,7 +38,7 @@
                 </button>                  
                 <h4><%= assigned_task.name %></h4>            
               </div>
-              <h4 class="font-medium mr-16"><%= convert_time_int(assigned_task.time_regs.sum(:minutes)) %></h4>
+              <h4 class="font-medium mr-16"><%= convert_time_int(assigned_task.time_regs.sum(&:minutes)) %></h4>
             </div>
           </div>
           <div class="hidden bg-tastyWhiteLite" id="collapsible-<%= assigned_task.id %>">
