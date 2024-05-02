@@ -5,23 +5,18 @@ module Workspace
 
       def new_modal
         @task = authorized_scope(Task, type: :relation).new
+        @task.assigned_tasks.build
       end
 
       def create
         @task = authorized_scope(Task, type: :relation).new(task_params)
-
-        ActiveRecord::Base.transaction do
-          if @task.save!
-            @assigned_task = AssignedTask.create!(project: @project, task: @task)
-            render turbo_stream: [
-              turbo_flash(type: :success, data: "Task was added to the project."),
-              turbo_stream.append("#{dom_id(@project)}_assigned_tasks", partial: "workspace/projects/assigned_task", locals: { assigned_task: @assigned_task }),
-              turbo_stream.action(:remove_modal, :modal)
-            ]
-          else
-            render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/tasks/form", locals: { project: @project, task: @task })
-          end
-        rescue StandardError => e
+        if @task.save
+          render turbo_stream: [
+            turbo_flash(type: :success, data: "Task was added to the project."),
+            turbo_stream.append("#{dom_id(@project)}_assigned_tasks", partial: "workspace/projects/assigned_task", locals: { assigned_task: @task.assigned_tasks.first }),
+            turbo_stream.action(:remove_modal, :modal)
+          ]
+        else
           render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/tasks/form", locals: { project: @project, task: @task })
         end
       end
@@ -33,7 +28,7 @@ module Workspace
       end
 
       def task_params
-        params.require(:task).permit(:name)
+        params.require(:task).permit(:name, assigned_tasks_attributes: [ :rate_nok, :project_id ])
       end
     end
   end

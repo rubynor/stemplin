@@ -90,7 +90,7 @@ class TimeRegsController < ApplicationController
   # changes the selection tasks to show tasks from a specific project
   def update_tasks_select
     @tasks = authorized_scope(Task, type: :relation, as: :own).all
-    @name_id_pairs = @tasks.joins(:assigned_tasks).where(assigned_tasks: { project_id: params[:project_id] }).pluck(:name, "assigned_tasks.id")
+    @name_id_pairs = @tasks.assigned_task_names_and_ids(params[:project_id])
     render partial: "/time_regs/select", locals: { tasks: @name_id_pairs }
   end
 
