@@ -25,9 +25,7 @@
   </div>
   <div class="flex gap-x-4 justify-end">
 
-  <% if @chosen_date != Date.today %>
-     
-    <% else %>
+  <% if @chosen_date == Date.today %>
       <%= render ButtonComponent.new(path: time_reg_toggle_active_path(time_reg), method: :patch, class: "gap-x-2", variant: time_reg.active? ? :secondary : :outline) do %>
       <% if time_reg.active? %>
         <i class="uc-icon text-base">&#xeb59;</i>
