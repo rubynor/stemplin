@@ -287,3 +287,11 @@ en:
         password: "Password"
         remember_me: "Remember me"
         forgot_password: "Forgot your password?"
+  helpers:
+    alert:
+      info: "Note"
+      warning: "Warning"
+      error: "Error"
+      success: "Success"
+  time_regs:
+    active_timer_description: "Kindly note that you have an active timer running."

@@ -388,3 +388,11 @@ nb:
               too_long: "er for lang (maksimum er %{count} tegn)"
             password_confirmation:
               confirmation: "samsvarer ikke med passordet"
+  helpers:
+    alert:
+      info: "Merk"
+      warning: "Advarsel"
+      error: "Feil"
+      success: "Suksess"
+  time_regs:
+    active_timer_description: "Vær oppmerksom på at du har en timer som går."

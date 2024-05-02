@@ -7,6 +7,7 @@ class ApplicationComponent < Phlex::HTML
   include Phlex::Rails::Helpers::LabelTag
   include Phlex::Rails::Helpers::CheckboxTag
   include Phlex::Rails::Helpers::ImageTag
+  include Phlex::Rails::Helpers::LinkTo
 
   if Rails.env.development?
     def before_template
