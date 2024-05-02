@@ -14,7 +14,7 @@ class SnackbarComponent < ApplicationComponent
     @data[:timeout] ||= 6
     @data[:action][:method] ||= "get" if @data[:action]
     @data[:variant] ||= :primary
-    @data[:countdown] ||= true
+    @data[:countdown] ||= false
   end
 
   def template
@@ -44,8 +44,10 @@ class SnackbarComponent < ApplicationComponent
               end
             end
           end
-          content_tag(:div, class: "bg-primary rounded-lg h-1 w-0",  data: { "snackbar-target": "countdown" }) do
-            ""
+          if @data[:countdown]
+            content_tag(:div, class: "bg-primary rounded-lg h-1 w-0",  data: { "snackbar-target": "countdown" }) do
+              ""
+            end
           end
         end
       end

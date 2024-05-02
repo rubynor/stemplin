@@ -1,0 +1,18 @@
+<%= render PhlexUI::Popover.new(options: { placement: "bottom-end" }) do %>
+  <%= render PhlexUI::Popover::Trigger.new(class: "flex flex-row items-center gap-x-2 cursor-pointer") do %>
+    <%= image_tag t("language.flag", locale: I18n.locale), class: "w-6" %>
+    <span class="text-sm text-gray-600 hidden lg:block"><%= t("language.name", locale: I18n.locale) %></span>
+    <span class="text-sm text-gray-600 lg:hidden"><%= t("language.short_name", locale: I18n.locale) %></span>
+  <% end %>
+  <%= render PhlexUI::Popover::Content.new do %>
+    <%- Reap.config.i18n.available_locales.each do |locale| %>
+      <%= button_to user_signed_in? ? locale_path : request.path, method: :get, class: "w-full hover:bg-gray-100 flex justify-start py-2 pl-2 pr-4 hover:rounded-md" do %>
+        <%= hidden_field_tag :locale, locale %>
+        <div class="w-full flex justify-start items-center gap-x-1">
+          <%= image_tag t("language.flag", locale: locale), class: "w-4" %>
+          <span class="text-sm text-gray-600"><%= t("language.name", locale: locale) %></span>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

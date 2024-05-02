@@ -11,6 +11,9 @@ nb:
   language:
     en: "EN"
     nb: "NO"
+    name: "Norsk"
+    short_name: NOR
+    flag: "flag-norway.svg"
 
   date:
     month_names:
