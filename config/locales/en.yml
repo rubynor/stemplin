@@ -35,6 +35,9 @@ en:
   language:
     en: "EN"
     nb: "NO"
+    name: "English"
+    short_name: ENG
+    flag: "flag-uk.svg"
   
   date:
     day_names:

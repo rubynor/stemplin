@@ -31,4 +31,8 @@ module Reap
       Devise::PasswordsController.layout "devise"
     end
   end
+
+  def self.config
+    Application.config
+  end
 end

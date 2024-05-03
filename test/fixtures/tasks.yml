@@ -5,3 +5,11 @@ debug:
 coding:
   name: Coding
   organization: organization_one
+
+no_assigned_tasks:
+  name: Login
+  organization: organization_one
+
+login:
+  name: login
+  organization: organization_two

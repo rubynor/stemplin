@@ -1,9 +1,9 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update, :destroy ]
-  before_action :set_projects, only: [ :index, :new_modal, :create, :edit_modal ]
-  before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal ]
-  before_action :set_project, only: [ :create ]
+  before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update, :destroy, :delete_confirmation ]
+  before_action :set_projects, only: [ :index, :new_modal, :create, :edit_modal, :update ]
+  before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal, :update ]
+  before_action :set_project, only: [ :create, :update ]
   verify_authorized except: %i[ index create update_tasks_select ]
 
   require "activerecord-import/base"
@@ -13,10 +13,10 @@ class TimeRegsController < ApplicationController
   def index
     @time_regs_week = authorized_scope(TimeReg, type: :relation, as: :own).between_dates(@chosen_date.beginning_of_week, @chosen_date.end_of_week)
     @time_regs = @time_regs_week.on_date(@chosen_date)
-    @total_minutes_day = @time_regs.sum(:minutes)
+    @total_minutes_day = @time_regs.sum(&:minutes)
     @minutes_by_day = minutes_by_day_of_week(@chosen_date, current_user)
     @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(date_worked: @chosen_date)
-    @total_minutes_week = @time_regs_week.sum(:minutes)
+    @total_minutes_week = @time_regs_week.sum(&:minutes)
   end
 
   def new_modal
@@ -28,56 +28,40 @@ class TimeRegsController < ApplicationController
     @time_reg = current_user.time_regs.new(time_reg_params.except(:project_id, :minutes_string))
 
     if @time_reg.save
-      render turbo_stream: [
-        turbo_flash(type: :success, data: t("notice.time_entry_has_been_logged")),
-        turbo_stream.prepend(:time_regs_list, partial: "time_regs/time_reg", locals: { time_reg: @time_reg }),
-        turbo_stream.action(:remove_modal, :modal)
-      ]
+      flash[:notice] = "Time entry has been logged."
+      redirect_to time_regs_path(date: @time_reg.date_worked)
     else
-      render turbo_stream: turbo_stream.replace(:modal, partial: "time_regs/form", locals: {
-        time_reg: @time_reg, chosen_date: @chosen_date, projects: @projects, title: "New time entry", assigned_tasks: @time_reg.project&.tasks
-      })
+      render :new_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
     end
   end
 
   def update
     if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
-      render turbo_stream: [
-        turbo_flash(type: :success, data: t("notice.time_entry_has_been_updated")),
-        turbo_stream.replace(dom_id(@time_reg), partial: "time_regs/time_reg", locals: { time_reg: @time_reg }),
-        turbo_stream.action(:remove_modal, :modal)
-      ]
+      flash[:notice] = "Time entry has been updated."
+      redirect_to time_regs_path(date: @time_reg.date_worked)
     else
-      @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg.project.id)
-
-      render turbo_stream: turbo_stream.replace(:modal, partial: "time_regs/form", locals: {
-        time_reg: @time_reg, chosen_date: @chosen_date, projects: @projects, title: "Edit time entry", assigned_tasks: @time_reg.project&.tasks
-      })
+      render :edit_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
     end
   end
 
   def destroy
     @time_reg.destroy!
-    render turbo_stream: [
-      turbo_flash(type: :success, data: t("notice.registration_was_successfully")),
-      turbo_stream.remove(dom_id(@time_reg)),
-      turbo_stream.action(:remove_modal, :modal)
-    ]
+    flash[:notice] = "Time registration was successfully deleted."
+    redirect_to time_regs_path(date: @time_reg.date_worked)
 
   rescue ActiveRecord::RecordNotDestroyed
-    render turbo_stream: turbo_flash(type: :alert, data: t("notice.unable_to_delete_time_registration"))
+    flash[:alert] = "Unable to delete time registration"
+    redirect_to time_regs_path
   end
 
   def toggle_active
     @time_reg.toggle_active
-    @chosen_date = Date.today
-    render turbo_stream: [
-      turbo_flash(type: :success, data: "#{t("notice.time_entry_has_been_toggled")} #{@time_reg.active? ? t("notice._on"): t("notice._off")}"),
-      turbo_stream.replace(dom_id(@time_reg), partial: "time_regs/time_reg", locals: { time_reg: @time_reg })
-    ]
+    flash[:notice] = "Time entry has been toggled #{@time_reg.active? ? "on": "off"}"
+    redirect_to time_regs_path(date: @time_reg.date_worked)
 
   rescue ActiveRecord::RecordInvalid => e
-    render turbo_stream: turbo_flash(type: :alert, data: t("notice.unable_to_toggle_time_entry"))
+    flash[:alert] = "Unable to toggle time entry"
+    redirect_to time_regs_path(date: @time_reg.date_worked)
   end
 
   # exports the time_regs in a project to a .CSV
@@ -106,12 +90,12 @@ class TimeRegsController < ApplicationController
   # changes the selection tasks to show tasks from a specific project
   def update_tasks_select
     @tasks = authorized_scope(Task, type: :relation, as: :own).all
-    @name_id_pairs = @tasks.joins(:assigned_tasks).where(assigned_tasks: { project_id: params[:project_id] }).pluck(:name, "assigned_tasks.id")
+    @name_id_pairs = @tasks.assigned_task_names_and_ids(params[:project_id])
     render partial: "/time_regs/select", locals: { tasks: @name_id_pairs }
   end
 
   def edit_modal
-    @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg.project.id)
+    @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg.project&.id)
   end
 
   private
@@ -135,6 +119,6 @@ class TimeRegsController < ApplicationController
   def set_project
     @project = authorized_scope(Project, type: :relation, as: :own).find(time_reg_params[:project_id])
   rescue ActiveRecord::RecordNotFound
-    render turbo_stream: turbo_flash(type: :alert, data: I18n.t("alert.project_not_found"))
+    flash[:alert] = "Project not found, kindly select a valid project."
   end
 end

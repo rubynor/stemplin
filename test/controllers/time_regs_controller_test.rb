@@ -23,7 +23,6 @@ class TimeRegsControllerTest < ActionController::TestCase
     assert_authorized_to(:toggle_active?, @time_reg) do
       patch :toggle_active, params: { time_reg_id: @time_reg.id }
       assert @time_reg.reload.active?
-      assert_select "turbo-stream[action='replace'][target='#{dom_id(@time_reg)}']"
     end
   end
 
@@ -31,7 +30,6 @@ class TimeRegsControllerTest < ActionController::TestCase
     assert_authorized_to(:destroy?, @time_reg) do
       delete :destroy, params: { id: @time_reg.id }
       assert_raises(ActiveRecord::RecordNotFound) { @time_reg.reload }
-      assert_select "turbo-stream[action='remove'][target='#{dom_id(@time_reg)}']"
     end
   end
 
@@ -40,7 +38,6 @@ class TimeRegsControllerTest < ActionController::TestCase
     assert_difference("TimeReg.count") do
       post :create, params: { time_reg: { date_worked: @current_date, minutes: 60, project_id: used_project.id, assigned_task_id: used_project.assigned_tasks.first.id } }
     end
-    assert_select "turbo-stream[action='prepend'][target='time_regs_list']"
     assert_not TimeReg.last.active?
   end
 
@@ -50,7 +47,6 @@ class TimeRegsControllerTest < ActionController::TestCase
       post :create, params: { time_reg: { date_worked: @current_date, project_id: used_project.id, assigned_task_id: used_project.assigned_tasks.first.id } }
     end
 
-    assert_select "turbo-stream[action='prepend'][target='time_regs_list']"
     assert TimeReg.last.active?
   end
 

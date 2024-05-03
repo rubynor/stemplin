@@ -1,4 +1,4 @@
-<%= content_tag(:div, id: dom_id(time_reg), class: "shadow-sm rounded-md p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-y-4") do %>
+<%= content_tag(:div, id: dom_id(time_reg), data: { controller: "refresh-minutes", refresh_minutes_active_value: time_reg.active?, refresh_minutes_minutes_value: time_reg.minutes }, class: "shadow-sm rounded-md p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-y-4") do %>
   <div class="flex flex-row lg:items-center gap-x-4">
     <div class="bg-gray-50 border border-gray-100 rounded flex justify-center items-center w-8 h-8 relative">
       <i class="uc-icon text-base text-gray-400">&#xe8bb;</i>
@@ -19,7 +19,9 @@
       </div>
       <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") do %>
         <i class="uc-icon text-sm text-gray-600">&#xe8bb;</i>
-        <%= convert_time_int(time_reg.minutes) %>
+        <span data-refresh-minutes-target="minutes">
+          <%= convert_time_int(time_reg.minutes) %>
+        </span>
       <% end %>
     </div>
   </div>
