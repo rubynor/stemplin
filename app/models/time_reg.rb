@@ -17,7 +17,7 @@ class TimeReg < ApplicationRecord
   validates :assigned_task_id, presence: true
   validates :date_worked, presence: true
 
-  before_create :set_start_time, if: -> { minutes.zero? }
+  before_create :set_start_time, if: -> { minutes.zero? && date_worked == Date.today }
 
   def active?
     start_time.present?
