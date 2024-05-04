@@ -216,7 +216,7 @@ nb:
     looking_for: "Kan du ikke finne hva du leter etter?"
     update: "Oppdater"
     project_rate: "prosjekt Verdi"
-
+    new_client: Ny klient
 
   notice:
     are_you_sure: "Er du sikker?"

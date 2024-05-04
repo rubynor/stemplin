@@ -201,6 +201,7 @@ en:
     looking_for: "Can't find what you're looking for?"
     update: "Update"
     project_rate: "Project Rate"
+    new_client: New client
 
   notice:
     are_you_sure: "Are you sure?"
