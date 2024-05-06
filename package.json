@@ -13,6 +13,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
     "autoprefixer": "^10.4.17",
+    "date-fns": "^3.6.0",
     "esbuild": "^0.17.10",
     "jquery": "^3.6.4",
     "phlex_ui": "^0.1.4",

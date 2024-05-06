@@ -1,41 +1,49 @@
 import { Controller } from "@hotwired/stimulus"
+import { format, minutesToMilliseconds } from 'date-fns';
 
 // Connects to data-controller="refresh-minutes"
 export default class extends Controller {
   static targets = ['minutes'];
   static values = {
     active: Boolean,
-    minutes: Number
+    minutes: Number,
+    startTime: String,
+    format: String,
   };
 
   connect() {
-    this.toggleRefresh()
-    window.addEventListener('turbo:render', () => this.toggleRefresh());
+    this.toggleRefresh();
+    window.addEventListener('turbo:morph', (event) => this.toggleRefresh(event));
   }
 
   toggleRefresh() {
-    if (!this.intervalId && this.activeValue) {
-      let totalMinutes = this.minutesValue;
+    this.clearCurrentInterval();
+    if (this.activeValue && !this.intervalId) {
+
       this.intervalId = setInterval(() => {
-        totalMinutes += 1;
-        this.minutesTarget.textContent = this.formatTime(totalMinutes);
-      }, 1000 * 60);
-    } else if (this.intervalId && !this.activeValue) {
-      this._clearInterval()
-    };
+        this.minutesTarget.textContent = this.formatTime();
+      }, 1000);
+    }
   }
 
-  formatTime(mins) {
-    const hours = Math.trunc(mins / 60);
-    const minutes = (mins % 60).toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
+  formatTime() {
+    let diffDate = new Date(1970, 0);
+    const currentDate = new Date(Date.now());
+    const startDate = new Date(this.startTimeValue);
+    const savedTimeMillis = minutesToMilliseconds(this.minutesValue);
+
+    diffDate.setMilliseconds(currentDate - startDate + savedTimeMillis);
+
+    return format(diffDate, this.formatValue);
   }
 
   disconnect() {
-    this._clearInterval()
+    this.clearCurrentInterval();
+    window.removeEventListener('turbo:morph', (event) => this.toggleRefresh(event));
   }
 
-  _clearInterval() {
+  clearCurrentInterval() {
+    if (!this.intervalId) return;
     clearInterval(this.intervalId);
     this.intervalId = undefined;
   }

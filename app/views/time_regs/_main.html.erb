@@ -28,7 +28,7 @@
         <% end %>
       </div>
       <div class="bg-gray-50 p-4 flex flex-col lg:flex-row gap-4 lg:gap-8 justify-end">
-        <%= content_tag(:div, data: { controller: "refresh-minutes", refresh_minutes_active_value: @time_regs.any?(&:active?), refresh_minutes_minutes_value: @total_minutes_day }) do %>
+        <%= content_tag(:div, data: { controller: "refresh-minutes", refresh_minutes_active_value: @active_time_reg.present?, refresh_minutes_minutes_value: @total_minutes_day, refresh_minutes_start_time_value: @active_time_reg&.start_time&.to_s, refresh_minutes_format_value: "HH:mm" }) do %>
           <i class="uc-icon text-base text-gray-500">&#xe8bb;</i>
           <span class="text-gray-500 font-regular">
             <%= t("common.today_total") %>:
@@ -37,7 +37,7 @@
             <%= format_duration(@total_minutes_day) %>
           </span>
         <% end %>
-        <%= content_tag(:div, data: { controller: "refresh-minutes", refresh_minutes_active_value: @time_regs.any?(&:active?), refresh_minutes_minutes_value: @total_minutes_week }) do %>
+        <%= content_tag(:div, data: { controller: "refresh-minutes", refresh_minutes_active_value: @active_time_reg.present?, refresh_minutes_minutes_value: @total_minutes_week, refresh_minutes_start_time_value: @active_time_reg&.start_time&.to_s, refresh_minutes_format_value: "HH:mm"}) do %>
           <i class="uc-icon text-base text-gray-500">&#xe891;</i>
           <span class="text-gray-500 font-regular">
             <%= t("common.week_total") %>:
