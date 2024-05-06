@@ -2,7 +2,8 @@ class TimeRegsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update, :destroy, :delete_confirmation ]
   before_action :set_projects, only: [ :index, :new_modal, :create, :edit_modal, :update ]
-  before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal, :update ]
+  before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal, :update, :toggle_active ]
+  before_action :set_time_regs_week, only: [ :index, :create, :toggle_active ]
   before_action :set_project, only: [ :create, :update ]
   verify_authorized except: %i[ index create update_tasks_select ]
 
@@ -11,12 +12,12 @@ class TimeRegsController < ApplicationController
   include TimeRegsHelper
 
   def index
-    @time_regs_week = authorized_scope(TimeReg, type: :relation, as: :own).between_dates(@chosen_date.beginning_of_week, @chosen_date.end_of_week)
     @time_regs = @time_regs_week.on_date(@chosen_date)
     @total_minutes_day = @time_regs.sum(&:minutes)
     @minutes_by_day = minutes_by_day_of_week(@chosen_date, current_user)
     @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(date_worked: @chosen_date)
     @total_minutes_week = @time_regs_week.sum(&:minutes)
+    @active_time_reg = @time_regs_week.find(&:active?)
   end
 
   def new_modal
@@ -26,6 +27,8 @@ class TimeRegsController < ApplicationController
 
   def create
     @time_reg = current_user.time_regs.new(time_reg_params.except(:project_id, :minutes_string))
+
+    @time_regs_week.find(&:active?)&.deactivate! if @time_reg.valid?
 
     if @time_reg.save
       flash[:notice] = "Time entry has been logged."
@@ -55,6 +58,7 @@ class TimeRegsController < ApplicationController
   end
 
   def toggle_active
+    @time_regs_week.find(&:active?)&.deactivate!
     @time_reg.toggle_active
     flash[:notice] = "Time entry has been toggled #{@time_reg.active? ? "on": "off"}"
     redirect_to time_regs_path(date: @time_reg.date_worked)
@@ -114,6 +118,10 @@ class TimeRegsController < ApplicationController
   end
   def set_chosen_date
     @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today
+  end
+
+  def set_time_regs_week
+    @time_regs_week = authorized_scope(TimeReg, type: :relation, as: :own).between_dates(@chosen_date.beginning_of_week, @chosen_date.end_of_week)
   end
 
   def set_project
