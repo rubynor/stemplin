@@ -56,7 +56,6 @@ class TimeRegsController < ApplicationController
 
   def toggle_active
     @time_reg.toggle_active
-    flash[:notice] = "Time entry has been toggled #{@time_reg.active? ? "on": "off"}"
     redirect_to time_regs_path(date: @time_reg.date_worked)
 
   rescue ActiveRecord::RecordInvalid => e
