@@ -74,7 +74,6 @@ class TimeReg < ApplicationRecord
   protected
 
   def only_one_active_time_reg
-
     active_time_regs = self.user.time_regs.where.not(start_time: nil)
     if persisted?
       active_time_regs = active_time_regs.where.not(id: id)
