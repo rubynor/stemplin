@@ -320,3 +320,8 @@ en:
         projects: Projects
         tasks: Tasks
         team_members: Team members
+      time_frames:
+        week: Week
+        month: Month
+        year: Year
+        custom: Custom

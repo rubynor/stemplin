@@ -421,3 +421,8 @@ nb:
         projects: Prosjekter
         tasks: Oppgaver
         team_members: Lag medlemmer
+      time_frames:
+        week: Week
+        month: Month
+        year: Year
+        custom: Custom

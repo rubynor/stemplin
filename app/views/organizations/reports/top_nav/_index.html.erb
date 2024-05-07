@@ -1,0 +1,12 @@
+<div class="bg-gray-100 border-b py-4 border-gray-200 px-4 print:hidden">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <%= render partial: "organizations/reports/top_nav/period_indicator" %>
+    <div class="flex items-center gap-x-4">
+      <% if @filter.is_custom_time_frame? %>
+        <%= render partial: "organizations/reports/top_nav/custom_time_range_picker" %>
+      <% else %>
+        <%= render partial: "organizations/reports/top_nav/time_frame_selector" %>
+      <% end %>
+    </div>
+  </div>
+</div>
