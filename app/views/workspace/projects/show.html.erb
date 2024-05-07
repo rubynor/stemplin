@@ -16,7 +16,7 @@
       <% end %>
 
       <%- has_time_regs = @project.time_regs.any? %>
-      <%- turbo_body = has_time_regs ? "The project <span class='font-semibold text-primary'>#{@project.name}</span> has time registrations and can not be deleted." : "Do you want to proceed with the deletion of the project <span class='font-semibold text-primary'>#{@project.name}</span>, This action cannot be undone." %>
+      <%- turbo_body = has_time_regs ? "The project <span class='font-semibold text-primary'>#{@project.name}</span> has time registrations and can not be deleted." : "#{t("notice.deletion_of_he_project")} <span class='font-semibold text-primary'>#{@project.name}</span>, #{t("notice.cannot_be_undone")}" %>
       <%= render TooltipComponent.new(note: has_time_regs ? "The Project has recorded time registrations, can not be deleted." : nil) do %>
         <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_project_path(@project), disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body } }) do %>
           <span class="hidden lg:block mr-2"><%= t("common.delete")%></span>

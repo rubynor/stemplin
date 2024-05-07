@@ -200,7 +200,13 @@ en:
     project_has_recorded_time: "The Project has recorded time registrations, can not be deleted"
     task_is_already_assigned: "The task is already assigned to projects, can not be deleted."
     the_client_has_associated_projects: "The Client has associated projects, can not be deleted."
-
+    add_task_to: "Add task to"
+    optional_project: "This is optional, otherwise Project rate should be applied"
+    add: "Add"
+    looking_for: "Can't find what you're looking for?"
+    update: "Update"
+    project_rate: "Project Rate"
+    new_client: New client
 
   notice:
     are_you_sure: "Are you sure?"
@@ -236,6 +242,11 @@ en:
     tasks_was_successfully_updated: "task was successfully updated"
     user_added_to_the_organization: "User added to the organization."
     time_entry_has_been_logged: "Time entry has been logged."
+    edits_to_the_task_name: "Kindly note that edits to the task name will be applied to all the projects. Edits to the billable rate will be applied to this project only and will take effect on new Time registrations."
+    recorded_time_registrations: "The task has recorded time registrations, can not be removed from this project."
+    removal_of_the_task: "Do you want to proceed with the removal of the task"
+    cannot_be_undone: "from this project, This action cannot be undone."
+    deletion_of_he_project: "Do you want to proceed with the deletion of the project"
 
   alert:
     does_not_exist: "does not exist"
@@ -257,6 +268,7 @@ en:
     please_select_a_task: "Please select a task"
     project_not_found: "Project not found, kindly select a valid project."
     wish_to_proceed: "Do you wish to proceed?"
+    warning: "Warning!"
 
   description:
     blank: "can't be blank"
@@ -292,3 +304,12 @@ en:
         password: "Password"
         remember_me: "Remember me"
         forgot_password: "Forgot your password?"
+
+  helpers:
+    alert:
+      info: "Note"
+      warning: "Warning"
+      error: "Error"
+      success: "Success"
+  time_regs:
+    active_timer_description: "Kindly note that you have an active timer running."

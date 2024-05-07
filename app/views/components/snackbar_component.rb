@@ -18,36 +18,34 @@ class SnackbarComponent < ApplicationComponent
   end
 
   def template
-    content_tag(:div, class: "snackbar") do
-      content_tag(:div, **wrapper_options) do
-        content_tag(:div, class: "rounded-lg shadow-sm overflow-hidden") do
-          content_tag(:div, class: "p-4") do
-            content_tag(:div, class: "flex items-start") do
-              content_tag(:div, class: "h-6 w-6") do
-                content_tag(:i, @icon.html_safe, class: @icon_class) if @icon.present?
-              end
-              content_tag(:div, **text_wrapper_options) do
-                content_tag(:div, class: "w-full") do
-                  content_tag(:p, @data[:title], class: "text-sm leading-5 font-medium")
-                  if @data[:body].present?
-                    content_tag(:p, @data[:body], class: "mt-1 text-sm leading-5")
-                  end
-                end
-                content_tag(:div, class: "flex items-center gap-x-6 justify-end") do
-                  if @data[:action].present?
-                    action_btn
-                  end
+    content_tag(:div, **wrapper_options) do
+      content_tag(:div, class: "rounded-lg shadow-sm overflow-hidden") do
+        content_tag(:div, class: "p-4") do
+          content_tag(:div, class: "flex items-start") do
+            content_tag(:div, class: "h-6 w-6") do
+              content_tag(:i, @icon.html_safe, class: @icon_class) if @icon.present?
+            end
+            content_tag(:div, **text_wrapper_options) do
+              content_tag(:div, class: "w-full") do
+                content_tag(:p, @data[:title], class: "text-sm leading-5 font-medium")
+                if @data[:body].present?
+                  content_tag(:p, @data[:body], class: "mt-1 text-sm leading-5")
                 end
               end
-              content_tag(:button, class: "inline-flex focus:outline-none transition ease-in-out duration-150", data: { action: "snackbar#close" }) do
-                content_tag(:i, "&#xeb8e;".html_safe, class: "uc-icon text-gray-600 text-xl")
+              content_tag(:div, class: "flex items-center gap-x-6 justify-end") do
+                if @data[:action].present?
+                  action_btn
+                end
               end
+            end
+            content_tag(:button, class: "inline-flex focus:outline-none transition ease-in-out duration-150", data: { action: "snackbar#close" }) do
+              content_tag(:i, "&#xeb8e;".html_safe, class: "uc-icon text-gray-600 text-xl")
             end
           end
-          if @data[:countdown]
-            content_tag(:div, class: "bg-primary rounded-lg h-1 w-0",  data: { "snackbar-target": "countdown" }) do
-              ""
-            end
+        end
+        if @data[:countdown]
+          content_tag(:div, class: "bg-primary rounded-lg h-1 w-0",  data: { "snackbar-target": "countdown" }) do
+            ""
           end
         end
       end

@@ -18,7 +18,24 @@ class TimeReg < ApplicationRecord
   validates :date_worked, presence: true
   validate :only_one_active_time_reg
 
-  before_create :set_start_time, if: -> { minutes.zero? }
+  before_create :set_start_time, if: -> { minutes.zero? && date_worked == Date.today }
+
+  scope :for_report, ->(client_ids, project_ids, user_ids, task_ids) {
+    joins(:user, :project, :task, :client)
+      .where(
+        client: { id: client_ids },
+        project: { id: project_ids },
+        user: { id: user_ids },
+        task: { id: task_ids },
+      )
+  }
+  scope :on_date, ->(given_date) {
+    where("date(date_worked) = ?", given_date).includes(:project, :assigned_task).order(created_at: :desc)
+  }
+  scope :between_dates, ->(start_date, end_date) {
+    where("date(date_worked) BETWEEN ? AND ?", start_date, end_date)
+  }
+  scope :all_active, -> { where.not(start_time: nil) }
 
   def active?
     start_time.present?
