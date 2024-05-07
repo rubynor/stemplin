@@ -4,7 +4,7 @@
       <i class="uc-icon text-base text-gray-400">&#xe8bb;</i>
       <% if time_reg.active? %>
         <div class="absolute -bottom-2 -right-2 bg-yellow-500 rounded-full w-4 h-4 flex justify-center items-center">
-          <i class="uc-icon text-xs text-white">&#xead0;</i>
+          <%= image_tag "hour_glass.svg", class: "animate-spin w-2.5" %>
         </div>
       <% end %>
     </div>
