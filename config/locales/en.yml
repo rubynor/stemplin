@@ -65,6 +65,11 @@ en:
     no_data_in_this_period: "No data in this period"
     assign_task: "Assign task"
 
+  time_reg:
+    errors:
+      messages:
+        timer_running: "Another timer is allready running"
+
   common:
     client: "Client"
     clients: "Clients"

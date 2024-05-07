@@ -26,23 +26,14 @@ class TimeReg < ApplicationRecord
 
   def toggle_active
     if active?
-      deactivate
+      worked_minutes = (Time.now.to_i - start_time.to_i) / 60
+      self.minutes = [ minutes + worked_minutes, MINUTES_IN_A_DAY ].min
+      self.start_time = nil
     else
       self.start_time = Time.now
     end
 
     save!
-  end
-
-  def deactivate!
-    deactivate
-    save!
-  end
-
-  def deactivate
-    worked_minutes = (Time.now.to_i - start_time.to_i) / 60
-    self.minutes = [ minutes + worked_minutes, MINUTES_IN_A_DAY ].min
-    self.start_time = nil
   end
 
   scope :for_report, ->(client_ids, project_ids, user_ids, task_ids) {
@@ -66,14 +57,13 @@ class TimeReg < ApplicationRecord
   protected
 
   def only_one_active_time_reg
-    return unless active?
 
     active_time_regs = self.user.time_regs.where.not(start_time: nil)
     if persisted?
       active_time_regs = active_time_regs.where.not(id: id)
     end
-    if active_time_regs.exists?
-      errors.add(:start_time)
+    if active_time_regs.exists? && minutes.zero?
+      errors.add(:base, I18n.t("time_reg.errors.messages.timer_running"))
     end
   end
 
