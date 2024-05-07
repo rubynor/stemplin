@@ -80,4 +80,8 @@ Rails.application.routes.draw do
       post :edit_modal, on: :member
     end
   end
+
+  namespace :organizations do
+    resources :reports, only: [ :index ]
+  end
 end

@@ -313,3 +313,10 @@ en:
       success: "Success"
   time_regs:
     active_timer_description: "Kindly note that you have an active timer running."
+  organizations:
+    reports_filter:
+      tabs:
+        clients: Clients
+        projects: Projects
+        tasks: Tasks
+        team_members: Team members

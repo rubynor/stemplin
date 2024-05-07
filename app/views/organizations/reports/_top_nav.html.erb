@@ -1,0 +1,79 @@
+<div class="bg-gray-100 border-b py-4 border-gray-200 px-4 print:hidden">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <div class="flex flex-row items-center gap-x-4">
+      <div class="bg-white border border-gray-100 rounded flex justify-center items-center px-4 py-3 relative">
+        <i class="uc-icon text-xl text-gray-600">&#xe891;</i>
+        <% if @filter.default_week? %>
+          <div class="absolute -bottom-2 -right-2 bg-green-600 rounded-full w-4 h-4 flex justify-center items-center">
+            <i class="uc-icon text-xs text-white">&#xe8b2;</i>
+          </div>
+        <% end %>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-gray-700 text-base lg:text-lg">
+          <span><%= @filter.valid_week? ? "Week:" : "From:" %></span>
+          <span class="font-semibold">
+            <%= l(@filter.start_date, format: "%d %b") %>
+          </span>
+          <span>-</span>
+          <span class="font-semibold">
+            <%= l(@filter.end_date, format: "%d %b %Y") %>
+          </span>
+        </span>
+        <% unless @filter.default_week? %>
+          <%= link_to organizations_reports_path(filter: { category: @filter.category }), class: "text-xs text-gray-400 underline" do %>
+            <span>Return to this week</span>
+            <i class="uc-icon">&#xeb8c;</i>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="border border-gray-200 shadow-sm rounded flex flex-row items-center bg-white divide-x divide-gray-100 h-full">
+        <%= link_to organizations_reports_path(filter: { **@filter.previous_week, category: @filter.category }), class: "p-2 hidden lg:block transform rotate-180" do %>
+          <i class="uc-icon text-gray-600 text-xl">&#xe81f;</i>
+        <% end %>
+        <%= link_to organizations_reports_path(filter: { **@filter.next_week, category: @filter.category }), class: "p-2 hidden lg:block" do %>
+          <i class="uc-icon text-gray-600 text-xl">&#xe81f;</i>
+        <% end %>
+      </div>
+    </div>
+    <div class="flex items-center gap-x-4">
+      <%= form_with scope: :filter, url: organizations_reports_path(request.query_parameters), method: :get, class: "flex items-center gap-x-4" do |form| %>
+        <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
+          <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+            <i class="uc-icon text-sm text-gray-500">&#xe891;</i>
+            <span class="text-gray-500 text-sm"><%= t('common.period_from') %></span>
+            <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { l(@filter.start_date, format: "%d %b %y") } %>
+            <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+          <% end %>
+          <%= render DropdownComponent::Content.new do %>
+            <%= form.hidden_field :start_date, id: "start_date", value: @filter.start_date, data: { controller: "input" } %>
+            <%= render PhlexUI::Calendar.new(selected_date: @filter.start_date, input_id: "#start_date") %>
+          <% end %>
+        <% end %>
+        <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
+          <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+            <i class="uc-icon text-sm text-gray-500">&#xe891;</i>
+            <span class="text-gray-500 text-sm"><%= t('common.period_to') %></span>
+            <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { l(@filter.end_date, format: "%d %b %y") } %>
+            <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+          <% end %>
+          <%= render DropdownComponent::Content.new do %>
+            <%= form.hidden_field :end_date, id: "end_date", value: @filter.end_date, data: { controller: "input" } %>
+            <%= render PhlexUI::Calendar.new(selected_date: @filter.end_date, input_id: "#end_date") %>
+          <% end %>
+        <% end %>
+        <div class="flex flex-row items-center gap-x-4">
+          <%= link_to organizations_reports_path(filter: { category: @filter.category }), class: "text-xs text-gray-400 underline text-nowrap" do %>
+            <span><%= t('common.reset') %></span>
+            <i class="uc-icon">&#xeb8c;</i>
+          <% end %>
+          <%= render ButtonComponent.new(type: "submit") do %>
+            <span class="mr-2"><%= t('common.filter') %></span>
+            <i class="uc-icon text-white text-xl">&#xe9d9;</i>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
