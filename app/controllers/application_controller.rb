@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
 
   # data can either be a hash or a string
   def turbo_flash(type:, data:)
-    flash[type] = data
+    flash.now[type] = data
     turbo_stream.replace "flash", partial: "shared/flash_messages"
   end
 
