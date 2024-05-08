@@ -61,7 +61,7 @@ class TimeRegsController < ApplicationController
     redirect_to time_regs_path(date: @time_reg.date_worked)
 
   rescue ActiveRecord::RecordInvalid => e
-    flash[:alert] = "Unable to toggle time entry"
+    flash[:alert] = e.record.errors.full_messages.to_sentence
     redirect_to time_regs_path(date: @time_reg.date_worked)
   end
 

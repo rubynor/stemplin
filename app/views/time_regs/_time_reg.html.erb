@@ -27,15 +27,13 @@
   </div>
   <div class="flex gap-x-4 justify-end">
 
-  <% if @chosen_date == Date.today %>
-      <%= render ButtonComponent.new(path: time_reg_toggle_active_path(time_reg), method: :patch, class: "gap-x-2", variant: time_reg.active? ? :secondary : :outline) do %>
-      <% if time_reg.active? %>
-        <i class="uc-icon text-base">&#xeb59;</i>
-      <% else %>
-        <i class="uc-icon text-base">&#xead1;</i>
-      <% end %>
-      <span class="hidden lg:block"><%= time_reg.active? ? t("common.stop") : t("common.start") %></span>
+    <%= render ButtonComponent.new(path: time_reg_toggle_active_path(time_reg), method: :patch, class: "gap-x-2", variant: time_reg.active? ? :secondary : :outline, disabled: time_reg.date_worked != Date.today && !time_reg.active?) do %>
+    <% if time_reg.active? %>
+      <i class="uc-icon text-base">&#xeb59;</i>
+    <% else %>
+      <i class="uc-icon text-base">&#xead1;</i>
     <% end %>
+    <span class="hidden lg:block"><%= time_reg.active? ? t("common.stop") : t("common.start") %></span>
   <% end %>
 
     <%= render ButtonComponent.new(path: edit_modal_time_reg_path(time_reg, date: @chosen_date), method: :put, class: "gap-x-2", variant: :outline) do %>
