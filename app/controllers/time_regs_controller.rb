@@ -13,11 +13,12 @@ class TimeRegsController < ApplicationController
   def index
     @time_regs_week = authorized_scope(TimeReg, type: :relation, as: :own).between_dates(@chosen_date.beginning_of_week, @chosen_date.end_of_week)
     @time_regs = @time_regs_week.on_date(@chosen_date)
-    @total_minutes_day = @time_regs.sum(&:minutes)
+    @total_minutes_day = @time_regs.sum(&:current_minutes)
     @minutes_by_day = minutes_by_day_of_week(@chosen_date, current_user)
     @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(date_worked: @chosen_date)
-    @total_minutes_week = @time_regs_week.sum(&:minutes)
+    @total_minutes_week = @time_regs_week.sum(&:current_minutes)
     @active_time_reg = authorized_scope(TimeReg, type: :relation, as: :own).all_active.first
+    @current_minutes = @active_time_reg&.current_minutes
   end
 
   def new_modal

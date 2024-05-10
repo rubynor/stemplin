@@ -57,6 +57,11 @@ class TimeReg < ApplicationRecord
     self.start_time = Time.now
   end
 
+  def current_minutes
+    return self.minutes unless self.active?
+    self.minutes + (Time.now - self.start_time).seconds.in_minutes.to_i
+  end
+
   scope :for_report, ->(client_ids, project_ids, user_ids, task_ids) {
     joins(:user, :project, :task, :client)
       .where(
