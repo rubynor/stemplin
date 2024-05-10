@@ -136,6 +136,7 @@ module Organizations
       def default_week?
         start_date == DEFAULT_DATE.beginning_of_week && end_date == DEFAULT_DATE.end_of_week
       end
+
       def update_week(duration)
         new_end_date = end_date + duration
         { start_date: new_end_date.beginning_of_week, end_date: new_end_date.end_of_week }

@@ -6,7 +6,7 @@ module Organizations
     end
 
     def total_billable_amount
-      @time_regs.billable.sum(&:billed_amount)
+      @total_billable_amount ||= @time_regs.billable.sum(&:billed_amount)
     end
 
     def total_billable_amount_nok
@@ -14,11 +14,11 @@ module Organizations
     end
 
     def total_minutes
-      @time_regs.sum(:minutes)
+      @total_minutes ||= @time_regs.sum(&:minutes)
     end
 
     def total_billable_minutes
-      @time_regs.billable.sum(:minutes)
+      @total_billable_minutes ||= @time_regs.billable.sum(&:minutes)
     end
 
     def total_non_billable_minutes

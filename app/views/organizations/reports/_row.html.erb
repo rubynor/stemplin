@@ -1,0 +1,20 @@
+<%= render PhlexUI::Table::Row.new(class: "!py-4") do %>
+  <%= render PhlexUI::Table::Cell.new do %>
+    <%# TODO: Refactor this and find a way to persist old unchanged query params %>
+    <%= link_to organizations_reports_path(filter: { **@filter.current_time_range, time_frame: @filter.time_frame, category: @filter.category }), class: "flex flex-col underline text-blue-600" do %>
+      <div class="flex flex-row items-center gap-x-1">
+        <span class="font-medium text-sm"><%= result[:attribute_name] %></span>
+    <% end %>
+  <% end %>
+  <%= render PhlexUI::Table::Cell.new { minutes_to_float result[:total_minutes] } %>
+  <%= render PhlexUI::Table::Cell.new do %>
+    <div>
+      <span><%= minutes_to_float result[:total_billable_minutes] %></span>
+      <span>(<%= result[:total_billable_minutes_percentage] %>%)</span>
+    </div>
+  <% end %>
+  <%= render PhlexUI::Table::Cell.new do %>
+    <span><%= result[:total_billable_amount] %></span>
+    <span class="text-xs text-gray-400">NOK</span>
+  <% end %>
+<% end %>

@@ -8,6 +8,7 @@ module Organizations
       @summary = Organizations::Reports::Summary.new(
         time_regs: @time_regs,
       )
+      @results = Organizations::Reports::Result.new(time_regs: @time_regs, filter: @filter)
     end
 
     private

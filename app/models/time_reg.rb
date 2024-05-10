@@ -1,14 +1,16 @@
 class TimeReg < ApplicationRecord
   MINUTES_IN_A_DAY = 1.day.in_minutes.to_i
 
+  validates :notes, format: { without: /\r|\n/, message: "Line breaks are not allowed" }
+
   belongs_to :user
   belongs_to :assigned_task
+
   has_one :project, through: :assigned_task
   has_one :task, through: :assigned_task, source: :task
   has_one :client, through: :project
   has_one :organization, through: :project
 
-  validates :notes, format: { without: /\r|\n/, message: "Line breaks are not allowed" }
   validates :notes, length: { maximum: 255 }
   validates :minutes, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1440 }
   validates :assigned_task, presence: true
@@ -25,7 +27,7 @@ class TimeReg < ApplicationRecord
         project: { id: project_ids },
         user: { id: user_ids },
         task: { id: task_ids },
-      )
+        )
   }
   scope :on_date, ->(given_date) {
     where("date(date_worked) = ?", given_date).includes(:project, :assigned_task).order(created_at: :desc)
@@ -62,6 +64,7 @@ class TimeReg < ApplicationRecord
   end
 
   def used_rate
+    # TODO: Prioritize assigned_task rate over project.billable?
     return 0 unless project.billable
     assigned_task.rate.positive? ? assigned_task.rate : project.rate
   end

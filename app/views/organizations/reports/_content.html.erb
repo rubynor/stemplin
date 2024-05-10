@@ -17,6 +17,31 @@
           <%= link_to tab[:label], organizations_reports_path(filter: { category: tab[:value], **@filter.current_time_range, time_frame: @filter.time_frame }), class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out px-4", @filter.active_tab === tab[:value] ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
         <% end %>
       </div>
+      <div class="p-4">
+        <%= render PhlexUI::Table.new do %>
+          <%= render PhlexUI::Table::Header.new do %>
+            <%= render PhlexUI::Table::Row.new do %>
+              <%= render PhlexUI::Table::Head.new { "Name" } %>
+              <%= render PhlexUI::Table::Head.new { "Hours" } %>
+              <%= render PhlexUI::Table::Head.new { "Billable hours" } %>
+              <%= render PhlexUI::Table::Head.new { "Billable amount" } %>
+            <% end %>
+          <% end %>
+          <%= render PhlexUI::Table::Body.new do %>
+            <% @results.grouped.each do |result| %>
+              <%= render partial: "organizations/reports/row", locals: { result: result } %>
+            <% end %>
+            <%= render PhlexUI::Table::Row.new(class: "!py-4") do %>
+              <%= render PhlexUI::Table::Cell.new(class: "text-sm font-segoe-regular") { "Total" } %>
+              <%= render PhlexUI::Table::Cell.new(class: "font-semibold text-lg") { minutes_to_float @summary.total_minutes } %>
+              <%= render PhlexUI::Table::Cell.new(class: "font-semibold text-lg") { minutes_to_float @summary.total_billable_minutes } %>
+              <%= render PhlexUI::Table::Cell.new do %>
+                <div><span class="font-semibold text-lg"><%= @summary.total_billable_amount_nok %></span><span class="text-sm font-semibold text-gray-400">NOK</span></div>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>
