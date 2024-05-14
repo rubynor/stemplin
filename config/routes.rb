@@ -37,8 +37,6 @@ Rails.application.routes.draw do
 
   resources :clients
 
-  resources :tasks
-
   match "projects/import" => "projects#import", :via => :post
   resources :time_regs do
     patch :toggle_active
