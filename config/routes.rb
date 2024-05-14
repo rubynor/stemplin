@@ -39,7 +39,6 @@ Rails.application.routes.draw do
 
   resources :tasks
 
-  match "projects/import" => "projects#import", :via => :post
   resources :time_regs do
     patch :toggle_active
     collection do
@@ -49,12 +48,6 @@ Rails.application.routes.draw do
     end
     post :new_modal, on: :collection
     put :edit_modal, on: :member
-  end
-
-  resources :projects, except: [ :index ] do
-    resources :memberships
-    resources :assigned_tasks
-    get "export", to: "projects#export", as: "export_project_time_reg"
   end
 
   namespace :workspace do
