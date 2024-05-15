@@ -4,7 +4,8 @@ class TimeRegsControllerTest < ActionController::TestCase
   setup do
     @user = users(:joe)
     @current_date = Date.today
-    @time_reg = @user.time_regs.first
+    @time_reg = time_regs(:time_reg_1)
+    @old_time_reg = time_regs(:time_reg_3)
 
     sign_in @user
   end
@@ -54,5 +55,23 @@ class TimeRegsControllerTest < ActionController::TestCase
     assert_no_difference("TimeReg.count") do
       post :create, params: { time_reg: { date_worked: @current_date, minutes: 0, project_id: nil, assigned_task_id: nil } }
     end
+  end
+
+  test "should not start timer if another is turned on" do
+    @active_time_reg = @user.time_regs.second
+    @active_time_reg.toggle_active
+
+    post :toggle_active, params: { time_reg_id: @time_reg.id }
+    assert_not @time_reg.active?
+  end
+
+  test "should not create time_reg and start timer if another is turned on" do
+    used_project = @user.current_organization.projects.first
+    @active_time_reg = @old_time_reg
+    @active_time_reg.update(start_time: 1.day.ago)
+
+    post :create, params: { time_reg: { date_worked: @current_date, minutes: 0, project_id: used_project.id, assigned_task_id: used_project.assigned_tasks.first.id } }
+    assert_not @time_reg.active?
+    assert @active_time_reg.active?
   end
 end

@@ -1,42 +1,46 @@
 import { Controller } from "@hotwired/stimulus"
+import moment from "moment";
+import momentDurationFormatSetup from "moment-duration-format";
+
+momentDurationFormatSetup(moment); // Setup moment-duration-format plugin
+
+const intervalLength = 1000;
 
 // Connects to data-controller="refresh-minutes"
 export default class extends Controller {
   static targets = ['minutes'];
   static values = {
     active: Boolean,
-    minutes: Number
+    minutes: Number,
+    format: String,
   };
 
   connect() {
-    this.toggleRefresh()
-    window.addEventListener('turbo:render', () => this.toggleRefresh());
-  }
-
-  toggleRefresh() {
-    if (!this.intervalId && this.activeValue) {
-      let totalMinutes = this.minutesValue;
-      this.intervalId = setInterval(() => {
-        totalMinutes += 1;
-        this.minutesTarget.textContent = this.formatTime(totalMinutes);
-      }, 1000 * 60);
-    } else if (this.intervalId && !this.activeValue) {
-      this._clearInterval()
-    };
-  }
-
-  formatTime(mins) {
-    const hours = Math.trunc(mins / 60);
-    const minutes = (mins % 60).toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
+    this.totalMillis = this.minutesValue * 60000;
+    this.toggleRefresh();
+    window.addEventListener('turbo:morph', (event) => this.toggleRefresh(event));
   }
 
   disconnect() {
-    this._clearInterval()
+    this.clearCurrentInterval();
+    window.removeEventListener('turbo:morph', (event) => this.toggleRefresh(event));
   }
 
-  _clearInterval() {
+  toggleRefresh() {
+    this.clearCurrentInterval();
+    if (this.activeValue && !this.intervalId) {
+      this.intervalId = setInterval(() => {
+        this.totalMillis += intervalLength;
+        this.minutesTarget.textContent = this.formatedStamp();
+      }, intervalLength);
+    }
+  }
+
+  clearCurrentInterval() {
+    if (!this.intervalId) return;
     clearInterval(this.intervalId);
     this.intervalId = undefined;
   }
+
+  formatedStamp = () => moment.duration(this.totalMillis, "milliseconds").format(this.formatValue, { trunc: true, trim: false });
 }
