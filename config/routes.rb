@@ -37,8 +37,6 @@ Rails.application.routes.draw do
 
   resources :clients
 
-  resources :tasks
-
   resources :time_regs do
     patch :toggle_active
     collection do
