@@ -13,11 +13,12 @@ class TimeRegsController < ApplicationController
   def index
     @time_regs_week = authorized_scope(TimeReg, type: :relation, as: :own).between_dates(@chosen_date.beginning_of_week, @chosen_date.end_of_week)
     @time_regs = @time_regs_week.on_date(@chosen_date)
-    @total_minutes_day = @time_regs.sum(&:minutes)
+    @total_minutes_day = @time_regs.sum(&:current_minutes)
     @minutes_by_day = minutes_by_day_of_week(@chosen_date, current_user)
     @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(date_worked: @chosen_date)
-    @total_minutes_week = @time_regs_week.sum(&:minutes)
+    @total_minutes_week = @time_regs_week.sum(&:current_minutes)
     @active_time_reg = authorized_scope(TimeReg, type: :relation, as: :own).all_active.first
+    @current_minutes = @active_time_reg&.current_minutes
   end
 
   def new_modal
@@ -32,6 +33,7 @@ class TimeRegsController < ApplicationController
       flash[:notice] = "Time entry has been logged."
       redirect_to time_regs_path(date: @time_reg.date_worked)
     else
+      flash.now[:alert] = "Unable to create time entry"
       render :new_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
     end
   end
@@ -60,7 +62,7 @@ class TimeRegsController < ApplicationController
     redirect_to time_regs_path(date: @time_reg.date_worked)
 
   rescue ActiveRecord::RecordInvalid => e
-    flash[:alert] = "Unable to toggle time entry"
+    flash[:alert] = e.record.errors.full_messages.to_sentence
     redirect_to time_regs_path(date: @time_reg.date_worked)
   end
 
