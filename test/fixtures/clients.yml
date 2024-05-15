@@ -12,3 +12,8 @@ to_be_deleted:
   name: XYZ
   description: XYZ description
   organization: organization_one
+
+google_xyz:
+  name: Google XYZ
+  description: This is Google XYZ
+  organization: organization_one

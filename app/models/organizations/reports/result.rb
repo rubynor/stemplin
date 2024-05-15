@@ -15,20 +15,21 @@ module Organizations
       def group_time_regs
         case @filter.category
         when Organizations::Reports::Filter::CLIENTS
-          group_by(attribute: :client, attribute_name_method: :name)
+          group_by(attribute: Organizations::Reports::Filter::CLIENTS)
         when Organizations::Reports::Filter::PROJECTS
-          group_by(attribute: :project, attribute_name_method: :name)
-        when Organizations::Reports::Filter::TEAM_MEMBERS
-          group_by(attribute: :user, attribute_name_method: :name)
+          group_by(attribute: Organizations::Reports::Filter::PROJECTS)
+        when Organizations::Reports::Filter::USERS
+          group_by(attribute: Organizations::Reports::Filter::USERS)
         when Organizations::Reports::Filter::TASKS
-          group_by(attribute: :task, attribute_name_method: :name)
+          group_by(attribute: Organizations::Reports::Filter::TASKS)
         else
-          group_by(attribute: :client, attribute_name_method: :name)
+          group_by(attribute: Organizations::Reports::Filter::CLIENTS)
         end
       end
 
-      def group_by(attribute:, attribute_name_method:)
-        @time_regs.group_by(&attribute).map do |group, time_regs|
+      def group_by(attribute:, attribute_name_method: :name)
+        singular_attribute = attribute.singularize.to_sym
+        @time_regs.group_by(&singular_attribute).map do |group, time_regs|
           billable_time_regs = time_regs.select(&method(:project_billable?))
           total_minutes = time_regs.sum(&:minutes)
           total_billable_minutes = billable_time_regs.sum(&:minutes)
@@ -38,7 +39,8 @@ module Organizations
             total_minutes: total_minutes,
             total_billable_minutes: total_billable_minutes,
             total_billable_amount: ConvertKroneOre.out(billable_time_regs.sum(&:billed_amount)),
-            total_billable_minutes_percentage: (total_billable_minutes / total_minutes.to_f * 100).truncate(2)
+            total_billable_minutes_percentage: (total_billable_minutes / total_minutes.to_f * 100).truncate(2),
+            group_link: { "#{singular_attribute}_id": group.id, category: @filter.possible_tabs_for(attribute).first }
           }
         end
       end

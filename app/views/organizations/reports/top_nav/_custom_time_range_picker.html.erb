@@ -1,4 +1,4 @@
-<%= form_with scope: :filter, url: organizations_reports_path, method: :get, class: "flex items-center gap-x-4" do |form| %>
+<%= form_with scope: :filter, url: organizations_reports_path, method: :get, class: "flex flex-col lg:flex-row lg:items-center gap-4" do |form| %>
   <%# TODO: Find a better way to persist query params %>
   <%= form.hidden_field :category, value: @filter.category %>
   <%= form.hidden_field :time_frame, value: @filter.time_frame %>

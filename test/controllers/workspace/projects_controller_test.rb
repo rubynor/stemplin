@@ -17,8 +17,9 @@ module Workspace
     end
 
     test "should create project" do
+      task = tasks(:e2e_testing)
       assert_difference("Project.count") do
-        post :create, params: { project: { name: "Test Project", description: "Project description", billable: true, rate_nok: 100, client_id: @client.id, task_ids: @tasks.pluck(:id) } }
+        post :create, params: { project: { name: "Test Project", description: "Project description", billable: true, rate_nok: 100, client_id: @client.id, task_ids: [ task.id ] } }
       end
 
       assert_response :success

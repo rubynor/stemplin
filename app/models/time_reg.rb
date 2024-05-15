@@ -38,6 +38,11 @@ class TimeReg < ApplicationRecord
   scope :all_active, -> { where.not(start_time: nil) }
   scope :billable, -> { joins(:project).where(projects: { billable: true }) }
 
+  scope :by_client, ->(client_id) { joins(project: :client).where(clients: { id: client_id }) }
+  scope :by_project, ->(project_id) { where(assigned_task: AssignedTask.where(project_id: project_id)) }
+  scope :by_user, ->(user_id) { where(user_id: user_id) }
+  scope :by_task, ->(task_id) { where(assigned_task: AssignedTask.where(task_id: task_id)) }
+
   def active?
     start_time.present?
   end
@@ -64,8 +69,6 @@ class TimeReg < ApplicationRecord
   end
 
   def used_rate
-    # TODO: Prioritize assigned_task rate over project.billable?
-    return 0 unless project.billable
     assigned_task.rate.positive? ? assigned_task.rate : project.rate
   end
 

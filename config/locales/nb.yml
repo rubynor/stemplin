@@ -420,7 +420,7 @@ nb:
         clients: Kunder
         projects: Prosjekter
         tasks: Oppgaver
-        team_members: Lag medlemmer
+        users: Lag medlemmer
       time_frames:
         week: Week
         month: Month
