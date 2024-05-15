@@ -52,7 +52,6 @@ Rails.application.routes.draw do
   end
 
   resources :projects, except: [ :index ] do
-    resources :memberships
     resources :assigned_tasks
     get "export", to: "projects#export", as: "export_project_time_reg"
   end
