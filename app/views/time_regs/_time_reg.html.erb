@@ -1,4 +1,4 @@
-<%= content_tag(:div, id: dom_id(time_reg), data: { controller: "refresh-minutes", refresh_minutes_active_value: time_reg.active?, refresh_minutes_minutes_value: time_reg.minutes }, class: "shadow-sm rounded-md p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-y-4") do %>
+<%= content_tag(:div, id: dom_id(time_reg), data: { controller: "refresh-minutes", refresh_minutes_active_value: time_reg.active?, refresh_minutes_minutes_value: time_reg.current_minutes, refresh_minutes_format_value: "H:mm" }, class: "shadow-sm rounded-md p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-y-4") do %>
   <div class="flex flex-row lg:items-center gap-x-4">
     <div class="bg-gray-50 border border-gray-100 rounded flex justify-center items-center w-8 h-8 relative">
       <i class="uc-icon text-base text-gray-400">&#xe8bb;</i>
@@ -20,22 +20,20 @@
       <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") do %>
         <i class="uc-icon text-sm text-gray-600">&#xe8bb;</i>
         <span data-refresh-minutes-target="minutes">
-          <%= convert_time_int(time_reg.minutes) %>
+          <%= convert_time_int(time_reg.current_minutes) %>
         </span>
       <% end %>
     </div>
   </div>
   <div class="flex gap-x-4 justify-end">
 
-  <% if @chosen_date == Date.today %>
-      <%= render ButtonComponent.new(path: time_reg_toggle_active_path(time_reg), method: :patch, class: "gap-x-2", variant: time_reg.active? ? :secondary : :outline) do %>
-      <% if time_reg.active? %>
-        <i class="uc-icon text-base">&#xeb59;</i>
-      <% else %>
-        <i class="uc-icon text-base">&#xead1;</i>
-      <% end %>
-      <span class="hidden lg:block"><%= time_reg.active? ? t("common.stop") : t("common.start") %></span>
+    <%= render ButtonComponent.new(path: time_reg_toggle_active_path(time_reg), method: :patch, class: "gap-x-2", variant: time_reg.active? ? :secondary : :outline, disabled: time_reg.date_worked != Date.today && !time_reg.active?) do %>
+    <% if time_reg.active? %>
+      <i class="uc-icon text-base">&#xeb59;</i>
+    <% else %>
+      <i class="uc-icon text-base">&#xead1;</i>
     <% end %>
+    <span class="hidden lg:block"><%= time_reg.active? ? t("common.stop") : t("common.start") %></span>
   <% end %>
 
     <%= render ButtonComponent.new(path: edit_modal_time_reg_path(time_reg, date: @chosen_date), method: :put, class: "gap-x-2", variant: :outline) do %>

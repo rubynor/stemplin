@@ -81,6 +81,11 @@ nb:
     no_data_in_this_period: "Ingen data i denne perioden"
     assign_task: "Sett oppgave"
 
+  time_reg:
+    errors:
+      messages:
+        timer_running: "En annen timer går fortsatt"
+
   common:
     client: "Klient"
     clients: "Klienter"

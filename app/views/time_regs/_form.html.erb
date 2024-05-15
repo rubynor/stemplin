@@ -12,6 +12,9 @@
         <%= render PhlexUI::Dialog::Middle.new do %>
           <%= content_tag(:div, class: "w-full flex flex-col") do %>
             <div class="block" data-controller="time-tasks">
+              <% time_reg.errors.full_messages_for(:base).each do |message| %>
+                <div  class="text-red-600 text-xs italic mt-1"><%= message %></div>
+              <% end %>
               <%= hidden_field_tag :date, chosen_date %>
               <div class="mb-4" data-time-tasks-target="project">
                 <%= form.label :project_id, class: 'block text-gray-700 text-sm font-bold mb-2 hidden' %>
