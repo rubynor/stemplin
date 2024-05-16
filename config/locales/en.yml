@@ -154,7 +154,7 @@ en:
     created_on: "Created on"
     added_on: "Added on"
     select_client: "Select client"
-    time_&_materials: "Time & Materials"
+    hourly_rate_selection: "Hourly rate"
     non_billable: "Non-Billable"
     rates_per_hour: "Billable Rates (per hour)"
     add_tasks_optional: "Add tasks (optional)"
