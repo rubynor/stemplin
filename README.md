@@ -1,3 +1,6 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/193cb743bd02e45896a7/maintainability)](https://codeclimate.com/github/rubynor/reap/maintainability)
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/193cb743bd02e45896a7/test_coverage)](https://codeclimate.com/github/rubynor/reap/test_coverage)
 
 # Reap time tracking
 Time tracking application written in Ruby on Rails

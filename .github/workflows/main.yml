@@ -35,8 +35,13 @@ jobs:
         run: bin/rake assets:precompile
       - name: Set up database schema
         run: bin/rails db:schema:load
-      - name: Run tests
-        run: bin/rake test
+      - name: Run tests and Push test coverage to Code Climate
+        uses: paambaati/codeclimate-action@v6.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: bin/rake test
+          debug: true
 
   lint:
     runs-on: ubuntu-latest

@@ -39,3 +39,4 @@
 .env
 
 .DS_Store
+coverage

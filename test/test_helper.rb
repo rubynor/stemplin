@@ -1,3 +1,18 @@
+require "simplecov"
+SimpleCov.start "rails" do
+  add_filter "/bin/"
+  add_filter "/db/"
+  add_filter "/test/"
+  add_filter "/config/"
+  add_filter "/app/javascript/"
+
+  # Groups not covered by default
+  add_group "Policies", "app/policies"
+  add_group "Presenters", "app/presenters"
+  add_group "Services", "app/services"
+  add_group "Components", "app/views/components"
+end
+
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
