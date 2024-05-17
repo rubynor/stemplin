@@ -1,0 +1,10 @@
+<span class="text-gray-700 text-base lg:text-lg">
+  <span class="capitalize"><%= @filter.is_custom_time_frame? ? "From" : @filter.time_frame %>:</span>
+  <span class="font-semibold">
+    <%= l(@filter.start_date, format: "%d %b") %>
+  </span>
+  <span>-</span>
+  <span class="font-semibold">
+    <%= l(@filter.end_date, format: "%d %b %Y") %>
+  </span>
+</span>

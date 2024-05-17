@@ -7,8 +7,12 @@
             <i class="uc-icon text-2xl">&#xe833;</i>
           <% end %>
         <% end %>
-        <div class="text-base lg:text-lg">
+        <div class="text-base lg:text-lg flex items-center gap-x-1">
           <span><%= t('common.report') %></span>
+          <div class="hidden print:block">
+            <span>-</span>
+            <%= render partial: "organizations/reports/top_nav/selected_time_range" %>
+          </div>
           <% if @filter.selected_element_name.present? %>
             <span>-</span>
             <span class="capitalize text-purple-600 print:text-gray-600 font-semibold"><%= @filter.selected_element_name %></span>
