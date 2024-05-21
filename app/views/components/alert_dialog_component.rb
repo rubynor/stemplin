@@ -24,8 +24,8 @@ class AlertDialogComponent < ApplicationComponent
           end
           content_tag(:div, class: "bg-gray-50 px-4 py-3 flex flex-row-reverse sm:px-6") do
             content_tag(:div, class: "flex flex-row gap-x-2") do
-              render ButtonComponent.new(value: "cancel", variant: :outline) { I18n.t("common.stop") }
-              render ButtonComponent.new(value: "confirm") { I18n.t("common.accept") }
+              render ButtonComponent.new(type: "submit", value: "cancel", variant: :outline) { I18n.t("common.stop") }
+              render ButtonComponent.new(type: "submit", value: "confirm") { I18n.t("common.accept") }
             end
           end
         end
