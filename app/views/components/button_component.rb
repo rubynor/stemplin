@@ -21,13 +21,20 @@ class ButtonComponent < ApplicationComponent
     render PhlexUI::Button.new(**default_attrs) { content.call }
   end
 
+  def default_type
+    return "submit" if @path.present? && @attrs[:type].nil?
+    return "button" if @attrs[:type].nil?
+    @attrs[:type]
+  end
+
   def default_attrs
     {
       **@attrs,
-      type: @path.present? && @attrs[:type].nil? ? "submit" : @attrs[:type],
+      type!: default_type,
       class: tokens(@attrs[:class], "py-2 !h-12", is_outline?: "border !border-gray-100", is_disabled?: "!pointer-events-auto !cursor-not-allowed")
     }
   end
+
   def is_outline?
     @attrs[:variant] == :outline
   end
