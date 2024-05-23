@@ -21,7 +21,7 @@
                 <b class= "text-gray-700 text-sm" >
                   <%= t('common.project') %>
                 </b>
-                <%= form.collection_select :project_id, (projects || []), :id, :name, {
+                <%= form.grouped_collection_select :project_id, clients, :projects, :name, :id, :name, {
                   disabled: "",
                   selected: time_reg.project&.id || "",
                   prompt: "select a project:",
