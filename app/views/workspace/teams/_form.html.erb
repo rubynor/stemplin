@@ -10,7 +10,7 @@
           <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
               <%= render PhlexUI::Label.new { t("registration.first_name") } %>
-              <%= form.text_field :first_name, required: true, class: "border-gray-200 rounded-md w-full" %>
+              <%= form.text_field :first_name, required: true, class: "border-gray-200 rounded-md w-full", autofocus: true %>
               <% user.errors.full_messages_for(:first_name).each do |message|%>
                 <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
               <% end %>

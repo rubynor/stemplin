@@ -38,7 +38,7 @@
               <% else %>
                 <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
                   <%= render PhlexUI::Label.new { "Name" } %>
-                  <%= task_form.text_field :name, class: "border-gray-200 rounded-md" %>
+                  <%= task_form.text_field :name, class: "border-gray-200 rounded-md", autofocus: true %>
                   <% assigned_task.errors.full_messages_for(:name).each do |message|%>
                     <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
                   <% end %>
