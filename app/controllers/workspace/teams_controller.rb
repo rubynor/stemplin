@@ -12,20 +12,26 @@ module Workspace
     end
 
     def create
-      ActiveRecord::Base.transaction do
-        @user = authorized_scope(User, type: :relation).new(team_member_params.except(:role).merge(is_verified: false))
-        @user.save!
-        authorized_scope(AccessInfo, type: :relation).create!(user: @user, organization: current_user.current_organization, role: AccessInfo.roles[team_member_params[:role]])
-      end
+      begin
+        @user = User.find_or_create_by!(email: team_member_params[:email]) do |user|
+          user.assign_attributes(team_member_params.except(:role).merge(is_verified: false))
+        end
 
-      render turbo_stream: [
-        turbo_flash(type: :success, data: t("notice.user_added_to_the_organization")),
-        turbo_stream.append(:organization_users, partial: "workspace/teams/user", locals: { user: @user }),
-        turbo_stream.action(:remove_modal, :modal)
-      ]
-    rescue => e
-      @roles = AccessInfo.allowed_organization_roles
-      render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/teams/form", locals: { user: @user, roles: @roles })
+        authorized_scope(AccessInfo, type: :relation).create!(
+          user: @user,
+          organization: current_user.current_organization,
+          role: AccessInfo.roles[team_member_params[:role]]
+        )
+
+        render turbo_stream: [
+          turbo_flash(type: :success, data: t("notice.user_added_to_the_organization")),
+          turbo_stream.append(:organization_users, partial: "workspace/teams/user", locals: { user: @user }),
+          turbo_stream.action(:remove_modal, :modal)
+        ]
+      rescue => e
+        @roles = AccessInfo.allowed_organization_roles
+        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/teams/form", locals: { user: @user, roles: @roles })
+      end
     end
 
     def implicit_authorization_target
