@@ -13,3 +13,15 @@ no_assigned_tasks:
 login:
   name: login
   organization: organization_two
+
+authentication:
+  name: Debug
+  organization: organization_one
+
+ux_audit:
+  name: UX Audit
+  organization: organization_one
+
+e2e_testing:
+  name: E2E Testing
+  organization: organization_one

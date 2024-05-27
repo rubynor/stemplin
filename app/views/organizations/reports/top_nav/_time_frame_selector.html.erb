@@ -1,0 +1,26 @@
+<div class="border border-gray-200 shadow-sm rounded flex flex-row items-center bg-white h-full print:hidden">
+  <%# TODO: Find a better way to persist query params %>
+  <%= link_to organizations_reports_path(filter: { **@filter.previous_period, category: @filter.category, time_frame: @filter.time_frame }), class: "p-2 transform rotate-180" do %>
+    <i class="uc-icon text-gray-600 text-xl">&#xe81f;</i>
+  <% end %>
+  <div class="border-l border-r border-gray-100 h-full p-2">
+    <%= render PhlexUI::Popover.new(options: { placement: "bottom-end" }) do %>
+      <%= render PhlexUI::Popover::Trigger.new(class: "w-full flex flex-row justify-between items-center gap-x-2") do %>
+        <span class="capitalize"> <%= @filter.time_frame %> </span>
+        <i class="uc-icon text-gray-400 text-lg">&#xe819;</i>
+      <% end  %>
+      <%= render PhlexUI::Popover::Content.new(class: "divide-y divide-gray-50 w-48") do %>
+        <% @filter.time_frames.each do |time_frame| %>
+          <%= render PhlexUI::Link.new(href: organizations_reports_path(filter: { category: @filter.category, time_frame: time_frame[:value] }), variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+            <div class="w-full flex justify-start items-center gap-x-1">
+              <%= render PhlexUI::Label.new(class: "capitalize") { time_frame[:label] } %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  <%= link_to organizations_reports_path(filter: { **@filter.next_period, category: @filter.category, time_frame: @filter.time_frame }), class: "p-2" do %>
+    <i class="uc-icon text-gray-600 text-xl">&#xe81f;</i>
+  <% end %>
+</div>

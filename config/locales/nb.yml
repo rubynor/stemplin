@@ -414,3 +414,15 @@ nb:
       success: "Suksess"
   time_regs:
     active_timer_description: "Vær oppmerksom på at du har en timer som går."
+  organizations:
+    reports_filter:
+      tabs:
+        clients: Kunder
+        projects: Prosjekter
+        tasks: Oppgaver
+        users: Lag medlemmer
+      time_frames:
+        week: Week
+        month: Month
+        year: Year
+        custom: Custom

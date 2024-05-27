@@ -35,3 +35,17 @@ time_reg_5:
   date_worked: <%= Date.today - 1 %>
   user: joe
   <<: *DEFAULTS
+
+time_reg_6:
+  assigned_task: task_4
+  date_worked: <%= Date.today - 1 %>
+  user: joe
+  minutes: 230
+  <<: *DEFAULTS
+
+time_reg_with_custom_rate_task_1:
+  assigned_task: task_with_custom_rate_1
+  date_worked: <%= Date.today %>
+  user: joe
+  minutes: 450
+  <<: *DEFAULTS

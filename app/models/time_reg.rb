@@ -27,7 +27,7 @@ class TimeReg < ApplicationRecord
         project: { id: project_ids },
         user: { id: user_ids },
         task: { id: task_ids },
-      )
+        )
   }
   scope :on_date, ->(given_date) {
     where("date(date_worked) = ?", given_date).includes(:project, :assigned_task).order(created_at: :desc)
@@ -36,6 +36,12 @@ class TimeReg < ApplicationRecord
     where("date(date_worked) BETWEEN ? AND ?", start_date, end_date)
   }
   scope :all_active, -> { where.not(start_time: nil) }
+  scope :billable, -> { joins(:project).where(projects: { billable: true }) }
+
+  scope :by_client, ->(client_id) { joins(project: :client).where(clients: { id: client_id }) }
+  scope :by_project, ->(project_id) { where(assigned_task: AssignedTask.where(project_id: project_id)) }
+  scope :by_user, ->(user_id) { where(user_id: user_id) }
+  scope :by_task, ->(task_id) { where(assigned_task: AssignedTask.where(task_id: task_id)) }
 
   def active?
     start_time.present?
@@ -62,23 +68,18 @@ class TimeReg < ApplicationRecord
     self.minutes + (Time.now - self.start_time).seconds.in_minutes.to_i
   end
 
-  scope :for_report, ->(client_ids, project_ids, user_ids, task_ids) {
-    joins(:user, :project, :task, :client)
-      .where(
-        client: { id: client_ids },
-        project: { id: project_ids },
-        user: { id: user_ids },
-        task: { id: task_ids },
-      )
-  }
+  def used_rate
+    assigned_task.rate.positive? ? assigned_task.rate : project.rate
+  end
 
-  scope :on_date, ->(given_date) {
-    where("date(date_worked) = ?", given_date).includes(:project, :assigned_task).order(created_at: :desc)
-  }
+  def total_hours
+    minutes.to_f / 60
+    # TODO: ensure the hours used in calculations is the same as hours displayed check `minutes_to_float`
+  end
 
-  scope :between_dates, ->(start_date, end_date) {
-    where("date(date_worked) BETWEEN ? AND ?", start_date, end_date)
-  }
+  def billed_amount
+    total_hours * used_rate
+  end
 
   protected
 

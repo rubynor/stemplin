@@ -1,0 +1,20 @@
+<div class="flex flex-row items-center gap-x-4">
+  <div class="bg-white border border-gray-100 rounded flex justify-center items-center px-4 py-3 relative">
+    <i class="uc-icon text-xl text-gray-600">&#xe891;</i>
+    <% if @filter.default_period? %>
+      <div class="absolute -bottom-2 -right-2 bg-green-600 rounded-full w-4 h-4 flex justify-center items-center">
+        <i class="uc-icon text-xs text-white">&#xe8b2;</i>
+      </div>
+    <% end %>
+  </div>
+  <div class="flex flex-col">
+    <%= render partial: "organizations/reports/top_nav/selected_time_range" %>
+    <% unless @filter.default_period? %>
+      <%# TODO: Find a better way to persist query params %>
+      <%= link_to organizations_reports_path(filter: { category: @filter.category }), class: "text-xs text-gray-400 underline" do %>
+        <span>Reset default</span>
+        <i class="uc-icon">&#xeb8c;</i>
+      <% end %>
+    <% end %>
+  </div>
+</div>
