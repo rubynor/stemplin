@@ -164,6 +164,7 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     paco (0.2.3)
+    pagy (8.4.0)
     parallel (1.24.0)
     parser (3.3.0.5)
       ast (~> 2.4.1)
@@ -355,6 +356,7 @@ DEPENDENCIES
   hotwire-livereload
   jbuilder
   jsbundling-rails
+  pagy
   pg (~> 1.1)
   phlex-rails (~> 1.1)
   phlex_ui (~> 0.1.7)
