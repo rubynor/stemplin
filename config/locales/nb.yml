@@ -93,6 +93,7 @@ nb:
     time: "Tid"
     reports: "Rapporter"
     report: "Rapport"
+    organization_reports: "Organisasjonsrapporter"
     projects: "Prosjekter"
     project: "Prosjekt"
     notes: "Notater"

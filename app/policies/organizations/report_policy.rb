@@ -2,7 +2,7 @@ module Organizations
   class ReportPolicy < ApplicationPolicy
     [ :index? ].each do |action|
       define_method(action) do
-        true
+        user.organization_admin?
       end
     end
   end
