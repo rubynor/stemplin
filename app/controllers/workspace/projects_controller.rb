@@ -40,7 +40,7 @@ module Workspace
     end
 
     def index
-      @projects = authorized_scope(Project, type: :relation).all
+      @pagy, @projects = pagy authorized_scope(Project, type: :relation).all
     end
 
     def new_modal
@@ -73,6 +73,7 @@ module Workspace
 
     def set_project
       @project = Project.find(params[:id])
+      @pagy, @active_assigned_tasks = pagy @project.active_assigned_tasks, items: 6
       authorize! @project
     end
 

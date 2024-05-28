@@ -31,5 +31,6 @@
         <%= render partial: "workspace/projects/project", collection: @projects %>
       <% end %>
     <% end %>
+    <%= render PaginationComponent.new(pagy: @pagy, path: workspace_projects_path) if @pagy.pages > 1 %>
   </div>
 </div>

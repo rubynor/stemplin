@@ -26,5 +26,6 @@
         <%= render partial: "workspace/teams/user", collection: @users %>
       <% end %>
     <% end %>
+    <%= render PaginationComponent.new(pagy: @pagy, path: workspace_teams_path) if @pagy.pages > 1 %>
   </div>
 </div>
