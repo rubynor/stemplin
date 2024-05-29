@@ -5,13 +5,13 @@ SimpleCov.start "rails" do
   add_filter "/test/"
   add_filter "/config/"
   add_filter "/app/javascript/"
+  add_filter "/app/views/components/"
 
   # Groups not covered by default
   add_group "Policies", "app/policies"
   add_group "Presenters", "app/presenters"
   add_group "Services", "app/services"
   add_group "Components", "app/views/components"
-  add_group "Models", "app/models"
 end
 
 ENV["RAILS_ENV"] ||= "test"
