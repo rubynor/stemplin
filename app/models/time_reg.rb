@@ -1,8 +1,6 @@
 class TimeReg < ApplicationRecord
   MINUTES_IN_A_DAY = 1.day.in_minutes.to_i
 
-  validates :notes, format: { without: /\r|\n/, message: "Line breaks are not allowed" }
-
   belongs_to :user
   belongs_to :assigned_task
 

@@ -42,4 +42,9 @@ class TimeRegTest < ActiveSupport::TestCase
   test "#billed_amount should be accurate" do
     assert_equal @time_reg.total_hours * @time_reg.used_rate, @time_reg.billed_amount
   end
+
+  test "#notes should allow line breaks" do
+    @time_reg.notes = "First line \n second line"
+    assert @time_reg.valid?
+  end
 end
