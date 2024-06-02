@@ -17,6 +17,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <%= favicon_link_tag "logo.svg" %>
+
+    <%= render partial: "layouts/pwa_meta_tags" %>
   </head>
   <body class="font-montserrat">
     <%= highlight_missing_translations if Rails.env.development? %>
