@@ -14,41 +14,7 @@
       </div>
       <div class="flex items-center divide-x divide-gray-100 space-x-4">
         <%= render partial: "shared/language_picker" %>
-        <%= render PhlexUI::Popover.new(options: { placement: "bottom-end" }, class: "hidden lg:block pl-4") do %>
-          <%= render PhlexUI::Popover::Trigger.new(class: "w-full flex flex-row justify-between items-center gap-x-8") do %>
-            <div class="flex flex-row items-center gap-x-2">
-              <div class="bg-gray-100 border border-gray-200 p-2 flex justify-center items-center rounded">
-                <span class="text-base font-semibold text-gray-600">
-                  <%= current_user&.first_name&.first %>
-                </span>
-                <span class="text-base font-semibold text-gray-600">
-                  <%= current_user&.last_name&.first %>
-                </span>
-              </div>
-              <div class=" flex flex-col">
-                <div class="w-32 truncate">
-                  <span class="text-base"><%= current_user.name %></span>
-                </div>
-                <span class="text-xs text-gray-400"><%= current_user&.email %></span>
-              </div>
-            </div>
-            <i class="uc-icon text-base text-gray-500">&#xe81d;</i>
-          <% end  %>
-          <%= render PhlexUI::Popover::Content.new(class: "divide-y divide-gray-50") do %>
-            <%= render PhlexUI::Link.new(href: edit_user_registration_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
-              <div class="w-full flex justify-start items-center gap-x-1">
-                <i class="uc-icon text-base text-gray-500">&#xebb2;</i>
-                <%= render PhlexUI::Label.new { t("common.edit_account")} %>
-              </div>
-            <% end %>
-            <%= render ButtonComponent.new(path: destroy_user_session_path, method: :delete, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
-              <div class="w-full flex justify-start items-center gap-x-1">
-                <i class="uc-icon text-base text-gray-500">&#xe978;</i>
-                <%= render PhlexUI::Label.new { t("common.sign_out")} %>
-              </div>
-            <% end %>
-          <% end %>
-        <% end %>
+        <%= render partial: "shared/user_dropdown" %>
       </div>
       <div class="lg:hidden p-6 lg:p-8">
         <%= render PhlexUI::Popover.new(options: { placement: "bottom-end" }) do %>
