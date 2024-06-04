@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include ActionView::RecordIdentifier
+  include Pagy::Backend
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_locale

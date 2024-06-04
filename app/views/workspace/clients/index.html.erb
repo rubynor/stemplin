@@ -2,8 +2,8 @@
   <div class="flex flex-row justify-between items-center border-b border-gray-100 py-3">
     <div class="flex flex-row items-center gap-x-2">
       <span class="font-medium text-gray-600 text-lg"><%=  t("common.clients") %></span>
-      <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
-        <span class="text-gray-700 text-xs font-semibold"><%= @clients.count %></span>
+      <div class="bg-gray-100 border border-gray-200 w-6 h-6 px-4 flex justify-center items-center rounded-md">
+        <span class="text-gray-700 text-xs font-semibold"><%= @pagy.count %></span>
       </div>
     </div>
     <div class="flex flex-row gap-2">
@@ -27,5 +27,6 @@
         <%= render partial: "workspace/clients/client", collection: @clients %>
       <% end %>
     <% end %>
+    <%= render PaginationComponent.new(pagy: @pagy, path: workspace_clients_path) if @pagy.pages > 1 %>
   </div>
 </div>

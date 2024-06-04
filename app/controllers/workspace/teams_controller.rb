@@ -3,7 +3,7 @@ module Workspace
     skip_verify_authorized
 
     def index
-      @users = authorized_scope(User, type: :relation).all
+      @pagy, @users = pagy authorized_scope(User, type: :relation).all
     end
 
     def new_modal

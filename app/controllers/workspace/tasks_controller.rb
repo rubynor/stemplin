@@ -6,7 +6,7 @@ module Workspace
     verify_authorized only: %i[edit_modal update destroy delete_confirmation]
 
     def index
-      @tasks = authorized_scope(Task, type: :relation).all
+      @pagy, @tasks = pagy authorized_scope(Task, type: :relation).all
     end
 
     def new_modal
