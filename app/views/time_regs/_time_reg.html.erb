@@ -1,32 +1,40 @@
 <%= content_tag(:div, id: dom_id(time_reg), data: { controller: "refresh-minutes", refresh_minutes_active_value: time_reg.active?, refresh_minutes_minutes_value: time_reg.current_minutes, refresh_minutes_format_value: "H:mm" }, class: "shadow-sm rounded-md p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-y-4") do %>
-  <div class="flex flex-row lg:items-center gap-x-4">
-    <div class="bg-gray-50 border border-gray-100 rounded flex justify-center items-center w-8 h-8 relative">
-      <i class="uc-icon text-base text-gray-400">&#xe8bb;</i>
+  <div class="flex flex-row gap-x-4">
+    <div class="bg-gray-50 border border-gray-100 rounded flex justify-center items-center w-12 h-12 relative">
+      <i class="uc-icon text-lg text-gray-400">&#xe8bb;</i>
       <% if time_reg.active? %>
         <div class="absolute -bottom-2 -right-2 bg-yellow-500 rounded-full w-4 h-4 flex justify-center items-center">
           <%= image_tag "hour_glass.svg", class: "animate-spin w-2.5" %>
         </div>
       <% end %>
     </div>
-    <div class="flex flex-row items-start w-full gap-x-2 justify-between">
-      <div class="flex flex-col">
-        <div class="flex flex-col lg:flex-row lg:items-center text-sm lg:text-base text-gray-600 gap-x-2">
-          <span><%= time_reg.task.name %></span>
-          <span class="hidden lg:block">-</span>
-          <span class="font-semibold"><%= time_reg.project.name %></span>
+    <div class="flex flex-row items-start w-full gap-x-2">
+      <div class="flex flex-col w-auto">
+        <div class="flex flex-row gap-x-2 justify-between lg:justify-start">
+          <div class="flex flex-col lg:flex-row lg:items-center text-sm lg:text-base text-gray-600 gap-x-2 w-fit">
+            <span><%= time_reg.task.name %></span>
+            <span class="hidden lg:block">-</span>
+            <span class="font-semibold"><%= time_reg.project.name %></span>
+          </div>
+          <div>
+            <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") do %>
+              <i class="uc-icon text-sm text-gray-600">&#xe8bb;</i>
+              <span data-refresh-minutes-target="minutes">
+                <%= convert_time_int(time_reg.current_minutes) %>
+              </span>
+            <% end %>
+          </div>
         </div>
-        <span class="text-xs text-gray-500"><%= time_reg.project.client.name %></span>
+        <div class="w-fit">
+          <span class="text-sm text-gray-800"><%= time_reg.project.client.name %></span>
+        </div>
+        <div class="w-full md:w-3/4 lg:w-1/2">
+          <p class="text-xs text-gray-500"><%= time_reg.notes %></p>
+        </div>
       </div>
-      <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") do %>
-        <i class="uc-icon text-sm text-gray-600">&#xe8bb;</i>
-        <span data-refresh-minutes-target="minutes">
-          <%= convert_time_int(time_reg.current_minutes) %>
-        </span>
-      <% end %>
     </div>
   </div>
   <div class="flex gap-x-4 justify-end">
-
     <%= render ButtonComponent.new(path: time_reg_toggle_active_path(time_reg), method: :patch, class: "gap-x-2", variant: time_reg.active? ? :secondary : :outline, disabled: time_reg.date_worked != Date.today && !time_reg.active?) do %>
     <% if time_reg.active? %>
       <i class="uc-icon text-base">&#xeb59;</i>
