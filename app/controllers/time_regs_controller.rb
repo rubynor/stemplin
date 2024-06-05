@@ -30,7 +30,6 @@ class TimeRegsController < ApplicationController
     @time_reg = current_user.time_regs.new(time_reg_params.except(:project_id, :minutes_string))
 
     if @time_reg.save
-      flash[:notice] = "Time entry has been logged."
       redirect_to time_regs_path(date: @time_reg.date_worked)
     else
       flash.now[:alert] = "Unable to create time entry"
@@ -40,7 +39,6 @@ class TimeRegsController < ApplicationController
 
   def update
     if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
-      flash[:notice] = "Time entry has been updated."
       redirect_to time_regs_path(date: @time_reg.date_worked)
     else
       render :edit_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
@@ -49,7 +47,6 @@ class TimeRegsController < ApplicationController
 
   def destroy
     @time_reg.destroy!
-    flash[:notice] = "Time registration was successfully deleted."
     redirect_to time_regs_path(date: @time_reg.date_worked)
 
   rescue ActiveRecord::RecordNotDestroyed
