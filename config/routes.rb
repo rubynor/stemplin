@@ -84,4 +84,11 @@ Rails.application.routes.draw do
   namespace :organizations do
     resources :reports, only: [ :index ]
   end
+
+  # PWA routes
+
+  scope controller: :service_worker do
+    get :manifest, format: :json
+    get :service_worker, path: "service_worker.js"
+  end
 end
