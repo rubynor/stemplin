@@ -5,7 +5,7 @@
       <div class="hidden lg:flex h-full gap-x-12">
         <%= link_to t("common.home"), time_regs_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([root_path, time_regs_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
         <% if current_user.organization_admin? %>
-          <%= link_to t("common.workspace"), workspace_projects_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([workspace_projects_path, workspace_clients_path, workspace_teams_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
+          <%= link_to t("common.workspace"), workspace_projects_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([workspace_clients_path, workspace_tasks_path, workspace_projects_path, workspace_teams_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
         <% end %>
         <%= link_to t("common.reports"), report_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?(report_path) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
         <% if current_user.organization_admin? %>
