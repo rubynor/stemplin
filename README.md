@@ -30,15 +30,11 @@ If Postgres is not running, start it with:
 sudo service postgresql start
 ```
 
-To create the project database, run the migrations with:
+To create the project database, run the migrations and populate it using fixtures, run the following commands:
 
 ```shell
+rails db:create
 rails db:migrate
-```
-
-Now, populate the database using fixtures:
-
-```shell
 rails db:fixtures:load
 ```
 
