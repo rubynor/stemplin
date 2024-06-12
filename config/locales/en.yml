@@ -68,7 +68,7 @@ en:
   time_reg:
     errors:
       messages:
-        timer_running: "Another timer is allready running"
+        timer_running: "Another timer is already running"
 
   common:
     client: "Client"
@@ -128,7 +128,7 @@ en:
     remove_every_task_from_the_project: "Remove every task from the project"
     delete_the_project_permanently: "Delete the project permanently"
     please_enter: "Please enter"
-    delete: "DELETE"
+    delete: "Delete"
     to_confirm: "to confirm"
     delete_the_client_permanently: "Delete the client permanently"
     cannot_delete_client_with_active_projects: "Cannot delete client with active projects"

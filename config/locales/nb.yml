@@ -52,9 +52,9 @@ nb:
       - Jul
       - Aug
       - Sep
-      - Oct
+      - Okt
       - Nov
-      - Dec
+      - Des
 
     abbr_day_names:
       - Søn
@@ -143,7 +143,7 @@ nb:
     remove_every_task_from_the_project: "Fjern hver oppgave fra prosjektet"
     delete_the_project_permanently: "Slett prosjektet permanent"
     please_enter: "Vennligst skriv inn"
-    delete: "Fjærn"
+    delete: "Fjern"
     to_confirm: "for bekreftelse"
     delete_the_client_permanently: "Slett kunden permanent"
     cannot_delete_client_with_active_projects: "Kan ikke slette kunde med aktive prosjekter"
@@ -218,11 +218,11 @@ nb:
     the_client_has_associated_projects: "Kunden har tilknyttede prosjekter, kan ikke slettes."
     add_task_to: "Legg oppgave til"
     optional_project: "Dette er valgfritt, ellers bør prosjekt pris bli brukt"
-    add: "Leg Till"
+    add: "Legg Til"
     looking_for: "Kan du ikke finne hva du leter etter?"
     update: "Oppdater"
     project_rate: "prosjekt Verdi"
-    new_client: Ny kunde
+    new_client: "Ny kunde"
 
   notice:
     are_you_sure: "Er du sikker?"
