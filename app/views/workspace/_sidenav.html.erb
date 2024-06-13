@@ -13,7 +13,7 @@
       <% end %>
     </li>
     <li>
-      <%= link_to workspace_projects_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?(workspace_projects_path) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
+      <%= link_to workspace_projects_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_projects_path, workspace_project_path(@project || 0)]) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
         <i class="uc-icon text-xl">&#xe94f;</i>
         <span><%= t("common.projects") %></span>
       <% end %>
