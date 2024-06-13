@@ -164,7 +164,7 @@ en:
     role: "Role"
     select_organization_user: "Kindly select organization user, if all this user will do is record time registrations."
     select_role: "Select role"
-    share_temporary_password_with_user: "Kindly share this temporary password with the user for login purposes. They can change it later on."
+    share_temporary_password_with_user: "Kindly share this temporary password with the user for login purposes. They can change it at a later time."
     deletion_of_the_client: "Do you want to proceed with the deletion of the client"
     cannot_be_undone: "This action cannot be undone."
     billable: "Billable"
