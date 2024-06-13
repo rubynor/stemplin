@@ -68,7 +68,7 @@ en:
   time_reg:
     errors:
       messages:
-        timer_running: "Another timer is allready running"
+        timer_running: "Another timer is already running"
 
   common:
     client: "Client"
@@ -85,8 +85,8 @@ en:
     sign_out: "Sign Out"
     cancel: "Cancel"
     start_timer: "Start timer"
-    create_time_reg: "Create Time reg"
-    update_time_reg: "Update Time reg"
+    create_time_reg: "Create time entry"
+    update_time_reg: "Update time entry"
     edit: "Edit"
     stop: "Stop"
     start: "Start"
@@ -128,7 +128,7 @@ en:
     remove_every_task_from_the_project: "Remove every task from the project"
     delete_the_project_permanently: "Delete the project permanently"
     please_enter: "Please enter"
-    delete: "DELETE"
+    delete: "Delete"
     to_confirm: "to confirm"
     delete_the_client_permanently: "Delete the client permanently"
     cannot_delete_client_with_active_projects: "Cannot delete client with active projects"
@@ -164,7 +164,7 @@ en:
     role: "Role"
     select_organization_user: "Kindly select organization user, if all this user will do is record time registrations."
     select_role: "Select role"
-    share_temporary_password_with_user: "Kindly share this temporary password with the user for login purposes. They can change it later on."
+    share_temporary_password_with_user: "Kindly share this temporary password with the user for login purposes. They can change it at a later time."
     deletion_of_the_client: "Do you want to proceed with the deletion of the client"
     cannot_be_undone: "This action cannot be undone."
     billable: "Billable"
@@ -202,7 +202,7 @@ en:
     task_is_already_assigned: "The task is already assigned to projects, can not be deleted."
     the_client_has_associated_projects: "The Client has associated projects, can not be deleted."
     add_task_to: "Add task to"
-    optional_project: "This is optional, otherwise Project rate should be applied"
+    optional_project: "This is optional, otherwise project rate will be applied"
     add: "Add"
     looking_for: "Can't find what you're looking for?"
     update: "Update"
@@ -227,7 +227,6 @@ en:
     with_a_task: "with a task"
     logged_action_cannot_be_undone: "logged. This action cannot be undone."
     registration_was_successfully: "Time registration was successfully deleted."
-    time_entry_has_been_toggled: "Time entry has been toggled"
     _on: "on"
     _off: "off"
     unable_to_delete_time_registration: "Unable to delete time registration"
@@ -240,7 +239,7 @@ en:
     client_was_successfully_updated: "Client was successfully updated"
     tasks_was_successfully_created: "task was successfully updated."
     tasks_was_successfully_deleted: "task was successfully deleted."
-    tasks_was_successfully_updated: "task was successfully updated"
+    tasks_was_successfully_updated: "task was successfully updated."
     user_added_to_the_organization: "User added to the organization."
     time_entry_has_been_logged: "Time entry has been logged."
     edits_to_the_task_name: "Kindly note that edits to the task name will be applied to all the projects. Edits to the billable rate will be applied to this project only and will take effect on new Time registrations."
@@ -276,7 +275,7 @@ en:
     too_short: "is too short (minimum is %{count} characters)"
     too_long: "is too long (maximum is %{count} characters)"
     the_task: "The task"
-    assigned_to_project: "is already assigned to a project, Kindly remove associated projects if you wish to proceed with this task deletion."
+    assigned_to_project: "is already assigned to a project. Kindly remove associated projects if you wish to proceed with this task deletion."
     proceed_deletion_of_the_task: "Do you want to proceed with the deletion of the task"
     cannot_be_undone: "This action cannot be undone."
 
