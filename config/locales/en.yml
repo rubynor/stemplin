@@ -100,7 +100,8 @@ en:
     not_billed_to_a_client: "Not billed to a client"
     track_billable_rates: "We need billable rates to track your project's billable amount"
     project_billable_rate: "Project billable rate"
-    per_hour: "Per hour"
+    billable_amount: "Billable amount"
+    per_hour: "per hour"
     your_projects: "Your projects"
     new_project: "New project"
     project_tasks: "Project tasks"
@@ -138,6 +139,7 @@ en:
     total: "Total"
     total_billable_hours: "Total billable hours"
     total_hours: "Total hours"
+    billable_hours: "Billable hours"
     home: "Home"
     workspace: "Workspace"
     reset_date: "Reset date"
@@ -181,6 +183,7 @@ en:
     detailed_report: "detailed report"
     team: "Team"
     filter: "Filter"
+    period: "Period"
     period_from: "Period - from" 
     period_to: "Period - to"
     reset: "Reset"
@@ -207,7 +210,9 @@ en:
     looking_for: "Can't find what you're looking for?"
     update: "Update"
     project_rate: "Project Rate"
+    custom_rate: "Custom Rate"
     new_client: New client
+    select_project: "Select a project:"
 
   notice:
     are_you_sure: "Are you sure?"
@@ -325,3 +330,9 @@ en:
         month: Month
         year: Year
         custom: Custom
+
+    access_info:
+      role:
+        organization_user: "Organization user"
+        organization_admin: "Organization administrator"
+        super_admin: "Super administrator"

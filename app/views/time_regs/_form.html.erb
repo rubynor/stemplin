@@ -24,7 +24,7 @@
                 <%= form.grouped_collection_select :project_id, clients, :projects, :name, :id, :name, {
                   disabled: "",
                   selected: time_reg.project&.id || "",
-                  prompt: "select a project:",
+                  prompt: t('common.select_project'),
                 }, {
                   class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
                 } %>
@@ -72,7 +72,7 @@
           <% end %>
         <% end %>
         <%= render PhlexUI::Dialog::Footer.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
-          <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->dismissable#dismiss' }) { "Cancel" } %>
+          <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->dismissable#dismiss' }) { t("common.cancel") } %>
           <%= render ButtonComponent.new(type: :submit, data: { custom_input_target: "submitButton" }) {} %>
         <% end %>
       <% end %>

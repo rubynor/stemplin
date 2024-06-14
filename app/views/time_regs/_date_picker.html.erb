@@ -17,7 +17,7 @@
         <%= render PhlexUI::Popover::Content.new do %>
           <%= render PhlexUI::Calendar.new(selected_date: @chosen_date, input_id: "#date_picker_select_cta") %>
           <div class="pt-2 border-t border-gray-100">
-            <%= render ButtonComponent.new(type: "submit", class: "w-full", variant: :secondary) { "Update" } %>
+            <%= render ButtonComponent.new(type: "submit", class: "w-full", variant: :secondary) { t("common.update") } %>
           </div>
         <% end %>
       <% end %>

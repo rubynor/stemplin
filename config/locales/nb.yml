@@ -115,8 +115,9 @@ nb:
     bill_hourly_rates_apply: "Regning hver time, priser gjelder"
     not_billed_to_a_client: "Ikke fakturert til en kunde"
     track_billable_rates: "Vi trenger fakturerbare priser for å spore prosjektets fakturerbare beløp"
-    project_billable_rate: "Prosjektfakturerbar rate"
-    per_hour: "Hver time"
+    project_billable_rate: "Prosjektfakturerbar timepris"
+    billable_amount: "Fakturerbart beløp"
+    per_hour: "hver time"
     your_projects: "Dine prosjekter"
     new_project: "Nytt prosjekt"
     project_tasks: "Prosjektoppgaver"
@@ -153,6 +154,7 @@ nb:
     total: "Totalt"
     total_billable_hours: "Totalt fakturerbare timer"
     total_hours: "Totalt antall timer"
+    billable_hours: "Fakturerbare timer"
     home: "Hjem"
     workspace: "Arbeidsområde"
     reset_date: "Tilbakestill dato"
@@ -183,7 +185,7 @@ nb:
     deletion_of_the_client: "Ønsker du å fortsette med å slette kunden"
     cannot_be_undone: "Denne handlingen er permanent"
     billable: "Fakturerbar"
-    information: "Information"
+    information: "Informasjon"
     billing_status: "Faktureringsstatus"
     created: "Opprettet"
     need_to_add_more_tasks: "Trenger du å legge til flere oppgaver?"
@@ -196,6 +198,7 @@ nb:
     detailed_report: "detaljert rapport"
     team: "Gruppe"
     filter: "Filter"
+    period: "Periode"
     period_from: "Periode - fra"
     period_to: "Periode - til"
     reset: "Nullstill"
@@ -222,7 +225,9 @@ nb:
     looking_for: "Kan du ikke finne hva du leter etter?"
     update: "Oppdater"
     project_rate: "Prosjekttimepris"
+    custom_rate: "Egendefinert timepris"
     new_client: "Ny kunde"
+    select_project: "Velg et prosjekt:"
 
   notice:
     are_you_sure: "Er du sikker?"
@@ -422,7 +427,13 @@ nb:
         tasks: Oppgaver
         users: Lag medlemmer
       time_frames:
-        week: Week
-        month: Month
-        year: Year
-        custom: Custom
+        week: "Uke"
+        month: "Måned"
+        year: "År"
+        custom: "Egendefinert"
+
+  access_info:
+    role:
+      organization_user: "Organisasjonsbruker"
+      organization_admin: "Organisasjonsadministrator"
+      super_admin: "Superadministrator"

@@ -68,10 +68,10 @@
               </td>
               <td>
                 <div class="flex flex-col">
-                  <span class="text-xs">NOK <%= child.assigned_task.rate.zero? ? child.project.rate_nok : child.assigned_task.rate_nok %> per hour</span>
-                  <%= render PhlexUI::Badge.new(variant: child.assigned_task.rate.zero? ? :gray : :purple, class: "!rounded-full flex gap-x-1 w-fit") do %>
-                    <span><%= child.assigned_task.rate.zero? ? "Project Rate" : "Custom Rate"%></span>
+                  <%= render PhlexUI::Badge.new(size: :sm, variant: child.assigned_task.rate.zero? ? :gray : :purple, class: "text-nowrap w-fit gap-x-1 justify-center") do %>
+                    <span><%= child.assigned_task.rate.zero? ? t("common.project_rate") : t("common.custom_rate") %></span>
                   <% end %>
+                  <span class="text-s block">NOK <%= child.assigned_task.rate.zero? ? child.project.rate_nok : child.assigned_task.rate_nok %> </span>
                 </div>
               </td>
               <td><%= child.user.name %></td>
