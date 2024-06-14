@@ -38,7 +38,7 @@ module Workspace
           turbo_stream.action(:remove_modal, :modal)
         ]
       else
-        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/tasks/task", locals: { task: @task })
+        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/tasks/form", locals: { task: @task })
       end
     end
 
