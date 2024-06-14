@@ -68,10 +68,22 @@ class TimeRegsControllerTest < ActionController::TestCase
   test "should not create time_reg and start timer if another is turned on" do
     used_project = @user.current_organization.projects.first
     @active_time_reg = @old_time_reg
-    @active_time_reg.update(start_time: 1.day.ago)
+    @active_time_reg.update(start_time: 1.hour.ago)
 
-    post :create, params: { time_reg: { date_worked: @current_date, minutes: 0, project_id: used_project.id, assigned_task_id: used_project.assigned_tasks.first.id } }
-    assert_not @time_reg.active?
+    assert_no_difference("TimeReg.count") do
+      post :create, params: { time_reg: { date_worked: @current_date, minutes: 0, project_id: used_project.id, assigned_task_id: used_project.assigned_tasks.first.id } }
+    end
     assert @active_time_reg.active?
+  end
+
+  test "should update an old time_reg while another timer is running" do
+    used_project = @user.current_organization.projects.first
+    active_time_reg = @time_reg
+    old_time_reg = @old_time_reg
+    active_time_reg.update(start_time: 5.minutes.ago)
+
+    patch :update, params: { id: old_time_reg.id, time_reg: { notes: "Test notes" } }
+    old_time_reg = TimeReg.find old_time_reg.id
+    assert_equal "Test notes", old_time_reg.notes
   end
 end
