@@ -331,8 +331,23 @@ en:
         year: Year
         custom: Custom
 
-    access_info:
-      role:
-        organization_user: "Organization user"
-        organization_admin: "Organization administrator"
-        super_admin: "Super administrator"
+  access_info:
+    role:
+      organization_user: "Organization User"
+      organization_admin: "Organization Administrator"
+      super_admin: "Super administrator"
+
+  login_page:
+    sign_in_to_your_account: "Sign in to your account"
+    sign_in_with: "Sign in with"
+    or_continue_with: "Or continue with"
+    email: "Email"
+    email_address: "Email address"
+    password: "Password"
+    remember_me: "Remember me"
+    forgot_password: "Forgot your password?"
+    sign_in: "Sign in"
+    dont_have_an_account: "Don't have an account?"
+    sign_up: "Sign up"
+    streamline_your_workflow: "Streamline Your Workflow"
+    app_summary: "Boost collaboration and simplify project execution. Assign tasks, track time, and generate insightful reports – all in one place. Empower your team and achieve more with streamlined workflows."

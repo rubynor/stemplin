@@ -437,3 +437,18 @@ nb:
       organization_user: "Organisasjonsbruker"
       organization_admin: "Organisasjonsadministrator"
       super_admin: "Superadministrator"
+
+  login_page:
+    sign_in_to_your_account: "Logg inn på kontoen din"
+    sign_in_with: "Logg inn med"
+    or_continue_with: "Eller fortsett med"
+    email: "E-post"
+    email_address: "E-postadresse"
+    password: "Passord"
+    remember_me: "Husk meg"
+    forgot_password: "Glemt passord?"
+    sign_in: "Logg inn"
+    dont_have_an_account: "Har du ikke en konto?"
+    sign_up: "Registrer deg"
+    streamline_your_workflow: "Strømlinjeform Arbeidsflyten Din"
+    app_summary: "Øk samarbeidet og forenkle din prosjektering. Tildel oppgaver, loggfør tid og få innsiktsfulle rapporter – alt på ett sted. Gi teamet ditt muligheten til å oppnå mer med en effektivisert arbeidsflyt."
