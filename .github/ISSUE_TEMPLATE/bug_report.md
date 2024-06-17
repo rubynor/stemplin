@@ -25,3 +25,11 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+
+
+
+**Environment:** [e.g. Prod]
+
+**Browser:** [e.g. Google Chrome]
+
+**OS:** [e.g. Windows]
