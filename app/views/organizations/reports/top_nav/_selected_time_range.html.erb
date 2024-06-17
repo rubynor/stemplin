@@ -1,5 +1,5 @@
 <span class="text-gray-700 text-base lg:text-lg">
-  <span class="capitalize"><%= @filter.is_custom_time_frame? ? "From" : @filter.time_frame %>:</span>
+  <span class="capitalize"><%= @filter.is_custom_time_frame? ? t("common.period") : t("organizations.reports_filter.time_frames.#{@filter.time_frame}") %>:</span>
   <span class="font-semibold">
     <%= l(@filter.start_date, format: "%d %b") %>
   </span>

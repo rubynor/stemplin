@@ -28,7 +28,7 @@
           <%= render PhlexUI::Form::Item.new do  %>
             <%= render PhlexUI::Label.new { t("common.role") } %>
             <%= render PhlexUI::Hint.new { t("common.select_organization_user") } %>
-            <%= form.select :role, roles.map { |role| [role.to_s.humanize, role] }, { prompt: t("common.select_role") }, required: true, class: "border-gray-200 rounded-md w-full" %>
+            <%= form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { prompt: t("common.select_role") }, required: true, class: "border-gray-200 rounded-md w-full" %>
           <% end %>
           <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>

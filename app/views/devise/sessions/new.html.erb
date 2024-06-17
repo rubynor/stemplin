@@ -3,9 +3,9 @@
   <div class="flex gap-x-4 items-center fill-red-300">
     <%= show_svg("logo.svg") %>
   </div>
-  <span class="text-xl font-semibold text-gray-600">Sign in to your account</span>
+  <span class="text-xl font-semibold text-gray-600"><%= t("login_page.sign_in_to_your_account") %></span>
   <div class="flex flex-col mt-4 gap-y-2">
-    <span class="text-gray-600 text-sm">Sign in with</span>
+    <span class="text-gray-600 text-sm"><%= t("login_page.sign_in_with") %></span>
     <div class="flex flex-row items-center gap-x-2">
       <%= render ButtonComponent.new(variant: :outline, class: "flex-1 gap-x-2") do %>
         <%= image_tag "google.svg" %>
@@ -13,7 +13,7 @@
       <% end %>
       <%= render ButtonComponent.new(variant: :outline, class: "flex-1 gap-x-2") do %>
         <%= image_tag "github.svg" %>
-        <span class="font-semibold text-sm text-gray-700">Google</span>
+        <span class="font-semibold text-sm text-gray-700">Github</span>
       <% end %>
     </div>
     <div class="relative my-4">
@@ -21,7 +21,7 @@
         <div class="w-full border-t border-gray-200"></div>
       </div>
       <div class="relative flex justify-center text-sm font-medium leading-6">
-        <span class="bg-gray-50 px-6 text-gray-600">Or continue with</span>
+        <span class="bg-gray-50 px-6 text-gray-600"><%= t("login_page.or_continue_with") %></span>
       </div>
     </div>
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "w-full") do |form| %>
@@ -29,27 +29,27 @@
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <div class="flex flex-col w-full gap-y-4 lg:gap-y-8">
           <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-            <%= render PhlexUI::Label.new { "Email" } %>
-            <%= form.email_field :email, autocomplete: "email", required: true, placeholder: "Email address", class: "border-gray-200 rounded-md w-full" %>
+            <%= render PhlexUI::Label.new { t("login_page.email") } %>
+            <%= form.email_field :email, autocomplete: "email", required: true, placeholder: t("login_page.email_address"), class: "border-gray-200 rounded-md w-full" %>
           <% end %>
           <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-            <%= render PhlexUI::Label.new { "Password" } %>
-            <%= form.password_field :password, autocomplete: "current-password", required: true, placeholder: "Password", class: "border-gray-200 rounded-md w-full" %>
+            <%= render PhlexUI::Label.new { t("login_page.password") } %>
+            <%= form.password_field :password, autocomplete: "current-password", required: true, placeholder: t("login_page.password"), class: "border-gray-200 rounded-md w-full" %>
           <% end %>
         </div>
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center">
             <%= form.label :remember_me, class: "ml-2 block text-sm text-gray-900" do %>
               <%= form.check_box :remember_me, class: "h-4 w-4 rounded border-gray-300 text-seaGreenDark focus:ring-seaGreenDark" %>
-              Remember me
+              <%= t("login_page.remember_me") %>
             <% end %>
           </div>
-          <%= link_to "Forgot your password?", new_password_path(resource_name), class: "text-sm font-medium text-primary" %>
+          <%= link_to t("login_page.forgot_password"), new_password_path(resource_name), class: "text-sm font-medium text-primary" %>
         </div>
-        <%= render ButtonComponent.new(type: "submit") { "Sign in" } %>
+        <%= render ButtonComponent.new(type: "submit") { t("login_page.sign_in") } %>
         <div class="text-sm  w-full text-center">
-          <span>Don't have an account?</span>
-          <%= link_to "Sign up", new_registration_path(resource_name), class: "font-semibold text-primary" %>
+          <span><%= t("login_page.dont_have_an_account") %></span>
+          <%= link_to t("login_page.sign_up"), new_registration_path(resource_name), class: "font-semibold text-primary" %>
         </div>
       </div>
     <% end %>

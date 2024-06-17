@@ -100,7 +100,8 @@ en:
     not_billed_to_a_client: "Not billed to a client"
     track_billable_rates: "We need billable rates to track your project's billable amount"
     project_billable_rate: "Project billable rate"
-    per_hour: "Per hour"
+    billable_amount: "Billable amount"
+    per_hour: "per hour"
     your_projects: "Your projects"
     new_project: "New project"
     project_tasks: "Project tasks"
@@ -138,6 +139,7 @@ en:
     total: "Total"
     total_billable_hours: "Total billable hours"
     total_hours: "Total hours"
+    billable_hours: "Billable hours"
     home: "Home"
     workspace: "Workspace"
     reset_date: "Reset date"
@@ -181,6 +183,7 @@ en:
     detailed_report: "detailed report"
     team: "Team"
     filter: "Filter"
+    period: "Period"
     period_from: "Period - from" 
     period_to: "Period - to"
     reset: "Reset"
@@ -207,7 +210,9 @@ en:
     looking_for: "Can't find what you're looking for?"
     update: "Update"
     project_rate: "Project Rate"
+    custom_rate: "Custom Rate"
     new_client: New client
+    select_project: "Select a project:"
 
   notice:
     are_you_sure: "Are you sure?"
@@ -325,3 +330,24 @@ en:
         month: Month
         year: Year
         custom: Custom
+
+  access_info:
+    role:
+      organization_user: "Organization User"
+      organization_admin: "Organization Administrator"
+      super_admin: "Super administrator"
+
+  login_page:
+    sign_in_to_your_account: "Sign in to your account"
+    sign_in_with: "Sign in with"
+    or_continue_with: "Or continue with"
+    email: "Email"
+    email_address: "Email address"
+    password: "Password"
+    remember_me: "Remember me"
+    forgot_password: "Forgot your password?"
+    sign_in: "Sign in"
+    dont_have_an_account: "Don't have an account?"
+    sign_up: "Sign up"
+    streamline_your_workflow: "Streamline Your Workflow"
+    app_summary: "Boost collaboration and simplify project execution. Assign tasks, track time, and generate insightful reports – all in one place. Empower your team and achieve more with streamlined workflows."
