@@ -77,13 +77,12 @@ class TimeRegsControllerTest < ActionController::TestCase
   end
 
   test "should update an old time_reg while another timer is running" do
-    used_project = @user.current_organization.projects.first
-    active_time_reg = @time_reg
-    old_time_reg = @old_time_reg
-    active_time_reg.update(start_time: 5.minutes.ago)
+    @old_time_reg
+    @time_reg.update(start_time: 5.minutes.ago)
+    assert @time_reg.active?
 
-    patch :update, params: { id: old_time_reg.id, time_reg: { notes: "Test notes" } }
-    old_time_reg = TimeReg.find old_time_reg.id
-    assert_equal "Test notes", old_time_reg.notes
+    patch :update, params: { id: @old_time_reg.id, time_reg: { notes: "Test notes" } }
+    @old_time_reg = TimeReg.find @old_time_reg.id
+    assert_equal "Test notes", @old_time_reg.notes
   end
 end
