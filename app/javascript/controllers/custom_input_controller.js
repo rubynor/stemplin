@@ -14,9 +14,25 @@ export default class extends Controller {
   }
 
   cloneValue(e) {
-    const eventTargetValue = e.target.value;
-    this.cloneTarget.value = this.stringToTime(eventTargetValue);
-    this.handleSubmitButtonValue(eventTargetValue);
+    e.target.value = this.decimalToTimestamp(e.target.value);
+
+    this.cloneTarget.value = this.stringToTime(e.target.value);
+
+    this.handleSubmitButtonValue(e.target.value);
+  }
+
+  decimalToTimestamp(decimalString) {
+    if (decimalString.includes(':')) return decimalString;
+
+    const contentString = decimalString.replace(',', '.');
+    const decimal = parseFloat(contentString);
+
+    const hours = Math.floor(decimal);
+    let minutes = Math.round((decimal - hours) * 60);
+
+    if (minutes < 10) minutes = '0' + minutes;
+
+    return `${hours}:${minutes}`;
   }
 
   stringToTime(inputString) {
@@ -29,7 +45,7 @@ export default class extends Controller {
   }
 
   handleSubmitButtonValue(inputValue) {
-    if(this.hasSubmitButtonTarget) {
+    if (this.hasSubmitButtonTarget) {
       this.submitButtonTarget.innerText = (!!inputValue && inputValue !== "0") ? this.activeTextValue : this.inactiveTextValue;
     }
   }
