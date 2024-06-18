@@ -9,14 +9,15 @@ class TimeReg < ApplicationRecord
   has_one :client, through: :project
   has_one :organization, through: :project
 
+  before_validation :start, if: -> { minutes.zero? && date_worked == Date.today }
+
   validates :notes, length: { maximum: 255 }
   validates :minutes, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1440 }
   validates :assigned_task, presence: true
   validates :assigned_task_id, presence: true
   validates :date_worked, presence: true
-  validate :only_one_active_time_reg
 
-  before_create :set_start_time, if: -> { minutes.zero? && date_worked == Date.today }
+  validate :only_one_active_time_reg
 
   scope :for_report, ->(client_ids, project_ids, user_ids, task_ids) {
     joins(:user, :project, :task, :client)
@@ -86,14 +87,8 @@ class TimeReg < ApplicationRecord
     if persisted?
       active_time_regs = active_time_regs.where.not(id: id)
     end
-    if active_time_regs.exists?
+    if active_time_regs.exists? && self.active?
       errors.add(:base, I18n.t("time_reg.errors.messages.timer_running"))
     end
-  end
-
-  private
-
-  def set_start_time
-    self.start_time ||= Time.now
   end
 end
