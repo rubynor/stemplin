@@ -73,6 +73,7 @@ Rails.application.routes.draw do
 
     resources :teams, only: [ :index, :create ] do
       post :new_modal, on: :collection
+      post :add_to_organization, on: :collection
     end
 
     resources :tasks do

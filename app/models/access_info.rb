@@ -6,6 +6,7 @@ class AccessInfo < ApplicationRecord
 
   validates :user, presence: true
   validates :organization, presence: true
+  validates :user_id, uniqueness: { scope: :organization_id, message: "has already been granted access to this organization" }
 
   def self.allowed_organization_roles
     self.roles.except(:super_admin).keys
