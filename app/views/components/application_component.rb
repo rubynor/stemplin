@@ -9,9 +9,9 @@ class ApplicationComponent < Phlex::HTML
   include Phlex::Rails::Helpers::ImageTag
   include Phlex::Rails::Helpers::LinkTo
 
-  def initialize(**user_attrs)
-    @attrs = default_attrs.merge(user_attrs)
-    @attrs[:class] = tokens(default_classes, user_attrs[:class])
+  def initialize(**attrs)
+    @attrs = default_attrs.merge(attrs)
+    @attrs[:class] = tokens(default_classes, attrs[:class])
   end
 
   if Rails.env.development?
