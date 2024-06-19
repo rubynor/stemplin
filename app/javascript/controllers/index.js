@@ -19,6 +19,9 @@ application.register("collapse-hours", CollapseHoursController)
 import FormController from "./form_controller"
 application.register("form", FormController)
 
+import GroupedSelectMultipleController from "./grouped_select_multiple_controller"
+application.register("grouped-select-multiple", GroupedSelectMultipleController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 

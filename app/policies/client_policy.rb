@@ -9,6 +9,9 @@ class ClientPolicy < ApplicationPolicy
 
   scope_for :relation do |relation|
     organization = user.current_organization
+    puts "organizationssss"
+    puts user.id
+    puts "organizationssss2"
     if user.organization_admin?
       relation.where(organization: organization)
     else

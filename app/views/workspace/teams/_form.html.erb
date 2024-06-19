@@ -30,6 +30,12 @@
             <%= render PhlexUI::Hint.new { t("common.select_organization_user") } %>
             <%= form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { prompt: t("common.select_role") }, required: true, class: "border-gray-200 rounded-md w-full" %>
           <% end %>
+          <% # TODO: The 'Projects' input should only show if 'organization user' is chosen %>
+          <%= render PhlexUI::Form::Item.new do  %>
+            <%= render PhlexUI::Label.new { "Projects" } %>
+            <%= render PhlexUI::Hint.new { "Select the projects this user should have access to." } %>
+            <%= render GroupedSelectMultipleComponent.new form, :project_ids, grouped_projects, :name, :id, :name %>
+          <% end %>
           <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
               <%= render PhlexUI::Label.new { t("common.email") } %>

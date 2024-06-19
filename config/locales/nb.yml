@@ -425,7 +425,7 @@ nb:
         clients: Kunder
         projects: Prosjekter
         tasks: Oppgaver
-        users: Lag medlemmer
+        users: Teammedlemmer
       time_frames:
         week: "Uke"
         month: "Måned"
