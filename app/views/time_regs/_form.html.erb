@@ -62,7 +62,8 @@
                 <% end %>
                 <%= form.hidden_field :minutes, data: { "custom-input-target": "clone" } %>
                 <%= form.text_field :minutes_string, placeholder: "0:00", autocomplete: "off", data: {
-                  action: "change->custom-input#cloneValue"
+                  action: "custom-input#updateClone change->custom-input#updateFormat",
+                  "custom-input-target": "trigger"
                 }, value: (convert_time_int(time_reg.minutes) unless time_reg.new_record?),
                                     class: 'text-end w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
                 %>
