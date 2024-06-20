@@ -49,10 +49,10 @@ module Organizations
       end
 
       def selected_element_name
-        return Client.find(client_id).name if client_id.present?
-        return Project.find(project_id).name if project_id.present?
-        return Task.find(task_id).name if task_id.present?
-        return User.find(user_id).name if user_id.present?
+        return authorized_scope(Client, type: :relation).find(client_id).name if client_id.present?
+        return authorized_scope(Project, type: :relation).find(project_id).name if project_id.present?
+        return authorized_scope(Task, type: :relation).find(task_id).name if task_id.present?
+        return authorized_scope(User, type: :relation).find(user_id).name if user_id.present?
         nil
       end
 

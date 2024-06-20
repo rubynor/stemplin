@@ -4,8 +4,7 @@ class TaskPolicy < ApplicationPolicy
   end
 
   scope_for :relation, :own do |relation|
-    organization = user.current_organization
-    users_projects = authorized_scope(Project.all, type: :relation).all
+    users_projects = authorized_scope(Project, type: :relation).all
     relation.joins(:projects).where(projects: users_projects).distinct
   end
 

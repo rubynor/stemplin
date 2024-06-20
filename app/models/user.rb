@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :organizations, through: :access_infos
   has_many :clients, through: :organizations
   has_many :projects, through: :clients
+  has_many :project_accesses, through: :access_infos
 
   validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s) }
 
@@ -30,5 +31,9 @@ class User < ApplicationRecord
 
   def access_info
     access_infos.find_by(active: true) || access_infos.first
+  end
+
+  def is_project_restricted?
+    access_info&.organization_user?
   end
 end

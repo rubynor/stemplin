@@ -9,11 +9,15 @@ class ProjectPolicy < ApplicationPolicy
 
   scope_for :relation, :own do |relation|
     organization = user.current_organization
-    relation.joins(client: :organization).where(organizations: organization).distinct
+    relation = relation.joins(client: :organization).where(organizations: organization)
+    relation = relation.joins(:project_accesses).where(project_accesses: user.project_accesses) if user.is_project_restricted?
+    relation.distinct
   end
 
   scope_for :relation do |relation|
     organization = user.current_organization
-    relation.joins(client: :organization).where(organizations: organization).distinct
+    relation = relation.joins(client: :organization).where(organizations: organization)
+    relation = relation.joins(:project_accesses).where(project_accesses: user.project_accesses) if user.is_project_restricted?
+    relation.distinct
   end
 end

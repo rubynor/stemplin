@@ -72,7 +72,7 @@ module Workspace
     end
 
     def set_project
-      @project = Project.find(params[:id])
+      @project = authorized_scope(Project, type: :relation).find(params[:id])
       @pagy, @active_assigned_tasks = pagy @project.active_assigned_tasks, items: 6
       authorize! @project
     end

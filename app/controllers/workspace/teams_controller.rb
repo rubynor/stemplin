@@ -23,7 +23,7 @@ module Workspace
         end
 
         # Remove all previous access infos and create new one
-        authorized_scope(AccessInfo, type: :relation).where(user: @user).destroy_all
+        authorized_scope(AccessInfo, type: :relation).where(user: @user, organization: current_user.current_organization).destroy_all
         access_info = authorized_scope(AccessInfo, type: :relation).create!(
           user: @user,
           organization: current_user.current_organization,
@@ -33,7 +33,7 @@ module Workspace
         # Remove all previous project accesses
         authorized_scope(ProjectAccess, type: :relation).where(access_infos: @user.access_infos).destroy_all
         # Only normal users have restricted access to projects
-        if team_member_params[:role] == "organization_user"
+        if @user.is_project_restricted?
           project_access_records = team_member_params[:project_ids].reject(&:empty?).map do |project_id|
             {
               access_info_id: access_info.id,

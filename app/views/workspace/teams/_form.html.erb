@@ -30,7 +30,7 @@
             <%= render PhlexUI::Hint.new { t("common.select_organization_user") } %>
             <%= form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { prompt: t("common.select_role") }, required: true, class: "border-gray-200 rounded-md w-full" %>
           <% end %>
-          <% # TODO: The 'Projects' input should only show if 'organization user' is chosen %>
+          <%# TODO: The 'Projects' input should only show if 'organization user' or the view-only user type is chosen %>
           <%= render PhlexUI::Form::Item.new do  %>
             <%= render PhlexUI::Label.new { "Projects" } %>
             <%= render PhlexUI::Hint.new { "Select the projects this user should have access to." } %>

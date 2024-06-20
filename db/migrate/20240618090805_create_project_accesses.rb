@@ -6,5 +6,18 @@ class CreateProjectAccesses < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
+
+    reversible do |dir|
+      dir.up do
+        # Create project accesses for all organization users when migrating
+        ProjectAccess.transaction do
+          AccessInfo.where(role: AccessInfo.roles[:organization_user]).find_each(batch_size: 1000) do |access_info|
+            access_info.organization.projects.find_each(batch_size: 1000) do |project|
+              ProjectAccess.create!(project: project, access_info: access_info)
+            end
+          end
+        end
+      end
+    end
   end
 end
