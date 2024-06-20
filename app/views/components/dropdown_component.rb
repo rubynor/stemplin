@@ -66,6 +66,6 @@ class DropdownComponent::Content < ApplicationComponent
   end
 
   def default_classes
-    "z-50 rounded-md border bg-background p-2 text-foreground shadow-md outline-none mt-2 hidden left-0 custom-dropdown-component-content cursor-default"
+    "z-50 rounded-md border bg-background p-2 text-foreground shadow-md outline-none mt-2 hidden left-0 custom-dropdown-component-content cursor-default max-h-[20rem] overflow-auto"
   end
 end
