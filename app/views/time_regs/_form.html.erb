@@ -60,10 +60,10 @@
                 <% time_reg.errors.full_messages_for(:minutes).each do |message| %>
                   <div class="text-red-600 italic text-xs mt-1" data-refresh-minutes-target="output"><%= message %></div>
                 <% end %>
-                <%= form.hidden_field :minutes, data: { "custom-input-target": "clone" } %>
+                <%= form.hidden_field :minutes, data: { "custom-input-target": "hiddenInput" } %>
                 <%= form.text_field :minutes_string, placeholder: "0:00", autocomplete: "off", data: {
-                  action: "custom-input#updateClone change->custom-input#updateFormat",
-                  "custom-input-target": "trigger"
+                  action: "custom-input#updatehiddenInput change->custom-input#updateFormat",
+                  "custom-input-target": "input"
                 }, value: (convert_time_int(time_reg.minutes) unless time_reg.new_record?),
                                     class: 'text-end w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
                 %>

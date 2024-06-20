@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="input"
 export default class extends Controller {
-  static targets = ["trigger", "clone", "submitButton"];
+  static targets = ["input", "hiddenInput", "submitButton"];
 
   static values = {
     activeText: { type: String, default: '' },
@@ -10,17 +10,17 @@ export default class extends Controller {
   };
 
   connect() {
-    this.handleSubmitButtonValue(this.cloneTarget.value);
+    this.handleSubmitButtonValue(this.hiddenInputTarget.value);
   }
 
   updateFormat() {
-    this.triggerTarget.value = this.decimalToTimestamp(this.triggerTarget.value);
-    this.updateClone();
+    this.inputTarget.value = this.decimalToTimestamp(this.inputTarget.value);
+    this.updatehiddenInput();
   }
 
-  updateClone() {
-    this.cloneTarget.value = this.stringToTime(this.triggerTarget.value);
-    this.handleSubmitButtonValue(this.cloneTarget.value);
+  updatehiddenInput() {
+    this.hiddenInputTarget.value = this.stringToTime(this.inputTarget.value);
+    this.handleSubmitButtonValue(this.hiddenInputTarget.value);
   }
 
   decimalToTimestamp(decimalString) {
