@@ -5,6 +5,7 @@ class ReportsController < ApplicationController
   def show
     set_form_data
     @structured_report_data = {}
+    @detailed_report_data = OpenStruct.new
   end
 
   def update
@@ -18,34 +19,25 @@ class ReportsController < ApplicationController
     time_regs = authorized_scope(TimeReg, type: :relation).for_report(client_ids_for_report, project_ids_for_report, user_ids_for_report, task_ids_for_report)
                        .where(date_worked: (@selected_start_date..@selected_end_date))
 
-    if @form_data.detailed_report
+    @structured_report_data = time_regs.group_by { |reg| reg[:date_worked] }.sort_by { |key| key  }
 
-      @structured_report_data = time_regs.group_by { |reg| reg[:date_worked] }.sort_by { |key| key  }
+    clients = authorized_scope(Client, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
+    projects = authorized_scope(Project, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
+    tasks = authorized_scope(Task, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
+    users = authorized_scope(User, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
+    total_billable_minutes = time_regs.joins(:project).where(project: { billable: true }).sum(&:minutes)
+    total_minutes = time_regs.sum(&:minutes)
 
-      clients = authorized_scope(Client, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
-      projects = authorized_scope(Project, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
-      tasks = authorized_scope(Task, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
-      users = authorized_scope(User, type: :relation).joins(:time_regs).where(time_regs: { id: time_regs }).distinct
-      total_billable_minutes = time_regs.joins(:project).where(project: { billable: true }).sum(&:minutes)
-      total_minutes = time_regs.sum(&:minutes)
+    @detailed_report_data = OpenStruct.new(
+      time_regs: time_regs,
+      total_billable_minutes: total_billable_minutes,
+      total_minutes: total_minutes,
+      clients: clients,
+      projects: projects,
+      tasks: tasks,
+      users: users,
+    )
 
-      @detailed_report_data = OpenStruct.new(
-        time_regs: time_regs,
-        total_billable_minutes: total_billable_minutes,
-        total_minutes: total_minutes,
-        clients: clients,
-        projects: projects,
-        tasks: tasks,
-        users: users,
-      )
-
-    else
-
-      @structured_report_data = TimeRegsPresenter.new(time_regs).report_data(
-        title: nil,
-        keys: [ :client, :project, :task, :user ]
-      )
-    end
     if turbo_frame_request?
       render :show
     end
