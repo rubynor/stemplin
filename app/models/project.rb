@@ -14,4 +14,5 @@ class Project < ApplicationRecord
   has_many :active_assigned_tasks, -> { active_task }, class_name: "AssignedTask"
   has_many :project_accesses, dependent: :destroy
   has_many :access_infos, through: :project_accesses
+  has_many :users, through: :access_infos
 end
