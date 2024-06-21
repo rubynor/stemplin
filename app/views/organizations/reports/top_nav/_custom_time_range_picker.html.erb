@@ -2,26 +2,26 @@
   <%# TODO: Find a better way to persist query params %>
   <%= form.hidden_field :category, value: @filter.category %>
   <%= form.hidden_field :time_frame, value: @filter.time_frame %>
-  <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
-    <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+  <%= render PhlexUI::DropdownMenu.new do %>
+    <%= render PhlexUI::DropdownMenu::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
       <i class="uc-icon text-sm text-gray-500">&#xe891;</i>
       <span class="text-gray-500 text-sm"><%= t('common.period_from') %></span>
       <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { l(@filter.start_date, format: "%d %b %y") } %>
       <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
     <% end %>
-    <%= render DropdownComponent::Content.new do %>
+    <%= render PhlexUI::DropdownMenu::Content.new(class: "w-auto") do %>
       <%= form.hidden_field :start_date, id: "start_date", value: @filter.start_date, data: { controller: "input" } %>
       <%= render PhlexUI::Calendar.new(selected_date: @filter.start_date, input_id: "#start_date") %>
     <% end %>
   <% end %>
-  <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
-    <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+  <%= render PhlexUI::DropdownMenu.new do %>
+    <%= render PhlexUI::DropdownMenu::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
       <i class="uc-icon text-sm text-gray-500">&#xe891;</i>
       <span class="text-gray-500 text-sm"><%= t('common.period_to') %></span>
       <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { l(@filter.end_date, format: "%d %b %y") } %>
       <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
     <% end %>
-    <%= render DropdownComponent::Content.new do %>
+    <%= render PhlexUI::DropdownMenu::Content.new(class: "w-auto") do %>
       <%= form.hidden_field :end_date, id: "end_date", value: @filter.end_date, data: { controller: "input" } %>
       <%= render PhlexUI::Calendar.new(selected_date: @filter.end_date, input_id: "#end_date") %>
     <% end %>

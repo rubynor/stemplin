@@ -55,9 +55,6 @@ application.register("custom-dialog", DialogController);
 import SnackbarController from "./snackbar_controller";
 application.register("snackbar", SnackbarController);
 
-import CustomDropdownController from "./custom_dropdown_controller";
-application.register("custom-dropdown", CustomDropdownController);
-
 import PrintController from "./print_controller";
 application.register("print", PrintController);
 
