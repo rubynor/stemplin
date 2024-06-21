@@ -228,6 +228,11 @@ nb:
     custom_rate: "Egendefinert timepris"
     new_client: "Ny kunde"
     select_project: "Velg et prosjekt:"
+    select: "Velg"
+    select_projects: "Velg prosjekter"
+    add_projects_optional: "Velg prosjektene denne brukeren skal ha tilgang til."
+    add_users_optional: "Velg hvilke brukere som skal ha tilgang til dette prosjektet."
+    users: "Brukere"
 
   notice:
     are_you_sure: "Er du sikker?"

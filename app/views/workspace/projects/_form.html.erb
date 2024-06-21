@@ -65,6 +65,12 @@
             <% end %>
 
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+              <%= render PhlexUI::Label.new { t("common.projects") } %>
+              <%= render PhlexUI::Hint.new { t("common.add_users_optional") } %>
+              <%= render SelectMultipleComponent.new form, :user_ids, @users, :id, :name, label: t("common.users") %>
+            <% end %>
+
+            <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
               <%= render PhlexUI::Label.new { t("common.tasks") } %>
               <%= render PhlexUI::Hint.new { t("common.add_tasks_optional") } %>
               <%= render DropdownComponent.new do %>

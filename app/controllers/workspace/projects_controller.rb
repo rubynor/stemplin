@@ -16,7 +16,7 @@ module Workspace
             turbo_stream.action(:remove_modal, :modal)
           ]
         else
-          render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/form", locals: { project: @project, tasks: @tasks, clients: @clients })
+          render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/form", locals: { project: @project, tasks: @tasks, clients: @clients, users: @users })
         end
       end
     end
@@ -35,7 +35,7 @@ module Workspace
           turbo_stream.action(:remove_modal, :modal)
         ]
       else
-        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/form", locals: { project: @project, tasks: @tasks, clients: @clients })
+        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/form", locals: { project: @project, tasks: @tasks, clients: @clients, users: @users })
       end
     end
 
@@ -68,7 +68,9 @@ module Workspace
     private
 
     def project_params
-      params.require(:project).permit(:client_id, :name, :description, :billable, :rate_nok, task_ids: [])
+      p = params.require(:project).permit(:client_id, :name, :description, :billable, :rate_nok, task_ids: [], user_ids: [])
+      p[:access_info_ids] = authorized_scope(AccessInfo, type: :relation).where(user_id: p[:user_ids]).pluck(:id)
+      p.except(:user_ids)
     end
 
     def set_project
@@ -78,8 +80,10 @@ module Workspace
     end
 
     def prepare_form_data
+      organization = current_user.current_organization
       @clients = authorized_scope(Client, type: :relation).all
       @tasks = authorized_scope(Task, type: :relation).all
+      @users = authorized_scope(User, type: :relation).order(:first_name, :last_name).select { |user| user.project_restricted?(organization) }
     end
   end
 end

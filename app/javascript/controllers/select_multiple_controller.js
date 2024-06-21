@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="grouped-select-multiple"
+// Connects to data-controller="select-multiple"
 export default class extends Controller {
   static targets = ['button', 'content', 'selectAllCheckbox', 'label'];
   static values = { label: String };
@@ -8,7 +8,7 @@ export default class extends Controller {
   connect() {
     this.buttonTarget.addEventListener('mousedown', this.preventDefault);
     this.buttonTarget.addEventListener('keydown', this.preventDefault);
-    this.updateAllAndGroupCheckboxes();
+    this.updateAllCheckbox();
   }
 
   disconnect() {
@@ -17,26 +17,13 @@ export default class extends Controller {
   }
 
   toggleAll(event) {
-    this.contentTarget.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+    this.contentTarget.querySelectorAll('.value-checkbox').forEach((checkbox) => {
       checkbox.checked = event.target.checked;
     });
     this.updateLabel();
   }
 
-  toggleGroup(event) {
-    let group = event.target.closest('.group-div');
-    group.querySelectorAll('.value-checkbox').forEach((checkbox) => {
-      checkbox.checked = event.target.checked;
-    });
-    this.selectAllCheckboxTarget.checked = this.#isAllChecked();
-    this.updateLabel();
-  }
-
-  updateAllAndGroupCheckboxes(event = null) {
-    const groups = event ? [event.target.closest('.group-div')] : this.contentTarget.querySelectorAll('.group-div');
-    groups.forEach((group) => {
-      group.querySelector('.group-checkbox').checked = this.#isGroupChecked(group);
-    });
+  updateAllCheckbox(event) {
     this.selectAllCheckboxTarget.checked = this.#isAllChecked();
     this.updateLabel();
   }
@@ -49,10 +36,6 @@ export default class extends Controller {
 
   #isAllChecked() {
     return Array.from(this.contentTarget.querySelectorAll('.value-checkbox')).every((checkbox) => checkbox.checked);
-  }
-
-  #isGroupChecked(group) {
-    return Array.from(group.querySelectorAll('.value-checkbox')).every((checkbox) => checkbox.checked);
   }
 
   preventDefault(event) {

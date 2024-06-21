@@ -22,6 +22,9 @@ application.register("form", FormController)
 import GroupedSelectMultipleController from "./grouped_select_multiple_controller"
 application.register("grouped-select-multiple", GroupedSelectMultipleController)
 
+import SelectMultipleController from "./select_multiple_controller"
+application.register("select-multiple", SelectMultipleController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 

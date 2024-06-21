@@ -3,7 +3,7 @@ module Workspace
     skip_verify_authorized
 
     def index
-      @pagy, @users = pagy authorized_scope(User, type: :relation).all
+      @pagy, @users = pagy authorized_scope(User, type: :relation).order(:first_name, :last_name)
     end
 
     def new_modal
@@ -33,7 +33,7 @@ module Workspace
         # Remove all previous project accesses
         authorized_scope(ProjectAccess, type: :relation).where(access_infos: @user.access_infos).destroy_all
         # Only normal users have restricted access to projects
-        if @user.is_project_restricted?
+        if @user.project_restricted?
           project_access_records = team_member_params[:project_ids].reject(&:empty?).map do |project_id|
             {
               access_info_id: access_info.id,

@@ -1,12 +1,12 @@
 class GroupedSelectMultipleComponent < ApplicationComponent
-  def initialize(form, method, grouped_objects, key_name_method, value_id_method, value_name_method, label: "", **attrs)
+  def initialize(form, method, grouped_objects, key_name_method, value_id_method, value_name_method, label: nil, **attrs)
     @form = form
     @method = method
     @grouped_objects = grouped_objects
     @key_name_method = key_name_method
     @value_id_method = value_id_method
     @value_name_method = value_name_method
-    @label = label
+    @label = label || I18n.t("common.select")
     @attrs = attrs.merge(default_attrs)
   end
 
@@ -15,7 +15,7 @@ class GroupedSelectMultipleComponent < ApplicationComponent
       render DropdownComponent.new do
         render DropdownComponent::Trigger.new do
           select(class: "w-full bg-white border border-gray-200 rounded-md px-3 py-2 flex items-center gap-x-1 justify-between", data_grouped_select_multiple_target: "button") do
-            option { @label }
+            option(data_grouped_select_multiple_target: "label") { @label }
           end
         end
 
@@ -23,7 +23,7 @@ class GroupedSelectMultipleComponent < ApplicationComponent
           div(class: "p-2 divide-y divide-dashed") do
             div(class: "pb-1") do
               input type: "checkbox", class: "mr-2", id: "select-all", data: { action: "change->grouped-select-multiple#toggleAll", grouped_select_multiple_target: "selectAllCheckbox" }
-              label(class: "font-bold", for: "select-all") { "All" }
+              label(class: "font-bold", for: "select-all") { I18n.t("common.all") }
             end
             @grouped_objects.keys.each do |key|
               div(class: "group-div py-1") do
@@ -48,7 +48,8 @@ class GroupedSelectMultipleComponent < ApplicationComponent
   def default_attrs
     {
       data: {
-        controller: "grouped-select-multiple"
+        controller: "grouped-select-multiple",
+        grouped_select_multiple_label_value: @label
       }
     }
   end
