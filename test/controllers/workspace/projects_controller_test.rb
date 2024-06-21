@@ -18,8 +18,9 @@ module Workspace
 
     test "should create project" do
       task = tasks(:e2e_testing)
+      user = users(:organization_user)
       assert_difference("Project.count") do
-        post :create, params: { project: { name: "Test Project", description: "Project description", billable: true, rate_nok: 100, client_id: @client.id, task_ids: [ task.id ] } }
+        post :create, params: { project: { name: "Test Project", description: "Project description", billable: true, rate_nok: 100, client_id: @client.id, task_ids: [ task.id ], user_ids: [ user.id ] } }
       end
 
       assert_response :success
@@ -31,7 +32,8 @@ module Workspace
     end
 
     test "should update project" do
-      patch :update, params: { id: @project.id, project: { name: "Updated Project" } }
+      user = users(:ron)
+      patch :update, params: { id: @project.id, project: { name: "Updated Project", user_ids: [ user.id ] } }
       assert_response :success
     end
 

@@ -26,4 +26,4 @@ access_info_org_user:
   user: organization_user
   organization: organization_one
   active: true
-  role: 1
+  role: 0
