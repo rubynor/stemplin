@@ -58,6 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_090805) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["access_info_id"], name: "index_project_accesses_on_access_info_id"
+    t.index ["project_id", "access_info_id"], name: "index_project_accesses_on_project_id_and_access_info_id", unique: true
     t.index ["project_id"], name: "index_project_accesses_on_project_id"
   end
 

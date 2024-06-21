@@ -4,6 +4,8 @@ class CreateProjectAccesses < ActiveRecord::Migration[7.0]
       t.references :project, null: false, foreign_key: true
       t.references :access_info, null: false, foreign_key: true
 
+      t.index [ :project_id, :access_info_id ], unique: true
+
       t.timestamps
     end
 
