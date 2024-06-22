@@ -337,8 +337,6 @@ en:
       organization_user: "Organization User"
       organization_admin: "Organization Administrator"
       super_admin: "Super administrator"
-    user_id:
-      already_a_member_of_organization: "has already been granted access to this organization."
 
   login_page:
     sign_in_to_your_account: "Sign in to your account"
@@ -354,3 +352,13 @@ en:
     sign_up: "Sign up"
     streamline_your_workflow: "Streamline Your Workflow"
     app_summary: "Boost collaboration and simplify project execution. Assign tasks, track time, and generate insightful reports – all in one place. Empower your team and achieve more with streamlined workflows."
+
+    activerecord:
+      errors:
+        models:
+          access_info:
+            attributes:
+              user_id:
+                taken: "has already been granted access to this organization."
+        messages:
+          record_invalid: "Validation failed: %{errors}"

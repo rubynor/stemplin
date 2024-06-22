@@ -32,7 +32,7 @@ module  Workspace
     end
 
     test "should add an existing user to the organization" do
-      user = users(:ron)
+      user = users(:user_wo_access_info)
       assert_no_difference("User.count") do
         assert_difference("AccessInfo.count") do
           post :add_to_organization, params: {

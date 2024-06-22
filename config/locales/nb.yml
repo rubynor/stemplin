@@ -413,6 +413,13 @@ nb:
               too_long: "er for lang (maksimum er %{count} tegn)"
             password_confirmation:
               confirmation: "samsvarer ikke med passordet"
+        access_info:
+          attributes:
+            user_id:
+              taken: "har allerede fått tilgang til denne organisasjonen."
+      messages:
+        record_invalid: "Validering mislyktes: %{errors}"
+
   helpers:
     alert:
       info: "Merk"
@@ -439,8 +446,6 @@ nb:
       organization_user: "Organisasjonsbruker"
       organization_admin: "Organisasjonsadministrator"
       super_admin: "Superadministrator"
-    user_id:
-      already_a_member_of_organization: "har allerede fått tilgang til denne organisasjonen."
 
   login_page:
     sign_in_to_your_account: "Logg inn på kontoen din"
