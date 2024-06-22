@@ -37,3 +37,9 @@ newly_invited_user:
   last_name: user
   is_verified: false
   <<: *DEFAULTS
+
+user_wo_access_info:
+  email: user_wo_access_info@example.com
+  first_name: user
+  last_name: without access info
+  <<: *DEFAULTS

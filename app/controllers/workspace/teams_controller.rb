@@ -21,18 +21,22 @@ module Workspace
 
       handle_success(user: @user, message: t("notice.user_added_to_the_organization"))
     rescue => e
-      populate_form_for @user
+      populate_form_for(user: @user)
     end
 
     def add_to_organization
-      @user = User.find_by(email: team_member_params[:email])
-
-      if @user.present?
-        create_access_info_for @user
-        handle_success(user: @user, message: t("notice.user_added_to_the_organization"))
-      else
-        @new_user = authorized_scope(User, type: :relation).new(email: team_member_params[:email])
-        populate_form_for @new_user
+      begin
+        @user = User.find_by(email: team_member_params[:email])
+        if @user.present?
+          create_access_info_for @user
+          handle_success(user: @user, message: t("notice.user_added_to_the_organization"))
+        else
+          @new_user = authorized_scope(User, type: :relation).new(email: team_member_params[:email])
+          populate_form_for(user: @new_user)
+        end
+      rescue => e
+        flash[:error] = e.message
+        populate_form_for(user: @user, form: add_user_form)
       end
     end
 

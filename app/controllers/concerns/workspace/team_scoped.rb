@@ -29,9 +29,17 @@ module Workspace
         team_member_params.except(:role).merge(is_verified: false)
       end
 
-      def populate_form_for(user)
+      def populate_form_for(user:, form: user_details_form)
         @roles = AccessInfo.allowed_organization_roles
-        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/teams/form", locals: { user: user, roles: @roles })
+        render turbo_stream: turbo_stream.replace(:modal, partial: form, locals: { user: user, roles: @roles })
+      end
+
+      def add_user_form
+        "workspace/teams/add_user_form"
+      end
+
+      def user_details_form
+        "workspace/teams/form"
       end
     end
   end

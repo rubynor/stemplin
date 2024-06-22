@@ -274,6 +274,7 @@ en:
     project_not_found: "Project not found, kindly select a valid project."
     wish_to_proceed: "Do you wish to proceed?"
     warning: "Warning!"
+    unable_to_proceed: "Unable to proceed"
 
   description:
     blank: "can't be blank"
@@ -336,6 +337,8 @@ en:
       organization_user: "Organization User"
       organization_admin: "Organization Administrator"
       super_admin: "Super administrator"
+    user_id:
+      already_a_member_of_organization: "has already been granted access to this organization."
 
   login_page:
     sign_in_to_your_account: "Sign in to your account"

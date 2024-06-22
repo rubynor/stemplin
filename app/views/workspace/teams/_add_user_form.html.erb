@@ -7,6 +7,7 @@
       <%= form_with url: add_to_organization_workspace_teams_path, method: :post, scope: user do |form| %>
         <div class="flex flex-col gap-y-4">
           <span class="font-semibold text-gray-600 text-lg"> <%= t("common.add_member") %></span>
+          <%= render AlertComponent.new(variant: :destructive, title: t("alert.unable_to_proceed"), message: flash[:error]) if flash[:error].present?  %>
           <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
               <%= render PhlexUI::Label.new { t("common.email") } %>
