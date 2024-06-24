@@ -290,6 +290,7 @@ nb:
     project_not_found: "Finner ikke prosjektet, velg et gyldig prosjekt."
     wish_to_proceed: "Ønsker du å fortsette?"
     warning: "Advarsel!"
+    unable_to_proceed: "Kan ikke fortsette"
 
   description:
     blank: "kan ikke være blank"
@@ -345,7 +346,8 @@ nb:
         email: "E-post"
         password: "Passord"
         password_confirmation: "Passordbekreftelsen"
-      
+
+
     errors:
       models:
         client:
@@ -411,6 +413,13 @@ nb:
               too_long: "er for lang (maksimum er %{count} tegn)"
             password_confirmation:
               confirmation: "samsvarer ikke med passordet"
+        access_info:
+          attributes:
+            user_id:
+              taken: "har allerede fått tilgang til denne organisasjonen."
+      messages:
+        record_invalid: "Validering mislyktes: %{errors}"
+
   helpers:
     alert:
       info: "Merk"

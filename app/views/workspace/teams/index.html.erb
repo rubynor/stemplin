@@ -19,7 +19,6 @@
         <%= render PhlexUI::Table::Row.new do %>
           <%= render PhlexUI::Table::Head.new { t("common.name") } %>
           <%= render PhlexUI::Table::Head.new { t("common.email") } %>
-          <%= render PhlexUI::Table::Head.new { t("common.added_on") } %>
         <% end %>
       <% end %>
       <%= render PhlexUI::Table::Body.new(id: :organization_users) do %>

@@ -1,5 +1,6 @@
 module Workspace
   class TeamsController < WorkspaceController
+    include TeamScoped
     skip_verify_authorized
 
     def index
@@ -12,36 +13,35 @@ module Workspace
     end
 
     def create
+      ActiveRecord::Base.transaction do
+        @user = authorized_scope(User, type: :relation).new(new_user_info)
+        @user.save!
+        create_access_info_for @user
+      end
+
+      handle_success(user: @user, message: t("notice.user_added_to_the_organization"))
+    rescue => e
+      populate_form_for(user: @user)
+    end
+
+    def add_to_organization
       begin
-        @user = User.find_or_create_by!(email: team_member_params[:email]) do |user|
-          user.assign_attributes(team_member_params.except(:role).merge(is_verified: false))
+        @user = User.find_by(email: team_member_params[:email])
+        if @user.present?
+          create_access_info_for @user
+          handle_success(user: @user, message: t("notice.user_added_to_the_organization"))
+        else
+          @new_user = authorized_scope(User, type: :relation).new(email: team_member_params[:email])
+          populate_form_for(user: @new_user)
         end
-
-        authorized_scope(AccessInfo, type: :relation).create!(
-          user: @user,
-          organization: current_user.current_organization,
-          role: AccessInfo.roles[team_member_params[:role]]
-        )
-
-        render turbo_stream: [
-          turbo_flash(type: :success, data: t("notice.user_added_to_the_organization")),
-          turbo_stream.append(:organization_users, partial: "workspace/teams/user", locals: { user: @user }),
-          turbo_stream.action(:remove_modal, :modal)
-        ]
       rescue => e
-        @roles = AccessInfo.allowed_organization_roles
-        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/teams/form", locals: { user: @user, roles: @roles })
+        flash[:error] = e.message
+        populate_form_for(user: @user, form: add_user_form)
       end
     end
 
     def implicit_authorization_target
       User
-    end
-
-    private
-
-    def team_member_params
-      params.require(:user).permit(:email, :first_name, :last_name, :password, :password_confirmation, :role)
     end
   end
 end
