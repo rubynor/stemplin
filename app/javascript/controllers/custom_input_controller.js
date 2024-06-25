@@ -29,6 +29,7 @@ export default class extends Controller {
 
     const contentString = decimalString.replace(',', '.');
     const decimal = parseFloat(contentString);
+    if (isNaN(decimal)) return decimalString;
 
     const hours = Math.floor(decimal);
     let minutes = Math.round((decimal - hours) * 60);

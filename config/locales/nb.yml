@@ -401,8 +401,8 @@ nb:
         time_reg:
           attributes:
             minutes:
-              not_a_number: "dette er ikke et nummer"
-              less_than_or_equal_to: "må være mindre eller lik 1440"
+              not_a_number: "er ikke et tall"
+              less_than_or_equal_to: "må være mindre eller lik %{count}"
         
         user:
           attributes:
