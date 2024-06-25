@@ -34,7 +34,7 @@
                       <% end %>
                     <% end %>
                   </div>
-                  <% assigned_task.errors.full_messages_for(:task_id).each do |message|%>
+                  <% assigned_task.errors.full_messages_for(:task).each do |message|%>
                     <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
                   <% end %>
                 <% end %>

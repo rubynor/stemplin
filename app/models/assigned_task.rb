@@ -19,15 +19,19 @@ class AssignedTask < ApplicationRecord
 
   scope :active_task, -> { where(is_archived: false) }
 
+  def updated_active_task
+    @new_assigned_task || self
+  end
+
   private
 
   def is_not_archived
-    errors.add(:base, "This task is archived and cannot be updated.") if is_archived?
+    errors.add(:base, I18n.t("common.archived_task_can_not_be_updated")) if is_archived?
   end
 
   def handle_rate_change
     if rate_changed?
-      self.class.create!(project: project, task: task, rate: rate)
+      @new_assigned_task = self.class.create!(project: project, task: task, rate: rate)
       self.is_archived = true
       self.rate = rate_was
     end
