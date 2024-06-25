@@ -14,7 +14,7 @@ export default class extends Controller {
     }
 
     let triggerBottom = this.triggerTarget.getBoundingClientRect().bottom;
-    const availableContentSpace = screen.height - triggerBottom - 10;
+    const availableContentSpace = window.innerHeight - triggerBottom - 10;
 
     if (this.originalContentHeight > availableContentSpace) {
       this.contentTarget.style.bottom = -availableContentSpace + "px";
