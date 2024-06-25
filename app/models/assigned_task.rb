@@ -11,6 +11,8 @@ class AssignedTask < ApplicationRecord
 
   validates :rate, numericality: { only_integer: true }
 
+  validate :is_not_archived, on: :update
+
   accepts_nested_attributes_for :task
 
   before_update :handle_rate_change
@@ -18,6 +20,10 @@ class AssignedTask < ApplicationRecord
   scope :active_task, -> { where(is_archived: false) }
 
   private
+
+  def is_not_archived
+    errors.add(:base, "This task is archived and cannot be updated.") if is_archived?
+  end
 
   def handle_rate_change
     if rate_changed?

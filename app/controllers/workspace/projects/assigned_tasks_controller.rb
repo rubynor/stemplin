@@ -45,10 +45,11 @@ module Workspace
       def update
         @assigned_task = authorized_scope(AssignedTask, type: :relation).find(params[:id])
         if @assigned_task.update(assigned_task_params)
+          new_assigned_task = authorized_scope(AssignedTask, type: :relation).where(project: @project, task: @assigned_task.task, is_archived: false).first
           render turbo_stream: [
             turbo_flash(type: :success, data: "Task updated."),
             turbo_stream.action(:remove_modal, :modal),
-            turbo_stream.replace(dom_id(@assigned_task), partial: "workspace/projects/assigned_task", locals: { assigned_task: @assigned_task })
+            turbo_stream.replace(dom_id(@assigned_task), partial: "workspace/projects/assigned_task", locals: { assigned_task: new_assigned_task })
           ]
         else
           render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/assigned_tasks/form", locals: { project: @project, assigned_task: @assigned_task })
