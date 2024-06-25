@@ -76,7 +76,7 @@
                   <div class="flex flex-col text-sm w-full gap-y-4">
                     <%= form.collection_check_boxes :task_ids, @tasks, :id, :name do |task| %>
                       <div class="flex items-center space-x-2">
-                        <%= task.check_box(class: '') %>
+                        <%= task.check_box(class: '', checked: task.object.assigned_to_project?(project)) %>
                         <%= task.label(class: 'text-gray-800') %>
                       </div>
                     <% end %>
