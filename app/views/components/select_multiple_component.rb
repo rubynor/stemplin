@@ -1,10 +1,11 @@
 class SelectMultipleComponent < ApplicationComponent
-  def initialize(form, method, collection, value_method, text_method, label: nil, **attrs)
+  def initialize(form, method, collection, value_method, text_method, options, label: nil, **attrs)
     @form = form
     @method = method
     @collection = collection
     @value_method = value_method
     @text_method = text_method
+    @options = options
     @label = label || I18n.t("common.select")
     @attrs = attrs.merge(default_attrs)
   end
@@ -25,7 +26,7 @@ class SelectMultipleComponent < ApplicationComponent
               label(class: "font-bold", for: "select-all") { I18n.t("common.all") }
             end
             unsafe_raw (
-              @form.collection_check_boxes @method, @collection, @value_method, @text_method do |cb|
+              @form.collection_check_boxes @method, @collection, @value_method, @text_method, @options do |cb|
                 div do
                   span(class: "mx-2") { cb.check_box class: "value-checkbox", data: { action: "change->select-multiple#updateAllCheckbox" } }
                   span { cb.label }

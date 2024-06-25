@@ -1,11 +1,12 @@
 class GroupedSelectMultipleComponent < ApplicationComponent
-  def initialize(form, method, grouped_objects, key_name_method, value_id_method, value_name_method, label: nil, **attrs)
+  def initialize(form, method, grouped_objects, key_name_method, value_id_method, value_name_method, options = {}, label: nil, **attrs)
     @form = form
     @method = method
     @grouped_objects = grouped_objects
     @key_name_method = key_name_method
     @value_id_method = value_id_method
     @value_name_method = value_name_method
+    @options = options
     @label = label || I18n.t("common.select")
     @attrs = attrs.merge(default_attrs)
   end
@@ -30,7 +31,7 @@ class GroupedSelectMultipleComponent < ApplicationComponent
                 input type: "checkbox", class: "mr-2 group-checkbox", id: "input_#{key[@key_name_method]}", data: { action: "change->grouped-select-multiple#toggleGroup" }
                 label(class: "font-bold", for: "input_#{key[@key_name_method]}") { key[@key_name_method] }
                 unsafe_raw (
-                  @form.collection_check_boxes @method, @grouped_objects[key], @value_id_method, @value_name_method do |cb|
+                  @form.collection_check_boxes @method, @grouped_objects[key], @value_id_method, @value_name_method, @options do |cb|
                     div do
                       span(class: "mx-2") { cb.check_box class: "value-checkbox", data: { action: "change->grouped-select-multiple#updateAllAndGroupCheckboxes" } }
                       span { cb.label }

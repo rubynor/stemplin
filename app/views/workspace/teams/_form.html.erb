@@ -4,7 +4,7 @@
   <% end %>
   <%= render PhlexUI::Dialog::Content.new(class: "bg-white") do %>
     <%= turbo_frame_tag :modal do %>
-      <%= form_with url: workspace_teams_path, method: :post, scope: user do |form| %>
+      <%= form_with url: workspace_teams_path, method: :post, scope: user, data: { controller: "show-on-value", show_on_value_accepted_value: AccessInfo.project_restricted_roles } do |form| %>
         <div class="flex flex-col gap-y-4">
           <span class="font-semibold text-gray-600 text-lg"> <%= t("common.add_member") %></span>
           <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
@@ -25,16 +25,15 @@
               <% end %>
             <% end %>
           <% end %>
-          <%= render PhlexUI::Form::Item.new do  %>
+          <%= render PhlexUI::Form::Item.new do %>
             <%= render PhlexUI::Label.new { t("common.role") } %>
             <%= render PhlexUI::Hint.new { t("common.select_organization_user") } %>
-            <%= form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { prompt: t("common.select_role") }, required: true, class: "border-gray-200 rounded-md w-full" %>
+            <%= form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { prompt: t("common.select_role"), selected: selected_role }, required: true, class: "border-gray-200 rounded-md w-full", data: { show_on_value_target: "input" } %>
           <% end %>
-          <%# TODO: The 'Projects' input should only show if 'organization user' or the view-only user type is chosen %>
-          <%= render PhlexUI::Form::Item.new do  %>
+          <%= render PhlexUI::Form::Item.new(data: { show_on_value_target: "toggle" }) do  %>
             <%= render PhlexUI::Label.new { t("common.projects") } %>
             <%= render PhlexUI::Hint.new { t("common.add_projects_optional") } %>
-            <%= render GroupedSelectMultipleComponent.new form, :project_ids, grouped_projects, :name, :id, :name, label: t("common.select_projects") %>
+            <%= render GroupedSelectMultipleComponent.new form, :project_ids, grouped_projects, :name, :id, :name, { checked: selected_project_ids }, label: t("common.select_projects") %>
           <% end %>
           <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>

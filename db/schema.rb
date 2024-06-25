@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_18_090805) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_22_050144) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_090805) do
     t.datetime "updated_at", null: false
     t.boolean "active", default: false
     t.index ["organization_id"], name: "index_access_infos_on_organization_id"
+    t.index ["user_id", "organization_id"], name: "index_access_infos_on_user_id_and_organization_id", unique: true
     t.index ["user_id"], name: "index_access_infos_on_user_id"
   end
 
@@ -30,7 +31,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_090805) do
     t.bigint "task_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
     t.integer "rate", default: 0, null: false
     t.boolean "is_archived", default: false
     t.index ["project_id"], name: "index_assigned_tasks_on_project_id"

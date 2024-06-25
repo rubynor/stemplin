@@ -73,4 +73,7 @@ application.register("file-upload", FileUploadController);
 import CustomDisableController from "./custom_disable_controller";
 application.register("custom-disable", CustomDisableController);
 
+import ShowOnValueController from './show_on_value_controller';
+application.register("show-on-value", ShowOnValueController);
+
 // TODO: fetch controllers from app/javascript/controllers/**/*_controller.js and load/register everything automatically, the filename of the controller will then be used as the controller identifier in the DOM

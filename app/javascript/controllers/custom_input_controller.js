@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="input"
 export default class extends Controller {
-  static targets = ["clone", "submitButton"];
+  static targets = ["input", "hiddenInput", "submitButton"];
 
   static values = {
     activeText: { type: String, default: '' },
@@ -10,18 +10,21 @@ export default class extends Controller {
   };
 
   connect() {
-    this.handleSubmitButtonValue(this.cloneTarget.value);
+    this.handleSubmitButtonValue(this.hiddenInputTarget.value);
   }
 
-  cloneValue(e) {
-    e.target.value = this.decimalToTimestamp(e.target.value);
+  updateFormat() {
+    this.inputTarget.value = this.decimalToTimestamp(this.inputTarget.value);
+    this.updatehiddenInput();
+  }
 
-    this.cloneTarget.value = this.stringToTime(e.target.value);
-
-    this.handleSubmitButtonValue(e.target.value);
+  updatehiddenInput() {
+    this.hiddenInputTarget.value = this.stringToTime(this.inputTarget.value);
+    this.handleSubmitButtonValue(this.hiddenInputTarget.value);
   }
 
   decimalToTimestamp(decimalString) {
+    if (decimalString.trim() === "") return "";
     if (decimalString.includes(':')) return decimalString;
 
     const contentString = decimalString.replace(',', '.');
@@ -37,6 +40,7 @@ export default class extends Controller {
 
   stringToTime(inputString) {
     // Only allow numbers and colon
+    if (inputString.trim() === "") return 0;
     if (!/^[0-9:]+$/.test(inputString)) return NaN;
 
     const [hours, minutes] = inputString.split(":").map(str => parseInt(str) || 0);

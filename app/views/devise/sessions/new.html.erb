@@ -24,7 +24,7 @@
         <span class="bg-gray-50 px-6 text-gray-600"><%= t("login_page.or_continue_with") %></span>
       </div>
     </div>
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "w-full") do |form| %>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "w-full", data: { turbo: false }) do |form| %>
       <div class="w-full flex gap-y-4 flex-col">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <div class="flex flex-col w-full gap-y-4 lg:gap-y-8">
