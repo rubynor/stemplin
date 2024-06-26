@@ -214,6 +214,7 @@ en:
     new_client: New client
     select_project: "Select a project:"
     remember_to_fill_out: "Remember to fill out!"
+    archived_task_can_not_be_updated: "This task is archived and cannot be updated."
 
   notice:
     are_you_sure: "Are you sure?"
