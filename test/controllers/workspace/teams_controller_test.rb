@@ -36,16 +36,19 @@ module  Workspace
       assert_not assigns(:user).is_verified
     end
 
-    test "should add an existing user to the organization" do
+    test "should add an existing user to the organization and create project access" do
       user = users(:user_wo_access_info)
       assert_no_difference("User.count") do
         assert_difference("AccessInfo.count") do
-          post :add_to_organization, params: {
-            user: {
-              email: user.email,
-              role: :organization_user
+          assert_difference("ProjectAccess.count") do
+            post :add_to_organization, params: {
+              user: {
+                email: user.email,
+                role: :organization_user,
+                project_ids: [ @project.id ]
+              }
             }
-          }
+          end
         end
       end
 

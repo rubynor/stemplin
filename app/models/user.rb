@@ -37,7 +37,6 @@ class User < ApplicationRecord
   end
 
   def project_restricted?(organization)
-    a_i = access_infos.find_by(organization: organization)
-    a_i.project_restricted?
+    access_infos.find_by(organization: organization).project_restricted?
   end
 end
