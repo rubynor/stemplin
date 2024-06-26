@@ -30,9 +30,10 @@ module Workspace
     def update
       @project.update_tasks(project_params[:task_ids]) if project_params[:task_ids]
       if @project.update(project_params.except(:task_ids))
+        set_project
         render turbo_stream: [
           turbo_flash(type: :success, data: t("notice.project_was_successfully_updated")),
-          turbo_stream.replace(dom_id(@project), partial: "workspace/projects/project", locals: { project: @project, tasks: @tasks, clients: @clients }),
+          turbo_stream.replace(dom_id(@project), template: "workspace/projects/show", locals: { project: @project, tasks: @tasks, clients: @clients }),
           turbo_stream.action(:remove_modal, :modal)
         ]
       else
