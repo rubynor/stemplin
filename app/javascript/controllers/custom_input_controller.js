@@ -10,7 +10,8 @@ export default class extends Controller {
   };
 
   connect() {
-    this.handleSubmitButtonValue(this.hiddenInputTarget.value);
+    this.loadInitialValue();
+    this.updateFormat();
   }
 
   updateFormat() {
@@ -53,5 +54,9 @@ export default class extends Controller {
     if (this.hasSubmitButtonTarget) {
       this.submitButtonTarget.innerText = (!!inputValue && inputValue !== "0") ? this.activeTextValue : this.inactiveTextValue;
     }
+  }
+
+  loadInitialValue() {
+    this.inputTarget.value = parseInt(this.hiddenInputTarget.value) ? (parseFloat(this.hiddenInputTarget.value) / 60.0) : '';
   }
 }

@@ -213,6 +213,7 @@ en:
     custom_rate: "Custom Rate"
     new_client: New client
     select_project: "Select a project:"
+    remember_to_fill_out: "Remember to fill out!"
 
   notice:
     are_you_sure: "Are you sure?"

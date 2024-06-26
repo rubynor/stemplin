@@ -228,6 +228,7 @@ nb:
     custom_rate: "Egendefinert timepris"
     new_client: "Ny kunde"
     select_project: "Velg et prosjekt:"
+    remember_to_fill_out: "Husk å fylle ut!"
 
   notice:
     are_you_sure: "Er du sikker?"
