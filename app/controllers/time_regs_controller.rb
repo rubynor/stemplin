@@ -22,7 +22,7 @@ class TimeRegsController < ApplicationController
   end
 
   def new_modal
-    @time_reg = @time_reg || authorized_scope(TimeReg, type: :relation, as: :own).new
+    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new
     authorize! @time_reg
   end
 
