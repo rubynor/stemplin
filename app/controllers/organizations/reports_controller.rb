@@ -35,8 +35,6 @@ module Organizations
         tasks: tasks,
         users: users,
       )
-
-      # render "organizations/reports/detailed/show"
     end
 
     private
