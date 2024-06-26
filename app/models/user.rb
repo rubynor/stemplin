@@ -11,6 +11,9 @@ class User < ApplicationRecord
   has_many :projects, through: :clients
   has_many :project_accesses, through: :access_infos
 
+  scope :ordered, -> { order(:last_name, :first_name) }
+  scope :project_restricted, ->(organization) { joins(:access_infos).where(access_infos: { organization: organization, role: AccessInfo.project_restricted_roles }) }
+
   validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s) }
 
   def organization_clients
@@ -33,8 +36,8 @@ class User < ApplicationRecord
     access_infos.find_by(active: true) || access_infos.first
   end
 
-  def project_restricted?(organization = nil)
-    a_i = organization ? access_infos.find_by(organization: organization) : access_info
+  def project_restricted?(organization)
+    a_i = access_infos.find_by(organization: organization)
     a_i.project_restricted?
   end
 end

@@ -69,8 +69,12 @@ module Workspace
 
     def project_params
       p = params.require(:project).permit(:client_id, :name, :description, :billable, :rate_nok, task_ids: [], user_ids: [])
-      p[:access_info_ids] = authorized_scope(AccessInfo, type: :relation).where(user_id: p[:user_ids]).pluck(:id)
-      p.except(:user_ids)
+      convert_user_ids_to_access_info_ids(p)
+    end
+
+    def convert_user_ids_to_access_info_ids(proj_params)
+      proj_params[:access_info_ids] = authorized_scope(AccessInfo, type: :relation).where(user_id: proj_params[:user_ids]).pluck(:id)
+      proj_params.except(:user_ids)
     end
 
     def set_project
@@ -83,7 +87,7 @@ module Workspace
       organization = current_user.current_organization
       @clients = authorized_scope(Client, type: :relation).all
       @tasks = authorized_scope(Task, type: :relation).all
-      @users = authorized_scope(User, type: :relation).order(:first_name, :last_name).select { |user| user.project_restricted?(organization) }
+      @users = authorized_scope(User, type: :relation).ordered.project_restricted(organization)
     end
   end
 end

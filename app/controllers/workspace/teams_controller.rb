@@ -4,7 +4,7 @@ module Workspace
     skip_verify_authorized
 
     def index
-      @pagy, @users = pagy authorized_scope(User, type: :relation).order(:first_name, :last_name)
+      @pagy, @users = pagy authorized_scope(User, type: :relation).ordered
     end
 
     def new_modal
@@ -30,8 +30,10 @@ module Workspace
       begin
         @user = User.find_by(email: team_member_params[:email])
         if @user.present?
-          access_info = create_access_info_for @user
-          create_project_accesses_for access_info
+          ActiveRecord::Base.transaction do
+            access_info = create_access_info_for @user
+            create_project_accesses_for access_info
+          end
           handle_success(user: @user, message: t("notice.user_added_to_the_organization"))
         else
           @new_user = authorized_scope(User, type: :relation).new(email: team_member_params[:email])

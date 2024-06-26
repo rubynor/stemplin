@@ -1,5 +1,5 @@
 class SelectMultipleComponent < ApplicationComponent
-  def initialize(form, method, collection, value_method, text_method, options, label: nil, **attrs)
+  def initialize(form, method, collection, value_method, text_method, options = {}, label: nil, **attrs)
     @form = form
     @method = method
     @collection = collection

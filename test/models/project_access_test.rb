@@ -1,9 +1,6 @@
 require "test_helper"
 
 class ProjectAccessTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
   def setup
     @normal_user_access_info = access_infos(:access_info_org_user)
     @admin_access_info = access_infos(:access_info_org_admin)
