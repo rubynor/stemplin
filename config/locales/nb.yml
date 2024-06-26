@@ -228,6 +228,7 @@ nb:
     custom_rate: "Egendefinert timepris"
     new_client: "Ny kunde"
     select_project: "Velg et prosjekt:"
+    remember_to_fill_out: "Husk å fylle ut!"
     archived_task_can_not_be_updated: "Denne oppgaven er arkivert og kan ikke oppdateres."
 
   notice:
@@ -402,8 +403,8 @@ nb:
         time_reg:
           attributes:
             minutes:
-              not_a_number: "dette er ikke et nummer"
-              less_than_or_equal_to: "må være mindre eller lik 1440"
+              not_a_number: "er ikke et tall"
+              less_than_or_equal_to: "må være mindre eller lik %{count}"
         
         user:
           attributes:
