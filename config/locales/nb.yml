@@ -228,6 +228,7 @@ nb:
     custom_rate: "Egendefinert timepris"
     new_client: "Ny kunde"
     select_project: "Velg et prosjekt:"
+    archived_task_can_not_be_updated: "Denne oppgaven er arkivert og kan ikke oppdateres."
 
   notice:
     are_you_sure: "Er du sikker?"
@@ -239,7 +240,7 @@ nb:
     task_successfully_added_to_project: "Oppgaven ble lagt til prosjektet"
     client_has_been_updated: "kunden har blitt oppdatert"
     client_deleted: "Kunde slettet"
-    task_has_been_updated: Oppgaven har blitt oppdatert"
+    task_has_been_updated: "Oppgaven har blitt oppdatert"
     task_was_successfully_deleted: "Oppgaven ble slettet."
     time_entry_has_been_updated: "Tidsregistrering er oppdatert"
     task_succesfully_removed_from_project: "Oppgaven ble fjernet fra prosjektet"
@@ -419,6 +420,8 @@ nb:
               taken: "har allerede fått tilgang til denne organisasjonen."
       messages:
         record_invalid: "Validering mislyktes: %{errors}"
+        required: "må være valgt"
+        blank: "kan ikke være tom"
 
   helpers:
     alert:
