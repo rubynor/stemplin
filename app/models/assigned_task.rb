@@ -20,7 +20,7 @@ class AssignedTask < ApplicationRecord
   scope :active_task, -> { where(is_archived: false) }
 
   def updated_active_task
-    @new_assigned_task || self
+    self.class.where(project: project, task: task).active_task.first
   end
 
   private
@@ -31,7 +31,7 @@ class AssignedTask < ApplicationRecord
 
   def handle_rate_change
     if rate_changed?
-      @new_assigned_task = self.class.create!(project: project, task: task, rate: rate)
+      self.class.create!(project: project, task: task, rate: rate)
       self.is_archived = true
       self.rate = rate_was
     end
