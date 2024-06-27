@@ -65,24 +65,15 @@
             <% end %>
 
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+              <%= render PhlexUI::Label.new { t("common.users") } %>
+              <%= render PhlexUI::Hint.new { t("common.add_users_optional") } %>
+              <%= render SelectMultipleComponent.new form, :user_ids, users, :id, :name, label: t("common.users") %>
+            <% end %>
+
+            <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
               <%= render PhlexUI::Label.new { t("common.tasks") } %>
               <%= render PhlexUI::Hint.new { t("common.add_tasks_optional") } %>
-              <%= render DropdownComponent.new do %>
-                <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1 flex justify-between") do %>
-                  <span class="text-gray-500 text-sm"><%= t("common.select_tasks") %></span>
-                  <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
-                <% end %>
-                <%= render DropdownComponent::Content.new(class: "w-full !p-4") do %>
-                  <div class="flex flex-col text-sm w-full gap-y-4">
-                    <%= form.collection_check_boxes :task_ids, @tasks, :id, :name do |task| %>
-                      <div class="flex items-center space-x-2">
-                        <%= task.check_box(class: '', checked: task.object.assigned_to_project?(project)) %>
-                        <%= task.label(class: 'text-gray-800') %>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
-              <% end %>
+              <%= render SelectMultipleComponent.new form, :task_ids, tasks, :id, :name, { checked: local_assigns.fetch(:assigned_tasks, nil)&.ids || [] }, label: t("common.tasks") %>
             <% end %>
           <% end %>
         </div>

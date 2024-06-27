@@ -67,7 +67,7 @@ class TimeRegsController < ApplicationController
 
   # exports the time_regs in a project to a .CSV
   def export
-    project = Project.find(params[:project_id])
+    project = authorized_scope(Project, type: :relation).find(params[:project_id])
     client = project.client
     time_regs = project.time_regs.includes(
       :task,
@@ -110,7 +110,9 @@ class TimeRegsController < ApplicationController
   end
 
   def set_clients
-    @clients ||= authorized_scope(Client, type: :relation).all
+    @clients ||= authorized_scope(Project, type: :relation).group_by(&:client).map do |client, projects|
+      OpenStruct.new(name: client.name, items: projects)
+    end
   end
   def set_chosen_date
     @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today

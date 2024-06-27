@@ -175,8 +175,8 @@ nb:
     hourly_rate_selection: "Timepris"
     non_billable: "Ikke fakturerbar"
     rates_per_hour: "Fakturerbare priser (hver time)"
-    add_tasks_optional: "Velg oppgave (valgfritt)"
-    select_tasks: "Velg Oppgave"
+    add_tasks_optional: "Velg oppgaver (valgfritt)"
+    select_tasks: "Velg Oppgaver"
     save: "Lagre"
     role: "Rolle"
     select_organization_user: "Vennligst velg organisasjonsbruker, hvis alt denne brukeren vil gjøre er å registrere tidsregistreringer."
@@ -228,6 +228,11 @@ nb:
     custom_rate: "Egendefinert timepris"
     new_client: "Ny kunde"
     select_project: "Velg et prosjekt:"
+    select: "Velg"
+    select_projects: "Velg prosjekter"
+    add_projects_optional: "Velg prosjektene denne brukeren skal ha tilgang til."
+    add_users_optional: "Velg hvilke brukere som skal ha tilgang til dette prosjektet. Administratorer har tilgang til alle prosjekter."
+    users: "Brukere"
     remember_to_fill_out: "Husk å fylle ut!"
     archived_task_can_not_be_updated: "Denne oppgaven er arkivert og kan ikke oppdateres."
 
@@ -438,7 +443,7 @@ nb:
         clients: Kunder
         projects: Prosjekter
         tasks: Oppgaver
-        users: Lag medlemmer
+        users: Teammedlemmer
       time_frames:
         week: "Uke"
         month: "Måned"

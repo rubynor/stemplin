@@ -18,7 +18,7 @@
               <%= hidden_field_tag :date, chosen_date %>
               <div class="mb-4" data-time-tasks-target="project">
                 <%= form.label :project_id, t('common.project'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
-                <%= form.grouped_collection_select :project_id, clients, :projects, :name, :id, :name, {
+                <%= form.grouped_collection_select :project_id, clients, :items, :name, :id, :name, {
                   disabled: "",
                   selected: time_reg.project&.id || "",
                   prompt: t('common.select_project'),

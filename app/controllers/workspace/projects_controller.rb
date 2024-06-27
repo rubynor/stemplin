@@ -16,7 +16,7 @@ module Workspace
             turbo_stream.action(:remove_modal, :modal)
           ]
         else
-          render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/form", locals: { project: @project, tasks: @tasks, clients: @clients })
+          render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/form", locals: { project: @project, tasks: @tasks, clients: @clients, users: @users })
         end
       end
     end
@@ -33,11 +33,12 @@ module Workspace
         set_project
         render turbo_stream: [
           turbo_flash(type: :success, data: t("notice.project_was_successfully_updated")),
-          turbo_stream.replace(dom_id(@project), template: "workspace/projects/show", locals: { project: @project, tasks: @tasks, clients: @clients }),
+          turbo_stream.replace("#{dom_id(@project)}_show", template: "workspace/projects/show", locals: { project: @project, tasks: @tasks, clients: @clients }),
+          turbo_stream.replace("#{dom_id(@project)}_listitem", partial: "workspace/projects/project", locals: { project: @project }),
           turbo_stream.action(:remove_modal, :modal)
         ]
       else
-        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/form", locals: { project: @project, tasks: @tasks, clients: @clients })
+        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/form", locals: { project: @project, tasks: @tasks, clients: @clients, users: @users, assigned_tasks: @assigned_tasks })
       end
     end
 
@@ -70,19 +71,27 @@ module Workspace
     private
 
     def project_params
-      params.require(:project).permit(:client_id, :name, :description, :billable, :rate_nok, task_ids: [])
+      p = params.require(:project).permit(:client_id, :name, :description, :billable, :rate_nok, task_ids: [], user_ids: [])
+      convert_user_ids_to_access_info_ids(p)
+    end
+
+    def convert_user_ids_to_access_info_ids(proj_params)
+      proj_params[:access_info_ids] = authorized_scope(AccessInfo, type: :relation).where(user_id: proj_params[:user_ids]).pluck(:id)
+      proj_params.except(:user_ids)
     end
 
     def set_project
-      @project = Project.find(params[:id])
+      @project = authorized_scope(Project, type: :relation).find(params[:id])
       @pagy, @active_assigned_tasks = pagy @project.active_assigned_tasks, items: 6
       authorize! @project
     end
 
     def prepare_form_data
+      organization = current_user.current_organization
       @clients = authorized_scope(Client, type: :relation).all
       @tasks = authorized_scope(Task, type: :relation).all
-      @assigned_tasks = @tasks.joins(:assigned_tasks).where(assigned_tasks: { is_archived: false }).distinct
+      @users = authorized_scope(User, type: :relation).ordered.project_restricted(organization)
+      @assigned_tasks = @tasks.joins(:assigned_tasks).where(assigned_tasks: { is_archived: false, project: @project }).distinct
     end
   end
 end
