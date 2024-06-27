@@ -33,11 +33,12 @@ module Workspace
         set_project
         render turbo_stream: [
           turbo_flash(type: :success, data: t("notice.project_was_successfully_updated")),
-          turbo_stream.replace(dom_id(@project), template: "workspace/projects/show", locals: { project: @project, tasks: @tasks, clients: @clients }),
+          turbo_stream.replace("#{dom_id(@project)}_show", template: "workspace/projects/show", locals: { project: @project, tasks: @tasks, clients: @clients }),
+          turbo_stream.replace("#{dom_id(@project)}_listitem", partial: "workspace/projects/project", locals: { project: @project }),
           turbo_stream.action(:remove_modal, :modal)
         ]
       else
-        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/form", locals: { project: @project, tasks: @tasks, clients: @clients, users: @users })
+        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/form", locals: { project: @project, tasks: @tasks, clients: @clients, users: @users, assigned_tasks: @assigned_tasks })
       end
     end
 
@@ -90,7 +91,8 @@ module Workspace
       @clients = authorized_scope(Client, type: :relation).all
       @tasks = authorized_scope(Task, type: :relation).all
       @users = authorized_scope(User, type: :relation).ordered.project_restricted(organization)
-      @assigned_tasks = @tasks.joins(:assigned_tasks).where(assigned_tasks: { is_archived: false }).distinct
+      @assigned_tasks = @tasks.joins(:assigned_tasks).where(assigned_tasks: { is_archived: false, project: @project }).distinct
+      puts "Assignedtasks: #{@assigned_tasks.inspect}"
     end
   end
 end
