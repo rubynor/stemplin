@@ -18,12 +18,22 @@ export default class extends Controller {
   connect() {
     this.totalMillis = this.minutesValue * 60000;
     this.toggleRefresh();
-    window.addEventListener('turbo:morph', (event) => this.toggleRefresh(event));
   }
 
   disconnect() {
     this.clearCurrentInterval();
-    window.removeEventListener('turbo:morph', (event) => this.toggleRefresh(event));
+  }
+
+  minutesValueChanged() {
+    this.totalMillis = this.minutesValue * 60000;
+  }
+
+  activeValueChanged() {
+    this.toggleRefresh();
+  }
+
+  formatValueChanged() {
+    this.toggleRefresh();
   }
 
   toggleRefresh() {

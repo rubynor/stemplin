@@ -17,11 +17,6 @@ export default class extends Controller {
         url: `/time_regs/update_tasks_select?project_id=${projectId}`,
         success:(data)=>{
           taskSelect.innerHTML = data;
-
-          const taskId = projectSelect.value
-          if(taskId < 1){
-            taskSelect.innerHTML = "<option>No Tasks found</option>";
-          }
         },
         error:(data)=>{
           console.error(data);
