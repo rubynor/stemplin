@@ -32,7 +32,11 @@
           <%# TODO: Find a better way to persist query params %>
           <%= link_to tab[:label], organizations_reports_path(filter: { category: tab[:value], **@filter.current_time_range, time_frame: @filter.time_frame, **@filter.current_selection }), class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out px-4", @filter.active_tab === tab[:value] ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
         <% end %>
-        <%= link_to t("task.detailed_report"), organizations_detailed_reports_path(filter: { category: @filter.category, **@filter.current_time_range, time_frame: @filter.time_frame, **@filter.current_selection }), class: "ml-auto" %>
+        <div class="ml-auto">
+          <%= render ButtonComponent.new(path: organizations_detailed_reports_path(filter: { category: @filter.category, **@filter.current_time_range, time_frame: @filter.time_frame, **@filter.current_selection }), method: :get, variant: :secondary) do %>
+            <%= t("task.detailed_report") %>
+          <% end %>
+        </div>
       </div>
       <div class="p-4">
         <%= render PhlexUI::Table.new do %>
