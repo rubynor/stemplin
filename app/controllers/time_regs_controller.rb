@@ -110,9 +110,7 @@ class TimeRegsController < ApplicationController
   end
 
   def set_clients
-    @clients ||= authorized_scope(Project, type: :relation).group_by(&:client).map do |client, projects|
-      OpenStruct.new(name: client.name, items: projects)
-    end
+    @clients ||= authorized_scope(Client, type: :relation).all
   end
   def set_chosen_date
     @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today

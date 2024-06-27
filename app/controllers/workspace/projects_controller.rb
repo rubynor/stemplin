@@ -92,7 +92,6 @@ module Workspace
       @tasks = authorized_scope(Task, type: :relation).all
       @users = authorized_scope(User, type: :relation).ordered.project_restricted(organization)
       @assigned_tasks = @tasks.joins(:assigned_tasks).where(assigned_tasks: { is_archived: false, project: @project }).distinct
-      puts "Assignedtasks: #{@assigned_tasks.inspect}"
     end
   end
 end
