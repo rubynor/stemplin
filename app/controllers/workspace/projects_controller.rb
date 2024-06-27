@@ -28,10 +28,12 @@ module Workspace
     end
 
     def update
-      if @project.update(project_params)
+      @project.update_tasks(project_params[:task_ids]) if project_params[:task_ids]
+      if @project.update(project_params.except(:task_ids))
+        set_project
         render turbo_stream: [
           turbo_flash(type: :success, data: t("notice.project_was_successfully_updated")),
-          turbo_stream.replace(dom_id(@project), partial: "workspace/projects/project", locals: { project: @project, tasks: @tasks, clients: @clients }),
+          turbo_stream.replace(dom_id(@project), template: "workspace/projects/show", locals: { project: @project, tasks: @tasks, clients: @clients }),
           turbo_stream.action(:remove_modal, :modal)
         ]
       else
@@ -88,6 +90,7 @@ module Workspace
       @clients = authorized_scope(Client, type: :relation).all
       @tasks = authorized_scope(Task, type: :relation).all
       @users = authorized_scope(User, type: :relation).ordered.project_restricted(organization)
+      @assigned_tasks = @tasks.joins(:assigned_tasks).where(assigned_tasks: { is_archived: false }).distinct
     end
   end
 end

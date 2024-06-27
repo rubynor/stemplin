@@ -33,6 +33,7 @@ class TimeRegsController < ApplicationController
       redirect_to time_regs_path(date: @time_reg.date_worked)
     else
       flash.now[:alert] = "Unable to create time entry"
+      set_assigned_tasks
       render :new_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
     end
   end
@@ -41,6 +42,7 @@ class TimeRegsController < ApplicationController
     if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
       redirect_to time_regs_path(date: @time_reg.date_worked)
     else
+      set_assigned_tasks
       render :edit_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
     end
   end
@@ -88,13 +90,12 @@ class TimeRegsController < ApplicationController
 
   # changes the selection tasks to show tasks from a specific project
   def update_tasks_select
-    @tasks = authorized_scope(Task, type: :relation, as: :own).all
-    @name_id_pairs = @tasks.assigned_task_names_and_ids(params[:project_id])
+    @name_id_pairs = authorized_scope(Task, type: :relation, as: :own).assigned_task_names_and_ids(params[:project_id])
     render partial: "/time_regs/select", locals: { tasks: @name_id_pairs }
   end
 
   def edit_modal
-    @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg.project&.id)
+    set_assigned_tasks
   end
 
   private
@@ -121,5 +122,9 @@ class TimeRegsController < ApplicationController
     @project = authorized_scope(Project, type: :relation, as: :own).find(time_reg_params[:project_id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "Project not found, kindly select a valid project."
+  end
+
+  def set_assigned_tasks
+    @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg&.project&.id).merge(AssignedTask.active_task)
   end
 end

@@ -233,6 +233,8 @@ nb:
     add_projects_optional: "Velg prosjektene denne brukeren skal ha tilgang til."
     add_users_optional: "Velg hvilke brukere som skal ha tilgang til dette prosjektet. Administratorer har tilgang til alle prosjekter."
     users: "Brukere"
+    remember_to_fill_out: "Husk å fylle ut!"
+    archived_task_can_not_be_updated: "Denne oppgaven er arkivert og kan ikke oppdateres."
 
   notice:
     are_you_sure: "Er du sikker?"
@@ -244,7 +246,7 @@ nb:
     task_successfully_added_to_project: "Oppgaven ble lagt til prosjektet"
     client_has_been_updated: "kunden har blitt oppdatert"
     client_deleted: "Kunde slettet"
-    task_has_been_updated: Oppgaven har blitt oppdatert"
+    task_has_been_updated: "Oppgaven har blitt oppdatert"
     task_was_successfully_deleted: "Oppgaven ble slettet."
     time_entry_has_been_updated: "Tidsregistrering er oppdatert"
     task_succesfully_removed_from_project: "Oppgaven ble fjernet fra prosjektet"
@@ -406,8 +408,8 @@ nb:
         time_reg:
           attributes:
             minutes:
-              not_a_number: "dette er ikke et nummer"
-              less_than_or_equal_to: "må være mindre eller lik 1440"
+              not_a_number: "er ikke et tall"
+              less_than_or_equal_to: "må være mindre eller lik %{count}"
         
         user:
           attributes:
@@ -424,6 +426,8 @@ nb:
               taken: "har allerede fått tilgang til denne organisasjonen."
       messages:
         record_invalid: "Validering mislyktes: %{errors}"
+        required: "må være valgt"
+        blank: "kan ikke være tom"
 
   helpers:
     alert:

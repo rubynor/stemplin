@@ -45,5 +45,28 @@ module Workspace
 
       assert_response :success
     end
+
+    test "should archive assigned_task task with time_regs" do
+      task_ids = @project.tasks.ids
+      task_ids.pop
+
+      assert_difference("@project.active_assigned_tasks.count", -1) do
+        patch :update, params: { id: @project.id, project: { task_ids: task_ids } }
+      end
+    end
+
+    test "should create assigned_task task" do
+      project_tasks = @project.tasks
+      non_project_task = @tasks.where.not(id: project_tasks).first
+      task_ids = project_tasks.ids + [ non_project_task.id ]
+
+      assert_difference("AssignedTask.count", 1) do
+        patch :update, params: { id: @project.id, project: { task_ids: task_ids } }
+      end
+
+      assert_equal non_project_task, AssignedTask.last.task
+      assert_not AssignedTask.last.is_archived
+      assert_equal @project, AssignedTask.last.project
+    end
   end
 end

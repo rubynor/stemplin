@@ -10,7 +10,8 @@ export default class extends Controller {
   };
 
   connect() {
-    this.handleSubmitButtonValue(this.hiddenInputTarget.value);
+    this.loadInitialValue();
+    this.updateFormat();
   }
 
   updateFormat() {
@@ -29,6 +30,7 @@ export default class extends Controller {
 
     const contentString = decimalString.replace(',', '.');
     const decimal = parseFloat(contentString);
+    if (isNaN(decimal)) return decimalString;
 
     const hours = Math.floor(decimal);
     let minutes = Math.round((decimal - hours) * 60);
@@ -52,5 +54,9 @@ export default class extends Controller {
     if (this.hasSubmitButtonTarget) {
       this.submitButtonTarget.innerText = (!!inputValue && inputValue !== "0") ? this.activeTextValue : this.inactiveTextValue;
     }
+  }
+
+  loadInitialValue() {
+    this.inputTarget.value = parseInt(this.hiddenInputTarget.value) ? (parseFloat(this.hiddenInputTarget.value) / 60.0) : '';
   }
 }
