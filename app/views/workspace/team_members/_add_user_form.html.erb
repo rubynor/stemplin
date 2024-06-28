@@ -4,7 +4,7 @@
   <% end %>
   <%= render PhlexUI::Dialog::Content.new(class: "bg-white") do %>
     <%= turbo_frame_tag :modal do %>
-      <%= form_with url: add_to_organization_workspace_teams_path, method: :post, scope: user, data: { controller: "show-on-value", show_on_value_accepted_value: AccessInfo.project_restricted_roles } do |form| %>
+      <%= form_with url: add_to_organization_workspace_team_members_path, method: :post, scope: user, data: { controller: "show-on-value", show_on_value_accepted_value: AccessInfo.project_restricted_roles } do |form| %>
         <div class="flex flex-col gap-y-4">
           <span class="font-semibold text-gray-600 text-lg"> <%= t("common.add_member") %></span>
           <%= render AlertComponent.new(variant: :destructive, title: t("alert.unable_to_proceed"), message: flash[:error]) if flash[:error].present?  %>

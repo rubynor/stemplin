@@ -71,8 +71,9 @@ Rails.application.routes.draw do
       post :edit_modal, on: :member
     end
 
-    resources :teams, only: [ :index, :create ] do
+    resources :team_members, only: [ :index, :create, :update ] do
       post :new_modal, on: :collection
+      put :edit_modal, on: :member
       post :add_to_organization, on: :collection
     end
 

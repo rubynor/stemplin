@@ -253,6 +253,7 @@ en:
     tasks_was_successfully_deleted: "Task was successfully deleted."
     tasks_was_successfully_updated: "Task was successfully updated."
     user_added_to_the_organization: "User added to the organization."
+    user_updated: "User updated."
     time_entry_has_been_logged: "Time entry has been logged."
     edits_to_the_task_name: "Kindly note that edits to the task name will be applied to all the projects. Edits to the billable rate will be applied to this project only and will take effect on new Time registrations."
     recorded_time_registrations: "The task has recorded time registrations, can not be removed from this project."

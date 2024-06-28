@@ -268,6 +268,7 @@ nb:
     tasks_was_successfully_deleted: "Oppgaven ble slettet."
     tasks_was_successfully_updated: "Oppgaven ble oppdatert."
     user_added_to_the_organization: "Bruker ble lagt til i organisasjonen."
+    user_updated: "Bruker ble oppdatert."
     time_entry_has_been_logged: "Tidsregistrering er loggført."
     edits_to_the_task_name: "Vær oppmerksom på at redigeringer av oppgavenavnet vil bli brukt på alle prosjektene. Endringer i den fakturerbare prisen vil kun brukes på dette prosjektet og vil bli tatt i bruk ved nye tidsregistreringer."
     recorded_time_registrations: "Oppgaven har registrerte tidsregistreringer, kan ikke fjernes fra dette prosjektet."

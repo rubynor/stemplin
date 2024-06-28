@@ -1,5 +1,5 @@
 module Workspace
-  module TeamScoped
+  module TeamMemberScoped
     extend ActiveSupport::Concern
 
     included do
@@ -28,16 +28,22 @@ module Workspace
         end
       end
 
-      def handle_success(user:, message:)
-        render turbo_stream: [
+      def handle_success(user:, message:, update:)
+        stream = [
           turbo_flash(type: :success, data: message),
-          turbo_stream.append(:organization_users, partial: "workspace/teams/user", locals: { user: user }),
           turbo_stream.action(:remove_modal, :modal)
         ]
+        stream << turbo_stream.append(:organization_users, partial: "workspace/team_members/user", locals: { user: user }) if !update
+        stream << turbo_stream.replace(dom_id(user), partial: "workspace/team_members/user", locals: { user: user }) if update
+        render turbo_stream: stream
       end
 
       def new_user_info
         team_member_params.except(:role, :project_ids).merge(is_verified: false)
+      end
+
+      def edit_user_info
+        team_member_params.except(:role, :project_ids, :password, :password_confirmation)
       end
 
       def populate_form_for(user:, form: user_details_form)
@@ -50,11 +56,11 @@ module Workspace
       end
 
       def add_user_form
-        "workspace/teams/add_user_form"
+        "workspace/team_members/add_user_form"
       end
 
       def user_details_form
-        "workspace/teams/form"
+        "workspace/team_members/form"
       end
     end
   end

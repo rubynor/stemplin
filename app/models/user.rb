@@ -11,10 +11,11 @@ class User < ApplicationRecord
   has_many :projects, through: :clients
   has_many :project_accesses, through: :access_infos
 
-  scope :ordered, -> { order(:last_name, :first_name) }
+  scope :ordered, -> { order(:first_name, :last_name) }
   scope :project_restricted, ->(organization) { joins(:access_infos).where(access_infos: { organization: organization, role: AccessInfo.project_restricted_roles }) }
 
   validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s) }
+  validates :first_name, :last_name, :email, presence: true
 
   def organization_clients
     clients.distinct

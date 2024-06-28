@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="flex flex-row gap-2">
-      <%= render ButtonComponent.new(path: new_modal_workspace_teams_path, method: :post) do %>
+      <%= render ButtonComponent.new(path: new_modal_workspace_team_members_path, method: :post) do %>
         <span class="hidden lg:block mr-2"><%=  t("common.add_new") %></span>
         <i class="uc-icon text-xl">&#xebaf;</i>
       <% end %>
@@ -19,12 +19,14 @@
         <%= render PhlexUI::Table::Row.new do %>
           <%= render PhlexUI::Table::Head.new { t("common.name") } %>
           <%= render PhlexUI::Table::Head.new { t("common.email") } %>
+          <%= render PhlexUI::Table::Head.new { t("common.role") } %>
+          <%= render PhlexUI::Table::Head.new { t("common.actions") } %>
         <% end %>
       <% end %>
       <%= render PhlexUI::Table::Body.new(id: :organization_users) do %>
-        <%= render partial: "workspace/teams/user", collection: @users %>
+        <%= render partial: "workspace/team_members/user", collection: @users %>
       <% end %>
     <% end %>
-    <%= render PaginationComponent.new(pagy: @pagy, path: workspace_teams_path) if @pagy.pages > 1 %>
+    <%= render PaginationComponent.new(pagy: @pagy, path: workspace_team_members_path) if @pagy.pages > 1 %>
   </div>
 </div>
