@@ -115,6 +115,7 @@ en:
     save_task: "Save task"
     project_members: "project members"
     add_member: "Add Member"
+    edit_member: "Edit Member"
     email: "Email"
     remove: "Remove"
     update_project: "Update Project"

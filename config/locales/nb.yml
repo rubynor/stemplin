@@ -130,6 +130,7 @@ nb:
     save_task: "Lagre oppgaven"
     project_members: "Prosjekt medlemer"
     add_member: "Legg til medlem"
+    edit_member: "Rediger medlem"
     email: "E-post"
     remove: "Slett"
     update_project: "Oppdater Prosjekt"
