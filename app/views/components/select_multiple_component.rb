@@ -8,6 +8,7 @@ class SelectMultipleComponent < ApplicationComponent
     @options = options
     @label = label || I18n.t("common.select")
     @attrs = attrs.merge(default_attrs)
+    @id = SecureRandom.hex(5)
   end
 
   def template
@@ -22,8 +23,8 @@ class SelectMultipleComponent < ApplicationComponent
         render DropdownComponent::Content.new(data_select_multiple_target: "content") do
           div(class: "p-2") do
             div(class: "pb-1") do
-              input type: "checkbox", class: "mr-2", id: "select-all", data: { action: "change->select-multiple#toggleAll", select_multiple_target: "selectAllCheckbox" }
-              label(class: "font-bold", for: "select-all") { I18n.t("common.all") }
+              input type: "checkbox", class: "mr-2", id: "select-all-#{@id}", data: { action: "change->select-multiple#toggleAll", select_multiple_target: "selectAllCheckbox" }
+              label(class: "font-bold", for: "select-all-#{@id}") { I18n.t("common.all") }
             end
             unsafe_raw (
               @form.collection_check_boxes @method, @collection, @value_method, @text_method, @options do |cb|

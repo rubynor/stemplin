@@ -6,7 +6,7 @@ module Workspace
       def new_modal
         @unassigned_tasks = authorized_scope(Task, type: :relation).unassigned_tasks(@project.id)
         @assigned_task = authorized_scope(AssignedTask, type: :relation).new
-        authorize! @assigned_task
+        authorize!
 
         @assigned_task.build_task
       end

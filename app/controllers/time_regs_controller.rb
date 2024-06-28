@@ -1,6 +1,6 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update, :destroy, :delete_confirmation ]
+  before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update, :destroy ]
   before_action :set_clients, only: [ :index, :new_modal, :create, :edit_modal, :update ]
   before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal, :update ]
   before_action :set_project, only: [ :create, :update ]

@@ -1,6 +1,6 @@
 module Workspace
   class ClientsController < WorkspaceController
-    before_action :set_client, only: %i[edit_modal update destroy delete_confirmation]
+    before_action :set_client, only: %i[edit_modal update destroy]
 
     def index
       @pagy, @clients = pagy authorized_scope(Client, type: :relation).all
@@ -28,9 +28,11 @@ module Workspace
     end
 
     def edit_modal
+      authorize! @client
     end
 
     def update
+      authorize! @client
       if @client.update(client_params)
         render turbo_stream: [
           turbo_flash(type: :success, data: t("notice.client_was_successfully_updated")),
@@ -43,6 +45,7 @@ module Workspace
     end
 
     def destroy
+      authorize! @client
       if @client.destroy
         render turbo_stream: [
           turbo_flash(type: :success, data: t("notice.client_was_successfully_deleted")),
@@ -62,7 +65,6 @@ module Workspace
 
     def set_client
       @client = Client.find(params[:id])
-      authorize! @client
     end
   end
 end

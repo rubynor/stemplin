@@ -55,7 +55,7 @@ module Workspace
     end
 
     def import_modal
-      authorize! @project
+      authorize!
     end
 
     def destroy
