@@ -23,31 +23,31 @@
           <%= render PhlexUI::Popover::Content.new(class: "divide-y divide-gray-50 w-48") do %>
             <%= render PhlexUI::Link.new(href: time_regs_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
               <div class="w-full flex justify-start items-center gap-x-1">
-                <%= render PhlexUI::Label.new { "Home"} %>
+                <%= render PhlexUI::Label.new { t("common.home") } %>
               </div>
             <% end %>
             <% if current_user.organization_admin? %>
               <%= render PhlexUI::Link.new(href: workspace_projects_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
                 <div class="w-full flex justify-start items-center gap-x-1">
-                  <%= render PhlexUI::Label.new { "Workspace"} %>
+                  <%= render PhlexUI::Label.new { t("common.workspace")} %>
                 </div>
               <% end %>
             <% end %>
             <%= render PhlexUI::Link.new(href: organizations_reports_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
               <div class="w-full flex justify-start items-center gap-x-1">
-                <%= render PhlexUI::Label.new { "Organization Reports"} %>
+                <%= render PhlexUI::Label.new { t("common.reports") } %>
               </div>
             <% end %>
             <%= render PhlexUI::Link.new(href: edit_user_registration_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
               <div class="w-full flex justify-start items-center gap-x-1">
                 <i class="uc-icon text-base text-gray-500">&#xebb2;</i>
-                <%= render PhlexUI::Label.new { "Edit account"} %>
+                <%= render PhlexUI::Label.new { t("common.edit_account") } %>
               </div>
             <% end %>
             <%= render ButtonComponent.new(path: destroy_user_session_path, method: :delete, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
               <div class="w-full flex justify-start items-center gap-x-1">
                 <i class="uc-icon text-base text-gray-500">&#xe978;</i>
-                <%= render PhlexUI::Label.new { "Sign out"} %>
+                <%= render PhlexUI::Label.new { t("common.sign_out") } %>
               </div>
             <% end %>
           <% end %>
