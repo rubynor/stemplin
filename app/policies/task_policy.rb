@@ -1,8 +1,4 @@
 class TaskPolicy < ApplicationPolicy
-  %i[ index show new create edit update destroy ].each do |action|
-    define_method("#{action}?") { user.admin? && user.current_organization == record.organization }
-  end
-
   scope_for :relation, :own do |relation|
     users_projects = authorized_scope(Project.all, type: :relation).all
     relation.joins(:projects).where(projects: users_projects).distinct
