@@ -1,9 +1,11 @@
 module Workspace
   class ClientPolicy < WorkspacePolicy
-    [ :edit_modal, :update, :delete_confirmation, :destroy ].each do |action|
-      define_method("#{action}?") do
-        user.organization_admin? && record.organization == user.current_organization
-      end
+    %i[ index ].each do |action|
+      define_method("#{action}?") { user.organization_admin? }
+    end
+
+    %i[ new_modal create edit_modal update delete_confirmation destroy ].each do |action|
+      define_method("#{action}?") { user.organization_admin? && record.organization == user.current_organization }
     end
 
     scope_for :relation do |relation|

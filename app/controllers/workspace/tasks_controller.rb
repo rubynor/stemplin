@@ -2,19 +2,21 @@ module Workspace
   # TODO: This controller has similar actions to the clients controller, consider refactoring
   # extract duplicated code to a concern
   class TasksController < WorkspaceController
-    before_action :set_task, only: %i[edit_modal update destroy delete_confirmation]
-    verify_authorized only: %i[edit_modal update destroy delete_confirmation]
+    before_action :set_task, only: %i[ edit_modal update destroy ]
 
     def index
       @pagy, @tasks = pagy authorized_scope(Task, type: :relation).all
+      authorize!
     end
 
     def new_modal
       @task = authorized_scope(Task, type: :relation).new
+      authorize! @task
     end
 
     def create
       @task = authorized_scope(Task, type: :relation).new(task_params)
+      authorize! @task
 
       if @task.save
         render turbo_stream: [
@@ -28,9 +30,11 @@ module Workspace
     end
 
     def edit_modal
+      authorize! @task
     end
 
     def update
+      authorize! @task
       if @task.update(task_params)
         render turbo_stream: [
           turbo_flash(type: :success, data: t("notice.tasks_was_successfully_updated")),
@@ -43,6 +47,7 @@ module Workspace
     end
 
     def destroy
+      authorize! @task
       if @task.assigned_tasks.any?
         render turbo_stream: turbo_flash(type: :error, data: "Unable to proceed, Task is assigned to a project.")
       else
@@ -63,7 +68,6 @@ module Workspace
 
     def set_task
       @task = Task.find(params[:id])
-      authorize! @task
     end
   end
 end

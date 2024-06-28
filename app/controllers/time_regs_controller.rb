@@ -4,13 +4,13 @@ class TimeRegsController < ApplicationController
   before_action :set_clients, only: [ :index, :new_modal, :create, :edit_modal, :update ]
   before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal, :update ]
   before_action :set_project, only: [ :create, :update ]
-  verify_authorized except: %i[ index create update_tasks_select ]
 
   require "activerecord-import/base"
   require "csv"
   include TimeRegsHelper
 
   def index
+    authorize!
     @time_regs_week = authorized_scope(TimeReg, type: :relation, as: :own).between_dates(@chosen_date.beginning_of_week, @chosen_date.end_of_week)
     @time_regs = @time_regs_week.on_date(@chosen_date)
     @total_minutes_day = @time_regs.sum(&:current_minutes)
@@ -28,6 +28,7 @@ class TimeRegsController < ApplicationController
 
   def create
     @time_reg = current_user.time_regs.new(time_reg_params.except(:project_id, :minutes_string))
+    authorize! @time_reg
 
     if @time_reg.save
       redirect_to time_regs_path(date: @time_reg.date_worked)
@@ -39,6 +40,7 @@ class TimeRegsController < ApplicationController
   end
 
   def update
+    authorize! @time_reg
     if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
       redirect_to time_regs_path(date: @time_reg.date_worked)
     else
@@ -48,6 +50,7 @@ class TimeRegsController < ApplicationController
   end
 
   def destroy
+    authorize! @time_reg
     @time_reg.destroy!
     redirect_to time_regs_path(date: @time_reg.date_worked)
 
@@ -57,6 +60,7 @@ class TimeRegsController < ApplicationController
   end
 
   def toggle_active
+    authorize! @time_reg
     @time_reg.toggle_active
     redirect_to time_regs_path(date: @time_reg.date_worked)
 
@@ -90,11 +94,13 @@ class TimeRegsController < ApplicationController
 
   # changes the selection tasks to show tasks from a specific project
   def update_tasks_select
+    authorize!
     @name_id_pairs = authorized_scope(Task, type: :relation, as: :own).assigned_task_names_and_ids(params[:project_id])
     render partial: "/time_regs/select", locals: { tasks: @name_id_pairs }
   end
 
   def edit_modal
+    authorize! @time_reg
     set_assigned_tasks
   end
 
@@ -106,7 +112,6 @@ class TimeRegsController < ApplicationController
 
   def set_time_reg
     @time_reg = TimeReg.find(params[:time_reg_id] || params[:id])
-    authorize! @time_reg
   end
 
   def set_clients

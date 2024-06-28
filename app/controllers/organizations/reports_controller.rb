@@ -1,7 +1,5 @@
 module Organizations
   class ReportsController < AuthenticatedController
-    before_action :authorize!
-
     def index
       @filter = Organizations::Reports::Filter.new(filter_params)
       @time_regs = authorized_scope(TimeReg, type: :relation).between_dates(@filter.start_date, @filter.end_date)
@@ -10,6 +8,7 @@ module Organizations
         time_regs: @time_regs,
       )
       @results = Organizations::Reports::Result.new(time_regs: @time_regs, filter: @filter)
+      authorize!
     end
 
     private

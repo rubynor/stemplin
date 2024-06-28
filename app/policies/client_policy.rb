@@ -1,6 +1,6 @@
 class ClientPolicy < ApplicationPolicy
-  [ :show?, :new?, :create?, :edit?, :update?, :destroy? ].each do |action|
-    define_method(action) { user.organization_admin? && user.organization == record.organization }
+  %i[ show new create edit update destroy ].each do |action|
+    define_method("#{action}?") { user.organization_admin? && user.organization == record.organization }
   end
 
   def index?

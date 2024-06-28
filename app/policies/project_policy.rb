@@ -1,6 +1,6 @@
 class ProjectPolicy < ApplicationPolicy
-  [ :show?, :new?, :edit?, :update?, :destroy?, :import? ].each do |action|
-    define_method(action) { user.organization_admin? && user.current_organization == record.organization }
+  %i[ show new edit update destroy import ].each do |action|
+    define_method("#{action}?") { user.organization_admin? && user.current_organization == record.organization }
   end
 
   def create?

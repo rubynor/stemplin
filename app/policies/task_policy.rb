@@ -1,6 +1,6 @@
 class TaskPolicy < ApplicationPolicy
-  [ :index?, :show?, :new?, :create?, :edit?, :update?, :destroy? ].each do |action|
-    define_method(action) { user.admin? && user.current_organization == record.organization }
+  %i[ index show new create edit update destroy ].each do |action|
+    define_method("#{action}?") { user.admin? && user.current_organization == record.organization }
   end
 
   scope_for :relation, :own do |relation|

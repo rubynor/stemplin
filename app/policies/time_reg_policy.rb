@@ -1,16 +1,12 @@
 class TimeRegPolicy < ApplicationPolicy
-  [ :edit?, :update?, :destroy?, :toggle_active?, :export? ].each do |action|
-    define_method(action) do
+  %i[ edit update destroy toggle_active export ].each do |action|
+    define_method("#{action}?") do
       user == record.user
     end
   end
 
-  def new_modal?
-    true
-  end
-
-  def edit_modal?
-    true
+  %i[ index new_modal edit_modal update_tasks_select ].each do |action|
+    define_method("#{action}?") { true }
   end
 
   def create?

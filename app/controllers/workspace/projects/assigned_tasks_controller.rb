@@ -6,12 +6,16 @@ module Workspace
       def new_modal
         @unassigned_tasks = authorized_scope(Task, type: :relation).unassigned_tasks(@project.id)
         @assigned_task = authorized_scope(AssignedTask, type: :relation).new
+        authorize! @assigned_task
+
         @assigned_task.build_task
       end
 
       def create
         @task = authorized_scope(Task, type: :relation).find_by(id: assigned_task_params[:task_attributes][:id])
         @assigned_task = authorized_scope(AssignedTask, type: :relation).new(project: @project, task: @task, rate_nok: assigned_task_params[:rate_nok])
+
+        authorize! @assigned_task
 
         if @assigned_task.save
           render turbo_stream: [
@@ -28,6 +32,8 @@ module Workspace
 
       def destroy
         @assigned_task = authorized_scope(AssignedTask, type: :relation).find(params[:id])
+        authorize! @assigned_task
+
         if @assigned_task.destroy
           render turbo_stream: [
             turbo_flash(type: :success, data: I18n.t("notice.task_succesfully_removed_from_project")),
@@ -41,10 +47,12 @@ module Workspace
 
       def edit_modal
         @assigned_task = authorized_scope(AssignedTask, type: :relation).find(params[:id])
+        authorize! @assigned_task
       end
 
       def update
         @assigned_task = authorized_scope(AssignedTask, type: :relation).find(params[:id])
+        authorize! @assigned_task
         if @assigned_task.update(assigned_task_params)
           updated_active_task = @assigned_task.updated_active_task
           render turbo_stream: [

@@ -1,6 +1,10 @@
 module Workspace
   module Projects
     class AssignedTaskPolicy < Workspace::ProjectPolicy
+      %i[ new_modal create destroy edit_modal update ].each do |action|
+        define_method("#{action}?") { user.organization_admin? && user.current_organization == record.organization }
+      end
+
       scope_for :relation do |relation|
         organization = user.current_organization
         if user.organization_admin?
