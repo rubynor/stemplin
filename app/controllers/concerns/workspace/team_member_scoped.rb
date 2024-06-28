@@ -12,7 +12,6 @@ module Workspace
       def create_access_info_for(user)
         authorized_scope(AccessInfo, type: :relation).create!(
           user: user,
-          organization: current_user.current_organization,
           role: AccessInfo.roles[team_member_params[:role]]
         )
       end
