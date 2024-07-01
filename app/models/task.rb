@@ -11,7 +11,14 @@ class Task < ApplicationRecord
   scope :assigned_tasks, ->(project_id) { joins(:assigned_tasks).where(assigned_tasks: { project_id: project_id }).select("assigned_tasks.id AS id, tasks.name AS name") }
   scope :unassigned_tasks, ->(project_id) { where.not(id: AssignedTask.where(project_id: project_id).select(:task_id)) }
 
+  scope :active, -> { joins(:assigned_tasks).where(assigned_tasks: { is_archived: false }).distinct }
+
   accepts_nested_attributes_for :assigned_tasks
+
+  def assigned_to_project?(project)
+    return false if project.nil?
+    assigned_tasks.where(is_archived: false, project: project).any?
+  end
 
   def self.assigned_task_names_and_ids(project_id)
     joins(:assigned_tasks)

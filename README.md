@@ -1,10 +1,13 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/193cb743bd02e45896a7/maintainability)](https://codeclimate.com/github/rubynor/reap/maintainability)
 
 # Reap time tracking
-Time tracking application written in Ruby on Rails
+Time tracking application written in Ruby on Rails.
+
 ## Getting Started
+If you are using Windows, you will have to use WSL because Redis is not officially supported on Windows.
 
 ### Setting Up Locally
+If you haven't installed Ruby/Rails, I recommend [this guide](https://gorails.com/setup/windows/11#overview), using the [ASDF](https://asdf-vm.com/) version manager. Make sure you have the correct versions according to the Gemfile.
 
 Install the project's dependencies by running:
 
@@ -18,8 +21,31 @@ and
 bundle install
 ```
 
-## Database stuff -----------
+### Database
+Follow [this guide](https://www.theodinproject.com/lessons/ruby-on-rails-installing-postgresql) to install PostgreSQL and set up your database.
 
+If Postgres is not running, start it with:
+
+```shell
+sudo service postgresql start
+```
+
+To create the project database, run the migrations and populate it using fixtures, run the following commands:
+
+```shell
+rails db:create
+rails db:migrate
+rails db:fixtures:load
+```
+
+### Redis
+Hotwire will not work without Redis. If it is not running, start it with:
+
+```shell
+redis-server --daemonize yes
+```
+
+### Run the project
 Finally, you can run your project locally with:
 
 ```shell
@@ -36,6 +62,7 @@ Run linter with:
 ```shell
 bin/rubocop
 ```
+
 ## Authorization
 This project uses [ActionPolicy](https://github.com/palkan/action_policy) for authorization.
 

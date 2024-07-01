@@ -68,7 +68,7 @@ en:
   time_reg:
     errors:
       messages:
-        timer_running: "Another timer is allready running"
+        timer_running: "Another timer is already running"
 
   common:
     client: "Client"
@@ -85,8 +85,8 @@ en:
     sign_out: "Sign Out"
     cancel: "Cancel"
     start_timer: "Start timer"
-    create_time_reg: "Create Time reg"
-    update_time_reg: "Update Time reg"
+    create_time_reg: "Create time entry"
+    update_time_reg: "Update time entry"
     edit: "Edit"
     stop: "Stop"
     start: "Start"
@@ -100,7 +100,8 @@ en:
     not_billed_to_a_client: "Not billed to a client"
     track_billable_rates: "We need billable rates to track your project's billable amount"
     project_billable_rate: "Project billable rate"
-    per_hour: "Per hour"
+    billable_amount: "Billable amount"
+    per_hour: "per hour"
     your_projects: "Your projects"
     new_project: "New project"
     project_tasks: "Project tasks"
@@ -128,7 +129,7 @@ en:
     remove_every_task_from_the_project: "Remove every task from the project"
     delete_the_project_permanently: "Delete the project permanently"
     please_enter: "Please enter"
-    delete: "DELETE"
+    delete: "Delete"
     to_confirm: "to confirm"
     delete_the_client_permanently: "Delete the client permanently"
     cannot_delete_client_with_active_projects: "Cannot delete client with active projects"
@@ -138,6 +139,7 @@ en:
     total: "Total"
     total_billable_hours: "Total billable hours"
     total_hours: "Total hours"
+    billable_hours: "Billable hours"
     home: "Home"
     workspace: "Workspace"
     reset_date: "Reset date"
@@ -164,7 +166,7 @@ en:
     role: "Role"
     select_organization_user: "Kindly select organization user, if all this user will do is record time registrations."
     select_role: "Select role"
-    share_temporary_password_with_user: "Kindly share this temporary password with the user for login purposes. They can change it later on."
+    share_temporary_password_with_user: "Kindly share this temporary password with the user for login purposes. They can change it at a later time."
     deletion_of_the_client: "Do you want to proceed with the deletion of the client"
     cannot_be_undone: "This action cannot be undone."
     billable: "Billable"
@@ -181,6 +183,7 @@ en:
     detailed_report: "detailed report"
     team: "Team"
     filter: "Filter"
+    period: "Period"
     period_from: "Period - from" 
     period_to: "Period - to"
     reset: "Reset"
@@ -202,12 +205,21 @@ en:
     task_is_already_assigned: "The task is already assigned to projects, can not be deleted."
     the_client_has_associated_projects: "The Client has associated projects, can not be deleted."
     add_task_to: "Add task to"
-    optional_project: "This is optional, otherwise Project rate should be applied"
+    optional_project: "This is optional, otherwise project rate will be applied"
     add: "Add"
     looking_for: "Can't find what you're looking for?"
     update: "Update"
     project_rate: "Project Rate"
+    custom_rate: "Custom Rate"
     new_client: New client
+    select_project: "Select a project:"
+    select: "Select"
+    select_projects: "Select projects"
+    add_projects_optional: "Select the projects this user should have access to."
+    add_users_optional: "Select the users that should have access to this project. Administrators have access to all projects."
+    users: "Users"
+    remember_to_fill_out: "Remember to fill out!"
+    archived_task_can_not_be_updated: "This task is archived and cannot be updated."
 
   notice:
     are_you_sure: "Are you sure?"
@@ -227,7 +239,6 @@ en:
     with_a_task: "with a task"
     logged_action_cannot_be_undone: "logged. This action cannot be undone."
     registration_was_successfully: "Time registration was successfully deleted."
-    time_entry_has_been_toggled: "Time entry has been toggled"
     _on: "on"
     _off: "off"
     unable_to_delete_time_registration: "Unable to delete time registration"
@@ -238,9 +249,9 @@ en:
     client_was_successfully_created: "Client was successfully created."
     client_was_successfully_deleted: "Client was successfully deleted."
     client_was_successfully_updated: "Client was successfully updated"
-    tasks_was_successfully_created: "task was successfully updated."
-    tasks_was_successfully_deleted: "task was successfully deleted."
-    tasks_was_successfully_updated: "task was successfully updated"
+    tasks_was_successfully_created: "Task was successfully updated."
+    tasks_was_successfully_deleted: "Task was successfully deleted."
+    tasks_was_successfully_updated: "Task was successfully updated."
     user_added_to_the_organization: "User added to the organization."
     time_entry_has_been_logged: "Time entry has been logged."
     edits_to_the_task_name: "Kindly note that edits to the task name will be applied to all the projects. Edits to the billable rate will be applied to this project only and will take effect on new Time registrations."
@@ -270,13 +281,14 @@ en:
     project_not_found: "Project not found, kindly select a valid project."
     wish_to_proceed: "Do you wish to proceed?"
     warning: "Warning!"
+    unable_to_proceed: "Unable to proceed"
 
   description:
     blank: "can't be blank"
     too_short: "is too short (minimum is %{count} characters)"
     too_long: "is too long (maximum is %{count} characters)"
     the_task: "The task"
-    assigned_to_project: "is already assigned to a project, Kindly remove associated projects if you wish to proceed with this task deletion."
+    assigned_to_project: "is already assigned to a project. Kindly remove associated projects if you wish to proceed with this task deletion."
     proceed_deletion_of_the_task: "Do you want to proceed with the deletion of the task"
     cannot_be_undone: "This action cannot be undone."
 
@@ -326,3 +338,34 @@ en:
         month: Month
         year: Year
         custom: Custom
+
+  access_info:
+    role:
+      organization_user: "Organization User"
+      organization_admin: "Organization Administrator"
+      super_admin: "Super administrator"
+
+  login_page:
+    sign_in_to_your_account: "Sign in to your account"
+    sign_in_with: "Sign in with"
+    or_continue_with: "Or continue with"
+    email: "Email"
+    email_address: "Email address"
+    password: "Password"
+    remember_me: "Remember me"
+    forgot_password: "Forgot your password?"
+    sign_in: "Sign in"
+    dont_have_an_account: "Don't have an account?"
+    sign_up: "Sign up"
+    streamline_your_workflow: "Streamline Your Workflow"
+    app_summary: "Boost collaboration and simplify project execution. Assign tasks, track time, and generate insightful reports – all in one place. Empower your team and achieve more with streamlined workflows."
+
+    activerecord:
+      errors:
+        models:
+          access_info:
+            attributes:
+              user_id:
+                taken: "has already been granted access to this organization."
+        messages:
+          record_invalid: "Validation failed: %{errors}"

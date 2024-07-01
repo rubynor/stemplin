@@ -15,7 +15,7 @@ login:
   organization: organization_two
 
 authentication:
-  name: Debug
+  name: Authentication
   organization: organization_one
 
 ux_audit:

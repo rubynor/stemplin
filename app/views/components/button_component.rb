@@ -9,7 +9,11 @@ class ButtonComponent < ApplicationComponent
 
   def template(&content)
     if @path.present?
-      button_to(@path, method: @method, **@attrs) { render_button(&content) }
+      if @method == :get
+        link_to(@path, **@attrs) { render_button(&content) }
+      else
+        button_to(@path, method: @method, **@attrs) { render_button(&content) }
+      end
     else
       render_button(&content)
     end

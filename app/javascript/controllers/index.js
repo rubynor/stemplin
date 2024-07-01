@@ -19,6 +19,12 @@ application.register("collapse-hours", CollapseHoursController)
 import FormController from "./form_controller"
 application.register("form", FormController)
 
+import GroupedSelectMultipleController from "./grouped_select_multiple_controller"
+application.register("grouped-select-multiple", GroupedSelectMultipleController)
+
+import SelectMultipleController from "./select_multiple_controller"
+application.register("select-multiple", SelectMultipleController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
@@ -66,5 +72,8 @@ application.register("file-upload", FileUploadController);
 
 import CustomDisableController from "./custom_disable_controller";
 application.register("custom-disable", CustomDisableController);
+
+import ShowOnValueController from './show_on_value_controller';
+application.register("show-on-value", ShowOnValueController);
 
 // TODO: fetch controllers from app/javascript/controllers/**/*_controller.js and load/register everything automatically, the filename of the controller will then be used as the controller identifier in the DOM

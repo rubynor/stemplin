@@ -12,6 +12,9 @@
         <div class="flex flex-col gap-y-4">
           <span class="font-semibold text-gray-600 text-lg"><%= is_new_record ? "#{t("common.add_task_to")} #{project.name}" : "#{t("common.edit")} #{assigned_task.task.name}" %></span>
           <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
+            <% assigned_task.errors.full_messages_for(:base).each do |message| %>
+              <div  class="text-red-600 text-xs italic mt-1"><%= message %></div>
+            <% end %>
             <%= form.fields_for :task do |task_form|%>
               <% if is_new_record %>
                 <%= render PhlexUI::Form::Item.new do  %>
@@ -31,13 +34,13 @@
                       <% end %>
                     <% end %>
                   </div>
-                  <% assigned_task.errors.full_messages_for(:task_id).each do |message|%>
+                  <% assigned_task.errors.full_messages_for(:task).each do |message|%>
                     <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
                   <% end %>
                 <% end %>
               <% else %>
                 <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-                  <%= render PhlexUI::Label.new { "Name" } %>
+                  <%= render PhlexUI::Label.new { t("common.name") } %>
                   <%= task_form.text_field :name, class: "border-gray-200 rounded-md", autofocus: true %>
                   <% assigned_task.errors.full_messages_for(:name).each do |message|%>
                     <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>

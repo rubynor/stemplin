@@ -7,7 +7,7 @@
       <div class="flex flex-row gap-x-2">
         <span class="text-sm text-gray-500 font-medium"><%= assigned_task.task.name %></span>
         <%= render PhlexUI::Badge.new(variant: assigned_task.rate.zero? ? :gray : :purple, class: "!rounded-full flex gap-x-1 w-fit") do %>
-          <span><%= assigned_task.rate.zero? ? t("common.project_rate") : "Custom Rate"%></span>
+          <span><%= assigned_task.rate.zero? ? t("common.project_rate") : t("common.custom_rate") %></span>
         <% end %>
       </div>
       <div class="text-sm">

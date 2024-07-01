@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="input"
 export default class extends Controller {
-  static targets = ["clone", "submitButton"];
+  static targets = ["input", "hiddenInput", "submitButton"];
 
   static values = {
     activeText: { type: String, default: '' },
@@ -10,17 +10,39 @@ export default class extends Controller {
   };
 
   connect() {
-    this.handleSubmitButtonValue(this.cloneTarget.value);
+    this.loadInitialValue();
+    this.updateFormat();
   }
 
-  cloneValue(e) {
-    const eventTargetValue = e.target.value;
-    this.cloneTarget.value = this.stringToTime(eventTargetValue);
-    this.handleSubmitButtonValue(eventTargetValue);
+  updateFormat() {
+    this.inputTarget.value = this.decimalToTimestamp(this.inputTarget.value);
+    this.updatehiddenInput();
+  }
+
+  updatehiddenInput() {
+    this.hiddenInputTarget.value = this.stringToTime(this.inputTarget.value);
+    this.handleSubmitButtonValue(this.hiddenInputTarget.value);
+  }
+
+  decimalToTimestamp(decimalString) {
+    if (decimalString.trim() === "") return "";
+    if (decimalString.includes(':')) return decimalString;
+
+    const contentString = decimalString.replace(',', '.');
+    const decimal = parseFloat(contentString);
+    if (isNaN(decimal)) return decimalString;
+
+    const hours = Math.floor(decimal);
+    let minutes = Math.round((decimal - hours) * 60);
+
+    if (minutes < 10) minutes = '0' + minutes;
+
+    return `${hours}:${minutes}`;
   }
 
   stringToTime(inputString) {
     // Only allow numbers and colon
+    if (inputString.trim() === "") return 0;
     if (!/^[0-9:]+$/.test(inputString)) return NaN;
 
     const [hours, minutes] = inputString.split(":").map(str => parseInt(str) || 0);
@@ -29,8 +51,12 @@ export default class extends Controller {
   }
 
   handleSubmitButtonValue(inputValue) {
-    if(this.hasSubmitButtonTarget) {
+    if (this.hasSubmitButtonTarget) {
       this.submitButtonTarget.innerText = (!!inputValue && inputValue !== "0") ? this.activeTextValue : this.inactiveTextValue;
     }
+  }
+
+  loadInitialValue() {
+    this.inputTarget.value = parseInt(this.hiddenInputTarget.value) ? (parseFloat(this.hiddenInputTarget.value) / 60.0) : '';
   }
 }

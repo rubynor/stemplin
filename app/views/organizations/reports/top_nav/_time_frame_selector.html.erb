@@ -6,7 +6,7 @@
   <div class="border-l border-r border-gray-100 h-full p-2">
     <%= render PhlexUI::Popover.new(options: { placement: "bottom-end" }) do %>
       <%= render PhlexUI::Popover::Trigger.new(class: "w-full flex flex-row justify-between items-center gap-x-2") do %>
-        <span class="capitalize"> <%= @filter.time_frame %> </span>
+        <span class="capitalize"> <%= t("organizations.reports_filter.time_frames.#{@filter.time_frame}") %> </span>
         <i class="uc-icon text-gray-400 text-lg">&#xe819;</i>
       <% end  %>
       <%= render PhlexUI::Popover::Content.new(class: "divide-y divide-gray-50 w-48") do %>

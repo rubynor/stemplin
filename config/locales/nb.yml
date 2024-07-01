@@ -52,9 +52,9 @@ nb:
       - Jul
       - Aug
       - Sep
-      - Oct
+      - Okt
       - Nov
-      - Dec
+      - Des
 
     abbr_day_names:
       - Søn
@@ -79,12 +79,12 @@ nb:
     new_client: "Ny Kunde"
     detailed_report: "Se detaljert rapport"
     no_data_in_this_period: "Ingen data i denne perioden"
-    assign_task: "Sett oppgave"
+    assign_task: "Tildel oppgave"
 
   time_reg:
     errors:
       messages:
-        timer_running: "En annen timer går fortsatt"
+        timer_running: "En annen stoppeklokke går fortsatt"
 
   common:
     client: "Kunde"
@@ -97,29 +97,30 @@ nb:
     projects: "Prosjekter"
     project: "Prosjekt"
     notes: "Notater"
-    edit_account: "Endre Brukeren"
+    edit_account: "Rediger Bruker"
     sign_out: "Logg Ut"
     cancel: "Avbryt"
     start_timer: "Start klokken"
-    create_time_reg: "Opprett tids reg"
-    update_time_reg: "Oppdater Tids reg"
+    create_time_reg: "Opprett tidsregistrering"
+    update_time_reg: "Oppdater tidsregistrering"
     edit: "Rediger"
     stop: "Stopp"
     start: "Start"
-    delete_project: "Fjern prosjekt"
+    delete_project: "Slett prosjekt"
     back_to_project: "Tilbake til prosjekt"
     name: "Navn"
-    description: "Forklaring"
+    description: "Beskrivelse"
     billable_project: "Fakturerbart prosjekt"
     billable_rates: "Fakturerbare priser"
     bill_hourly_rates_apply: "Regning hver time, priser gjelder"
     not_billed_to_a_client: "Ikke fakturert til en kunde"
     track_billable_rates: "Vi trenger fakturerbare priser for å spore prosjektets fakturerbare beløp"
-    project_billable_rate: "Prosjektfakturerbar rate"
-    per_hour: "Hver time"
+    project_billable_rate: "Prosjektfakturerbar timepris"
+    billable_amount: "Fakturerbart beløp"
+    per_hour: "hver time"
     your_projects: "Dine prosjekter"
     new_project: "Nytt prosjekt"
-    project_tasks: "Prosjekt oppgaver"
+    project_tasks: "Prosjektoppgaver"
     add_task: "Legg til oppgave"
     assign_task: "Tildel oppgave"
     edit_task_on_project: "Vil du endre oppgaven i prosjektet? Trykk"
@@ -130,20 +131,20 @@ nb:
     project_members: "Prosjekt medlemer"
     add_member: "Legg til medlem"
     email: "E-post"
-    remove: "Fjern"
+    remove: "Slett"
     update_project: "Oppdater Prosjekt"
     task: "Oppgave"
     create_client: "Lag Kunde"
-    edit_user: "Endre Brukere"
+    edit_user: "Rediger Bruker"
     back: "Tilbake"
     provide_a_csv: "Oppgi en CSV-fil med disse kolonnene"
     careful_this_action_will: "FORSIKTIG! denne handlingen vil:"
-    remove_all_time_entries: "Fjern alle tidsregistreringer for hvert medlem permanent"
+    remove_all_time_entries: "Slett alle tidsregistreringer for hvert medlem permanent"
     remove_every_member_from_the_project: "Fjern hvert medlem fra prosjektet"
     remove_every_task_from_the_project: "Fjern hver oppgave fra prosjektet"
     delete_the_project_permanently: "Slett prosjektet permanent"
     please_enter: "Vennligst skriv inn"
-    delete: "Fjærn"
+    delete: "Slett"
     to_confirm: "for bekreftelse"
     delete_the_client_permanently: "Slett kunden permanent"
     cannot_delete_client_with_active_projects: "Kan ikke slette kunde med aktive prosjekter"
@@ -151,39 +152,40 @@ nb:
     person: "Person"
     hours: "Timer"
     total: "Totalt"
-    total_billable_hours: "Totale fakturerbare timer"
+    total_billable_hours: "Totalt fakturerbare timer"
     total_hours: "Totalt antall timer"
+    billable_hours: "Fakturerbare timer"
     home: "Hjem"
     workspace: "Arbeidsområde"
     reset_date: "Tilbakestill dato"
     no_time_registrations_on_this_day: "Ingen tidsregistrering denne dagen"
     there_were_no_time_registrations_recorded: "Det var ingen tidsregistreringer registrert denne dagen, hvis du ønsker å registrere en tidsregistrering, klikk på knappen nedenfor"
-    log_time: "Log tiden"
+    log_time: "Logg tiden"
     today_total: "Dagens total"
     week_total: "Ukens total"
     from: "Fra"
-    team_members: "Gruppe medlemmer"
+    team_members: "Gruppemedlemmer"
     add_new: "Lag Ny"
-    import: "Import"
-    rate: "Verdi"
+    import: "Importer"
+    rate: "Timepris"
     actions: "Handlinger"
     created_on: "Opprettet"
     added_on: "Lagt til"
     select_client: "Velg kunde"
     hourly_rate_selection: "Timepris"
-    non_billable: "Ikke Fakturerbar"
+    non_billable: "Ikke fakturerbar"
     rates_per_hour: "Fakturerbare priser (hver time)"
-    add_tasks_optional: "Velg oppgave (valgrit)"
-    select_tasks: "Velg Oppgave"
+    add_tasks_optional: "Velg oppgaver (valgfritt)"
+    select_tasks: "Velg Oppgaver"
     save: "Lagre"
     role: "Rolle"
     select_organization_user: "Vennligst velg organisasjonsbruker, hvis alt denne brukeren vil gjøre er å registrere tidsregistreringer."
     select_role: "Velg rolle"
-    share_temporary_password_with_user: "Vennligst del dette midlertidige passordet med brukeren for påloggingsformål. De kan endre det senere."
+    share_temporary_password_with_user: "Vennligst del dette midlertidige passordet med brukeren for å logge på første gang. De kan endre det senere."
     deletion_of_the_client: "Ønsker du å fortsette med å slette kunden"
     cannot_be_undone: "Denne handlingen er permanent"
     billable: "Fakturerbar"
-    information: "Information"
+    information: "Informasjon"
     billing_status: "Faktureringsstatus"
     created: "Opprettet"
     need_to_add_more_tasks: "Trenger du å legge til flere oppgaver?"
@@ -196,9 +198,10 @@ nb:
     detailed_report: "detaljert rapport"
     team: "Gruppe"
     filter: "Filter"
+    period: "Periode"
     period_from: "Periode - fra"
     period_to: "Periode - til"
-    reset: "Nullstille"
+    reset: "Nullstill"
     all: "Alle"
     drag_and_drop_message: "Dra og slipp filen din her eller"
     all_time: "Alle timer"
@@ -217,16 +220,25 @@ nb:
     task_is_already_assigned: "Oppgaven er allerede tildelt prosjekter, kan ikke slettes."
     the_client_has_associated_projects: "Kunden har tilknyttede prosjekter, kan ikke slettes."
     add_task_to: "Legg oppgave til"
-    optional_project: "Dette er valgfritt, ellers bør prosjekt pris bli brukt"
-    add: "Leg Till"
+    optional_project: "Dette er valgfritt, ellers vil prosjektets timepris bli brukt"
+    add: "Legg Til"
     looking_for: "Kan du ikke finne hva du leter etter?"
     update: "Oppdater"
-    project_rate: "prosjekt Verdi"
-    new_client: Ny kunde
+    project_rate: "Prosjekttimepris"
+    custom_rate: "Egendefinert timepris"
+    new_client: "Ny kunde"
+    select_project: "Velg et prosjekt:"
+    select: "Velg"
+    select_projects: "Velg prosjekter"
+    add_projects_optional: "Velg prosjektene denne brukeren skal ha tilgang til."
+    add_users_optional: "Velg hvilke brukere som skal ha tilgang til dette prosjektet. Administratorer har tilgang til alle prosjekter."
+    users: "Brukere"
+    remember_to_fill_out: "Husk å fylle ut!"
+    archived_task_can_not_be_updated: "Denne oppgaven er arkivert og kan ikke oppdateres."
 
   notice:
     are_you_sure: "Er du sikker?"
-    project_has_been_updated: "Prosjekt har blit oppdatert"
+    project_has_been_updated: "Prosjekt har blitt oppdatert"
     was_added_to_the_project: "ble lagt til prosjektet"
     has_been_removed_from_the_project: "er fjernet fra prosjektet"
     project_deleted: "Prosjekt slettet"
@@ -234,7 +246,7 @@ nb:
     task_successfully_added_to_project: "Oppgaven ble lagt til prosjektet"
     client_has_been_updated: "kunden har blitt oppdatert"
     client_deleted: "Kunde slettet"
-    task_has_been_updated: Oppgaven har blitt oppdatert"
+    task_has_been_updated: "Oppgaven har blitt oppdatert"
     task_was_successfully_deleted: "Oppgaven ble slettet."
     time_entry_has_been_updated: "Tidsregistrering er oppdatert"
     task_succesfully_removed_from_project: "Oppgaven ble fjernet fra prosjektet"
@@ -242,7 +254,6 @@ nb:
     with_a_task: "med oppgaven"
     logged_action_cannot_be_undone: "logget. Denne handlingen kan ikke bli tatt tilbake."
     registration_was_successfully: "Tidsregistreringen ble velykket slettet."
-    time_entry_has_been_toggled: "Tids teller har blitt slått"
     _on: "på"
     _off: "av"
     unable_to_delete_time_registration: "Kan ikke slette tidsregistrering"
@@ -286,27 +297,28 @@ nb:
     project_not_found: "Finner ikke prosjektet, velg et gyldig prosjekt."
     wish_to_proceed: "Ønsker du å fortsette?"
     warning: "Advarsel!"
+    unable_to_proceed: "Kan ikke fortsette"
 
   description:
     blank: "kan ikke være blank"
     too_short: "er for kort (minimum er %{count} tegn)"
     too_long: "er for lang (maksimum er %{count} tegn)"
     the_task: "Denne oppgaven"
-    assigned_to_project: "allerede er tildelt et prosjekt, fjern tilknyttede prosjekter hvis du ønsker å fortsette med denne oppgaveslettingen."
+    assigned_to_project: "er allerede tildelt et prosjekt. Fjern tilknyttede prosjekter hvis du ønsker å slette denne oppgaven."
     proceed_deletion_of_the_task: "Vil du fortsette med slettingen av oppgaven"
     cannot_be_undone: "Denne handlingen kan ikke bli tatt tilbake."
 
 
   registration:
-    first_name: "Første navn"
-    last_name: "Siste navn"
-    email: "Epostadresse"
-    password_blank: "passord (la tomt for å beholde gammelt passord)"
-    confirm_password: "Bekreft passord (la tomt for å beholde gammelt passord)"
+    first_name: "Fornavn"
+    last_name: "Etternavn"
+    email: "E-postadresse"
+    password_blank: "passord (la stå tomt for å beholde gammelt passord)"
+    confirm_password: "Bekreft passord (la stå tomt for å beholde gammelt passord)"
     current_password: "Nåværende passord"
     confirm_changes: "Vi trenger ditt nåværende passord for å bekrefte endringene"
     update: "Oppdater"
-    unhappy: "Er du ikke fordnøyed"
+    unhappy: "Ikke fornøyd"
     cancel_account: "Avslutt kontoen min"
     sign_in: "Logg inn"
     password: "Passord"
@@ -326,7 +338,7 @@ nb:
     attributes:
       client:
         name: "Navn"
-        description: "beskrivelse"
+        description: "Beskrivelse"
       project:
         name: "Navn"
         description: "Beskrivelse"
@@ -341,7 +353,8 @@ nb:
         email: "E-post"
         password: "Passord"
         password_confirmation: "Passordbekreftelsen"
-      
+
+
     errors:
       models:
         client:
@@ -395,8 +408,8 @@ nb:
         time_reg:
           attributes:
             minutes:
-              not_a_number: "dette er ikke et nommer"
-              less_than_or_equal_to: "må være mindre eller lik 1440"
+              not_a_number: "er ikke et tall"
+              less_than_or_equal_to: "må være mindre eller lik %{count}"
         
         user:
           attributes:
@@ -407,6 +420,15 @@ nb:
               too_long: "er for lang (maksimum er %{count} tegn)"
             password_confirmation:
               confirmation: "samsvarer ikke med passordet"
+        access_info:
+          attributes:
+            user_id:
+              taken: "har allerede fått tilgang til denne organisasjonen."
+      messages:
+        record_invalid: "Validering mislyktes: %{errors}"
+        required: "må være valgt"
+        blank: "kan ikke være tom"
+
   helpers:
     alert:
       info: "Merk"
@@ -414,16 +436,37 @@ nb:
       error: "Feil"
       success: "Suksess"
   time_regs:
-    active_timer_description: "Vær oppmerksom på at du har en timer som går."
+    active_timer_description: "Vær oppmerksom på at du har en stoppeklokke som går."
   organizations:
     reports_filter:
       tabs:
         clients: Kunder
         projects: Prosjekter
         tasks: Oppgaver
-        users: Lag medlemmer
+        users: Teammedlemmer
       time_frames:
-        week: Week
-        month: Month
-        year: Year
-        custom: Custom
+        week: "Uke"
+        month: "Måned"
+        year: "År"
+        custom: "Egendefinert"
+
+  access_info:
+    role:
+      organization_user: "Organisasjonsbruker"
+      organization_admin: "Organisasjonsadministrator"
+      super_admin: "Superadministrator"
+
+  login_page:
+    sign_in_to_your_account: "Logg inn på kontoen din"
+    sign_in_with: "Logg inn med"
+    or_continue_with: "Eller fortsett med"
+    email: "E-post"
+    email_address: "E-postadresse"
+    password: "Passord"
+    remember_me: "Husk meg"
+    forgot_password: "Glemt passord?"
+    sign_in: "Logg inn"
+    dont_have_an_account: "Har du ikke en konto?"
+    sign_up: "Registrer deg"
+    streamline_your_workflow: "Strømlinjeform Arbeidsflyten Din"
+    app_summary: "Øk samarbeidet og forenkle din prosjektering. Tildel oppgaver, loggfør tid og få innsiktsfulle rapporter – alt på ett sted. Gi teamet ditt muligheten til å oppnå mer med en effektivisert arbeidsflyt."

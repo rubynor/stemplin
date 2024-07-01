@@ -30,26 +30,25 @@ class TimeRegsController < ApplicationController
     @time_reg = current_user.time_regs.new(time_reg_params.except(:project_id, :minutes_string))
 
     if @time_reg.save
-      flash[:notice] = "Time entry has been logged."
       redirect_to time_regs_path(date: @time_reg.date_worked)
     else
       flash.now[:alert] = "Unable to create time entry"
+      set_assigned_tasks
       render :new_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
     end
   end
 
   def update
     if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
-      flash[:notice] = "Time entry has been updated."
       redirect_to time_regs_path(date: @time_reg.date_worked)
     else
+      set_assigned_tasks
       render :edit_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
     end
   end
 
   def destroy
     @time_reg.destroy!
-    flash[:notice] = "Time registration was successfully deleted."
     redirect_to time_regs_path(date: @time_reg.date_worked)
 
   rescue ActiveRecord::RecordNotDestroyed
@@ -68,7 +67,7 @@ class TimeRegsController < ApplicationController
 
   # exports the time_regs in a project to a .CSV
   def export
-    project = Project.find(params[:project_id])
+    project = authorized_scope(Project, type: :relation).find(params[:project_id])
     client = project.client
     time_regs = project.time_regs.includes(
       :task,
@@ -91,13 +90,12 @@ class TimeRegsController < ApplicationController
 
   # changes the selection tasks to show tasks from a specific project
   def update_tasks_select
-    @tasks = authorized_scope(Task, type: :relation, as: :own).all
-    @name_id_pairs = @tasks.assigned_task_names_and_ids(params[:project_id])
+    @name_id_pairs = authorized_scope(Task, type: :relation, as: :own).assigned_task_names_and_ids(params[:project_id])
     render partial: "/time_regs/select", locals: { tasks: @name_id_pairs }
   end
 
   def edit_modal
-    @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg.project&.id)
+    set_assigned_tasks
   end
 
   private
@@ -112,7 +110,9 @@ class TimeRegsController < ApplicationController
   end
 
   def set_clients
-    @clients ||= authorized_scope(Client, type: :relation).all
+    @clients ||= authorized_scope(Project, type: :relation).group_by(&:client).map do |client, projects|
+      OpenStruct.new(name: client.name, items: projects)
+    end
   end
   def set_chosen_date
     @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today
@@ -122,5 +122,9 @@ class TimeRegsController < ApplicationController
     @project = authorized_scope(Project, type: :relation, as: :own).find(time_reg_params[:project_id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "Project not found, kindly select a valid project."
+  end
+
+  def set_assigned_tasks
+    @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg&.project&.id).merge(AssignedTask.active_task)
   end
 end
