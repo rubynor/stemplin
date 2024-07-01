@@ -19,7 +19,7 @@ class SelectMultipleComponent < ApplicationComponent
           end
         end
 
-        render DropdownComponent::Content.new(data_select_multiple_target: "content") do
+        render DropdownComponent::Content.new(class: "w-full", data_select_multiple_target: "content") do
           div(class: "p-2") do
             div(class: "pb-1") do
               input type: "checkbox", class: "mr-2", id: "select-all", data: { action: "change->select-multiple#toggleAll", select_multiple_target: "selectAllCheckbox" }

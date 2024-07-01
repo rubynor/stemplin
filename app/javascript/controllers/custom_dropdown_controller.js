@@ -4,10 +4,31 @@ export default class extends Controller {
   static targets = ['trigger', 'content'];
   static values = { closeBackgroundDelay: Boolean };
 
+  contentTargetConnected() {
+    window.addEventListener('resize', () => this.resizeContent());
+  }
+
+  resizeContent() {
+    if (!this.originalContentHeight) {
+      this.originalContentHeight = this.contentTarget.getBoundingClientRect().height;
+    }
+
+    let triggerBottom = this.triggerTarget.getBoundingClientRect().bottom;
+    const availableContentSpace = window.innerHeight - triggerBottom - 20;
+
+    if (this.originalContentHeight > availableContentSpace) {
+      this.contentTarget.style.bottom = -availableContentSpace + "px";
+    } else {
+      this.contentTarget.style.bottom = "unset";
+    }
+  }
+
   toggleContent(isActionOpen = true) {
     this.closeOtherDropdowns();
     this.contentTarget.classList.toggle('hidden', !isActionOpen);
     this.contentTarget.classList.toggle('absolute', isActionOpen);
+
+    this.resizeContent()
   }
 
   closeOtherDropdowns() {

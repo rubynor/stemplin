@@ -11,7 +11,7 @@
           <%= content_tag(:div, class: "flex flex-col gap-y-4", data: { controller: "custom-disable", custom_disable_initial_status_value: project.billable }) do %>
             <%= render PhlexUI::Form::Item.new do  %>
               <%= render PhlexUI::Label.new { t("common.client") } %>
-              <%= render PhlexUI::Select::Builder.new(project, "client_id", collection: clients.map { |client| [client.name, client.id] }, placeholder: t("common.select_client"), trigger_attrs: { class: "!border-gray-200" }) %>
+              <%= render PhlexUI::Select::Builder.new(project, "client_id", collection: clients.map { |client| [client.name, client.id] }, placeholder: t("common.select_client"), trigger_attrs: { class: "!border-gray-200" }, content_attrs: { class: "max-h-[20rem] overflow-y-scroll" }) %>
               <% project.errors.full_messages_for(:client).each do |message|%>
                 <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
               <% end %>

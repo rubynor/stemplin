@@ -1,7 +1,7 @@
 class DropdownComponent < ApplicationComponent
   def initialize(options: {}, **attrs)
     @close_background_delay = options.fetch(:close_background_delay, false)
-    @attrs = attrs.merge(default_attrs)
+    super(**attrs)
   end
 
   def template(&block)
@@ -16,15 +16,18 @@ class DropdownComponent < ApplicationComponent
         controller: "custom-dropdown",
         action: "keyup@window->custom-dropdown#closeWithKeyboard click@window->custom-dropdown#closeBackground",
         custom_dropdown_close_background_delay_value: @close_background_delay
-      },
-      class: "relative custom-dropdown-component cursor-pointer"
+      }
     }
+  end
+
+  def default_classes
+    "relative custom-dropdown-component cursor-pointer"
   end
 end
 
 class DropdownComponent::Trigger < ApplicationComponent
   def initialize(**attrs)
-    @attrs = attrs.merge(default_attrs)
+    super(**attrs)
   end
 
   def template(&block)
@@ -45,7 +48,7 @@ end
 
 class DropdownComponent::Content < ApplicationComponent
   def initialize(**attrs)
-    @attrs = attrs.merge(default_attrs)
+    super(**attrs)
   end
 
   def template(&block)
@@ -58,8 +61,11 @@ class DropdownComponent::Content < ApplicationComponent
     {
       data: {
         custom_dropdown_target: "content"
-      },
-      class: "z-50 rounded-md border bg-background p-2 text-foreground shadow-md outline-none mt-2 hidden left-0 custom-dropdown-component-content cursor-defaut"
+      }
     }
+  end
+
+  def default_classes
+    "z-50 rounded-md border bg-background p-2 text-foreground shadow-md outline-none mt-2 hidden left-0 custom-dropdown-component-content cursor-default max-h-[20rem] overflow-auto"
   end
 end
