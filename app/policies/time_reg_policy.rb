@@ -6,7 +6,9 @@ class TimeRegPolicy < ApplicationPolicy
   end
 
   %i[ index new_modal edit_modal update_tasks_select ].each do |action|
-    define_method("#{action}?") { true }
+    define_method("#{action}?") do
+      !user.access_info.organization_spectator?
+    end
   end
 
   def create?
