@@ -1,9 +1,7 @@
 module Workspace
   class UserPolicy < WorkspacePolicy
-    %i[index create new_modal].each do |action|
-      define_method("#{action}?") do
-        user.organization_admin? && record.current_organization == user.current_organization
-      end
+    %i[ index new_modal add_to_organization create update edit_modal ].each do |action|
+      define_method("#{action}?") { user.organization_admin? }
     end
 
     scope_for :relation do |relation|

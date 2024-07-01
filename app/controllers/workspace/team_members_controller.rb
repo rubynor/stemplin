@@ -1,26 +1,28 @@
 module Workspace
   class TeamMembersController < WorkspaceController
     include TeamMemberScoped
-    skip_verify_authorized
 
     def index
+      authorize!
       # Orders by role, then name
       @pagy, @users = pagy authorized_scope(User, type: :relation)
                               .joins(:access_infos)
                               .where(access_infos: { organization: current_user.current_organization })
                               .select("users.*, access_infos.role")
-                              .order("access_infos.role ASC")
                               .distinct
+                              .order("access_infos.role ASC")
                               .ordered
     end
 
     def new_modal
+      authorize!
       @user = authorized_scope(User, type: :relation).new
       @roles = AccessInfo.allowed_organization_roles
       @grouped_projects = authorized_scope(Project, type: :relation).group_by(&:client)
     end
 
     def create
+      authorize!
       ActiveRecord::Base.transaction do
         @user = authorized_scope(User, type: :relation).new(new_user_info)
         @user.save!
@@ -34,6 +36,7 @@ module Workspace
     end
 
     def add_to_organization
+      authorize!
       begin
         @user = User.find_by(email: team_member_params[:email])
         if @user.present?
@@ -53,6 +56,7 @@ module Workspace
     end
 
     def update
+      authorize!
       @user = authorized_scope(User, type: :relation).find(params[:id])
       begin
         ActiveRecord::Base.transaction do
@@ -72,6 +76,7 @@ module Workspace
     end
 
     def edit_modal
+      authorize!
       @user = authorized_scope(User, type: :relation).find(params[:id])
       @roles = AccessInfo.allowed_organization_roles
       @grouped_projects = authorized_scope(Project, type: :relation).group_by(&:client)

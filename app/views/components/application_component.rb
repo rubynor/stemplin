@@ -9,10 +9,25 @@ class ApplicationComponent < Phlex::HTML
   include Phlex::Rails::Helpers::ImageTag
   include Phlex::Rails::Helpers::LinkTo
 
+  def initialize(**attrs)
+    @attrs = default_attrs.merge(attrs)
+    @attrs[:class] = tokens(default_classes, attrs[:class])
+  end
+
   if Rails.env.development?
     def before_template
       comment { "Before #{self.class.name}" }
       super
     end
+  end
+
+  private
+
+  def default_attrs
+    {}
+  end
+
+  def default_classes
+    ""
   end
 end
