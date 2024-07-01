@@ -1,6 +1,10 @@
 module Workspace
   class TaskPolicy < WorkspacePolicy
-    %i[ edit_modal update destroy delete_confirmation ].each do |action|
+    %i[ index ].each do |action|
+      define_method("#{action}?") { user.organization_admin? }
+    end
+
+    %i[ new_modal create edit_modal update destroy ].each do |action|
       define_method("#{action}?") do
         user.organization_admin? && record.organization == user.current_organization
       end

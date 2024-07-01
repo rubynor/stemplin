@@ -1,19 +1,21 @@
 module Workspace
   class TeamsController < WorkspaceController
     include TeamScoped
-    skip_verify_authorized
 
     def index
+      authorize!
       @pagy, @users = pagy authorized_scope(User, type: :relation).ordered
     end
 
     def new_modal
       @user = authorized_scope(User, type: :relation).new
+      authorize!
       @roles = AccessInfo.allowed_organization_roles
       @grouped_projects = authorized_scope(Project, type: :relation).group_by(&:client)
     end
 
     def create
+      authorize!
       ActiveRecord::Base.transaction do
         @user = authorized_scope(User, type: :relation).new(new_user_info)
         @user.save!
@@ -27,6 +29,7 @@ module Workspace
     end
 
     def add_to_organization
+      authorize!
       begin
         @user = User.find_by(email: team_member_params[:email])
         if @user.present?

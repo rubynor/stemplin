@@ -5,11 +5,15 @@ module Workspace
 
       def new_modal
         @task = authorized_scope(Task, type: :relation).new
+        authorize! @task
+
         @task.assigned_tasks.build
       end
 
       def create
         @task = authorized_scope(Task, type: :relation).new(task_params)
+        authorize! @task
+
         if @task.save
           render turbo_stream: [
             turbo_flash(type: :success, data: "Task was added to the project."),
