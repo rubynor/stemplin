@@ -51,7 +51,7 @@ module Workspace
 
     def new_modal
       @project = authorized_scope(Project, type: :relation).new
-      authorize! @project
+      authorize!
     end
 
     def import_modal
