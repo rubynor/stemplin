@@ -60,6 +60,7 @@ module Workspace
           access_info = @user.access_infos.find_by(organization: current_user.current_organization)
           access_info.project_accesses.destroy_all
           access_info.update!(role: AccessInfo.roles[team_member_params[:role]])
+          raise "Organization must have at least one admin" if !AccessInfo.exists?(role: AccessInfo.roles[:organization_admin], organization: current_user.current_organization)
           create_project_accesses_for access_info
         end
 
