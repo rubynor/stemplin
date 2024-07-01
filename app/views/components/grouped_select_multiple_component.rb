@@ -20,7 +20,7 @@ class GroupedSelectMultipleComponent < ApplicationComponent
           end
         end
 
-        render DropdownComponent::Content.new(class: "w-full1", data_grouped_select_multiple_target: "content") do
+        render DropdownComponent::Content.new(class: "w-full", data_grouped_select_multiple_target: "content") do
           div(class: "p-2 divide-y divide-dashed") do
             div(class: "pb-1") do
               input type: "checkbox", class: "mr-2", id: "select-all", data: { action: "change->grouped-select-multiple#toggleAll", grouped_select_multiple_target: "selectAllCheckbox" }
