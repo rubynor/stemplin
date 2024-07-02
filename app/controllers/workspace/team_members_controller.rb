@@ -21,7 +21,7 @@ module Workspace
         @user = authorized_scope(User, type: :relation).new(new_user_info)
         @user.save!
         access_info = create_access_info_for @user
-        create_project_accesses_for access_info
+        update_project_accesses_for access_info
       end
 
       handle_success(user: @user, message: t("notice.user_added_to_the_organization"), update: false)
@@ -56,9 +56,8 @@ module Workspace
         ActiveRecord::Base.transaction do
           @user.update!(edit_user_info)
           access_info = @user.access_info(current_user.current_organization)
-          access_info.project_accesses.destroy_all
           access_info.update!(role: AccessInfo.roles[team_member_params[:role]])
-          create_project_accesses_for access_info
+          update_project_accesses_for access_info
         end
 
         handle_success(user: @user, message: t("notice.user_updated"), update: true)

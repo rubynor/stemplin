@@ -369,5 +369,7 @@ en:
             attributes:
               user_id:
                 taken: "has already been granted access to this organization."
+              organization_id:
+                must_have_at_least_one_admin: "must have at least one administrator."
         messages:
           record_invalid: "Validation failed: %{errors}"

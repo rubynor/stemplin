@@ -16,9 +16,16 @@ module Workspace
         )
       end
 
-      def create_project_accesses_for(access_info)
+      def update_project_accesses_for(access_info)
         if access_info.project_restricted?
-          team_member_params[:project_ids].reject(&:empty?).each do |project_id|
+          current_access_ids = access_info.projects.ids
+          new_access_ids = team_member_params[:project_ids].reject(&:empty?).map(&:to_i)
+
+          ids_to_add = new_access_ids - current_access_ids
+          ids_to_remove = current_access_ids - new_access_ids
+
+          access_info.project_accesses.where(project_id: ids_to_remove).destroy_all
+          ids_to_add.each do |project_id|
             authorized_scope(ProjectAccess, type: :relation).create!(
               project: Project.find(project_id),
               access_info: access_info

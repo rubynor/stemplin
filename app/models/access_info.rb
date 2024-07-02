@@ -13,6 +13,8 @@ class AccessInfo < ApplicationRecord
   validate :no_project_accesses_unless_project_restricted
   validate :organization_has_at_least_one_admin
 
+  before_validation :delete_project_accesses_if_not_project_restricted
+
   def self.allowed_organization_roles
     self.roles.except(:super_admin).keys
   end
@@ -40,8 +42,14 @@ class AccessInfo < ApplicationRecord
       other_admins_query = organization.access_infos.where(role: :organization_admin)
       other_admins_query = other_admins_query.where.not(id: id) if persisted?
       unless other_admins_query.exists?
-        errors.add(:organization, "must have at least one admin")
+        errors.add(:organization, :must_have_at_least_one_admin)
       end
+    end
+  end
+
+  def delete_project_accesses_if_not_project_restricted
+    if !project_restricted?
+      project_accesses.delete_all
     end
   end
 end
