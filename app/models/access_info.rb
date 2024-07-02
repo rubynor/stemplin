@@ -34,6 +34,8 @@ class AccessInfo < ApplicationRecord
   end
 
   def organization_has_at_least_one_admin
+    return unless organization
+
     if role != "organization_admin"
       other_admins_query = organization.access_infos.where(role: :organization_admin)
       other_admins_query = other_admins_query.where.not(id: id) if persisted?

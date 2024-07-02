@@ -16,13 +16,25 @@ access_info_3:
   active: false
   role: 0
 
-access_info_org_admin:
+access_info_org1_admin:
   user: organization_admin
   organization: organization_one
   active: true
   role: 1
 
-access_info_org_user:
+access_info_org2_admin:
+  user: organization_admin
+  organization: organization_two
+  active: true
+  role: 1
+
+access_info_org3_admin:
+  user: organization_admin
+  organization: organization_three
+  active: true
+  role: 1
+
+access_info_org1_user:
   user: organization_user
   organization: organization_one
   active: true
