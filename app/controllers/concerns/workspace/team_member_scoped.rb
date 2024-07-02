@@ -32,7 +32,7 @@ module Workspace
           turbo_flash(type: :success, data: message),
           turbo_stream.action(:remove_modal, :modal)
         ]
-        stream << turbo_stream.append(:organization_users, partial: "workspace/team_members/user", locals: { user: user }) if !update
+        stream << turbo_stream.append(:organization_users, partial: "workspace/team_members/user", locals: { user: user }) unless update
         stream << turbo_stream.replace(dom_id(user), partial: "workspace/team_members/user", locals: { user: user }) if update
         render turbo_stream: stream
       end
@@ -50,8 +50,9 @@ module Workspace
         @grouped_projects = authorized_scope(Project, type: :relation).group_by(&:client)
         selected_role = team_member_params[:role]
         selected_project_ids = team_member_params[:project_ids]
+        project_restricted_roles = AccessInfo.project_restricted_roles
         render turbo_stream: turbo_stream.replace(:modal, partial: form, locals: { user: user, roles: @roles, grouped_projects: @grouped_projects,
-                  selected_role: selected_role, selected_project_ids: selected_project_ids })
+                  selected_role: selected_role, selected_project_ids: selected_project_ids, project_restricted_roles: project_restricted_roles })
       end
 
       def add_user_form

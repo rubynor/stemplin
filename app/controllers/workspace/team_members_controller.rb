@@ -4,14 +4,7 @@ module Workspace
 
     def index
       authorize!
-      # Orders by role, then name
-      @pagy, @users = pagy authorized_scope(User, type: :relation)
-                              .joins(:access_infos)
-                              .where(access_infos: { organization: current_user.current_organization })
-                              .select("users.*, access_infos.role")
-                              .distinct
-                              .order("access_infos.role ASC")
-                              .ordered
+      @pagy, @users = pagy authorized_scope(User, type: :relation).ordered_by_role.ordered_by_name
     end
 
     def new_modal
@@ -19,6 +12,7 @@ module Workspace
       @user = authorized_scope(User, type: :relation).new
       @roles = AccessInfo.allowed_organization_roles
       @grouped_projects = authorized_scope(Project, type: :relation).group_by(&:client)
+      @project_restricted_roles = AccessInfo.project_restricted_roles
     end
 
     def create
@@ -61,10 +55,9 @@ module Workspace
       begin
         ActiveRecord::Base.transaction do
           @user.update!(edit_user_info)
-          access_info = @user.access_infos.find_by(organization: current_user.current_organization)
+          access_info = @user.access_info(current_user.current_organization)
           access_info.project_accesses.destroy_all
           access_info.update!(role: AccessInfo.roles[team_member_params[:role]])
-          raise "Organization must have at least one admin" if !AccessInfo.exists?(role: AccessInfo.roles[:organization_admin], organization: current_user.current_organization)
           create_project_accesses_for access_info
         end
 
@@ -80,9 +73,10 @@ module Workspace
       @user = authorized_scope(User, type: :relation).find(params[:id])
       @roles = AccessInfo.allowed_organization_roles
       @grouped_projects = authorized_scope(Project, type: :relation).group_by(&:client)
-      access_info = @user.access_infos.find_by(organization: current_user.current_organization)
+      access_info = @user.access_info(current_user.current_organization)
       @selected_role = access_info.role
       @selected_project_ids = access_info.projects.ids
+      @project_restricted_roles = AccessInfo.project_restricted_roles
     end
 
     def implicit_authorization_target

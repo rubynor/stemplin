@@ -78,7 +78,7 @@ module  Workspace
 
     test "should update user, access_info and project accesses" do
       user = users(:ron)
-      access_info = user.access_infos.find_by(organization: @organization_admin.current_organization)
+      access_info = user.access_info(@organization_admin.current_organization)
       assert_no_difference("User.count") do
         assert_no_difference("AccessInfo.count") do
           assert_difference("ProjectAccess.count", -1) do
