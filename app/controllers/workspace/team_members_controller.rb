@@ -36,7 +36,7 @@ module Workspace
         if @user.present?
           ActiveRecord::Base.transaction do
             access_info = create_access_info_for @user
-            create_project_accesses_for access_info
+            update_project_accesses_for access_info
           end
           handle_success(user: @user, message: t("notice.user_added_to_the_organization"), update: false)
         else

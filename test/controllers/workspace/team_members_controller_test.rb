@@ -16,7 +16,7 @@ module  Workspace
     test "should create a new user and associate with organization" do
       assert_difference("User.count") do
         assert_difference("AccessInfo.count") do
-            assert_difference("ProjectAccess.count") do
+          assert_difference("ProjectAccess.count") do
             post :create, params: {
               user: {
                 email: "new_user@example.com",
