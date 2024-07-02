@@ -60,7 +60,7 @@ module Workspace
 
     def destroy
       authorize! @project
-      if @project.destroy
+      if @project.discard
         render turbo_stream: [
           turbo_flash(type: :success, data: t("notice.project_was_successfully_deleted")),
           turbo_stream.remove(dom_id(@project)),

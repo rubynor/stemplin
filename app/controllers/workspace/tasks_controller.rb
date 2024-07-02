@@ -51,7 +51,7 @@ module Workspace
       if @task.assigned_tasks.any?
         render turbo_stream: turbo_flash(type: :error, data: "Unable to proceed, Task is assigned to a project.")
       else
-        @task.destroy!
+        @task.discard
         render turbo_stream: [
           turbo_flash(type: :success, data: t("notice.tasks_was_successfully_deleted")),
           turbo_stream.remove(dom_id(@task)),

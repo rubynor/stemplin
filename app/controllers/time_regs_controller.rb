@@ -51,7 +51,7 @@ class TimeRegsController < ApplicationController
 
   def destroy
     authorize! @time_reg
-    @time_reg.destroy!
+    @time_reg.discard!
     redirect_to time_regs_path(date: @time_reg.date_worked)
 
   rescue ActiveRecord::RecordNotDestroyed

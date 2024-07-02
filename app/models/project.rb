@@ -1,5 +1,6 @@
 class Project < ApplicationRecord
   include RateConvertible
+  include Deletable
 
   validates :name, presence: true, length: { minimum: 2, maximum: 30 }, uniqueness: { scope: :client }
   validates :description, length: { maximum: 100 }

@@ -102,3 +102,5 @@ gem "phlex_ui", "~> 0.1.7"
 gem "strong_migrations"
 
 gem "pagy"
+
+gem "discard"

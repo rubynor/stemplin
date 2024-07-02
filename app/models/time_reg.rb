@@ -1,4 +1,6 @@
 class TimeReg < ApplicationRecord
+  include Deletable
+
   MINUTES_IN_A_DAY = 1.day.in_minutes.to_i
 
   belongs_to :user

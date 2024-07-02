@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_26_090910) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_02_061359) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -43,6 +43,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_26_090910) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "organization_id"
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_clients_on_discarded_at"
     t.index ["organization_id"], name: "index_clients_on_organization_id"
   end
 
@@ -70,7 +72,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_26_090910) do
     t.datetime "updated_at", null: false
     t.integer "rate", default: 0, null: false
     t.boolean "billable", default: false, null: false
+    t.datetime "discarded_at"
     t.index ["client_id"], name: "index_projects_on_client_id"
+    t.index ["discarded_at"], name: "index_projects_on_discarded_at"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -78,6 +82,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_26_090910) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "organization_id"
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_tasks_on_discarded_at"
     t.index ["organization_id"], name: "index_tasks_on_organization_id"
   end
 
@@ -90,7 +96,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_26_090910) do
     t.date "date_worked"
     t.datetime "start_time", precision: nil
     t.bigint "user_id", null: false
+    t.datetime "discarded_at"
     t.index ["assigned_task_id"], name: "index_time_regs_on_assigned_task_id"
+    t.index ["discarded_at"], name: "index_time_regs_on_discarded_at"
     t.index ["user_id"], name: "index_time_regs_on_user_id"
   end
 
