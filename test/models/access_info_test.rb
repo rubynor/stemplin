@@ -30,6 +30,6 @@ class AccessInfoTest < ActiveSupport::TestCase
   end
 
   test "should return allowed organization roles" do
-    assert_equal AccessInfo.allowed_organization_roles, %w[organization_user organization_admin]
+    assert_equal AccessInfo.allowed_organization_roles, %w[organization_user organization_admin organization_spectator]
   end
 end
