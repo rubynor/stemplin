@@ -6,3 +6,6 @@ organization_two:
 
 organization_three:
   name: Factory Inc
+
+organization_w_one_admin:
+  name: Organization One Admin

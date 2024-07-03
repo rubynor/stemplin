@@ -96,7 +96,7 @@ module Workspace
       organization = current_user.current_organization
       @clients = authorized_scope(Client, type: :relation).all
       @tasks = authorized_scope(Task, type: :relation).all
-      @users = authorized_scope(User, type: :relation).ordered.project_restricted(organization)
+      @users = authorized_scope(User, type: :relation).ordered_by_name.project_restricted(organization)
       @assigned_tasks = @tasks.joins(:assigned_tasks).where(assigned_tasks: { is_archived: false, project: @project }).distinct
     end
   end

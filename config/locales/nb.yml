@@ -426,6 +426,8 @@ nb:
           attributes:
             user_id:
               taken: "har allerede fått tilgang til denne organisasjonen."
+            organization:
+              must_have_at_least_one_admin: "må ha minst en administrator."
       messages:
         record_invalid: "Validering mislyktes: %{errors}"
         required: "må være valgt"

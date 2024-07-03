@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Reap</title>
+    <title>Stemplin</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= turbo_refresh_method_tag :morph %>
     <%= turbo_refresh_scroll_tag :preserve %>
@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <%= render partial: "layouts/pwa_meta_tags" %>
+    <%= clarity_tracker if Rails.env.production? %>
   </head>
   <body class="font-montserrat">
     <%= highlight_missing_translations if Rails.env.development? %>
@@ -41,7 +42,7 @@
 
     <!-- Footer -->
     <footer class="print:hidden bottom-0 h-16 items-center flex space-x-2 justify-center fixed w-full text-center z-0">
-      <a href="" class="font-regular text-sm text-gray-400">Reap <%= Date.current.year %></a>
+      <a href="" class="font-regular text-sm text-gray-400">Stemplin <%= Date.current.year %></a>
     </footer>
   </body>
 </html>

@@ -4,9 +4,10 @@
   <% end %>
   <%= render PhlexUI::Dialog::Content.new(class: "bg-white") do %>
     <%= turbo_frame_tag :modal do %>
-      <%= form_with url: user.new_record? ? workspace_team_members_path : workspace_team_member_path, method: user.new_record? ?  :post : :patch, scope: user, data: { controller: "show-on-value", show_on_value_accepted_value: AccessInfo.project_restricted_roles } do |form| %>
+      <%= form_with url: user.new_record? ? workspace_team_members_path : workspace_team_member_path, method: user.new_record? ?  :post : :patch, scope: user, data: { controller: "show-on-value", show_on_value_accepted_value: project_restricted_roles } do |form| %>
         <div class="flex flex-col gap-y-4">
           <span class="font-semibold text-gray-600 text-lg"> <%= user.new_record? ? t("common.add_member") : t("common.edit_member") %></span>
+          <%= render AlertComponent.new(variant: :destructive, title: t("alert.unable_to_proceed"), message: flash[:error]) if flash[:error].present?  %>
           <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
               <%= render PhlexUI::Label.new { t("registration.first_name") } %>
