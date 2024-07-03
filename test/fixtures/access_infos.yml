@@ -25,13 +25,19 @@ access_info_org1_admin:
 access_info_org2_admin:
   user: organization_admin
   organization: organization_two
-  active: true
+  active: false
   role: 1
 
 access_info_org3_admin:
   user: organization_admin
   organization: organization_three
-  active: true
+  active: false
+  role: 1
+
+access_info_org_w_one_admin:
+  user: organization_admin
+  organization: organization_w_one_admin
+  active: false
   role: 1
 
 access_info_org1_user:

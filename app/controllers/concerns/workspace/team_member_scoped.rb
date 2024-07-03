@@ -19,7 +19,7 @@ module Workspace
       def update_project_accesses_for(access_info)
         if access_info.project_restricted?
           current_access_ids = access_info.projects.ids
-          new_access_ids = team_member_params[:project_ids].reject(&:empty?).map(&:to_i)
+          new_access_ids = (team_member_params[:project_ids] || []).reject(&:empty?).map(&:to_i)
 
           ids_to_add = new_access_ids - current_access_ids
           ids_to_remove = current_access_ids - new_access_ids

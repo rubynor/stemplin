@@ -36,20 +36,16 @@ class AccessInfo < ApplicationRecord
   end
 
   def organization_has_at_least_one_admin
-    return unless organization
+    return unless organization && role != "organization_admin"
 
-    if role != "organization_admin"
-      other_admins_query = organization.access_infos.where(role: :organization_admin)
-      other_admins_query = other_admins_query.where.not(id: id) if persisted?
-      unless other_admins_query.exists?
-        errors.add(:organization, :must_have_at_least_one_admin)
-      end
+    other_admins_query = organization.access_infos.where(role: :organization_admin)
+    other_admins_query = other_admins_query.where.not(id: id) if persisted?
+    unless other_admins_query.exists?
+      errors.add(:organization, :must_have_at_least_one_admin)
     end
   end
 
   def delete_project_accesses_if_not_project_restricted
-    if !project_restricted?
-      project_accesses.delete_all
-    end
+    project_accesses.delete_all if !project_restricted?
   end
 end
