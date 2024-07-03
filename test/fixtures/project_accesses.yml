@@ -5,5 +5,5 @@ ron_project_1:
   project: project_1
 
 spectator_project_1:
-  access_info: access_info_org_spectator
+  access_info: access_info_org1_spectator
   project: project_1

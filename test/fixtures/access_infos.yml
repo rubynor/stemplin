@@ -46,7 +46,7 @@ access_info_org1_user:
   active: true
   role: 0
 
-access_info_org_spectator:
+access_info_org1_spectator:
   user: organization_spectator
   organization: organization_one
   active: true

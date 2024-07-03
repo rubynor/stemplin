@@ -180,7 +180,7 @@ nb:
     select_tasks: "Velg Oppgaver"
     save: "Lagre"
     role: "Rolle"
-    select_organization_user: "Vennligst velg organisasjonsbruker, hvis alt denne brukeren vil gjøre er å registrere tidsregistreringer. En tilskuer kan kun se tidsregistreringer."
+    select_organization_user: "Vennligst velg organisasjonsbruker, hvis alt denne brukeren vil gjøre er å registrere tidsregistreringer. En observatør kan kun se tidsregistreringer."
     select_role: "Velg rolle"
     share_temporary_password_with_user: "Vennligst del dette midlertidige passordet med brukeren for å logge på første gang. De kan endre det senere."
     deletion_of_the_client: "Ønsker du å fortsette med å slette kunden"
@@ -459,7 +459,7 @@ nb:
       organization_user: "Organisasjonsbruker"
       organization_admin: "Organisasjonsadministrator"
       super_admin: "Superadministrator"
-      organization_spectator: "Organisasjonstilskuer"
+      organization_spectator: "Organisasjonsobservatør"
 
   login_page:
     sign_in_to_your_account: "Logg inn på kontoen din"
