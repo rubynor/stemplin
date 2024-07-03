@@ -31,7 +31,7 @@
         <%= content_tag(:div, data: { controller: "refresh-minutes", refresh_minutes_active_value: @active_time_reg.present?, refresh_minutes_minutes_value: @total_minutes_day, refresh_minutes_format_value: "HH:mm" }) do %>
           <i class="uc-icon text-base text-gray-500">&#xe8bb;</i>
           <span class="text-gray-500 font-regular">
-            <%= t("common.today_total") %>:
+            <%= @chosen_date == Date.today ? t("common.today_total") : t("common.day_total") %>:
           </span>
           <span class="text-gray-600 font-semibold" data-refresh-minutes-target="minutes">
             <%= format_duration(@total_minutes_day) %>

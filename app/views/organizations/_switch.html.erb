@@ -20,7 +20,7 @@
       <%= content_tag(:div, class: "flex flex-col overflow-y-scroll max-h-[600px]") do %>
         <% user.organizations.order(name: :asc).each do |organization| %>
           <div class="relative">
-            <%= link_to set_current_organization_path(organization.id), data: { turbo_method: :post }, class: class_names("pointer-events-auto flex flex-col items-center lg:items-start p-2 md:p-4 lg:p-6 transition duration-300 ease-in-out",  "bg-gradient-to-r from-pink-50 lg:from-pink-100": organization == user.current_organization) do %>
+            <%= button_to set_current_organization_path(organization.id), method: :post, data: { turbo: false }, class: class_names("pointer-events-auto flex flex-col items-center lg:items-start p-2 md:p-4 lg:p-6 transition duration-300 ease-in-out",  "bg-gradient-to-r from-pink-50 lg:from-pink-100": organization == user.current_organization) do %>
               <%= content_tag(:span, organization.name, class: class_names("text-base md:text-xl lg:text-xl font-regular text-gray-400 transition duration-300 ease-in-out", "text-gray-600 font-semibold": organization == user.current_organization) ) %>
             <% end %>
             <% if organization == user.current_organization %>
