@@ -7,7 +7,7 @@ require "csv"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Reap
+module Stemplin
   class Application < Rails::Application
     config.autoload_paths << "#{root}/app/views"
     config.autoload_paths << "#{root}/app/views/layouts"

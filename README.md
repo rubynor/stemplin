@@ -1,5 +1,3 @@
-[![Maintainability](https://api.codeclimate.com/v1/badges/193cb743bd02e45896a7/maintainability)](https://codeclimate.com/github/rubynor/reap/maintainability)
-
 # Stemplin time tracking
 Time tracking application written in Ruby on Rails.
 
