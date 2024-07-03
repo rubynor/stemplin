@@ -46,7 +46,7 @@ module Workspace
 
     def destroy
       authorize! @client
-      if @client.destroy
+      if @client.discard
         render turbo_stream: [
           turbo_flash(type: :success, data: t("notice.client_was_successfully_deleted")),
           turbo_stream.remove(dom_id(@client)),

@@ -30,7 +30,7 @@ class TimeRegsControllerTest < ActionController::TestCase
   test "should destroy time_reg" do
     assert_authorized_to(:destroy?, @time_reg) do
       delete :destroy, params: { id: @time_reg.id }
-      assert_raises(ActiveRecord::RecordNotFound) { @time_reg.reload }
+      assert_raises(ActiveRecord::RecordNotFound) { TimeReg.find @time_reg.id }
     end
   end
 
