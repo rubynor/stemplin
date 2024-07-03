@@ -4,9 +4,10 @@
   <% end %>
   <%= render PhlexUI::Dialog::Content.new(class: "bg-white") do %>
     <%= turbo_frame_tag :modal do %>
-      <%= form_with url: workspace_teams_path, method: :post, scope: user, data: { controller: "show-on-value", show_on_value_accepted_value: AccessInfo.project_restricted_roles } do |form| %>
+      <%= form_with url: user.new_record? ? workspace_team_members_path : workspace_team_member_path, method: user.new_record? ?  :post : :patch, scope: user, data: { controller: "show-on-value", show_on_value_accepted_value: project_restricted_roles } do |form| %>
         <div class="flex flex-col gap-y-4">
-          <span class="font-semibold text-gray-600 text-lg"> <%= t("common.add_member") %></span>
+          <span class="font-semibold text-gray-600 text-lg"> <%= user.new_record? ? t("common.add_member") : t("common.edit_member") %></span>
+          <%= render AlertComponent.new(variant: :destructive, title: t("alert.unable_to_proceed"), message: flash[:error]) if flash[:error].present?  %>
           <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
               <%= render PhlexUI::Label.new { t("registration.first_name") } %>
@@ -44,22 +45,24 @@
               <% end %>
             <% end %>
           <% end %>
-          <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
-            <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-              <%= render PhlexUI::Label.new { t("registration.password") } %>
-              <%= render PhlexUI::Hint.new { t("common.share_temporary_password_with_user") } %>
-              <%= form.password_field :password, required: true, class: "border-gray-200 rounded-md w-full" %>
-              <% user.errors.full_messages_for(:password).each do |message|%>
-                <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+          <% if user.new_record? %>
+            <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
+              <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+                <%= render PhlexUI::Label.new { t("registration.password") } %>
+                <%= render PhlexUI::Hint.new { t("common.share_temporary_password_with_user") } %>
+                <%= form.password_field :password, required: true, class: "border-gray-200 rounded-md w-full" %>
+                <% user.errors.full_messages_for(:password).each do |message|%>
+                  <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+                <% end %>
               <% end %>
             <% end %>
-          <% end %>
-          <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
-            <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-              <%= render PhlexUI::Label.new { t("registration.confirm_password") } %>
-              <%= form.password_field :password_confirmation, required: true, class: "border-gray-200 rounded-md w-full" %>
-              <% user.errors.full_messages_for(:password_confirmation).each do |message|%>
-                <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+            <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
+              <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+                <%= render PhlexUI::Label.new { t("registration.confirm_password") } %>
+                <%= form.password_field :password_confirmation, required: true, class: "border-gray-200 rounded-md w-full" %>
+                <% user.errors.full_messages_for(:password_confirmation).each do |message|%>
+                  <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+                <% end %>
               <% end %>
             <% end %>
           <% end %>

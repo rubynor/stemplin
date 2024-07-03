@@ -1,0 +1,10 @@
+<%= render PhlexUI::Table::Row.new(id: dom_id(user)) do %>
+  <%= render PhlexUI::Table::Cell.new(class: "py-4") { user.name } %>
+  <%= render PhlexUI::Table::Cell.new(class: "py-4") { user.email } %>
+  <%= render PhlexUI::Table::Cell.new(class: "py-4") { t("access_info.role." + user.access_info(current_user.current_organization).role) } %>
+  <%= render PhlexUI::Table::Cell.new do %>
+    <%= render ButtonComponent.new(path: edit_modal_workspace_team_member_path(user), method: :put, variant: :outline) do %>
+      <i class="uc-icon text-gray-500">&#xe972;</i>
+    <% end %>
+  <% end %>
+<% end %>

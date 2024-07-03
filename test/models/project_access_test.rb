@@ -2,8 +2,8 @@ require "test_helper"
 
 class ProjectAccessTest < ActiveSupport::TestCase
   def setup
-    @normal_user_access_info = access_infos(:access_info_org_user)
-    @admin_access_info = access_infos(:access_info_org_admin)
+    @normal_user_access_info = access_infos(:access_info_org1_user)
+    @admin_access_info = access_infos(:access_info_org1_admin)
     @project = projects(:project_1)
     @project_access = ProjectAccess.new(project: @project, access_info: @normal_user_access_info)
   end

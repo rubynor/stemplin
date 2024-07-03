@@ -115,6 +115,7 @@ en:
     save_task: "Save task"
     project_members: "project members"
     add_member: "Add Member"
+    edit_member: "Edit Member"
     email: "Email"
     remove: "Remove"
     update_project: "Update Project"
@@ -253,6 +254,7 @@ en:
     tasks_was_successfully_deleted: "Task was successfully deleted."
     tasks_was_successfully_updated: "Task was successfully updated."
     user_added_to_the_organization: "User added to the organization."
+    user_updated: "User updated."
     time_entry_has_been_logged: "Time entry has been logged."
     edits_to_the_task_name: "Kindly note that edits to the task name will be applied to all the projects. Edits to the billable rate will be applied to this project only and will take effect on new Time registrations."
     recorded_time_registrations: "The task has recorded time registrations, can not be removed from this project."
@@ -360,12 +362,14 @@ en:
     streamline_your_workflow: "Streamline Your Workflow"
     app_summary: "Boost collaboration and simplify project execution. Assign tasks, track time, and generate insightful reports – all in one place. Empower your team and achieve more with streamlined workflows."
 
-    activerecord:
-      errors:
-        models:
-          access_info:
-            attributes:
-              user_id:
-                taken: "has already been granted access to this organization."
-        messages:
-          record_invalid: "Validation failed: %{errors}"
+  activerecord:
+    errors:
+      models:
+        access_info:
+          attributes:
+            user_id:
+              taken: "has already been granted access to this organization."
+            organization:
+              must_have_at_least_one_admin: "must have at least one administrator."
+      messages:
+        record_invalid: "Validation failed: %{errors}"

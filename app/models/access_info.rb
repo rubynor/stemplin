@@ -11,12 +11,9 @@ class AccessInfo < ApplicationRecord
   validates :organization, presence: true
   validates :user_id, uniqueness: { scope: :organization_id }
   validate :no_project_accesses_unless_project_restricted
+  validate :organization_has_at_least_one_admin
 
-  def no_project_accesses_unless_project_restricted
-    if !project_restricted? && project_accesses.any?
-      errors.add(:project_accesses, "Cannot have project accesses if not project restricted")
-    end
-  end
+  before_validation :delete_project_accesses_if_not_project_restricted
 
   def self.allowed_organization_roles
     self.roles.except(:super_admin).keys
@@ -28,5 +25,27 @@ class AccessInfo < ApplicationRecord
 
   def project_restricted?
     self.class.project_restricted_roles.include? self.role
+  end
+
+  private
+
+  def no_project_accesses_unless_project_restricted
+    if !project_restricted? && project_accesses.any?
+      errors.add(:project_accesses, "Cannot have project accesses if not project restricted")
+    end
+  end
+
+  def organization_has_at_least_one_admin
+    return unless organization && role != "organization_admin"
+
+    other_admins_query = organization.access_infos.where(role: :organization_admin)
+    other_admins_query = other_admins_query.where.not(id: id) if persisted?
+    unless other_admins_query.exists?
+      errors.add(:organization, :must_have_at_least_one_admin)
+    end
+  end
+
+  def delete_project_accesses_if_not_project_restricted
+    project_accesses.delete_all if !project_restricted?
   end
 end

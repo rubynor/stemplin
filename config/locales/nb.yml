@@ -130,6 +130,7 @@ nb:
     save_task: "Lagre oppgaven"
     project_members: "Prosjekt medlemer"
     add_member: "Legg til medlem"
+    edit_member: "Rediger medlem"
     email: "E-post"
     remove: "Slett"
     update_project: "Oppdater Prosjekt"
@@ -268,6 +269,7 @@ nb:
     tasks_was_successfully_deleted: "Oppgaven ble slettet."
     tasks_was_successfully_updated: "Oppgaven ble oppdatert."
     user_added_to_the_organization: "Bruker ble lagt til i organisasjonen."
+    user_updated: "Bruker ble oppdatert."
     time_entry_has_been_logged: "Tidsregistrering er loggført."
     edits_to_the_task_name: "Vær oppmerksom på at redigeringer av oppgavenavnet vil bli brukt på alle prosjektene. Endringer i den fakturerbare prisen vil kun brukes på dette prosjektet og vil bli tatt i bruk ved nye tidsregistreringer."
     recorded_time_registrations: "Oppgaven har registrerte tidsregistreringer, kan ikke fjernes fra dette prosjektet."
@@ -424,6 +426,8 @@ nb:
           attributes:
             user_id:
               taken: "har allerede fått tilgang til denne organisasjonen."
+            organization:
+              must_have_at_least_one_admin: "må ha minst en administrator."
       messages:
         record_invalid: "Validering mislyktes: %{errors}"
         required: "må være valgt"
