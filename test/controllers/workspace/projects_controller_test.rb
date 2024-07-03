@@ -31,6 +31,12 @@ module Workspace
       assert_response :success
     end
 
+    test "spectator should not show project" do
+      sign_in users(:organization_spectator)
+      get :show, params: { id: @project.id }
+      assert_redirected_to root_path
+    end
+
     test "should update project" do
       user = users(:ron)
       patch :update, params: { id: @project.id, project: { name: "Updated Project", user_ids: [ user.id ] } }
