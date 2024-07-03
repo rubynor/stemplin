@@ -344,9 +344,12 @@ en:
   access_info:
     role:
       organization_user: "Organization User"
+      organization_spectator: "Organization Spectator"
       organization_admin: "Organization Administrator"
       super_admin: "Super administrator"
-      organization_spectator: "Organization Spectator"
+      organization_user_short: "User"
+      organization_spectator_short: "Spectator"
+      organization_admin_short: "Administrator"
 
   login_page:
     sign_in_to_your_account: "Sign in to your account"

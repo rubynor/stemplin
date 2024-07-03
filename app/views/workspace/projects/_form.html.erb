@@ -67,7 +67,7 @@
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
               <%= render PhlexUI::Label.new { t("common.users") } %>
               <%= render PhlexUI::Hint.new { t("common.add_users_optional") } %>
-              <%= render SelectMultipleComponent.new form, :user_ids, users, :id, :name, label: t("common.users") %>
+              <%= render SelectMultipleComponent.new form, :user_ids, users, :id, :name_with_role, label: t("common.users") %>
             <% end %>
 
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>

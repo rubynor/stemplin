@@ -26,6 +26,10 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}".strip
   end
 
+  def name_with_role(organization = nil)
+    "#{name} (#{I18n.t("access_info.role.#{access_info(organization).role}_short")})"
+  end
+
   def organization_admin?
     access_info&.organization_admin?
   end
