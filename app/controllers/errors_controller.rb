@@ -4,7 +4,6 @@ class ErrorsController < ApplicationController
   layout "error"
 
   def not_found
-    puts "4040404040404"
     render status: 404
   end
 
