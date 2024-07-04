@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_locale
+  before_action :redirect_if_no_organization
   layout :layout_by_resource
 
   verify_authorized unless: :devise_controller?
@@ -63,5 +64,9 @@ class ApplicationController < ActionController::Base
     browser_locales.scan(/[a-z]{2}(?=[;|-])/).find do |locale|
       I18n.available_locales.include?(locale.to_sym)
     end
+  end
+
+  def redirect_if_no_organization
+    redirect_to new_onboarding_path if current_user&.organizations&.empty? && controller_name != "onboarding"
   end
 end

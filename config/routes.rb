@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   root "time_regs#index"
 
+  match "/404", to: "errors#not_found", via: :all
+  match "/500", to: "errors#internal_server_error", via: :all
+
   resources :onboarding, only: [ :new, :create ] do
     get :skip_and_verify_account, on: :collection
     get :edit_password, on: :collection

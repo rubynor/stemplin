@@ -475,3 +475,13 @@ nb:
     sign_up: "Registrer deg"
     streamline_your_workflow: "Strømlinjeform Arbeidsflyten Din"
     app_summary: "Øk samarbeidet og forenkle din prosjektering. Tildel oppgaver, loggfør tid og få innsiktsfulle rapporter – alt på ett sted. Gi teamet ditt muligheten til å oppnå mer med en effektivisert arbeidsflyt."
+
+  error_page:
+    not_found:
+      title: "Siden Ble Ikke Funnet"
+      message: "Siden du leter etter eksisterer ikke."
+      sub_message: "Du kan ha skrevet feil adresse, eller siden kan ha blitt flyttet."
+    internal_server_error:
+      title: "Intern Serverfeil"
+      message: "Vi beklager, men noe gikk galt."
+      sub_message: "Vennligst prøv igjen senere."
