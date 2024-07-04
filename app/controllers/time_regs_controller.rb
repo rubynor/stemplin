@@ -1,5 +1,6 @@
 class TimeRegsController < ApplicationController
   before_action :authenticate_user!
+  before_action :redirect_if_no_organization
   before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update, :destroy ]
   before_action :set_clients, only: [ :index, :new_modal, :create, :edit_modal, :update ]
   before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal, :update ]
@@ -131,5 +132,9 @@ class TimeRegsController < ApplicationController
 
   def set_assigned_tasks
     @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg&.project&.id).merge(AssignedTask.active_task)
+  end
+
+  def redirect_if_no_organization
+    redirect_to new_onboarding_path if current_user.organizations.empty?
   end
 end

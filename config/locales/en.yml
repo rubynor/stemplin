@@ -373,3 +373,13 @@ en:
               must_have_at_least_one_admin: "must have at least one administrator."
       messages:
         record_invalid: "Validation failed: %{errors}"
+
+  error_page:
+    not_found:
+      title: "Page Not Found"
+      message: "The page you are looking for does not exist."
+      sub_message: "You may have mistyped the address or the page may have moved."
+    internal_server_error:
+      title: "Internal Server Error"
+      message: "We're sorry, something went wrong on our end."
+      sub_message: "Please try again later."
