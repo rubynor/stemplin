@@ -67,6 +67,6 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_if_no_organization
-    redirect_to new_onboarding_path if current_user&.organizations&.empty? && request.path != new_onboarding_path
+    redirect_to new_onboarding_path if current_user&.organizations&.empty? && controller_name != "onboarding"
   end
 end
