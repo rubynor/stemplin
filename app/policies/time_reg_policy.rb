@@ -6,17 +6,22 @@ class TimeRegPolicy < ApplicationPolicy
   end
 
   %i[ index new_modal edit_modal update_tasks_select ].each do |action|
-    define_method("#{action}?") { true }
+    define_method("#{action}?") do
+      !user.access_info.organization_spectator?
+    end
   end
 
   def create?
-    user == record.user && user.current_organization == record.organization
+    user == record.user && user.current_organization == record.organization && !user.access_info.organization_spectator?
   end
 
   scope_for :relation do |relation|
     organization = user.current_organization
     if user.organization_admin?
       relation.joins(:organization).where(organizations: organization).distinct
+    elsif user.access_info.organization_spectator?
+      projects = authorized_scope(Project.all, type: :relation).all
+      relation.joins(:project).where(project: projects).distinct
     else
       relation.joins(:organization, :user).where(organizations: organization, users: user).distinct
     end

@@ -12,6 +12,12 @@ module  Workspace
       assert_response :success
     end
 
+    test "spectator user should not get index" do
+      sign_in users(:organization_spectator)
+      get :index
+      assert_redirected_to report_path
+    end
+
     test "should create a client" do
       assert_difference("Client.count") do
         post :create, params: { client: { name: "Microsoft", description: "This is microsoft" } }

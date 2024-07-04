@@ -25,6 +25,12 @@ organization_user:
   last_name: user
   <<: *DEFAULTS
 
+organization_spectator:
+  email: organization_spectator@example.com
+  first_name: organization
+  last_name: spectator
+  <<: *DEFAULTS
+
 org_admin_without_org:
   email: org_admin_without_org@example.com
   first_name: org_admin_without_org

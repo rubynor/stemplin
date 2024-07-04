@@ -166,7 +166,7 @@ en:
     select_tasks: "Select Tasks"
     save: "Save"
     role: "Role"
-    select_organization_user: "Kindly select organization user, if all this user will do is record time registrations."
+    select_organization_user: "Kindly select organization user, if all this user will do is record time registrations. A spectator can only view time registrations."
     select_role: "Select role"
     share_temporary_password_with_user: "Kindly share this temporary password with the user for login purposes. They can change it at a later time."
     deletion_of_the_client: "Do you want to proceed with the deletion of the client"
@@ -345,8 +345,12 @@ en:
   access_info:
     role:
       organization_user: "Organization User"
+      organization_spectator: "Organization Spectator"
       organization_admin: "Organization Administrator"
       super_admin: "Super administrator"
+      organization_user_short: "User"
+      organization_spectator_short: "Spectator"
+      organization_admin_short: "Administrator"
 
   login_page:
     sign_in_to_your_account: "Sign in to your account"

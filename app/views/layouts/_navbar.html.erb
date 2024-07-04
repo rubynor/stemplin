@@ -3,7 +3,9 @@
     <%= render "organizations/switch", user: current_user %>
     <% if user_signed_in? %>
       <div class="hidden lg:flex h-full gap-x-12">
-        <%= link_to t("common.home"), time_regs_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([root_path, time_regs_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
+        <% unless current_user.access_info.organization_spectator? %>
+          <%= link_to t("common.home"), time_regs_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([root_path, time_regs_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
+        <% end %>
         <% if current_user.organization_admin? %>
           <%= link_to t("common.workspace"), workspace_projects_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([workspace_clients_path, workspace_tasks_path, workspace_projects_path, workspace_team_members_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
         <% end %>
@@ -22,10 +24,12 @@
             <i class="uc-icon text-xl text-gray-600">&#xe80d;</i>
           <% end  %>
           <%= render PhlexUI::Popover::Content.new(class: "divide-y divide-gray-50 w-48") do %>
-            <%= render PhlexUI::Link.new(href: time_regs_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
-              <div class="w-full flex justify-start items-center gap-x-1">
-                <%= render PhlexUI::Label.new { "Home"} %>
-              </div>
+            <% unless current_user.access_info.organization_spectator? %>
+              <%= render PhlexUI::Link.new(href: time_regs_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+                <div class="w-full flex justify-start items-center gap-x-1">
+                  <%= render PhlexUI::Label.new { "Home"} %>
+                </div>
+              <% end %>
             <% end %>
             <% if current_user.organization_admin? %>
               <%= render PhlexUI::Link.new(href: workspace_projects_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
@@ -39,10 +43,12 @@
                 <%= render PhlexUI::Label.new { "Reports"} %>
               </div>
             <% end %>
-            <%= render PhlexUI::Link.new(href: organizations_reports_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
-              <div class="w-full flex justify-start items-center gap-x-1">
-                <%= render PhlexUI::Label.new { "Organization Reports"} %>
-              </div>
+            <% if current_user.organization_admin? %>
+              <%= render PhlexUI::Link.new(href: organizations_reports_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+                <div class="w-full flex justify-start items-center gap-x-1">
+                  <%= render PhlexUI::Label.new { "Organization Reports"} %>
+                </div>
+              <% end %>
             <% end %>
             <%= render PhlexUI::Link.new(href: edit_user_registration_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
               <div class="w-full flex justify-start items-center gap-x-1">

@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   verify_authorized unless: :devise_controller?
 
   rescue_from ActionPolicy::Unauthorized do |ex|
-    redirect_to root_path
+    redirect_to current_user&.access_info&.organization_spectator? ? report_path : root_path
   end
 
   def after_sign_in_path_for(resource)
