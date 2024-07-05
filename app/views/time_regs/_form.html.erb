@@ -40,7 +40,7 @@
 
               <div class="mb-4">
                 <%= form.label :notes, t('common.notes'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
-                <%= form.text_area :notes, placeholder: t("common.remember_to_fill_out"), class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
+                <%= form.text_area :notes, placeholder: t("common.remember_to_fill_out"), class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white text-black placeholder:text-gray-400' %>
                 <% time_reg.errors.full_messages_for(:notes).each do |message| %>
                   <div  class="text-red-600 text-xs italic mt-1"><%= message %></div>
                 <% end %>
@@ -53,7 +53,7 @@
                   action: "custom-input#updatehiddenInput change->custom-input#updateFormat",
                   "custom-input-target": "input"
                 }, value: (convert_time_int(time_reg.minutes) unless time_reg.new_record?),
-                        class: 'text-end w-full rounded-md p-2 border invalid:border-red-700 border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
+                        class: 'text-end w-full rounded-md p-2 border invalid:border-red-700 border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white text-black placeholder:text-gray-300'
                 %>
                 <%= form.hidden_field :date_worked, value: chosen_date %>
                 <% time_reg.errors.full_messages_for(:minutes).each do |message| %>
