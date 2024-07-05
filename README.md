@@ -43,6 +43,16 @@ Hotwire will not work without Redis. If it is not running, start it with:
 redis-server --daemonize yes
 ```
 
+### letter_opener
+To use the letter_opener gem with WSL, you might have to install `wsl-open`:
+
+```shell
+wget https://raw.githubusercontent.com/4U6U57/wsl-open/master/wsl-open.sh
+sudo mv wsl-open.sh /usr/local/bin/wsl-open
+sudo chmod +x /usr/local/bin/wsl-open
+sudo ln -s /usr/local/bin/wsl-open /usr/local/bin/xdg-open
+```
+
 ### Run the project
 Finally, you can run your project locally with:
 
