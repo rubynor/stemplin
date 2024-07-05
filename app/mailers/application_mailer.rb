@@ -2,7 +2,15 @@ class ApplicationMailer < ActionMailer::Base
   default from: Stemplin.config.emails.from
   layout "mailer"
 
-  def send_mail(to:, template_id:, personalization_data: {})
+  def send_mail(to:, subject:, body:)
+    mail(
+      to: to,
+      subject: subject,
+      body: body
+    )
+  end
+
+  def send_with_sendgrid(to:, template_id:, personalization_data: {})
     return true unless Rails.env.production?
 
     mail = build_mail(to: to, template_id: template_id, personalization_data: personalization_data)

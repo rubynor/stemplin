@@ -36,12 +36,11 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 
-  # config.action_mailer.delivery_method = :letter_opener, uncomment to use letter_opener
+  config.action_mailer.delivery_method = :letter_opener
 
   # in production, :host should be set tot he actual host of your application :D:D
   config.action_mailer.default_url_options = { host: Stemplin.config.http_url }
