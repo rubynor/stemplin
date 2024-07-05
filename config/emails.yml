@@ -1,0 +1,9 @@
+shared:
+  from: "noreply@stemplin.com"
+  templates:
+    user:
+      welcome:
+        nb:
+          template_id: "d-6e9dd92e3c3f46c0aace761c0eb6a90a"
+        en:
+          template_id: "d-6e9dd92e3c3f46c0aace761c0eb6a90a"

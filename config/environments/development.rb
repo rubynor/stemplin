@@ -41,8 +41,10 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # open emails in browser in development
+  # config.action_mailer.delivery_method = :letter_opener, uncomment to use letter_opener
   # in production, :host should be set tot he actual host of your application :D:D
-  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+  config.action_mailer.default_url_options = { host: Stemplin.config.http_url }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
