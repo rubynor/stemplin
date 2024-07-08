@@ -108,3 +108,5 @@ gem "pagy"
 gem "discard"
 
 gem "sendgrid-ruby"
+
+gem "devise_invitable", "~> 2.0.9"
