@@ -96,6 +96,7 @@ class TimeRegsController < ApplicationController
   def update_tasks_select
     authorize!
     @name_id_pairs = authorized_scope(Task, type: :relation, as: :own).assigned_task_names_and_ids(params[:project_id])
+    @name_id_pairs = [ "" ] if @name_id_pairs.empty?
     render partial: "/time_regs/select", locals: { tasks: @name_id_pairs }
   end
 
