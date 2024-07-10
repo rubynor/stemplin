@@ -34,6 +34,7 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name])
     devise_parameter_sanitizer.permit(:account_update, keys: %i[first_name last_name])
+    devise_parameter_sanitizer.permit(:accept_invitation, keys: %i[first_name last_name])
   end
 
   # data can either be a hash or a string
@@ -67,6 +68,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_if_no_organization
-    redirect_to new_onboarding_path if current_user&.organizations&.empty? && controller_name != "onboarding"
+    allowed_controllers = [ "onboarding", "invitations", "service_worker", "sessions" ]
+    redirect_to new_onboarding_path if current_user&.organizations&.empty? && !allowed_controllers.include?(controller_name)
   end
 end

@@ -1,6 +1,6 @@
 module Workspace
   class UserPolicy < WorkspacePolicy
-    %i[ index new_modal add_to_organization create update edit_modal ].each do |action|
+    %i[ index invite_users create update edit_modal ].each do |action|
       define_method("#{action}?") { user.organization_admin? }
     end
 

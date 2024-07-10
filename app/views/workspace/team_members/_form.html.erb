@@ -6,66 +6,21 @@
     <%= turbo_frame_tag :modal do %>
       <%= form_with url: user.new_record? ? workspace_team_members_path : workspace_team_member_path, method: user.new_record? ?  :post : :patch, scope: user, data: { controller: "show-on-value", show_on_value_accepted_value: project_restricted_roles } do |form| %>
         <div class="flex flex-col gap-y-4">
-          <span class="font-semibold text-gray-600 text-lg"> <%= user.new_record? ? t("common.add_member") : t("common.edit_member") %></span>
+          <span class="font-semibold text-gray-600 text-lg"><%= t("common.edit_member") %>: <%= user.name %></span>
           <%= render AlertComponent.new(variant: :destructive, title: t("alert.unable_to_proceed"), message: flash[:error]) if flash[:error].present?  %>
-          <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
-            <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-              <%= render PhlexUI::Label.new { t("registration.first_name") } %>
-              <%= form.text_field :first_name, required: true, class: "border-gray-200 rounded-md w-full", autofocus: true %>
-              <% user.errors.full_messages_for(:first_name).each do |message|%>
-                <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
-              <% end %>
-            <% end %>
-          <% end %>
-          <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
-            <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-              <%= render PhlexUI::Label.new { t("registration.last_name") } %>
-              <%= form.text_field :last_name, required: true, class: "border-gray-200 rounded-md w-full" %>
-              <% user.errors.full_messages_for(:last_name).each do |message|%>
-                <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
-              <% end %>
-            <% end %>
-          <% end %>
+
           <%= render PhlexUI::Form::Item.new do %>
             <%= render PhlexUI::Label.new { t("common.role") } %>
             <%= render PhlexUI::Hint.new { t("common.select_organization_user") } %>
             <%= form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { prompt: t("common.select_role"), selected: selected_role }, required: true, class: "border-gray-200 rounded-md w-full", data: { show_on_value_target: "input" } %>
           <% end %>
+
           <%= render PhlexUI::Form::Item.new(data: { show_on_value_target: "toggle" }) do  %>
             <%= render PhlexUI::Label.new { t("common.projects") } %>
             <%= render PhlexUI::Hint.new { t("common.add_projects_optional") } %>
             <%= render GroupedSelectMultipleComponent.new form, :project_ids, grouped_projects, :name, :id, :name, { checked: selected_project_ids }, label: t("common.select_projects") %>
           <% end %>
-          <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
-            <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-              <%= render PhlexUI::Label.new { t("common.email") } %>
-              <%= form.email_field :email, required: true, class: "border-gray-200 rounded-md w-full" %>
-              <% user.errors.full_messages_for(:email).each do |message|%>
-                <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
-              <% end %>
-            <% end %>
-          <% end %>
-          <% if user.new_record? %>
-            <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
-              <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-                <%= render PhlexUI::Label.new { t("registration.password") } %>
-                <%= render PhlexUI::Hint.new { t("common.share_temporary_password_with_user") } %>
-                <%= form.password_field :password, required: true, class: "border-gray-200 rounded-md w-full" %>
-                <% user.errors.full_messages_for(:password).each do |message|%>
-                  <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
-                <% end %>
-              <% end %>
-            <% end %>
-            <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
-              <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-                <%= render PhlexUI::Label.new { t("registration.confirm_password") } %>
-                <%= form.password_field :password_confirmation, required: true, class: "border-gray-200 rounded-md w-full" %>
-                <% user.errors.full_messages_for(:password_confirmation).each do |message|%>
-                  <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
-                <% end %>
-              <% end %>
-            <% end %>
-          <% end %>
+
         </div>
         <%= render PhlexUI::Dialog::Footer.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
           <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->dismissable#dismiss' }) { t("common.cancel") } %>

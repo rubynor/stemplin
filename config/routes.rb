@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { invitations: "users/invitations" }
 
   root "time_regs#index"
 
@@ -75,9 +75,8 @@ Rails.application.routes.draw do
     end
 
     resources :team_members, only: [ :index, :create, :update ] do
-      post :new_modal, on: :collection
+      get :invite_users, on: :collection
       put :edit_modal, on: :member
-      post :add_to_organization, on: :collection
     end
 
     resources :tasks do

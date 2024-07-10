@@ -168,6 +168,9 @@ nb:
     from: "Fra"
     team_members: "Gruppemedlemmer"
     add_new: "Lag Ny"
+    invite_members: "Inviter Medlemmer"
+    invite_members_to_organization: "Inviter medlemmer til organisasjonen"
+    add_to_invite_list: "Legg til i liste"
     import: "Importer"
     rate: "Timepris"
     actions: "Handlinger"
@@ -269,7 +272,7 @@ nb:
     tasks_was_successfully_created: "Oppgaven ble opprettet."
     tasks_was_successfully_deleted: "Oppgaven ble slettet."
     tasks_was_successfully_updated: "Oppgaven ble oppdatert."
-    user_added_to_the_organization: "Bruker ble lagt til i organisasjonen."
+    members_invited: "Invitasjonene ble sendt"
     user_updated: "Bruker ble oppdatert."
     time_entry_has_been_logged: "Tidsregistrering er loggført."
     edits_to_the_task_name: "Vær oppmerksom på at redigeringer av oppgavenavnet vil bli brukt på alle prosjektene. Endringer i den fakturerbare prisen vil kun brukes på dette prosjektet og vil bli tatt i bruk ved nye tidsregistreringer."
@@ -301,6 +304,8 @@ nb:
     wish_to_proceed: "Ønsker du å fortsette?"
     warning: "Advarsel!"
     unable_to_proceed: "Kan ikke fortsette"
+    something_went_wrong: "Noe gikk galt"
+    invalid_email: "Ugyldig e-postadresse"
 
   description:
     blank: "kan ikke være blank"
@@ -313,6 +318,7 @@ nb:
 
 
   registration:
+    join_stemplin: "Bli med i Stemplin"
     first_name: "Fornavn"
     last_name: "Etternavn"
     email: "E-postadresse"
@@ -324,6 +330,7 @@ nb:
     unhappy: "Ikke fornøyd"
     cancel_account: "Avslutt kontoen min"
     sign_in: "Logg inn"
+    sign_up: "Registrer deg"
     password: "Passord"
     remember_me: "Husk meg"
     confirm_password: "Bekreft passord"

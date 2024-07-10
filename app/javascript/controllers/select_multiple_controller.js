@@ -30,8 +30,7 @@ export default class extends Controller {
 
   updateLabel() {
     let selectedValuesCount = this.contentTarget.querySelectorAll('.value-checkbox:checked').length;
-    this.labelTarget.textContent = this.labelValue;
-    this.labelTarget.textContent += selectedValuesCount > 0 ? ` (${selectedValuesCount})` : '';
+    this.labelTarget.textContent = this.labelValue + ` (${selectedValuesCount})`;
   }
 
   #isAllChecked() {

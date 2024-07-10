@@ -1,0 +1,28 @@
+<div class="flex flex-row items-center pb-3 mb-10 border-b">
+  <%= link_to workspace_team_members_path, class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out" do %>
+    <i class="uc-icon text-2xl">&#xe833;</i>
+  <% end %>
+  <h2 class="text-2xl mx-3"><%= t("common.invite_members_to_organization") %></h2>
+</div>
+
+<%= content_tag :div, data: { controller: "invite-users" } do %>
+  <div class="h-12 mb-6 flex">
+    <%= text_field_tag :email_input, '', { autofocus: true, placeholder: t("common.email"), class: "border-gray-400 rounded-md h-full w-full placeholder:text-gray-400", data: { "invite-users-target": "emailInput" } } %>
+    <%= render ButtonComponent.new(variant: :primary, id: "add-email", class: "h-fit", data: { action: "invite-users#addEmailsToList" }) { t("common.add_to_invite_list") } %>
+  </div>
+
+  <%= form_with url: workspace_team_members_path, method: :post, local: true do |f| %>
+    <%= content_tag :div, class: "container mx-auto", data: { "invite-users-target": "usersForm" } do %>
+      <% @users_params.each do |index, user_params| %>
+        <%= render partial: "invite_fields", locals: { f: f, index: index, user_params: user_params, roles: @roles, grouped_projects: @grouped_projects, project_restricted_roles: @project_restricted_roles } %>
+      <% end %>
+    <% end %>
+    <%= content_tag :div, data: { "invite-users-target": "submitButton" } do %>
+      <%= render ButtonComponent.new(type: :submit) { t("common.invite_members").humanize } %>
+    <% end %>
+
+    <%= content_tag :template, data: { "invite-users-target": "userTemplate" } do %>
+      <%= render partial: "invite_fields", locals: { f: f, index: "NEW_INDEX", user_params: {}, roles: @roles, grouped_projects: @grouped_projects, project_restricted_roles: @project_restricted_roles } %>
+    <% end %>
+  <% end %>
+<% end %>
