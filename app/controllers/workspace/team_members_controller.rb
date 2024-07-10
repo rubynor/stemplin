@@ -35,7 +35,6 @@ module Workspace
             mail_existing_users << user
           end
 
-          puts "USERRR: #{user.inspect}"
           access_info = update_or_create_access_info_for user, user_params[:role]
           update_project_accesses_for access_info, user_params[:project_ids]
         end
@@ -65,7 +64,6 @@ module Workspace
       begin
         ActiveRecord::Base.transaction do
           access_info = update_or_create_access_info_for @user, edit_team_member_params[:role]
-          puts "ACCESSINFOOOOO: #{access_info.inspect}"
           update_project_accesses_for access_info, edit_team_member_params[:project_ids]
         end
 
