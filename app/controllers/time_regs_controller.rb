@@ -23,6 +23,10 @@ class TimeRegsController < ApplicationController
   def new_modal
     @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new
     authorize! @time_reg
+    if current_user.current_organization.projects.empty?
+      flash[:alert] = I18n.t("alert.create_project_before_registering_time")
+      redirect_back fallback_location: time_regs_path
+    end
   end
 
   def create
