@@ -55,6 +55,7 @@ class TimeRegsControllerTest < ActionController::TestCase
     assert_no_difference("TimeReg.count") do
       post :create, params: { time_reg: { date_worked: @current_date, minutes: 0, project_id: nil, assigned_task_id: nil } }
     end
+    assert_response :unprocessable_entity
   end
 
   test "should not start timer if another is turned on" do
