@@ -6,11 +6,7 @@ Rails.application.routes.draw do
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
 
-  resources :onboarding, only: [ :new, :create ] do
-    get :skip_and_verify_account, on: :collection
-    get :edit_password, on: :collection
-    put :update_password, on: :collection
-  end
+  resources :onboarding, only: [ :new, :create ]
 
   post "/set_current_organization/:id" => "organizations#set_current_organization", as: :set_current_organization
 

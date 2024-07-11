@@ -1,5 +1,6 @@
-<%= render PhlexUI::Table::Row.new(id: dom_id(user)) do %>
-  <%= render PhlexUI::Table::Cell.new(class: "py-4") { user.name } %>
+<%- pending_invitation = !user.accepted_or_not_invited? -%>
+<%= render PhlexUI::Table::Row.new(id: dom_id(user), class: pending_invitation ? "italic text-gray-400" : "") do %>
+  <%= render PhlexUI::Table::Cell.new(class: "py-4") { pending_invitation ? t("common.pending_invitation") : user.name } %>
   <%= render PhlexUI::Table::Cell.new(class: "py-4") { user.email } %>
   <%= render PhlexUI::Table::Cell.new(class: "py-4") { t("access_info.role." + user.access_info(current_user.current_organization).role) } %>
   <%= render PhlexUI::Table::Cell.new do %>
