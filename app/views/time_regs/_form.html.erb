@@ -30,10 +30,10 @@
               <div class="mb-4" data-time-tasks-target="task">
                 <%= form.label :assigned_task_id, t('task.assign_task'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
                 <%= form.collection_select :assigned_task_id, (assigned_tasks || [] ), :id, :name, {
-                  selected: time_reg.assigned_task&.id }, {
+                  selected: time_reg.assigned_task&.id, include_blank: !@time_reg.project }, {
                                               class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
                                             } %>
-                <% time_reg.errors.full_messages_for(time_reg.new_record? ? :assigned_task_id : :assigned_task).each do |message| %>
+                <% time_reg.errors.full_messages_for(:assigned_task).each do |message| %>
                   <div class="text-red-600 italic text-xs mt-1"><%= t('alert.please_select_a_task') %></div>
                 <% end %>
               </div>

@@ -285,6 +285,7 @@ en:
     wish_to_proceed: "Do you wish to proceed?"
     warning: "Warning!"
     unable_to_proceed: "Unable to proceed"
+    create_project_before_registering_time: "Create a project in the 'Workspace' page before registering time. Remember to assign tasks to the project."
 
   description:
     blank: "can't be blank"

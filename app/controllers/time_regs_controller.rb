@@ -3,7 +3,6 @@ class TimeRegsController < ApplicationController
   before_action :set_time_reg, only: [ :toggle_active, :edit_modal, :update, :destroy ]
   before_action :set_clients, only: [ :index, :new_modal, :create, :edit_modal, :update ]
   before_action :set_chosen_date, only: [ :index, :new_modal, :create, :edit_modal, :update ]
-  before_action :set_project, only: [ :create, :update ]
 
   require "activerecord-import/base"
   require "csv"
@@ -24,6 +23,10 @@ class TimeRegsController < ApplicationController
   def new_modal
     @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new
     authorize! @time_reg
+    if current_user.current_organization.projects.empty?
+      flash[:alert] = I18n.t("alert.create_project_before_registering_time")
+      redirect_back fallback_location: time_regs_path
+    end
   end
 
   def create
@@ -33,7 +36,6 @@ class TimeRegsController < ApplicationController
     if @time_reg.save
       redirect_to time_regs_path(date: @time_reg.date_worked)
     else
-      flash.now[:alert] = "Unable to create time entry"
       set_assigned_tasks
       render :new_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
     end
@@ -96,6 +98,7 @@ class TimeRegsController < ApplicationController
   def update_tasks_select
     authorize!
     @name_id_pairs = authorized_scope(Task, type: :relation, as: :own).assigned_task_names_and_ids(params[:project_id])
+    @name_id_pairs = [ "" ] if @name_id_pairs.empty?
     render partial: "/time_regs/select", locals: { tasks: @name_id_pairs }
   end
 
@@ -121,12 +124,6 @@ class TimeRegsController < ApplicationController
   end
   def set_chosen_date
     @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today
-  end
-
-  def set_project
-    @project = authorized_scope(Project, type: :relation, as: :own).find(time_reg_params[:project_id])
-  rescue ActiveRecord::RecordNotFound
-    flash[:alert] = "Project not found, kindly select a valid project."
   end
 
   def set_assigned_tasks

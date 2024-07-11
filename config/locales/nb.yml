@@ -301,6 +301,7 @@ nb:
     wish_to_proceed: "Ønsker du å fortsette?"
     warning: "Advarsel!"
     unable_to_proceed: "Kan ikke fortsette"
+    create_project_before_registering_time: "Opprett et prosjekt i 'Arbeidsområde'-siden før du registrerer tid. Husk å legg til oppgaver i prosjektet."
 
   description:
     blank: "kan ikke være blank"
