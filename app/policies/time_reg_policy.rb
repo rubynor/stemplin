@@ -12,8 +12,8 @@ class TimeRegPolicy < ApplicationPolicy
   end
 
   def create?
-    return user == record.user && !user.access_info.organization_spectator? unless record.organization
-    user == record.user && user.current_organization == record.organization && !user.access_info.organization_spectator?
+    return false if user.access_info.organization_spectator? || user != record.user
+    record.organization.nil? ? true : user.current_organization == record.organization
   end
 
   scope_for :relation do |relation|
