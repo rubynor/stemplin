@@ -78,7 +78,6 @@ class TimeRegsController < ApplicationController
     time_regs = project.time_regs.includes(
       :task,
       :user,
-      membership: [ :user ],
       assigned_task: %i[project task],
       project: :client
     )
