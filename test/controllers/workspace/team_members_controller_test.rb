@@ -31,6 +31,47 @@ module  Workspace
       assert_redirected_to workspace_team_members_path
     end
 
+    test "should create multiple new users and associate with organization" do
+      assert_difference("User.count", 2) do
+        assert_difference("AccessInfo.count", 2) do
+          post :create, params: {
+            users_params: {
+              "1" => {
+                email: "new_user1@example.com",
+                role: :organization_admin,
+                project_ids: []
+              },
+              "2" => {
+                email: "new_user2@example.com",
+                role: :organization_admin,
+                project_ids: []
+              }
+            }
+          }
+        end
+      end
+
+      assert_redirected_to workspace_team_members_path
+    end
+
+    test "should not create/invite user with invalid email" do
+      assert_no_difference("User.count") do
+        assert_no_difference("AccessInfo.count") do
+          assert_no_difference("ProjectAccess.count") do
+            post :create, params: {
+              users_params: { "0" => {
+                email: "invalid_email",
+                role: :organization_user,
+                project_ids: [ @project.id ]
+              } }
+            }
+          end
+        end
+      end
+
+      assert_response :unprocessable_entity
+    end
+
     test "should add an existing user to the organization and create project access" do
       user = users(:user_wo_access_info)
       assert_no_difference("User.count") do
