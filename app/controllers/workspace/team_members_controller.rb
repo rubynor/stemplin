@@ -26,7 +26,7 @@ module Workspace
           raise I18n.t("alert.invalid_email") unless user_params[:email] =~ URI::MailTo::EMAIL_REGEXP
           user = User.find_by(email: user_params[:email])
 
-          if user.nil? || user.invitation_accepted_at.nil?
+          if user.nil? || user.pending_invitation?
             user = User.invite!({ email: user_params[:email] }, current_user) do |u|
               u.skip_invitation = true
             end

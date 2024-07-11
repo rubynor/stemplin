@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  self.ignored_columns += [ "is_verified" ]
+
   has_many :time_regs
   has_many :access_infos
   has_many :organizations, through: :access_infos
@@ -45,5 +47,9 @@ class User < ApplicationRecord
 
   def project_restricted?(organization)
     access_infos.find_by(organization: organization).project_restricted?
+  end
+
+  def pending_invitation?
+    !accepted_or_not_invited?
   end
 end

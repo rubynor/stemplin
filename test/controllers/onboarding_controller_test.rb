@@ -21,26 +21,4 @@ class OnboardingControllerTest < ActionController::TestCase
 
     assert_not user.organizations.empty?
   end
-
-  test "should allow newly invited user to update their password" do
-    newly_invited_user = users(:newly_invited_user)
-    sign_in newly_invited_user
-
-    assert_not newly_invited_user.is_verified
-
-    patch :update_password, params: { user: { password: "new_password", password_confirmation: "new_password", current_password: "password" } }
-
-    assert newly_invited_user.reload.is_verified
-  end
-
-  test "should allow user to skip and verify their account" do
-    user = users(:newly_invited_user)
-    sign_in user
-
-    assert_not user.is_verified
-
-    patch :skip_and_verify_account
-
-    assert user.reload.is_verified
-  end
 end
