@@ -5,6 +5,10 @@ export default class extends Controller {
   static targets = ['button', 'content', 'selectAllCheckbox', 'label'];
   static values = { label: String };
 
+  initialize() {
+    document.addEventListener('turbo:morph', () => { this.disconnect(); this.connect(); });
+  }
+
   connect() {
     this.buttonTarget.addEventListener('mousedown', this.preventDefault);
     this.buttonTarget.addEventListener('keydown', this.preventDefault);
@@ -35,6 +39,7 @@ export default class extends Controller {
   updateAllAndGroupCheckboxes(event = null) {
     const groups = event ? [event.target.closest('.group-div')] : this.contentTarget.querySelectorAll('.group-div');
     groups.forEach((group) => {
+      console.log(group.querySelector('.group-checkbox'));
       group.querySelector('.group-checkbox').checked = this.#isGroupChecked(group);
     });
     this.selectAllCheckboxTarget.checked = this.#isAllChecked();

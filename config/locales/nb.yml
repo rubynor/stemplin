@@ -443,6 +443,18 @@ nb:
         required: "må være valgt"
         blank: "kan ikke være tom"
 
+  activemodel:
+    errors:
+      messages:
+        blank: "kan ikke være tom"
+        taken: "har allerede blitt tatt"
+        invalid: "er ugyldig"
+        must_exist: "må finnes"
+    attributes:
+      invite_user_form:
+        email: "E-post"
+        role: "Rolle"
+
   helpers:
     alert:
       info: "Merk"

@@ -17,17 +17,18 @@ module Workspace
 
     def create
       authorize!
-      @users_params = invite_users_params
+      @users_params = invite_users_params.transform_values { |user_params| InviteUserForm.new(user_params, current_user.current_organization) }
+      raise StandardError unless @users_params.values.map(&:valid?).all?
+
       mail_new_users = []
       mail_existing_users = []
 
       ActiveRecord::Base.transaction do
         @users_params.values.each do |user_params|
-          raise I18n.t("alert.invalid_email") unless user_params[:email] =~ URI::MailTo::EMAIL_REGEXP
-          user = User.find_by(email: user_params[:email])
+          user = User.find_by(email: user_params.email)
 
           if user.nil? || user.pending_invitation?
-            user = User.invite!({ email: user_params[:email] }, current_user) do |u|
+            user = User.invite!({ email: user_params.email }, current_user) do |u|
               u.skip_invitation = true
             end
             mail_new_users << user
@@ -35,8 +36,8 @@ module Workspace
             mail_existing_users << user
           end
 
-          access_info = update_or_create_access_info_for user, user_params[:role]
-          update_project_accesses_for access_info, user_params[:project_ids]
+          access_info = update_or_create_access_info_for user, user_params.role
+          update_project_accesses_for access_info, user_params.project_ids
         end
       end
 
@@ -54,7 +55,7 @@ module Workspace
       @grouped_projects = authorized_scope(Project, type: :relation).group_by(&:client)
       @project_restricted_roles = AccessInfo.project_restricted_roles
 
-      flash[:error] = e.message
+      flash[:error] =I18n.t("alert.unable_to_proceed")
       render :invite_users, status: :unprocessable_entity
     end
 

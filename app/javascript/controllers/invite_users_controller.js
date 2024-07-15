@@ -4,8 +4,8 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["userTemplate", "emailInput", "emailInputError", "usersForm", "submitButton"];
 
-  delimiterRegex = /[,; ]+/; // Allowed delimiters: comma, semicolon, and space
-  emailListRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~@,; ]+$/; // All characters allowed in email addresses plus allowed delimiters
+  delimiterRegex = /[,;\t\r\v\f ]+/; // Allowed delimiters: comma, semicolon, tab variations and space
+  emailListRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~@,;\t\r\v\f ]+$/; // All characters allowed in email addresses plus allowed delimiters
   
   connect() {
     this.toggleSubmitButtonVisibility();

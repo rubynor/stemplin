@@ -5,6 +5,10 @@ export default class extends Controller {
   static targets = ['button', 'content', 'selectAllCheckbox', 'label'];
   static values = { label: String };
 
+  initialize() {
+    document.addEventListener('turbo:morph', () => { this.disconnect(); this.connect(); });
+  }
+
   connect() {
     this.buttonTarget.addEventListener('mousedown', this.preventDefault);
     this.buttonTarget.addEventListener('keydown', this.preventDefault);

@@ -13,12 +13,12 @@
   <div class="mb-8 flex flex-col">
     <div class="flex h-12">
       <%= text_field_tag :email_input, '', { autofocus: true, placeholder: t("common.email"), class: "border-gray-400 rounded-md h-full w-full placeholder:text-gray-400", data: { "invite-users-target": "emailInput" } } %>
-      <%= render ButtonComponent.new(variant: :primary, id: "add-email", class: "ml-3", data: { action: "invite-users#addEmailsToList" }) { t("common.add_to_invitation_list") } %>
+      <%= render ButtonComponent.new(variant: :primary, id: "add-email", class: "ml-2", data: { action: "invite-users#addEmailsToList" }) { t("common.add_to_invitation_list") } %>
     </div>
     <%= content_tag(:div, class: "text-red-600 italic text-sm flex row mt-1 hidden", data: { "invite-users-target": "emailInputError" }) { t("alert.invalid_email_list") } %>
   </div>
 
-  <%= form_with url: workspace_team_members_path, method: :post, local: true do |f| %>
+  <%= form_with url: workspace_team_members_path, scope: :users_params, method: :post, local: true do |f| %>
     <%= content_tag :div, class: "container mx-auto", data: { "invite-users-target": "usersForm" } do %>
       <% @users_params.each do |index, user_params| %>
         <%= render partial: "invite_fields", locals: { f: f, index: index, user_params: user_params, roles: @roles, grouped_projects: @grouped_projects, project_restricted_roles: @project_restricted_roles } %>
@@ -29,7 +29,7 @@
     <% end %>
 
     <%= content_tag :template, data: { "invite-users-target": "userTemplate" } do %>
-      <%= render partial: "invite_fields", locals: { f: f, index: "NEW_INDEX", user_params: {}, roles: @roles, grouped_projects: @grouped_projects, project_restricted_roles: @project_restricted_roles } %>
+      <%= render partial: "invite_fields", locals: { f: f, index: "NEW_INDEX", user_params: InviteUserForm.new, roles: @roles, grouped_projects: @grouped_projects, project_restricted_roles: @project_restricted_roles } %>
     <% end %>
   <% end %>
 <% end %>

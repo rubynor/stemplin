@@ -1,18 +1,23 @@
 <%= content_tag :div, class: "user-fields flex flex-wrap my-12 sm:my-2 items-center justify-between", data: { controller: "show-on-value", show_on_value_accepted_value: project_restricted_roles } do %>
-  <%= f.fields_for "users_params[#{index}]" do |user_form| %>
-    <%= content_tag :div, class: "w-full sm:w-4/12 h-fit" do %>
-      <%= user_form.email_field :email, placeholder: t("common.email"), required: true, value: user_params[:email], class: "border-gray-200 rounded-md w-full email-input invalid:border-red-600 placeholder:text-gray-400" %>
+  <%= f.fields_for index do |user_form| %>
+    <%= content_tag :div, class: "w-full sm:w-4/12" do %>
+      <%= user_form.email_field :email, placeholder: t("common.email"), required: true, value: user_params.email, class: "border-gray-200 rounded-md w-full email-input invalid:border-red-600 placeholder:text-gray-400" %>
     <% end %>      
-    <%= content_tag :div, class: "w-full sm:w-3/12" do %>
-      <%= user_form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { required: true }, class: "border-gray-200 rounded-md w-full", data: { show_on_value_target: "input" } %>
+    <%= content_tag :div, class: "w-full sm:w-4/12 sm:px-2" do %>
+      <%= user_form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { selected: user_params.role, required: true }, class: "border-gray-200 rounded-md w-full", data: { show_on_value_target: "input" } %>
     <% end %>
     <%= content_tag :div, class: "w-full sm:w-3/12" do %>
       <%= content_tag :div, data: { show_on_value_target: "toggle" } do %>
-        <%= render GroupedSelectMultipleComponent.new user_form, :project_ids, grouped_projects, :name, :id, :name, label: t("common.select_projects"), id: index %>
+        <%= render GroupedSelectMultipleComponent.new user_form, :project_ids, grouped_projects, :name, :id, :name, { checked: user_params.project_ids }, label: t("common.select_projects"), id: index %>
       <% end %>
     <% end %>
-    <%= content_tag :div, class: "w-full max-auto sm:w-1/12" do %>
+    <%= content_tag :div, class: "w-full sm:w-1/12 sm:pl-2" do %>
       <%= render ButtonComponent.new(variant: :secondary, class: "remove-user w-full hover:shadow", data: { action: "invite-users#removeFromList" }) { 'X' } %>
     <% end %>
   <% end %>
+  <div class="w-full">
+    <% user_params.errors.full_messages.each do |message| %>
+      <div class="text-red-600 text-xs italic mt-1"><%= message %></div>
+    <% end %>
+  </div>
 <% end %>
