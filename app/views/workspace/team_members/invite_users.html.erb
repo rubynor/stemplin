@@ -1,16 +1,21 @@
-<div class="flex flex-row items-center pb-3 border-b">
+<div class="flex flex-row pb-3 border-b mb-8">
   <%= link_to workspace_team_members_path, class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out" do %>
     <i class="uc-icon text-2xl">&#xe833;</i>
   <% end %>
-  <h2 class="text-2xl mx-3"><%= t("common.invite_members_to_organization") %></h2>
+  <div class="mx-3">
+  <h2 class="font-medium text-gray-600 text-lg"><%= t("common.invite_members_to_organization") %></h2>
+  <p class="text-gray-500 text-sm font-regular"><%= t("common.invite_members_helper") %></p>
+  </div>
 </div>
 
-<p class="text-gray-500 mt-2 mb-8 text-sm"><%= t("common.invite_members_helper") %></p>
 
 <%= content_tag :div, data: { controller: "invite-users" } do %>
-  <div class="h-12 mb-6 flex">
-    <%= text_field_tag :email_input, '', { autofocus: true, placeholder: t("common.email"), class: "border-gray-400 rounded-md h-full w-full placeholder:text-gray-400", data: { "invite-users-target": "emailInput" } } %>
-    <%= render ButtonComponent.new(variant: :primary, id: "add-email", class: "h-fit", data: { action: "invite-users#addEmailsToList" }) { t("common.add_to_invitation_list") } %>
+  <div class="mb-8 flex flex-col">
+    <div class="flex h-12">
+      <%= text_field_tag :email_input, '', { autofocus: true, placeholder: t("common.email"), class: "border-gray-400 rounded-md h-full w-full placeholder:text-gray-400", data: { "invite-users-target": "emailInput" } } %>
+      <%= render ButtonComponent.new(variant: :primary, id: "add-email", class: "ml-3", data: { action: "invite-users#addEmailsToList" }) { t("common.add_to_invitation_list") } %>
+    </div>
+    <%= content_tag(:div, class: "text-red-600 italic text-sm flex row mt-1 hidden", data: { "invite-users-target": "emailInputError" }) { t("alert.invalid_email_list") } %>
   </div>
 
   <%= form_with url: workspace_team_members_path, method: :post, local: true do |f| %>

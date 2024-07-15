@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_if_no_organization
-    allowed_controllers = [ "onboarding", "invitations", "service_worker", "sessions" ]
+    allowed_controllers = %w[onboarding invitations service_worker sessions]
     redirect_to new_onboarding_path if current_user&.organizations&.empty? && !allowed_controllers.include?(controller_name)
   end
 end

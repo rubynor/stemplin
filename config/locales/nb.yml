@@ -308,6 +308,7 @@ nb:
     unable_to_proceed: "Kan ikke fortsette"
     something_went_wrong: "Noe gikk galt"
     invalid_email: "Ugyldig e-postadresse"
+    invalid_email_list: "Ugyldig e-postliste. Tillatte separatortegn er komma, semikolon og mellomrom."
 
   description:
     blank: "kan ikke være blank"
@@ -320,7 +321,6 @@ nb:
 
 
   registration:
-    join_stemplin: "Bli med i Stemplin"
     first_name: "Fornavn"
     last_name: "Etternavn"
     email: "E-postadresse"

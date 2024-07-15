@@ -1,44 +1,46 @@
-<div class="content w-full">
-  <h2 class="text-3xl"><%= t("registration.join_stemplin") %></h2>
-  <p class="mb-5 text-gray-400"><%= resource.email %></p>
+<div class="flex flex-col w-full">
+  <span class="text-xl font-semibold text-gray-600"><%= t("login_page.sign_up") %></span>
+  <span class="text-sm mb-5 text-gray-400"><%= resource.email %></span>
+  
+  <div class="flex flex-col mt-4 gap-y-2">
+    <%= form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put }) do |f| %>
+      <%= f.hidden_field :invitation_token, readonly: true %>
 
-  <%= form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put }) do |f| %>
-    <%= f.hidden_field :invitation_token, readonly: true %>
-
-    <div class="flex flex-col w-full gap-y-4 lg:gap-y-8 mb-4">
-      <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do %>
-        <%= render PhlexUI::Label.new { t("registration.first_name") } %>
-        <%= f.text_field :first_name, class: "w-full", autofocus: true %>
-        <% resource.errors.full_messages_for(:first_name).each do |message|%>
-          <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+      <div class="w-full flex flex-col gap-y-4 lg:gap-y-8">
+        <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do %>
+          <%= render PhlexUI::Label.new { t("registration.first_name") } %>
+          <%= f.text_field :first_name, class: "border-gray-200 rounded-md w-full placeholder:text-gray-400", autofocus: true, required: true %>
+          <% resource.errors.full_messages_for(:first_name).each do |message|%>
+            <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+          <% end %>
         <% end %>
-      <% end %>
 
-      <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do %>
-        <%= render PhlexUI::Label.new { t("registration.last_name") } %>
-        <%= f.text_field :last_name, class: "w-full" %>
-        <% resource.errors.full_messages_for(:last_name).each do |message|%>
-          <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do %>
+          <%= render PhlexUI::Label.new { t("registration.last_name") } %>
+          <%= f.text_field :last_name, class: "border-gray-200 rounded-md w-full placeholder:text-gray-400", required: true %>
+          <% resource.errors.full_messages_for(:last_name).each do |message|%>
+            <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+          <% end %>
         <% end %>
-      <% end %>
 
-      <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do %>
-        <%= render PhlexUI::Label.new { t("registration.password") } %>
-        <%= f.password_field :password, class: "w-full" %>
-        <% resource.errors.full_messages_for(:password).each do |message|%>
-          <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do %>
+          <%= render PhlexUI::Label.new { t("registration.password") } %>
+          <%= f.password_field :password, class: "border-gray-200 rounded-md w-full placeholder:text-gray-400", required: true %>
+          <% resource.errors.full_messages_for(:password).each do |message|%>
+            <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+          <% end %>
         <% end %>
-      <% end %>
 
-      <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do %>
-        <%= render PhlexUI::Label.new { t("registration.confirm_password") } %>
-        <%= f.password_field :password_confirmation, class: "w-full" %>
-        <% resource.errors.full_messages_for(:password_confirmation).each do |message|%>
-          <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do %>
+          <%= render PhlexUI::Label.new { t("registration.confirm_password") } %>
+          <%= f.password_field :password_confirmation, class: "border-gray-200 rounded-md w-full placeholder:text-gray-400", required: true %>
+          <% resource.errors.full_messages_for(:password_confirmation).each do |message|%>
+            <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+          <% end %>
         <% end %>
-      <% end %>
 
       <%= render ButtonComponent.new(type: :submit) { t("registration.sign_up") } %>
-    </div>
-  <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

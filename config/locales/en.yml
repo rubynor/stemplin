@@ -292,6 +292,7 @@ en:
     unable_to_proceed: "Unable to proceed"
     something_went_wrong: "Something went wrong"
     invalid_email: "Invalid email address"
+    invalid_email_list: "Invalid email list. Allowed separators are comma, semicolon, and space."
 
   description:
     blank: "can't be blank"
@@ -304,7 +305,6 @@ en:
 
 
   registration:
-    join_stemplin: "Join Stemplin"
     first_name: "First name"
     last_name: "Last name"
     email: "Email address"

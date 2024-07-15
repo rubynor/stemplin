@@ -2,16 +2,38 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="invite-users"
 export default class extends Controller {
-  static targets = ["userTemplate", "emailInput", "usersForm", "submitButton"];
+  static targets = ["userTemplate", "emailInput", "emailInputError", "usersForm", "submitButton"];
 
+  delimiterRegex = /[,; ]+/; // Allowed delimiters: comma, semicolon, and space
+  emailListRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~@,; ]+$/; // All characters allowed in email addresses plus allowed delimiters
+  
   connect() {
     this.toggleSubmitButtonVisibility();
+    this.emailInputTarget.addEventListener('keydown', this.handleEnterKeyPress.bind(this));
+    this.emailInputErrorTarget.classList.add('hidden');
+  }
+
+  disconnect() {
+    this.emailInputTarget.removeEventListener('keydown', this.handleEnterKeyPress.bind(this));
+  }
+
+  handleEnterKeyPress(event) {
+    if (event.key === 'Enter') {
+      this.addEmailsToList(event);
+    }
   }
 
   addEmailsToList(event) {
     event.preventDefault();
 
-    const emails = this.emailInputTarget.value.split(/[,\n; ]+/).filter(email => email.length > 0);
+    if (!this.emailListRegex.test(this.emailInputTarget.value)) {
+      this.emailInputErrorTarget.classList.remove('hidden');
+      return;
+    } else {
+      this.emailInputErrorTarget.classList.add('hidden');
+    }
+
+    const emails = this.emailInputTarget.value.split(this.delimiterRegex).filter(email => email.length > 0);
     emails.forEach(email => this.#addEmailToList(email));
 
     this.emailInputTarget.value = '';

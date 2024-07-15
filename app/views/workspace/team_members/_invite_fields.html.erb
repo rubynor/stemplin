@@ -8,7 +8,7 @@
     <% end %>
     <%= content_tag :div, class: "w-full sm:w-3/12" do %>
       <%= content_tag :div, data: { show_on_value_target: "toggle" } do %>
-        <%= render GroupedSelectMultipleComponent.new user_form, :project_ids, grouped_projects, :name, :id, :name, label: t("common.select_projects") %>
+        <%= render GroupedSelectMultipleComponent.new user_form, :project_ids, grouped_projects, :name, :id, :name, label: t("common.select_projects"), id: index %>
       <% end %>
     <% end %>
     <%= content_tag :div, class: "w-full max-auto sm:w-1/12" do %>
