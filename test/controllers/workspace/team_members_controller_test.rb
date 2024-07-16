@@ -72,6 +72,24 @@ module  Workspace
       assert_response :unprocessable_entity
     end
 
+    test "should not create/invite user with existing email" do
+      assert_no_difference("User.count") do
+        assert_no_difference("AccessInfo.count") do
+          assert_no_difference("ProjectAccess.count") do
+            post :create, params: {
+              invite_users_hash: { "0" => {
+                email: @organization_admin.email,
+                role: :organization_user,
+                project_ids: [ @project.id ]
+              } }
+            }
+          end
+        end
+      end
+
+      assert_response :unprocessable_entity
+    end
+
     test "should add an existing user to the organization and create project access" do
       user = users(:user_wo_access_info)
       assert_no_difference("User.count") do
