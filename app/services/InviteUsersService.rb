@@ -63,14 +63,14 @@ class InviteUsersService
         user: user,
         organization_name: @current_user.current_organization.name,
         url: accept_user_invitation_url(invitation_token: user.raw_invitation_token, **default_url_options)
-      )
+      ).deliver_now
     end
     @mail_existing_users.each do |user|
       UserMailer.welcome_email(
         user: user,
         organization_name: @current_user.current_organization.name,
         url: new_user_session_url(**default_url_options)
-      )
+      ).deliver_now
     end
   end
 
