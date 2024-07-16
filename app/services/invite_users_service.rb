@@ -34,7 +34,6 @@ class InviteUsersService
   def process_invitations
     @invite_users_hash.values.each do |invite_user_form|
       user = find_or_create_user invite_user_form
-
       access_info = user.update_or_create_access_info invite_user_form.role, @current_user.current_organization
       access_info.update_project_accesses invite_user_form.project_ids
     end
