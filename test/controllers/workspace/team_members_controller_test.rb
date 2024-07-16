@@ -18,7 +18,7 @@ module  Workspace
         assert_difference("AccessInfo.count") do
           assert_difference("ProjectAccess.count") do
             post :create, params: {
-              users_params: { "0" => {
+              invite_users_hash: { "0" => {
                 email: "new_user@example.com",
                 role: :organization_user,
                 project_ids: [ @project.id ]
@@ -35,7 +35,7 @@ module  Workspace
       assert_difference("User.count", 2) do
         assert_difference("AccessInfo.count", 2) do
           post :create, params: {
-            users_params: {
+            invite_users_hash: {
               "1" => {
                 email: "new_user1@example.com",
                 role: :organization_admin,
@@ -59,7 +59,7 @@ module  Workspace
         assert_no_difference("AccessInfo.count") do
           assert_no_difference("ProjectAccess.count") do
             post :create, params: {
-              users_params: { "0" => {
+              invite_users_hash: { "0" => {
                 email: "invalid_email",
                 role: :organization_user,
                 project_ids: [ @project.id ]
@@ -78,7 +78,7 @@ module  Workspace
         assert_difference("AccessInfo.count") do
           assert_difference("ProjectAccess.count") do
             post :create, params: {
-              users_params: { "0" => {
+              invite_users_hash: { "0" => {
                 email: user.email,
                 role: :organization_user,
                 project_ids: [ @project.id ]

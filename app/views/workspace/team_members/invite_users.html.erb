@@ -18,9 +18,9 @@
     <%= content_tag(:div, class: "text-red-600 italic text-sm flex row mt-1 hidden", data: { "invite-users-target": "emailInputError" }) { t("alert.invalid_email_list") } %>
   </div>
 
-  <%= form_with url: workspace_team_members_path, scope: :users_params, method: :post, local: true do |f| %>
+  <%= form_with url: workspace_team_members_path, scope: :invite_users_hash, method: :post, local: true do |f| %>
     <%= content_tag :div, class: "container mx-auto", data: { "invite-users-target": "usersForm" } do %>
-      <% @users_params.each do |index, user_params| %>
+      <% @invite_users_hash.each do |index, user_params| %>
         <%= render partial: "invite_fields", locals: { f: f, index: index, user_params: user_params, roles: @roles, grouped_projects: @grouped_projects, project_restricted_roles: @project_restricted_roles } %>
       <% end %>
     <% end %>

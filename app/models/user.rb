@@ -52,4 +52,14 @@ class User < ApplicationRecord
   def pending_invitation?
     !accepted_or_not_invited?
   end
+
+  def update_or_create_access_info(role, organization)
+    access_info = self.access_info(organization)
+    if access_info
+      access_info.update!(role: AccessInfo.roles[role])
+    else
+      access_info = access_infos.create!(organization: organization, role: AccessInfo.roles[role])
+    end
+    access_info
+  end
 end

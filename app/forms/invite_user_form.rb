@@ -9,10 +9,10 @@ class InviteUserForm
   validate :valid_role
 
   def initialize(params = {}, organization = nil)
-  self.email = params[:email]
-  self.role = params[:role]
-  self.project_ids = params[:project_ids]
-  self.organization = organization
+    self.email = params[:email]
+    self.role = params[:role]
+    self.project_ids = params[:project_ids]
+    self.organization = organization
   end
 
   def email_not_in_organization
@@ -23,9 +23,5 @@ class InviteUserForm
 
   def valid_role
     errors.add(:role, :invalid) unless AccessInfo.allowed_organization_roles.include?(role)
-  end
-
-  def self.model_name
-    ActiveModel::Name.new(self, nil, "InviteUserForm")
   end
 end
