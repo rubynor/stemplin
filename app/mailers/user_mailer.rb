@@ -10,4 +10,11 @@ class UserMailer < ApplicationMailer
       }
     )
   end
+
+  def reset_password_instructions(record, token, opts = {})
+    Rails.logger.info "----> record #{record.inspect}"
+    Rails.logger.info "----> token #{token}"
+    Rails.logger.info "----> opts #{opts.inspect}"
+    super
+  end
 end
