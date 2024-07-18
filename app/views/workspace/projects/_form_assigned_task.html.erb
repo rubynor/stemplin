@@ -1,0 +1,48 @@
+<%- domid = assigned_task.task.id || SecureRandom.uuid -%>
+<% if local_assigns.fetch(:destroy, false) %>
+  <%= content_tag(:div, id: domid) do %>
+    <%= fields_for "project[assigned_tasks_attributes][]", assigned_task do |assigned_task_form| %>
+      <%= assigned_task_form.hidden_field :id if assigned_task.id %>
+      <%= assigned_task_form.hidden_field :_destroy, value: true %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= content_tag(:div, class: "py-4 flex justify-between items-center", id: domid) do %>
+    <%= fields_for "project[assigned_tasks_attributes][]", assigned_task do |assigned_task_form| %>
+      <%= assigned_task_form.hidden_field :id if assigned_task.id %>
+      <%= assigned_task_form.hidden_field :_destroy, value: false %>
+      <%= assigned_task_form.hidden_field :rate %>
+      <%= assigned_task_form.hidden_field :task_id, value: assigned_task.task.id, data: { dynamic_task_url_target: "taskIdInput" } if assigned_task.task.id %>
+      <% unless assigned_task.task.id %>
+        <%= assigned_task_form.fields_for :task do |task_form| %>
+          <%= task_form.hidden_field :name %>
+          <%= task_form.hidden_field :organization_id %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <div class="flex flex-row gap-x-2 items-center">
+      <div class="bg-gray-50 rounded-full w-10 h-10 flex justify-center items-center">
+        <i class="uc-icon text-lg">&#xe8f2;</i>
+      </div>
+      <div class="flex flex-col gap-y-1">
+        <div class="flex flex-row gap-x-2">
+          <span class="text-sm text-gray-500 font-medium"><%= assigned_task.task.name %></span>
+          <%= render PhlexUI::Badge.new(variant: assigned_task.rate.zero? ? :gray : :purple, class: "!rounded-full flex gap-x-1 w-fit") do %>
+            <span><%= assigned_task.rate.zero? ? t("common.project_rate") : t("common.custom_rate") %></span>
+          <% end %>
+        </div>
+        <% unless assigned_task.rate.zero? %>
+          <div class="text-sm">
+            <span class="text-gray-400">NOK</span>
+            <span class="font-medium"><%= assigned_task.rate_nok %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="flex flex-row gap-x-2">
+      <%= link_to remove_workspace_assigned_tasks_path(domid: domid, assigned_task_id: assigned_task.id), data: { turbo_method: :delete }, class: "px-4 !h-12 border !border-gray-100 rounded flex items-center justify-center" do %>
+        <i class="uc-icon">&#xeb97;</i>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

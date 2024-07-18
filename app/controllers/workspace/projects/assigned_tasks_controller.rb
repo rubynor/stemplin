@@ -1,78 +1,59 @@
 module Workspace
   module Projects
-    class AssignedTasksController < ProjectsController
-      before_action :set_project
+    class AssignedTasksController < ApplicationController
+      skip_verify_authorized
 
-      def new_modal
-        @unassigned_tasks = authorized_scope(Task, type: :relation).unassigned_tasks(@project.id)
-        @assigned_task = authorized_scope(AssignedTask, type: :relation).new
-        authorize!
+      # This controller does not persist any data, but is used for the 'Tasks' section in the Project form.
 
+      def add_modal
+        @is_new_task = (params[:is_new_task] == "true") || false
+        @unassigned_tasks = authorized_scope(Task, type: :relation).where.not(id: taken_task_ids)
+        @is_new_task = true if @unassigned_tasks.blank?
+
+        @assigned_task = authorized_scope(AssignedTask, type: :relation).new(project: @project)
         @assigned_task.build_task
       end
 
-      def create
-        @task = authorized_scope(Task, type: :relation).find_by(id: assigned_task_params[:task_attributes][:id])
-        @assigned_task = authorized_scope(AssignedTask, type: :relation).new(project: @project, task: @task, rate_nok: assigned_task_params[:rate_nok])
+      def add
+        @task = authorized_scope(Task, type: :relation).find_or_initialize_by(name: assigned_task_params[:task_attributes][:name])
+        @assigned_task = authorized_scope(AssignedTask, type: :relation).new(project: nil, task: @task, rate_nok: assigned_task_params[:rate_nok])
+        @assigned_task.build_project
 
-        authorize! @assigned_task
-
-        if @assigned_task.save
+        if @assigned_task.valid?
           render turbo_stream: [
-            turbo_flash(type: :success, data: I18n.t("notice.task_successfully_added_to_project")),
             turbo_stream.action(:remove_modal, :modal),
-            turbo_stream.append("#{dom_id(@project)}_assigned_tasks", partial: "workspace/projects/assigned_task", locals: { assigned_task: @assigned_task })
+            turbo_stream.append("project_form_assigned_tasks", partial: "workspace/projects/form_assigned_task", locals: { assigned_task: @assigned_task })
           ]
         else
-          @assigned_task.build_task
-          @unassigned_tasks = authorized_scope(Task, type: :relation).unassigned_tasks(@project.id)
-          render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/assigned_tasks/form", locals: { project: @project, assigned_task: @assigned_task, unassigned_tasks: @unassigned_tasks })
+          @unassigned_tasks = authorized_scope(Task, type: :relation).where(id: unassigned_task_ids)
+          @is_new_task = ActiveModel::Type::Boolean.new.cast(assigned_task_params[:task_attributes][:is_new_task])
+          render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/assigned_tasks/form", locals: { assigned_task: @assigned_task, unassigned_tasks: @unassigned_tasks, is_new_task: @is_new_task })
         end
       end
 
-      def destroy
-        @assigned_task = authorized_scope(AssignedTask, type: :relation).find(params[:id])
-        authorize! @assigned_task
+      def remove
+        @domid = params[:domid]
+        @assigned_task = authorized_scope(AssignedTask, type: :relation).find_by(id: params[:assigned_task_id])
 
-        if @assigned_task.destroy
-          render turbo_stream: [
-            turbo_flash(type: :success, data: I18n.t("notice.task_succesfully_removed_from_project")),
-            turbo_stream.remove(dom_id(@assigned_task)),
-            turbo_stream.action(:remove_modal, :modal)
-          ]
+        if @assigned_task
+          render turbo_stream: turbo_stream.replace(@domid, partial: "workspace/projects/form_assigned_task", locals: { assigned_task: @assigned_task, destroy: true })
         else
-          render turbo_stream: turbo_flash(type: :error, data: "#{I18n.t("alert.unable_to_proceed")}, #{@assigned_task.errors.full_messages.join(", ")}.")
-        end
-      end
-
-      def edit_modal
-        @assigned_task = authorized_scope(AssignedTask, type: :relation).find(params[:id])
-        authorize! @assigned_task
-      end
-
-      def update
-        @assigned_task = authorized_scope(AssignedTask, type: :relation).find(params[:id])
-        authorize! @assigned_task
-        if @assigned_task.update(assigned_task_params)
-          updated_active_task = @assigned_task.updated_active_task
-          render turbo_stream: [
-            turbo_flash(type: :success, data: I18n.t("notice.task_has_been_updated")),
-            turbo_stream.action(:remove_modal, :modal),
-            turbo_stream.replace(dom_id(@assigned_task), partial: "workspace/projects/assigned_task", locals: { assigned_task: updated_active_task })
-          ]
-        else
-          render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/assigned_tasks/form", locals: { project: @project, assigned_task: @assigned_task })
+          render turbo_stream: turbo_stream.remove(@domid)
         end
       end
 
       private
 
-      def set_project
-        @project = authorized_scope(Project, type: :relation).find(params[:project_id])
+      def assigned_task_params
+        params.require(:assigned_task).permit(:rate_nok, task_attributes: [ :name, :is_new_task, :unassigned_task_ids ])
       end
 
-      def assigned_task_params
-        params.require(:assigned_task).permit(:rate_nok, task_attributes: [ :id, :name ])
+      def taken_task_ids
+        params[:taken_task_ids] ? JSON.parse(params[:taken_task_ids]) : []
+      end
+
+      def unassigned_task_ids
+        JSON.parse(assigned_task_params[:task_attributes][:unassigned_task_ids])
       end
     end
   end

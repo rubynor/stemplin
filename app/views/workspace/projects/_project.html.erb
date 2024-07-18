@@ -1,35 +1,36 @@
-<%= render PhlexUI::Table::Row.new(id: "#{dom_id(project)}_listitem") do %>
+<%= render PhlexUI::Table::Row.new(id: "#{dom_id(project)}_listitem", class:"!border-gray-100") do %>
   <%= render PhlexUI::Table::Cell.new do %>
-    <%= link_to workspace_project_path(project), class: "flex flex-col" do %>
+    <%= link_to workspace_project_path(project), class: "flex flex-col group" do %>
       <div class="flex flex-row items-center gap-x-1">
-        <span class="font-medium text-gray-700 text-sm"><%= project.name %></span>
-        <%= render PhlexUI::Badge.new(variant: project.billable ? :green : :gray, class: "!rounded-full flex gap-x-1") do %>
-          <span><%= project.billable ? t("common.billable") : t("common.non_billable") %></span>
-        <% end %>
+        <span class="font-medium text-gray-700 text-sm group-hover:underline"><%= project.name %></span>
       </div>
-      <div class="w-36 lg:w-48 xl:w-64 truncate">
+      <div class="w-28 sm:w-64 lg:w-80 xl:w-96 truncate">
         <span class="text-gray-500 text-xs"><%= project.description %></span>
       </div>
     <% end %>
   <% end %>
-  <%= render PhlexUI::Table::Cell.new { project.client.name } %>
-  <%= render PhlexUI::Table::Cell.new do %>
-    <div>
-      <span class="text-gray-400">NOK</span>
-      <span class="font-medium"><%= project.rate_nok %></span>
-    </div>
-  <% end %>
-  <%= render PhlexUI::Table::Cell.new do %>
-    <div class="flex flex-row gap-x-2">
-      <%= render ButtonComponent.new(path: workspace_project_path(project), method: :get, variant: :outline) do %>
-        <i class="uc-icon text-gray-500">&#xe9a8;</i>
+
+  <%= render PhlexUI::Table::Cell.new(class: "w-36") do %>
+    <% if project.billable %>
+      <div>
+        <span class="text-gray-400">NOK</span>
+        <span class="font-medium"><%= project.rate_nok %></span>
+      </div>
+    <% else %>
+      <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") do %>
+        <span><%= t("common.non_billable") %></span>
       <% end %>
-      <%= render ButtonComponent.new(path: edit_modal_workspace_project_path(project), method: :put, variant: :outline) do %>
+    <% end %>
+  <% end %>
+
+  <%= render PhlexUI::Table::Cell.new(class: "w-0") do %>
+    <div class="flex flex-row gap-x-2">
+      <%= render ButtonComponent.new(path: edit_workspace_project_path(project), method: :get, variant: :outline) do %>
         <i class="uc-icon text-gray-500">&#xe972;</i>
       <% end %>
 
       <%- has_time_regs = project.time_regs.any? %>
-      <%- turbo_body = has_time_regs ? "The project <span class='font-semibold text-primary'>#{project.name}</span> has time registrations and can not be deleted." : "#{t("description.proceed_deletion_of_the_task")} <span class='font-semibold text-primary'>#{project.name}</span>, #{t("common.cannot_be_undone")}" %>
+      <%- turbo_body = has_time_regs ? "The project <span class='font-semibold text-primary'>#{project.name}</span> has time registrations and can not be deleted." : "#{t("description.proceed_deletion_of_the_task")} <span class='font-semibold text-primary'>#{project.name}</span>? #{t("common.cannot_be_undone")}" %>
 
       <%= render TooltipComponent.new(note: has_time_regs ? t("common.project_has_recorded_time") : nil) do %>
         <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_project_path(project), disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body } }) do %>

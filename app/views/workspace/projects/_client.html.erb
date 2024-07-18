@@ -1,0 +1,36 @@
+<%= content_tag :div, class: "py-2 border-b border-gray-200", id: dom_id(client) do %>
+  <div class="flex flex-row justify-between items-center">
+    <%= link_to workspace_client_path(client), class: "text-primary hover:underline" do %>
+      <span class="font-medium text-primary text-lg"><%= client.name %></span>
+    <% end %>
+    <div class="flex flex-row gap-x-2">
+      <%= render ButtonComponent.new(path: edit_modal_workspace_client_path(client), method: :post, variant: :secondary, class: "!py-3") do %>
+        <%= render TooltipComponent.new(note: t("common.edit")) do %>
+          <i class="uc-icon">&#xe972;</i>
+        <% end %>
+      <% end %>
+      <%= render ButtonComponent.new(path: new_workspace_project_path(client_id: client.id), method: :get, variant: :secondary, class: "relative !py-0 my-0") do %>
+        <%= render TooltipComponent.new(note: t("common.new_project")) do %>
+          <i class="uc-icon">&#xead3;</i>
+        <% end %>
+        <% if client.projects.empty? %>
+          <span class="animate-ping -z-50 absolute w-4/6 h-4/6 opacity-60 rounded bg-primary"></span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <% if client.projects.any? %>
+    <%= render PhlexUI::Table.new do %>
+      <%= render PhlexUI::Table::Header.new do %>
+        <%= render PhlexUI::Table::Row.new(class: "text-gray-500" ) do %>
+          <%= render PhlexUI::Table::Head.new { t("common.projects") } %>
+          <%= render PhlexUI::Table::Head.new { t("common.rate") } %>
+          <%= render PhlexUI::Table::Head.new { t("common.actions") } %>
+        <% end %>
+      <% end %>
+      <%= render PhlexUI::Table::Body.new(id: :organization_projects) do %>
+        <%= render partial: "workspace/projects/project", collection: client.projects %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

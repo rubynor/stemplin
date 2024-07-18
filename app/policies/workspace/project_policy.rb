@@ -1,6 +1,6 @@
 module Workspace
   class ProjectPolicy < WorkspacePolicy
-    %i[ index import_modal new_modal ].each do |action|
+    %i[ new index import_modal new_modal ].each do |action|
       define_method("#{action}?") { user.organization_admin? }
     end
 

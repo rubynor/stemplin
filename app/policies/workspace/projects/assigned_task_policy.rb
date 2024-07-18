@@ -1,11 +1,25 @@
 module Workspace
   module Projects
     class AssignedTaskPolicy < Workspace::ProjectPolicy
-      %i[ create destroy edit_modal update ].each do |action|
+      %i[ edit_modal update ].each do |action|
         define_method("#{action}?") { user.organization_admin? && user.current_organization == record.organization }
       end
 
+      # TODO: Deletefile?
+
       def new_modal?
+        user.organization_admin?
+      end
+
+      def create?
+        user.organization_admin?
+      end
+
+      def destroy?
+        user.organization_admin?
+      end
+
+      def remove?
         user.organization_admin?
       end
 

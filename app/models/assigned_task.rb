@@ -17,10 +17,20 @@ class AssignedTask < ApplicationRecord
 
   before_update :handle_rate_change
 
+  after_destroy :destroy_task_if_no_assigned_tasks
+
   scope :active_task, -> { where(is_archived: false) }
 
   def updated_active_task
     self.class.where(project: project, task: task).active_task.first
+  end
+
+  def destroy
+    if self.time_regs.any?
+      self.update_attribute(:is_archived, true)
+    else
+      super
+    end
   end
 
   private
@@ -35,5 +45,9 @@ class AssignedTask < ApplicationRecord
       self.is_archived = true
       self.rate = rate_was
     end
+  end
+
+  def destroy_task_if_no_assigned_tasks
+    task.destroy if task.assigned_tasks.empty?
   end
 end
