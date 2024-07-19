@@ -1,36 +1,34 @@
-<%= content_tag :div, class: "py-2 border-b border-gray-200", id: dom_id(client) do %>
-  <div class="flex flex-row justify-between items-center">
-    <%= link_to workspace_client_path(client), class: "text-primary hover:underline" do %>
-      <span class="font-medium text-primary text-lg"><%= client.name %></span>
+
+<%= render PhlexUI::Table::Body.new(id: dom_id(client), class: "border-b") do %>
+  <%= render PhlexUI::Table::Row.new(class: "bg-gray-50") do %>
+    <%= render PhlexUI::Table::Cell.new do %>
+      <%= link_to workspace_client_path(client), class: "text-primary hover:underline " do %>
+        <div class="flex flex-row items-center gap-x-1">
+          <span class="font-medium text-primary text-lg"><%= client.name %></span>
+        </div>
+      <% end %>
     <% end %>
-    <div class="flex flex-row gap-x-2">
-      <%= render ButtonComponent.new(path: edit_modal_workspace_client_path(client), method: :post, variant: :secondary, class: "!py-3") do %>
+
+    <%= render PhlexUI::Table::Cell.new(class: "w-36") do %>
+    <% end %>
+
+    <%= render PhlexUI::Table::Cell.new(class: "w-0") do %>
+      <div class="flex flex-row gap-x-2">
         <%= render TooltipComponent.new(note: t("common.edit")) do %>
-          <i class="uc-icon">&#xe972;</i>
+          <%= render ButtonComponent.new(path: edit_modal_workspace_client_path(client), method: :post, variant: :secondary) do %>
+            <i class="uc-icon">&#xe972;</i>
+          <% end %>
         <% end %>
-      <% end %>
-      <%= render ButtonComponent.new(path: new_workspace_project_path(client_id: client.id), method: :get, variant: :secondary, class: "relative !py-0 my-0") do %>
         <%= render TooltipComponent.new(note: t("common.new_project")) do %>
-          <i class="uc-icon">&#xead3;</i>
+          <%= render ButtonComponent.new(path: new_workspace_project_path(client_id: client.id), method: :get, variant: :secondary, class: "relative") do %>
+              <i class="uc-icon">&#xead3;</i>
+            <% if client.projects.empty? %>
+              <span class="animate-ping absolute right-0 top-0 w-2 h-2 opacity-60 rounded-full bg-primary"></span>
+            <% end %>
+          <% end %>
         <% end %>
-        <% if client.projects.empty? %>
-          <span class="animate-ping -z-50 absolute w-4/6 h-4/6 opacity-60 rounded bg-primary"></span>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-  <% if client.projects.any? %>
-    <%= render PhlexUI::Table.new do %>
-      <%= render PhlexUI::Table::Header.new do %>
-        <%= render PhlexUI::Table::Row.new(class: "text-gray-500" ) do %>
-          <%= render PhlexUI::Table::Head.new { t("common.projects") } %>
-          <%= render PhlexUI::Table::Head.new { t("common.rate") } %>
-          <%= render PhlexUI::Table::Head.new { t("common.actions") } %>
-        <% end %>
-      <% end %>
-      <%= render PhlexUI::Table::Body.new(id: :organization_projects) do %>
-        <%= render partial: "workspace/projects/project", collection: client.projects %>
-      <% end %>
+      </div>
     <% end %>
   <% end %>
+  <%= render partial: "workspace/projects/project", collection: client.projects %>
 <% end %>

@@ -1,16 +1,17 @@
 <%- domid = assigned_task.task.id || SecureRandom.uuid -%>
+<%- # https://api.rubyonrails.org/v7.1.3.4/classes/ActiveRecord/NestedAttributes/ClassMethods.html -%>
+<%- # The two lines below is a hack to make sure fields_for is not rendering existing assigned_tasks as a key-value hash, and new assigned_tasks as an array element -%>
+<%- id = assigned_task.id -%>
+<%- assigned_task.id = nil -%>
 <% if local_assigns.fetch(:destroy, false) %>
-  <%= content_tag(:div, id: domid) do %>
-    <%= fields_for "project[assigned_tasks_attributes][]", assigned_task do |assigned_task_form| %>
-      <%= assigned_task_form.hidden_field :id if assigned_task.id %>
-      <%= assigned_task_form.hidden_field :_destroy, value: true %>
-    <% end %>
+  <%= fields_for "project[assigned_tasks_attributes][]", assigned_task do |assigned_task_form| %>
+    <%= assigned_task_form.hidden_field :id, value: id %>
+    <%= assigned_task_form.hidden_field :_destroy, value: true %>
   <% end %>
 <% else %>
   <%= content_tag(:div, class: "py-4 flex justify-between items-center", id: domid) do %>
     <%= fields_for "project[assigned_tasks_attributes][]", assigned_task do |assigned_task_form| %>
-      <%= assigned_task_form.hidden_field :id if assigned_task.id %>
-      <%= assigned_task_form.hidden_field :_destroy, value: false %>
+      <%= assigned_task_form.hidden_field :id, value: id %>
       <%= assigned_task_form.hidden_field :rate %>
       <%= assigned_task_form.hidden_field :task_id, value: assigned_task.task.id, data: { dynamic_task_url_target: "taskIdInput" } if assigned_task.task.id %>
       <% unless assigned_task.task.id %>
@@ -40,7 +41,7 @@
       </div>
     </div>
     <div class="flex flex-row gap-x-2">
-      <%= link_to remove_workspace_assigned_tasks_path(domid: domid, assigned_task_id: assigned_task.id), data: { turbo_method: :delete }, class: "px-4 !h-12 border !border-gray-100 rounded flex items-center justify-center" do %>
+      <%= link_to remove_workspace_assigned_tasks_path(domid: domid, assigned_task_id: id), data: { turbo_method: :delete }, class: "px-4 !h-12 border !border-gray-100 rounded flex items-center justify-center" do %>
         <i class="uc-icon">&#xeb97;</i>
       <% end %>
     </div>

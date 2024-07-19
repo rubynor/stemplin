@@ -76,10 +76,13 @@
         <div class="flex flex-row gap-x-4">
           <div class="flex flex-col">
             <%= render PhlexUI::Label.new { t("common.tasks") } %>
-            <%= render PhlexUI::Hint.new { t("common.add_tasks_optional") } %>
+            <%= render PhlexUI::Hint.new { t("common.add_tasks") } %>
           </div>
           <%= link_to t("common.add_task"), add_modal_workspace_assigned_tasks_path, data: { turbo_method: :post, dynamic_task_url_target: "link" }, class: "bg-secondary text-primary text-sm py-2 px-4 rounded hover:underline" %>
         </div>
+        <% project.errors.full_messages_for(:tasks).each do |message|%>
+          <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <% end %>
         <div id="project_form_assigned_tasks">
           <%= render partial: "workspace/projects/form_assigned_task", collection: project.active_assigned_tasks, as: :assigned_task %>
         </div>

@@ -5,6 +5,7 @@ class Project < ApplicationRecord
   validates :name, presence: true, length: { minimum: 2, maximum: 30 }, uniqueness: { scope: :client }
   validates :description, length: { maximum: 100 }
   validates :rate, numericality: { only_integer: true }
+  validate :must_have_at_least_one_active_assigned_task
 
   belongs_to :client
   has_one :organization, through: :client
@@ -18,4 +19,8 @@ class Project < ApplicationRecord
   has_many :users, through: :access_infos
 
   accepts_nested_attributes_for :assigned_tasks, allow_destroy: true
+
+  def must_have_at_least_one_active_assigned_task
+    errors.add(:tasks, :blank) if assigned_tasks.to_a.reject { |assigned_task| assigned_task.marked_for_destruction? || assigned_task.is_archived }.empty?
+  end
 end

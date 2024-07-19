@@ -26,13 +26,13 @@
         <span class="hidden sm:block mr-2"><%= t("common.new_project").titleize %></span>
         <i class="uc-icon">&#xead3;</i>
         <% if @client.projects.empty? %>
-          <span class="animate-ping -z-50 absolute w-3/5 h-4/6 opacity-50 rounded bg-primary"></span>
+          <span class="animate-ping absolute right-0 top-0 w-2 h-2 rounded-full bg-primary"></span>
         <% end %>
       <% end %>
     </div>
   </div>
 
-  <%= simple_format @client.description, class: "my-5" %>
+  <%= simple_format @client.description, class: "my-6" %>
 
   <% if @client.projects.any? %>
     <%= render PhlexUI::Table.new do %>
