@@ -12,26 +12,6 @@ Rails.application.routes.draw do
 
   get "/locale", to: "locale#set_locale", as: "locale"
 
-  resources :project_reports do
-    patch :update_group
-    collection do
-      get "update_projects_select"
-      get "update_members_checkboxes"
-      get "update_tasks_checkboxes"
-      post "export"
-      get ":id/detailed", to: "project_reports#detailed", as: :detailed_project_report
-    end
-  end
-
-  resources :user_reports do
-    patch :update_group
-    collection do
-      post "export"
-      get "update_projects_checkboxes"
-      get "update_tasks_checkboxes"
-    end
-  end
-
   resource :report, only: [ :show, :update ]
 
   resources :clients

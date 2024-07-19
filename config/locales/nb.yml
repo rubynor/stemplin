@@ -309,6 +309,7 @@ nb:
     something_went_wrong: "Noe gikk galt"
     invalid_email: "Ugyldig e-postadresse"
     invalid_email_list: "Ugyldig e-postliste. Tillatte separatortegn er komma, semikolon og mellomrom."
+    create_project_before_registering_time: "Opprett et prosjekt i 'Arbeidsområde'-siden før du registrerer tid. Husk å legg til oppgaver i prosjektet."
 
   description:
     blank: "kan ikke være blank"

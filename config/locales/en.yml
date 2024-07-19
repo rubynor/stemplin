@@ -293,6 +293,7 @@ en:
     something_went_wrong: "Something went wrong"
     invalid_email: "Invalid email address"
     invalid_email_list: "Invalid email list. Allowed separators are comma, semicolon, and space."
+    create_project_before_registering_time: "Create a project in the 'Workspace' page before registering time. Remember to assign tasks to the project."
 
   description:
     blank: "can't be blank"

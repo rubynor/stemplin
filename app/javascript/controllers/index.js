@@ -43,15 +43,6 @@ application.register("report-edit", ReportEditController)
 import TimeTasksController from "./time_tasks_controller"
 application.register("time-tasks", TimeTasksController)
 
-import UserProjectTaskboxesController from "./user_project_taskboxes_controller"
-application.register("user-project-taskboxes", UserProjectTaskboxesController)
-
-import UserReportsBoxesController from "./user_reports_boxes_controller"
-application.register("user-reports-boxes", UserReportsBoxesController)
-
-import UserReportsController from "./user_reports_controller"
-application.register("user-reports", UserReportsController)
-
 import VisibilityController from "./visibility_controller"
 application.register("visibility", VisibilityController)
 

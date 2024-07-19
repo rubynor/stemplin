@@ -62,7 +62,7 @@
                 <div class="flex flex-col gap-3">
                   <div class="flex flex-col">
                     <span><%= child.task.name %></span>
-                    <span class="text-gray-500 text-sm print:text-xs"><%= child.notes %></span>
+                    <%= simple_format child.notes, wrapper_tag: "span", class: "text-gray-500 text-sm print:text-xs" %>
                   </div>
                 </div>
               </td>
