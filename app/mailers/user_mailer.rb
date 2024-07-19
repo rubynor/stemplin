@@ -1,17 +1,13 @@
 class UserMailer < ApplicationMailer
-  def welcome_email(to:)
+  def welcome_email(user:, organization_name:, url:)
     send_with_sendgrid(
-      to: to,
-      # TODO: get locale from current_user
+      to: user.email,
       template_id: Stemplin.config.emails.templates[:user][:welcome][I18n.locale][:template_id],
       personalization_data: {
-        # TODO: should be translated
-        subject: "Welcome to Stemplin",
-        message: "Hello world",
-        link: "https://www.stemplin.com"
+        organization_name: organization_name,
+        user_name: user.name,
+        url: url
       }
     )
-
-    # send_mail(to: to, subject: "Welcome to Stemplin", body: "Hello world")
   end
 end

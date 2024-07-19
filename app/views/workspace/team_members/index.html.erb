@@ -7,8 +7,8 @@
       </div>
     </div>
     <div class="flex flex-row gap-2">
-      <%= render ButtonComponent.new(path: new_modal_workspace_team_members_path, method: :post) do %>
-        <span class="hidden lg:block mr-2"><%=  t("common.add_new") %></span>
+      <%= render ButtonComponent.new(path: invite_users_workspace_team_members_path, method: :get) do %>
+        <span class="hidden lg:block mr-2"><%=  t("common.invite_members") %></span>
         <i class="uc-icon text-xl">&#xebaf;</i>
       <% end %>
     </div>

@@ -168,6 +168,11 @@ nb:
     from: "Fra"
     team_members: "Gruppemedlemmer"
     add_new: "Lag Ny"
+    invite_members: "Inviter Medlemmer"
+    invite_members_to_organization: "Inviter medlemmer til organisasjonen"
+    invite_members_helper: "Legg til én e-post eller en liste med e-poster i feltet nedenfor. Spesifiser deretter hva slags tilgang hver person skal ha."
+    add_to_invitation_list: "Legg til i liste"
+    pending_invitation: "Invitasjon venter"
     import: "Importer"
     rate: "Timepris"
     actions: "Handlinger"
@@ -269,7 +274,7 @@ nb:
     tasks_was_successfully_created: "Oppgaven ble opprettet."
     tasks_was_successfully_deleted: "Oppgaven ble slettet."
     tasks_was_successfully_updated: "Oppgaven ble oppdatert."
-    user_added_to_the_organization: "Bruker ble lagt til i organisasjonen."
+    members_invited: "Invitasjonene ble sendt"
     user_updated: "Bruker ble oppdatert."
     time_entry_has_been_logged: "Tidsregistrering er loggført."
     edits_to_the_task_name: "Vær oppmerksom på at redigeringer av oppgavenavnet vil bli brukt på alle prosjektene. Endringer i den fakturerbare prisen vil kun brukes på dette prosjektet og vil bli tatt i bruk ved nye tidsregistreringer."
@@ -301,6 +306,9 @@ nb:
     wish_to_proceed: "Ønsker du å fortsette?"
     warning: "Advarsel!"
     unable_to_proceed: "Kan ikke fortsette"
+    something_went_wrong: "Noe gikk galt"
+    invalid_email: "Ugyldig e-postadresse"
+    invalid_email_list: "Ugyldig e-postliste. Tillatte separatortegn er komma, semikolon og mellomrom."
     create_project_before_registering_time: "Opprett et prosjekt i 'Arbeidsområde'-siden før du registrerer tid. Husk å legg til oppgaver i prosjektet."
 
   description:
@@ -325,6 +333,7 @@ nb:
     unhappy: "Ikke fornøyd"
     cancel_account: "Avslutt kontoen min"
     sign_in: "Logg inn"
+    sign_up: "Registrer deg"
     password: "Passord"
     remember_me: "Husk meg"
     confirm_password: "Bekreft passord"
@@ -434,6 +443,18 @@ nb:
         record_invalid: "Validering mislyktes: %{errors}"
         required: "må være valgt"
         blank: "kan ikke være tom"
+
+  activemodel:
+    errors:
+      messages:
+        blank: "kan ikke være tom"
+        taken: "har allerede blitt tatt"
+        invalid: "er ugyldig"
+        must_exist: "må finnes"
+    attributes:
+      invite_user_form:
+        email: "E-post"
+        role: "Rolle"
 
   helpers:
     alert:

@@ -8,6 +8,10 @@
     <%- Stemplin.config.i18n.available_locales.each do |locale| %>
       <%= button_to user_signed_in? ? locale_path : request.path, method: :get, class: "w-full hover:bg-gray-100 flex justify-start py-2 pl-2 pr-4 hover:rounded-md" do %>
         <%= hidden_field_tag :locale, locale %>
+        <% request.query_parameters.each do |key, value| %>
+          <% next if key == "locale" %>
+          <%= hidden_field_tag key, value %>
+        <% end %>
         <div class="w-full flex justify-start items-center gap-x-1">
           <%= image_tag t("language.flag", locale: locale), class: "w-4" %>
           <span class="text-sm text-gray-600"><%= t("language.name", locale: locale) %></span>

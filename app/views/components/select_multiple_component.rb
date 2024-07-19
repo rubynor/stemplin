@@ -22,15 +22,15 @@ class SelectMultipleComponent < ApplicationComponent
 
         render DropdownComponent::Content.new(class: "w-full", data_select_multiple_target: "content") do
           div(class: "p-2") do
-            div(class: "pb-1") do
+            div(class: "mb-1 hover:bg-slate-100 flex items-center") do
               input type: "checkbox", class: "mr-2", id: "select-all-#{@id}", data: { action: "change->select-multiple#toggleAll", select_multiple_target: "selectAllCheckbox" }
-              label(class: "font-bold", for: "select-all-#{@id}") { I18n.t("common.all") }
+              label(class: "font-bold block w-full", for: "select-all-#{@id}") { I18n.t("common.all") }
             end
             unsafe_raw (
               @form.collection_check_boxes @method, @collection, @value_method, @text_method, @options do |cb|
-                div do
+                div(class: "hover:bg-slate-100 flex items-center") do
                   span(class: "mx-2") { cb.check_box class: "value-checkbox", data: { action: "change->select-multiple#updateAllCheckbox" } }
-                  span { cb.label }
+                  span(class: "w-full") { cb.label(class: "block w-full") }
                 end
               end
             )

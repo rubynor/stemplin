@@ -3,7 +3,8 @@ shared:
   templates:
     user:
       welcome:
+        # Same template (english) for both languages. TODO: fix
         nb:
-          template_id: "d-6e9dd92e3c3f46c0aace761c0eb6a90a"
+          template_id: "d-f78bbd2312eb4e62904e90813cddfde9"
         en:
-          template_id: "d-6e9dd92e3c3f46c0aace761c0eb6a90a"
+          template_id: "d-f78bbd2312eb4e62904e90813cddfde9"

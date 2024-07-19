@@ -27,6 +27,23 @@ class AccessInfo < ApplicationRecord
     self.class.project_restricted_roles.include? self.role
   end
 
+  def update_project_accesses(project_ids)
+    if project_restricted?
+      current_access_ids = projects.ids
+      new_access_ids = (project_ids || []).reject(&:blank?).map(&:to_i)
+
+      ids_to_add = new_access_ids - current_access_ids
+      ids_to_remove = current_access_ids - new_access_ids
+
+      project_accesses.where(project_id: ids_to_remove).delete_all
+      ids_to_add.each do |project_id|
+        project_accesses.create!(project_id: project_id)
+      end
+    else
+      project_accesses.delete_all
+    end
+  end
+
   private
 
   def no_project_accesses_unless_project_restricted
