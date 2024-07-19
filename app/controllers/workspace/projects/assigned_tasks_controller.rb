@@ -27,7 +27,7 @@ module Workspace
         else
           @unassigned_tasks = authorized_scope(Task, type: :relation).where(id: unassigned_task_ids)
           @is_new_task = ActiveModel::Type::Boolean.new.cast(assigned_task_params[:task_attributes][:is_new_task])
-          render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/assigned_tasks/form", locals: { assigned_task: @assigned_task, unassigned_tasks: @unassigned_tasks, is_new_task: @is_new_task })
+          render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/projects/assigned_tasks/form", locals: { assigned_task: @assigned_task, unassigned_tasks: @unassigned_tasks, is_new_task: @is_new_task }), status: :unprocessable_entity
         end
       end
 
@@ -49,11 +49,11 @@ module Workspace
       end
 
       def taken_task_ids
-        params[:taken_task_ids] ? JSON.parse(params[:taken_task_ids]) : []
+        JSON.parse(params[:taken_task_ids] || "[]")
       end
 
       def unassigned_task_ids
-        JSON.parse(assigned_task_params[:task_attributes][:unassigned_task_ids])
+        JSON.parse(assigned_task_params[:task_attributes][:unassigned_task_ids] || "[]")
       end
     end
   end

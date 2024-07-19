@@ -41,7 +41,7 @@ module Workspace
     end
 
     def index
-      @pagy, @clients = pagy authorized_scope(Client, type: :relation).includes(:projects), items: 6
+      @pagy, @clients = pagy authorized_scope(Client, type: :relation).order(:name).includes(:projects), items: 6
       authorize!
     end
 
@@ -52,11 +52,7 @@ module Workspace
     def destroy
       authorize! @project
       if @project.discard
-        render turbo_stream: [
-          turbo_flash(type: :success, data: t("notice.project_was_successfully_deleted")),
-          turbo_stream.remove("#{dom_id(@project)}_listitem"),
-          turbo_stream.action(:remove_modal, :modal)
-        ]
+        redirect_back fallback_location: workspace_projects_path, notice: t("notice.project_was_successfully_deleted")
       else
         render turbo_stream: turbo_flash(type: :error, data: "Unable to proceed, could not delete project.")
       end
