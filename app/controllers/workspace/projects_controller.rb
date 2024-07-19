@@ -1,7 +1,7 @@
 module Workspace
   class ProjectsController < WorkspaceController
-    before_action :set_project, except: %i[new index new_modal create import_modal]
-    before_action :prepare_form_data, only: %i[new edit new_modal edit_modal create update]
+    before_action :set_project, except: %i[new index create import_modal]
+    before_action :prepare_form_data, only: %i[new edit create update]
 
     def new
       authorize!
@@ -29,10 +29,6 @@ module Workspace
       authorize! @project
     end
 
-    def edit_modal
-      authorize! @project
-    end
-
     def update
       authorize! @project
       if @project.update(project_params)
@@ -46,11 +42,6 @@ module Workspace
 
     def index
       @pagy, @clients = pagy authorized_scope(Client, type: :relation).includes(:projects), items: 6
-      authorize!
-    end
-
-    def new_modal
-      @project = authorized_scope(Project, type: :relation).new
       authorize!
     end
 
@@ -69,10 +60,6 @@ module Workspace
       else
         render turbo_stream: turbo_flash(type: :error, data: "Unable to proceed, could not delete project.")
       end
-    end
-
-    def add_member_modal
-      authorize! @project
     end
 
     private

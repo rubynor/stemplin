@@ -2,11 +2,6 @@ module Workspace
   class ClientsController < WorkspaceController
     before_action :set_client, only: %i[edit_modal update destroy]
 
-    def index
-      @pagy, @clients = pagy authorized_scope(Client, type: :relation).all
-      authorize!
-    end
-
     def show
       @client = authorized_scope(Client, type: :relation).find(params[:id])
       authorize! @client

@@ -34,8 +34,6 @@ Rails.application.routes.draw do
   namespace :workspace do
     resources :projects do
       post :import_modal, on: :collection
-      post :new_modal, on: :collection
-      put :edit_modal, on: :member
     end
 
     scope module: :projects do
@@ -46,7 +44,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :clients do
+    resources :clients, except: [ :index ] do
       post :new_modal, on: :collection
       post :edit_modal, on: :member
     end
@@ -55,11 +53,6 @@ Rails.application.routes.draw do
       post :new_modal, on: :collection
       put :edit_modal, on: :member
       post :add_to_organization, on: :collection
-    end
-
-    resources :tasks do
-      post :new_modal, on: :collection
-      post :edit_modal, on: :member
     end
   end
 
