@@ -8,3 +8,8 @@ shared:
           template_id: "d-f78bbd2312eb4e62904e90813cddfde9"
         en:
           template_id: "d-f78bbd2312eb4e62904e90813cddfde9"
+      password_reset:
+        nb:
+          template_id: "d-7738fd5757d5497ca4973e572ba4b26e"
+        en:
+          template_id: "d-7738fd5757d5497ca4973e572ba4b26e"

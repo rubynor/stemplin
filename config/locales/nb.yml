@@ -503,6 +503,17 @@ nb:
     streamline_your_workflow: "Strømlinjeform Arbeidsflyten Din"
     app_summary: "Øk samarbeidet og forenkle din prosjektering. Tildel oppgaver, loggfør tid og få innsiktsfulle rapporter – alt på ett sted. Gi teamet ditt muligheten til å oppnå mer med en effektivisert arbeidsflyt."
 
+  password_reset:
+    new:
+      forgot_your_password: "Glemt passordet?"
+      send_instructions: "Send instruksjoner"
+      cant_find_what_you_re_looking_for: "Finner du ikke det du leter etter?"
+      continue_to_login: "Fortsett å logge på"
+    edit:
+      reset_password: "Tilbakestille passord"
+      change_my_password: "Endre passordet mitt"
+      minimum_password_length: "Minimum %{count} tegn"
+
   error_page:
     not_found:
       title: "Siden Ble Ikke Funnet"
