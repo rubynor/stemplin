@@ -365,7 +365,7 @@ nb:
       user:
         email: "E-post"
         password: "Passord"
-        password_confirmation: "Passordbekreftelsen"
+        password_confirmation: "Bekreft passord"
 
 
     errors:
@@ -505,13 +505,13 @@ nb:
 
   password_reset:
     new:
-      forgot_your_password: "Glemt passordet?"
+      forgot_your_password: "Glemt passord?"
       send_instructions: "Send instruksjoner"
       cant_find_what_you_re_looking_for: "Finner du ikke det du leter etter?"
-      continue_to_login: "Fortsett å logge på"
+      continue_to_login: "Fortsett innlogging"
     edit:
-      reset_password: "Tilbakestille passord"
-      change_my_password: "Endre passordet mitt"
+      reset_password: "Tilbakestill passord"
+      change_my_password: "Endre passord"
       minimum_password_length: "Minimum %{count} tegn"
 
   error_page:
