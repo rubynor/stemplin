@@ -17,11 +17,8 @@
               <% end %>
               <%= hidden_field_tag :date, chosen_date %>
               <div class="mb-4" data-time-tasks-target="project">
-                <%= form.label :project_id, class: 'block text-gray-700 text-sm font-bold mb-2 hidden' %>
-                <b class= "text-gray-700 text-sm" >
-                  <%= t('common.project') %>
-                </b>
-                <%= form.grouped_collection_select :project_id, clients, :projects, :name, :id, :name, {
+                <%= form.label :project_id, t('common.project'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
+                <%= form.grouped_collection_select :project_id, clients, :items, :name, :id, :name, {
                   disabled: "",
                   selected: time_reg.project&.id || "",
                   prompt: t('common.select_project'),
@@ -31,43 +28,37 @@
               </div>
 
               <div class="mb-4" data-time-tasks-target="task">
-                <%= form.label :assigned_task_id, class: 'block text-gray-700 text-sm font-bold mb-2 hidden' %>
-                <b class= "text-gray-700 text-sm" >
-                  <%= t('task.assign_task') %>
-                </b>
+                <%= form.label :assigned_task_id, t('task.assign_task'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
                 <%= form.collection_select :assigned_task_id, (assigned_tasks || [] ), :id, :name, {
-                  selected: time_reg.assigned_task&.id }, {
+                  selected: time_reg.assigned_task&.id, include_blank: !@time_reg.project }, {
                                               class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
                                             } %>
-                <% time_reg.errors.full_messages_for(time_reg.new_record? ? :assigned_task_id : :assigned_task).each do |message| %>
+                <% time_reg.errors.full_messages_for(:assigned_task).each do |message| %>
                   <div class="text-red-600 italic text-xs mt-1"><%= t('alert.please_select_a_task') %></div>
                 <% end %>
               </div>
 
               <div class="mb-4">
-                <%= form.label :notes, class: 'block text-gray-700 text-sm font-bold mb-2 hidden' %>
+                <%= form.label :notes, t('common.notes'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
+                <%= form.text_area :notes, placeholder: t("common.remember_to_fill_out"), class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white text-black placeholder:text-gray-400' %>
                 <% time_reg.errors.full_messages_for(:notes).each do |message| %>
                   <div  class="text-red-600 text-xs italic mt-1"><%= message %></div>
                 <% end %>
-                <b class= "text-gray-700 text-sm" >
-                  <%= t('common.notes') %>
-                </b>
-                <%= form.text_area :notes, class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
               </div>
 
               <%= content_tag :div do %>
-                <%= form.label :minutes, t('common.time'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
-                <% time_reg.errors.full_messages_for(:minutes).each do |message| %>
-                  <div class="text-red-600 italic text-xs mt-1" data-refresh-minutes-target="output"><%= message %></div>
-                <% end %>
+                <%= form.label :minutes_string, t('common.time'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
                 <%= form.hidden_field :minutes, data: { "custom-input-target": "hiddenInput" } %>
-                <%= form.text_field :minutes_string, placeholder: "0:00", autocomplete: "off", data: {
+                <%= form.text_field :minutes_string, placeholder: "0:00", pattern: /^\d+([:,]\d+)?(\.\d+)?$/, autofocus: true, data: {
                   action: "custom-input#updatehiddenInput change->custom-input#updateFormat",
                   "custom-input-target": "input"
                 }, value: (convert_time_int(time_reg.minutes) unless time_reg.new_record?),
-                                    class: 'text-end w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
+                        class: 'text-end w-full rounded-md p-2 border invalid:border-red-700 border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white text-black placeholder:text-gray-300'
                 %>
                 <%= form.hidden_field :date_worked, value: chosen_date %>
+                <% time_reg.errors.full_messages_for(:minutes).each do |message| %>
+                  <div class="text-red-600 italic text-xs mt-1"><%= message %></div>
+                <% end %>
               <% end %>
             </div>
           <% end %>

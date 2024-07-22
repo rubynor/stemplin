@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Reap</title>
+    <title>Stemplin</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= turbo_refresh_method_tag :morph %>
     <%= turbo_refresh_scroll_tag :preserve %>
@@ -19,6 +19,7 @@
     <%= favicon_link_tag "logo.svg" %>
 
     <%= render partial: "layouts/pwa_meta_tags" %>
+    <%= clarity_tracker if Rails.env.production? %>
   </head>
   <body class="font-montserrat">
     <%= highlight_missing_translations if Rails.env.development? %>
@@ -33,9 +34,9 @@
     <footer class="print:hidden bottom-0 h-16 items-center flex space-x-2 justify-center fixed w-full text-center z-0">
       <%- if @active_time_reg %>
         <%= render BannerComponent.new(title: "Notice", message: t("time_regs.active_timer_description"), variant: :warning, dismissible: false, action: { url: root_path(date: @active_time_reg.date_worked), method: :get }) %>
-          <a href="" class="font-regular text-sm text-gray-400 hidden">Reap <%= Date.current.year %></a>
+          <a href="" class="font-regular text-sm text-gray-400 hidden">Stemplin <%= Date.current.year %></a>
         <% else %>
-          <a href="" class="font-regular text-sm text-gray-400">Reap <%= Date.current.year %></a>
+          <a href="" class="font-regular text-sm text-gray-400">Stemplin <%= Date.current.year %></a>
       <% end %>
     </footer>
   </body>

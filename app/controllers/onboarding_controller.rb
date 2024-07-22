@@ -1,6 +1,6 @@
 class OnboardingController < ApplicationController
   before_action :authenticate_user!
-  before_action :check_if_user_has_organization, only: %i[new create]
+  before_action :check_if_user_has_organization
   skip_verify_authorized
 
   layout "devise"
@@ -23,35 +23,6 @@ class OnboardingController < ApplicationController
     render turbo_stream: turbo_stream.replace(:onboarding_form, partial: "onboarding/form", locals: { organization: @organization })
   end
 
-  def edit_password
-    @user = current_user
-  end
-
-  # @Note: This method here below is not production grade code.
-  # This is just a workaround to ensure a new organization_user can update their generated password
-  # TODO: Remove this implementation on introducing a proper invitation
-  def update_password
-    @user = current_user
-
-    if @user.valid_password?(password_params[:current_password])
-      begin
-        @user.update!(password_params.except(:current_password).merge(is_verified: true))
-        bypass_sign_in(@user)
-        redirect_to root_path, notice: "Password updated successfully"
-      rescue ActiveRecord::RecordInvalid => e
-        render turbo_stream: turbo_stream.replace(:onboarding_edit_password, partial: "onboarding/edit_password_form", locals: { user: @user })
-      end
-    else
-      @user.errors.add(:current_password, "is invalid")
-      render turbo_stream: turbo_stream.replace(:onboarding_edit_password, partial: "onboarding/edit_password_form", locals: { user: @user })
-    end
-  end
-
-  def skip_and_verify_account
-    current_user.update!(is_verified: true)
-    redirect_to root_path, notice: "Account verified successfully"
-  end
-
   private
 
   def check_if_user_has_organization
@@ -60,9 +31,5 @@ class OnboardingController < ApplicationController
 
   def onboarding_params
     params.require(:organization).permit(:name)
-  end
-
-  def password_params
-    params.require(:user).permit(:password, :password_confirmation, :current_password)
   end
 end

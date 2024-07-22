@@ -1,4 +1,6 @@
 class TimeReg < ApplicationRecord
+  include Deletable
+
   MINUTES_IN_A_DAY = 1.day.in_minutes.to_i
 
   belongs_to :user
@@ -13,8 +15,6 @@ class TimeReg < ApplicationRecord
 
   validates :notes, length: { maximum: 255 }
   validates :minutes, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1440 }
-  validates :assigned_task, presence: true
-  validates :assigned_task_id, presence: true
   validates :date_worked, presence: true
 
   validate :only_one_active_time_reg

@@ -7,7 +7,7 @@ require "csv"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Reap
+module Stemplin
   class Application < Rails::Application
     config.autoload_paths << "#{root}/app/views"
     config.autoload_paths << "#{root}/app/views/layouts"
@@ -15,6 +15,9 @@ module Reap
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
     config.i18n.available_locales = [ :en, :nb ]
+
+    # Using custom controller ErrorsController for exceptions
+    config.exceptions_app = self.routes
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -30,6 +33,16 @@ module Reap
       Devise::UnlocksController.layout "devise"
       Devise::PasswordsController.layout "devise"
     end
+
+    config.http_host = if Rails.env.production?
+      ENV.fetch("HTTP_HOST")
+    else
+      ENV.fetch("HTTP_HOST", "localhost:3000")
+    end
+    config.http_protocol = Rails.env.production? ? "https" : "http"
+    config.http_url = "#{config.http_protocol}://#{config.http_host}".freeze
+
+    config.emails = config_for(:emails)
   end
 
   def self.config

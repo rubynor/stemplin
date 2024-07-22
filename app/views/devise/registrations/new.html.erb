@@ -1,9 +1,5 @@
 <div class="flex flex-col gap-y-4 w-full">
-  <%# TODO: let's revamp our logo at the right time  %>
-  <div class="flex gap-x-4 items-center">
-    <%= show_svg("logo.svg") %>
-  </div>
-  <span class="text-xl font-semibold text-gray-600">Sign up</span>
+  <span class="text-xl font-semibold text-gray-600"><%= t("login_page.sign_up") %></span>
   <div class="flex flex-col mt-4 gap-y-2">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), class: "w-full") do |form| %>
       <%= render AlertComponent.new(variant: :destructive, title: "Unable to proceed!", message: resource.errors.full_messages) if resource.errors.any? %>
@@ -11,31 +7,31 @@
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <div class="flex flex-col w-full gap-y-4 lg:gap-y-8 mb-4">
           <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-            <%= render PhlexUI::Label.new { "First Name" } %>
-            <%= form.text_field :first_name, id: "first-name", autocomplete: "given-name", required: true, placeholder: "First Name", class: "border-gray-200 rounded-md w-full" %>
+            <%= render PhlexUI::Label.new { t("registration.first_name") } %>
+            <%= form.text_field :first_name, id: "first-name", autocomplete: "given-name", required: true, placeholder: t("registration.first_name"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>
           <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-            <%= render PhlexUI::Label.new { "Last Name" } %>
-            <%= form.text_field :last_name, id: "last-name", autocomplete: "family-name", required: true, placeholder: "Last Name", class: "border-gray-200 rounded-md w-full" %>
+            <%= render PhlexUI::Label.new { t("registration.last_name") } %>
+            <%= form.text_field :last_name, id: "last-name", autocomplete: "family-name", required: true, placeholder: t("registration.last_name"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>
           <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-            <%= render PhlexUI::Label.new { "Email" } %>
-            <%= form.email_field :email, id: "email-address", autocomplete: "email", required: true, placeholder: "Email address", class: "border-gray-200 rounded-md w-full" %>
+            <%= render PhlexUI::Label.new { t("registration.email") } %>
+            <%= form.email_field :email, id: "email-address", autocomplete: "email", required: true, placeholder: t("registration.email"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>
           <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-            <%= render PhlexUI::Label.new { "Password" } %>
-            <%= form.password_field :password, id: "password", autocomplete: "current-password", required: true, placeholder: "Password", class: "border-gray-200 rounded-md w-full" %>
+            <%= render PhlexUI::Label.new { t("registration.password") } %>
+            <%= form.password_field :password, id: "password", autocomplete: "current-password", required: true, placeholder: t("registration.password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>
           <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-            <%= render PhlexUI::Label.new { "Confirm password" } %>
-            <%= form.password_field :password_confirmation, id: "password_confirm", autocomplete: "current-password", required: true, placeholder: "Confirm password", class: "border-gray-200 rounded-md w-full" %>
+            <%= render PhlexUI::Label.new { t("registration.confirm_password") } %>
+            <%= form.password_field :password_confirmation, id: "password_confirm", autocomplete: "current-password", required: true, placeholder: t("registration.confirm_password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>
         </div>
 
-        <%= render ButtonComponent.new(type: "submit") { "Sign up" } %>
+        <%= render ButtonComponent.new(type: "submit") { t("login_page.sign_up") } %>
         <div class="text-sm  w-full text-center">
-          <span>Already have an account?</span>
-          <%= link_to "Sign in", new_session_path(resource_name), class: "font-semibold text-primary" %>
+          <span><%= t("login_page.already_have_an_account") %></span>
+          <%= link_to t("login_page.sign_in"), new_session_path(resource_name), class: "font-semibold text-primary" %>
         </div>
       </div>
     <% end %>

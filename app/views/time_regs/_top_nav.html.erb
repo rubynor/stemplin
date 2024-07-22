@@ -20,8 +20,8 @@
         </span>
         <% if @chosen_date != Date.today %>
           <%= link_to root_path, class: "text-xs text-gray-400 underline" do %>
-            <span><%= t("common.reset_date") %></span>
-            <i class="uc-icon">&#xeb8c;</i>
+            <span><%= t("common.go_to_today") %></span>
+            <i class="uc-icon">&#xe81b;</i>
           <% end %>
         <% end %>
       </div>

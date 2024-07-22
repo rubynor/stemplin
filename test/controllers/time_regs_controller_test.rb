@@ -30,7 +30,7 @@ class TimeRegsControllerTest < ActionController::TestCase
   test "should destroy time_reg" do
     assert_authorized_to(:destroy?, @time_reg) do
       delete :destroy, params: { id: @time_reg.id }
-      assert_raises(ActiveRecord::RecordNotFound) { @time_reg.reload }
+      assert_raises(ActiveRecord::RecordNotFound) { TimeReg.find @time_reg.id }
     end
   end
 
@@ -55,6 +55,7 @@ class TimeRegsControllerTest < ActionController::TestCase
     assert_no_difference("TimeReg.count") do
       post :create, params: { time_reg: { date_worked: @current_date, minutes: 0, project_id: nil, assigned_task_id: nil } }
     end
+    assert_response :unprocessable_entity
   end
 
   test "should not start timer if another is turned on" do
@@ -84,5 +85,14 @@ class TimeRegsControllerTest < ActionController::TestCase
     patch :update, params: { id: @old_time_reg.id, time_reg: { notes: "Test notes" } }
     @old_time_reg = TimeReg.find @old_time_reg.id
     assert_equal "Test notes", @old_time_reg.notes
+  end
+
+  test "spectator should not be able to record time_reg" do
+    used_project = @user.current_organization.projects.first
+    @user.access_info.update(role: "organization_spectator")
+    assert_no_difference("TimeReg.count") do
+      post :create, params: { time_reg: { date_worked: @current_date, minutes: 0, project_id: used_project.id, assigned_task_id: used_project.assigned_tasks.first.id } }
+    end
+    assert_redirected_to report_path
   end
 end

@@ -8,6 +8,7 @@ module Workspace
         sign_in @organization_admin
         @project = @organization_admin.current_organization.projects.first
         @tasks = @organization_admin.current_organization.tasks
+        @archived_assigned_task = assigned_task(:task_2_archived)
       end
 
       test "should create assigned task" do
@@ -16,6 +17,12 @@ module Workspace
         end
 
         assert_response :success
+      end
+
+      test "should not create assigned task without task" do
+        assert_no_difference("AssignedTask.count") do
+          post :create, params: { project_id: @project.id, assigned_task: { task_attributes: { id: nil }, rate_nok: 100 } }
+        end
       end
 
       test "should not create an assigned task with a task not belonging to the organization" do
@@ -35,6 +42,15 @@ module Workspace
         assert_response :success
 
         assert_equal assigned_task.reload.task.name, new_name
+      end
+
+      test "should not update archived assigned task" do
+        assigned_task = @archived_assigned_task
+
+        new_name = "New name"
+        patch :update, params: { id: assigned_task.id, project_id: assigned_task.project.id, assigned_task: { task_attributes: { id: assigned_task.task.id, name: new_name } } }
+
+        assert_not_equal assigned_task.reload.task.name, new_name
       end
 
       test "should remove assigned_task from the project but not delete the task" do

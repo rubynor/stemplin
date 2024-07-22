@@ -1,0 +1,10 @@
+shared:
+  from: "noreply@stemplin.com"
+  templates:
+    user:
+      welcome:
+        # Same template (english) for both languages. TODO: fix
+        nb:
+          template_id: "d-f78bbd2312eb4e62904e90813cddfde9"
+        en:
+          template_id: "d-f78bbd2312eb4e62904e90813cddfde9"

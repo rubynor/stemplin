@@ -74,6 +74,8 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 
+  gem "letter_opener"
+
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 
@@ -102,3 +104,9 @@ gem "phlex_ui", "~> 0.1.7"
 gem "strong_migrations"
 
 gem "pagy"
+
+gem "discard"
+
+gem "sendgrid-ruby"
+
+gem "devise_invitable", "~> 2.0.9"

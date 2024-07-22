@@ -8,6 +8,7 @@ module Organizations
         time_regs: @time_regs,
       )
       @results = Organizations::Reports::Result.new(time_regs: @time_regs, filter: @filter)
+      authorize!
     end
 
     def detailed

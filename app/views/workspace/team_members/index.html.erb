@@ -1,0 +1,32 @@
+<div class="flex flex-col gap-y-8">
+  <div class="flex flex-row justify-between items-center border-b border-gray-100 py-3">
+    <div class="flex flex-row items-center gap-x-2">
+      <span class="font-medium text-gray-600 text-lg"><%=  t("common.team_members") %></span>
+      <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
+        <span class="text-gray-700 text-xs font-semibold"><%= @pagy.count %></span>
+      </div>
+    </div>
+    <div class="flex flex-row gap-2">
+      <%= render ButtonComponent.new(path: invite_users_workspace_team_members_path, method: :get) do %>
+        <span class="hidden lg:block mr-2"><%=  t("common.invite_members") %></span>
+        <i class="uc-icon text-xl">&#xebaf;</i>
+      <% end %>
+    </div>
+  </div>
+  <div>
+    <%= render PhlexUI::Table.new do %>
+      <%= render PhlexUI::Table::Header.new do %>
+        <%= render PhlexUI::Table::Row.new do %>
+          <%= render PhlexUI::Table::Head.new { t("common.name") } %>
+          <%= render PhlexUI::Table::Head.new { t("common.email") } %>
+          <%= render PhlexUI::Table::Head.new { t("common.role") } %>
+          <%= render PhlexUI::Table::Head.new { t("common.actions") } %>
+        <% end %>
+      <% end %>
+      <%= render PhlexUI::Table::Body.new(id: :organization_users) do %>
+        <%= render partial: "workspace/team_members/user", collection: @users %>
+      <% end %>
+    <% end %>
+    <%= render PaginationComponent.new(pagy: @pagy, path: workspace_team_members_path) if @pagy.pages > 1 %>
+  </div>
+</div>

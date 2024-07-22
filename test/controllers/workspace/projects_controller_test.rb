@@ -18,8 +18,9 @@ module Workspace
 
     test "should create project" do
       task = tasks(:e2e_testing)
+      user = users(:organization_user)
       assert_difference("Project.count") do
-        post :create, params: { project: { name: "Test Project", description: "Project description", billable: true, rate_nok: 100, client_id: @client.id, task_ids: [ task.id ] } }
+        post :create, params: { project: { name: "Test Project", description: "Project description", billable: true, rate_nok: 100, client_id: @client.id, task_ids: [ task.id ], user_ids: [ user.id ] } }
       end
 
       assert_response :success
@@ -30,8 +31,15 @@ module Workspace
       assert_response :success
     end
 
+    test "spectator should not show project" do
+      sign_in users(:organization_spectator)
+      get :show, params: { id: @project.id }
+      assert_redirected_to root_path
+    end
+
     test "should update project" do
-      patch :update, params: { id: @project.id, project: { name: "Updated Project" } }
+      user = users(:ron)
+      patch :update, params: { id: @project.id, project: { name: "Updated Project", user_ids: [ user.id ] } }
       assert_response :success
     end
 
@@ -42,6 +50,29 @@ module Workspace
       end
 
       assert_response :success
+    end
+
+    test "should archive assigned_task task with time_regs" do
+      task_ids = @project.tasks.ids
+      task_ids.pop
+
+      assert_difference("@project.active_assigned_tasks.count", -1) do
+        patch :update, params: { id: @project.id, project: { task_ids: task_ids } }
+      end
+    end
+
+    test "should create assigned_task task" do
+      project_tasks = @project.tasks
+      non_project_task = @tasks.where.not(id: project_tasks).first
+      task_ids = project_tasks.ids + [ non_project_task.id ]
+
+      assert_difference("AssignedTask.count", 1) do
+        patch :update, params: { id: @project.id, project: { task_ids: task_ids } }
+      end
+
+      assert_equal non_project_task, AssignedTask.last.task
+      assert_not AssignedTask.last.is_archived
+      assert_equal @project, AssignedTask.last.project
     end
   end
 end

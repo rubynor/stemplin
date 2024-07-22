@@ -1,6 +1,10 @@
 module Workspace
   class ProjectPolicy < WorkspacePolicy
-    [ :show, :edit_modal, :delete_confirmation, :destroy, :add_member_modal ].each do |action|
+    %i[ index import_modal new_modal ].each do |action|
+      define_method("#{action}?") { user.organization_admin? }
+    end
+
+    %i[ create show edit_modal update destroy add_member_modal ].each do |action|
       define_method("#{action}?") do
         user.organization_admin? && record.organization == user.current_organization
       end

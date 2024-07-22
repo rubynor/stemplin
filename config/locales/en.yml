@@ -115,6 +115,7 @@ en:
     save_task: "Save task"
     project_members: "project members"
     add_member: "Add Member"
+    edit_member: "Edit Member"
     email: "Email"
     remove: "Remove"
     update_project: "Update Project"
@@ -142,15 +143,21 @@ en:
     billable_hours: "Billable hours"
     home: "Home"
     workspace: "Workspace"
-    reset_date: "Reset date"
+    go_to_today: "Go to today"
     no_time_registrations_on_this_day: "No time registrations on this day"
     there_were_no_time_registrations_recorded: "There were no time registrations recorded on this day, if you wish to record a time registration, click the button bellow"
     log_time: "Log time"
+    day_total: "Day's total"
     today_total: "Today's total"
     week_total: "Week's total"
     from: "From"
     team_members: "Team members"
     add_new: "Add New"
+    invite_members: "Invite Members"
+    invite_members_to_organization: "Invite members to organization"
+    invite_members_helper: "Add an email or a list of emails in the field below. Then specify what kind of access each person should have."
+    add_to_invitation_list: "Add to invitation list"
+    pending_invitation: "Pending invitation"
     import: "Import"
     rate: "Rate"
     actions: "Actions"
@@ -164,7 +171,7 @@ en:
     select_tasks: "Select Tasks"
     save: "Save"
     role: "Role"
-    select_organization_user: "Kindly select organization user, if all this user will do is record time registrations."
+    select_organization_user: "Kindly select organization user, if all this user will do is record time registrations. A spectator can only view time registrations."
     select_role: "Select role"
     share_temporary_password_with_user: "Kindly share this temporary password with the user for login purposes. They can change it at a later time."
     deletion_of_the_client: "Do you want to proceed with the deletion of the client"
@@ -213,6 +220,13 @@ en:
     custom_rate: "Custom Rate"
     new_client: New client
     select_project: "Select a project:"
+    select: "Select"
+    select_projects: "Select projects"
+    add_projects_optional: "Select the projects this user should have access to."
+    add_users_optional: "Select the users that should have access to this project. Administrators have access to all projects."
+    users: "Users"
+    remember_to_fill_out: "Remember to fill out!"
+    archived_task_can_not_be_updated: "This task is archived and cannot be updated."
 
   notice:
     are_you_sure: "Are you sure?"
@@ -245,7 +259,8 @@ en:
     tasks_was_successfully_created: "Task was successfully updated."
     tasks_was_successfully_deleted: "Task was successfully deleted."
     tasks_was_successfully_updated: "Task was successfully updated."
-    user_added_to_the_organization: "User added to the organization."
+    members_invited: "Members invited successfully"
+    user_updated: "User updated."
     time_entry_has_been_logged: "Time entry has been logged."
     edits_to_the_task_name: "Kindly note that edits to the task name will be applied to all the projects. Edits to the billable rate will be applied to this project only and will take effect on new Time registrations."
     recorded_time_registrations: "The task has recorded time registrations, can not be removed from this project."
@@ -274,6 +289,11 @@ en:
     project_not_found: "Project not found, kindly select a valid project."
     wish_to_proceed: "Do you wish to proceed?"
     warning: "Warning!"
+    unable_to_proceed: "Unable to proceed"
+    something_went_wrong: "Something went wrong"
+    invalid_email: "Invalid email address"
+    invalid_email_list: "Invalid email list. Allowed separators are comma, semicolon, and space."
+    create_project_before_registering_time: "Create a project in the 'Workspace' page before registering time. Remember to assign tasks to the project."
 
   description:
     blank: "can't be blank"
@@ -289,7 +309,7 @@ en:
     first_name: "First name"
     last_name: "Last name"
     email: "Email address"
-    password_blank: "password (leave blank to keep old password)"
+    password_blank: "Password (leave blank to keep old password)"
     confirm_password_blank: "Confirm password (leave blank to keep old password)"
     current_password: "Current password"
     confirm_changes: "We need your current password to confirm your changes"
@@ -297,6 +317,7 @@ en:
     unhappy: "Unhappy"
     cancel_account: "Cancel my account"
     sign_in: "Sign in"
+    sign_up: "Sign up"
     password: "Password"
     remember_me: "Remember me"
     confirm_password: "Confirm password"
@@ -334,8 +355,12 @@ en:
   access_info:
     role:
       organization_user: "Organization User"
+      organization_spectator: "Organization Spectator"
       organization_admin: "Organization Administrator"
       super_admin: "Super administrator"
+      organization_user_short: "User"
+      organization_spectator_short: "Spectator"
+      organization_admin_short: "Administrator"
 
   login_page:
     sign_in_to_your_account: "Sign in to your account"
@@ -348,6 +373,29 @@ en:
     forgot_password: "Forgot your password?"
     sign_in: "Sign in"
     dont_have_an_account: "Don't have an account?"
+    already_have_an_account: "Already have an account?"
     sign_up: "Sign up"
     streamline_your_workflow: "Streamline Your Workflow"
     app_summary: "Boost collaboration and simplify project execution. Assign tasks, track time, and generate insightful reports – all in one place. Empower your team and achieve more with streamlined workflows."
+
+  activerecord:
+    errors:
+      models:
+        access_info:
+          attributes:
+            user_id:
+              taken: "has already been granted access to this organization."
+            organization:
+              must_have_at_least_one_admin: "must have at least one administrator."
+      messages:
+        record_invalid: "Validation failed: %{errors}"
+
+  error_page:
+    not_found:
+      title: "Page Not Found"
+      message: "The page you are looking for does not exist."
+      sub_message: "You may have mistyped the address or the page may have moved."
+    internal_server_error:
+      title: "Internal Server Error"
+      message: "We're sorry, something went wrong on our end."
+      sub_message: "Please try again later."

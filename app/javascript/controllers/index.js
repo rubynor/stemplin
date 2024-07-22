@@ -19,6 +19,12 @@ application.register("collapse-hours", CollapseHoursController)
 import FormController from "./form_controller"
 application.register("form", FormController)
 
+import GroupedSelectMultipleController from "./grouped_select_multiple_controller"
+application.register("grouped-select-multiple", GroupedSelectMultipleController)
+
+import SelectMultipleController from "./select_multiple_controller"
+application.register("select-multiple", SelectMultipleController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
@@ -36,15 +42,6 @@ application.register("report-edit", ReportEditController)
 
 import TimeTasksController from "./time_tasks_controller"
 application.register("time-tasks", TimeTasksController)
-
-import UserProjectTaskboxesController from "./user_project_taskboxes_controller"
-application.register("user-project-taskboxes", UserProjectTaskboxesController)
-
-import UserReportsBoxesController from "./user_reports_boxes_controller"
-application.register("user-reports-boxes", UserReportsBoxesController)
-
-import UserReportsController from "./user_reports_controller"
-application.register("user-reports", UserReportsController)
 
 import VisibilityController from "./visibility_controller"
 application.register("visibility", VisibilityController)
@@ -66,5 +63,11 @@ application.register("file-upload", FileUploadController);
 
 import CustomDisableController from "./custom_disable_controller";
 application.register("custom-disable", CustomDisableController);
+
+import ShowOnValueController from './show_on_value_controller';
+application.register("show-on-value", ShowOnValueController);
+
+import InviteUsersController from './invite_users_controller';
+application.register("invite-users", InviteUsersController);
 
 // TODO: fetch controllers from app/javascript/controllers/**/*_controller.js and load/register everything automatically, the filename of the controller will then be used as the controller identifier in the DOM

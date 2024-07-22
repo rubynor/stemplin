@@ -25,15 +25,20 @@ organization_user:
   last_name: user
   <<: *DEFAULTS
 
+organization_spectator:
+  email: organization_spectator@example.com
+  first_name: organization
+  last_name: spectator
+  <<: *DEFAULTS
+
 org_admin_without_org:
   email: org_admin_without_org@example.com
   first_name: org_admin_without_org
   last_name: admin
   <<: *DEFAULTS
 
-newly_invited_user:
-  email: newly_invited_user@example.com
-  first_name: newly invited
-  last_name: user
-  is_verified: false
+user_wo_access_info:
+  email: user_wo_access_info@example.com
+  first_name: user
+  last_name: without access info
   <<: *DEFAULTS

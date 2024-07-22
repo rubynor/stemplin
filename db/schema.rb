@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_26_062759) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_11_072500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_062759) do
     t.datetime "updated_at", null: false
     t.boolean "active", default: false
     t.index ["organization_id"], name: "index_access_infos_on_organization_id"
+    t.index ["user_id", "organization_id"], name: "index_access_infos_on_user_id_and_organization_id", unique: true
     t.index ["user_id"], name: "index_access_infos_on_user_id"
   end
 
@@ -30,7 +31,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_062759) do
     t.bigint "task_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
     t.integer "rate", default: 0, null: false
     t.boolean "is_archived", default: false
     t.index ["project_id"], name: "index_assigned_tasks_on_project_id"
@@ -43,6 +43,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_062759) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "organization_id"
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_clients_on_discarded_at"
     t.index ["organization_id"], name: "index_clients_on_organization_id"
   end
 
@@ -50,6 +52,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_062759) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "project_accesses", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "access_info_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["access_info_id"], name: "index_project_accesses_on_access_info_id"
+    t.index ["project_id", "access_info_id"], name: "index_project_accesses_on_project_id_and_access_info_id", unique: true
+    t.index ["project_id"], name: "index_project_accesses_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -60,7 +72,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_062759) do
     t.datetime "updated_at", null: false
     t.integer "rate", default: 0, null: false
     t.boolean "billable", default: false, null: false
+    t.datetime "discarded_at"
     t.index ["client_id"], name: "index_projects_on_client_id"
+    t.index ["discarded_at"], name: "index_projects_on_discarded_at"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -68,6 +82,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_062759) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "organization_id"
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_tasks_on_discarded_at"
     t.index ["organization_id"], name: "index_tasks_on_organization_id"
   end
 
@@ -80,7 +96,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_062759) do
     t.date "date_worked"
     t.datetime "start_time", precision: nil
     t.bigint "user_id", null: false
+    t.datetime "discarded_at"
     t.index ["assigned_task_id"], name: "index_time_regs_on_assigned_task_id"
+    t.index ["discarded_at"], name: "index_time_regs_on_discarded_at"
     t.index ["user_id"], name: "index_time_regs_on_user_id"
   end
 
@@ -95,8 +113,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_062759) do
     t.string "first_name"
     t.string "last_name"
     t.string "locale", default: "en", null: false
-    t.boolean "is_verified", default: true
+    t.string "invitation_token"
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer "invitation_limit"
+    t.string "invited_by_type"
+    t.bigint "invited_by_id"
+    t.integer "invitations_count", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -105,6 +132,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_062759) do
   add_foreign_key "assigned_tasks", "projects"
   add_foreign_key "assigned_tasks", "tasks"
   add_foreign_key "clients", "organizations"
+  add_foreign_key "project_accesses", "access_infos"
+  add_foreign_key "project_accesses", "projects"
   add_foreign_key "projects", "clients"
   add_foreign_key "tasks", "organizations"
   add_foreign_key "time_regs", "assigned_tasks"
