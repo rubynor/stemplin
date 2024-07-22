@@ -10,6 +10,10 @@
       </div>
     </div>
     <div class="flex flex-row gap-2">
+      <%= render ButtonComponent.new(path: organizations_reports_path(filter: { project_id: @project.id, category: :tasks, time_frame: :month }), method: :get, variant: :outline) do %>
+        <span class="hidden lg:block mr-2"><%= t("common.report")%></span>
+        <i class="uc-icon">&#xea07;</i>
+      <% end %>
       <%= render ButtonComponent.new(path: edit_workspace_project_path(@project), method: :get, variant: :outline) do %>
         <span class="hidden lg:block mr-2"><%= t("common.edit")%></span>
         <i class="uc-icon">&#xe972;</i>

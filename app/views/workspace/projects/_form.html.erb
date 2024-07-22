@@ -18,7 +18,7 @@
 
       <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
         <%= render PhlexUI::Label.new { t("common.name") } %>
-        <%= form.text_field :name, class: "border-gray-200 rounded-md w-full" %>
+        <%= form.text_field :name, class: "border-gray-200 rounded-md w-full", required: true %>
         <% project.errors.full_messages_for(:name).each do |message|%>
           <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
         <% end %>
