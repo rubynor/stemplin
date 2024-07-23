@@ -1,7 +1,7 @@
 <div class="bg-gray-100 border-b py-4 border-gray-200 px-4">
   <div class="max-w-7xl mx-auto flex justify-between items-center">
     <div class="flex flex-row items-center gap-x-4">
-      <div class="bg-white border border-gray-200 rounded flex justify-center items-center px-4 py-3 relative">
+      <div class="bg-white border border-gray-200 rounded flex justify-center items-center px-4 py-3 relative hidden md:block">
         <i class="uc-icon text-xl text-gray-600">&#xe891;</i>
         <% if @chosen_date === Date.today %>
           <div class="absolute -bottom-2 -right-2 bg-green-600 rounded-full w-4 h-4 flex justify-center items-center">
@@ -10,28 +10,39 @@
         <% end %>
       </div>
       <div class="flex flex-col">
-        <span class="text-gray-700 text-base lg:text-lg font-semibold">
-          <span class="hidden lg:block">
+        <span class="text-gray-700 text-base md:text-lg font-semibold">
+          <span class="hidden md:block">
             <%= l(@chosen_date, format: "%A, %d %B %Y") %>
           </span>
-          <span class="lg:hidden">
+          <span class="md:hidden">
             <%= l(@chosen_date, format: "%a, %d %b %Y") %>
           </span>
         </span>
         <% if @chosen_date != Date.today %>
-          <%= link_to root_path, class: "text-xs text-gray-400 underline" do %>
+          <%= link_to root_path, class: "text-xs text-gray-400 underline hover:text-primary" do %>
             <span><%= t("common.go_to_today") %></span>
             <i class="uc-icon">&#xe81b;</i>
           <% end %>
         <% end %>
       </div>
     </div>
-    <div class="flex items-center gap-x-4">
+    <div class="flex items-stretch gap-x-4">
+      <div class="border border-gray-200 rounded flex flex-row items-center bg-white divide-x divide-gray-100">
+        <%= link_to root_path(date: @chosen_date - 1.week), class: "md:px-1 lg:px-2 h-full flex items-center hover:text-primary inline-block transform rotate-180" do %>
+          <i class="uc-icon text-xl">&#xe81f;</i>
+        <% end %>
+        <span class="px-1 md:px-2 text-sm lg:text-base"><%= t("common.week") %> <%= @chosen_date.strftime("%V") %></span>
+        <%= link_to root_path(date: @chosen_date + 1.week), class: "md:px-1 lg:px-2 h-full flex items-center hover:text-primary" do %>
+          <i class="uc-icon text-xl">&#xe81f;</i>
+        <% end %>
+      </div>
       <%= render partial: "time_regs/date_picker" %>
-      <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: @chosen_date), method: :post, class: "h-full") do %>
-        <span class="hidden lg:block mr-2"><%= t("common.log_time") %></span>
-        <i class="uc-icon text-white text-xl">&#xeb5b;</i>
-      <% end %>
+      <div>
+        <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: @chosen_date), method: :post) do %>
+          <span class="hidden md:block mr-2"><%= t("common.log_time") %></span>
+          <i class="uc-icon text-white text-xl">&#xeb5b;</i>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
