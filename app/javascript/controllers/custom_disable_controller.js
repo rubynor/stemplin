@@ -13,5 +13,10 @@ export default class extends Controller {
     ['opacity-30', 'pointer-events-none', 'cursor-not-allowed'].forEach(
       (className) => this.contentTarget.classList.toggle(className, !enable)
     );
+    if (enable) {
+      this.contentTarget.removeAttribute('disabled');
+    } else {
+      this.contentTarget.setAttribute('disabled', 'disabled');
+    }
   }
 }
