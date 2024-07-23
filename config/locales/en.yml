@@ -378,6 +378,17 @@ en:
     streamline_your_workflow: "Streamline Your Workflow"
     app_summary: "Boost collaboration and simplify project execution. Assign tasks, track time, and generate insightful reports – all in one place. Empower your team and achieve more with streamlined workflows."
 
+  password_reset:
+    new:
+      forgot_your_password: "Forgot your password?"
+      send_instructions: "Send instructions"
+      cant_find_what_you_re_looking_for: "Can't find what you're looking for?"
+      continue_to_login: "Continue to login"
+    edit:
+      reset_password: "Reset password"
+      change_my_password: "Change my password"
+      minimum_password_length: "%{count} characters minimum"
+
   activerecord:
     errors:
       models:
@@ -389,6 +400,11 @@ en:
               must_have_at_least_one_admin: "must have at least one administrator."
       messages:
         record_invalid: "Validation failed: %{errors}"
+    attributes:
+      user:
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Confirm password"
 
   error_page:
     not_found:

@@ -1,20 +1,20 @@
 <div class="flex flex-col gap-y-4 w-full">
-  <span class="text-xl font-semibold text-gray-600">Forgot your password?</span>
+  <span class="text-xl font-semibold text-gray-600"><%= t("password_reset.new.forgot_your_password") %></span>
   <div class="flex flex-col mt-4 gap-y-2">
     <%= form_for(resource, as: resource_name, url: password_path(resource_name), class: "w-full") do |form| %>
-      <%= render AlertComponent.new(variant: :destructive, title: "Unable to proceed!", message: resource.errors.full_messages) if resource.errors.any? %>
+      <%= render AlertComponent.new(variant: :destructive, title: t("alert.unable_to_proceed"), message: resource.errors.full_messages) if resource.errors.any? %>
       <div class="w-full flex gap-y-4 flex-col mt-4">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <div class="flex flex-col w-full gap-y-4 lg:gap-y-8">
           <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-            <%= render PhlexUI::Label.new { "Email" } %>
-            <%= form.email_field :email, autofocus: true, autocomplete: "email", required: true, placeholder: "Email address", class: "border-gray-200 rounded-md w-full" %>
+            <%= render PhlexUI::Label.new { t("activerecord.attributes.user.email") } %>
+            <%= form.email_field :email, autofocus: true, autocomplete: "email", required: true, placeholder: t("activerecord.attributes.user.email"), class: "border-gray-200 rounded-md w-full" %>
           <% end %>
         </div>
-        <%= render ButtonComponent.new(type: "submit") { "Send instructions" } %>
+        <%= render ButtonComponent.new(type: "submit") { t("password_reset.new.send_instructions") } %>
         <div class="text-sm  w-full text-center">
-          <span>Can't find what you're looking for?</span>
-          <%= link_to "Continue to login", new_session_path(resource_name), class: "font-semibold text-primary" %>
+          <span><%= t("password_reset.new.cant_find_what_you_re_looking_for") %></span>
+          <%= link_to t("password_reset.new.continue_to_login"), new_session_path(resource_name), class: "font-semibold text-primary" %>
         </div>
       </div>
     <% end %>
