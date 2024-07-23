@@ -47,6 +47,8 @@ nb:
       send_instructions: "Du vil innen få minutter motta en epost med instruksjoner for å gjenåpne din konto."
       send_paranoid_instructions: "Hvis kontoen din eksisterer vil du innen få minutter motta en epost med instruksjoner for å låse den opp."
       unlocked: "Din konto er gjenåpnet. Vennligst logg inn for å fortsette."
+    invitations:
+      updated: "Profil ble oppdatert. Du er nå logget inn."
   errors:
     messages:
       already_confirmed: "har allerede blitt bekreftet, forsøk å logg inn"
