@@ -31,9 +31,9 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name])
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name locale])
     devise_parameter_sanitizer.permit(:account_update, keys: %i[first_name last_name])
-    devise_parameter_sanitizer.permit(:accept_invitation, keys: %i[first_name last_name])
+    devise_parameter_sanitizer.permit(:accept_invitation, keys: %i[first_name last_name locale])
   end
 
   # data can either be a hash or a string
@@ -43,13 +43,14 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    locale = params[:locale] || locale_from_current_user || extract_locale_from_accept_language_header || I18n.default_locale
+    locale = params[:locale] || locale_from_current_user || session[:locale]  || extract_locale_from_accept_language_header || I18n.default_locale
 
     begin
       I18n.locale = locale
     rescue I18n::InvalidLocale
       I18n.locale = I18n.default_locale
     end
+    session[:locale] = I18n.locale
   end
 
   def locale_from_current_user
