@@ -1,0 +1,12 @@
+---
+:verbose: <%= ENV["SIDEKIQ_VERBOSE"] == "true" %>
+:pidfile: tmp/pids/sidekiq.pid
+:logfile: log/sidekiq.log
+:concurrency: <%= ENV["SIDEKIQ_CONCURRENCY"] && ENV["SIDEKIQ_CONCURRENCY"].to_i || 2 %> # let's monitor and adjust if needed 2 seems fine for now
+:timeout: 25
+
+:queues:
+  - critical
+  - [ "high", "6" ]
+  - [ "default", "2" ]
+  - [ "low", "1" ]

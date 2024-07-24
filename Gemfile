@@ -110,3 +110,7 @@ gem "discard"
 gem "sendgrid-ruby"
 
 gem "devise_invitable", "~> 2.0.9"
+
+gem "sidekiq", "~> 7.3"
+
+gem "sidekiq-scheduler"

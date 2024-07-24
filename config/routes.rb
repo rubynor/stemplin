@@ -1,3 +1,5 @@
+require "sidekiq/web"
+
 Rails.application.routes.draw do
   devise_for :users, controllers: { invitations: "users/invitations" }
 
@@ -70,5 +72,9 @@ Rails.application.routes.draw do
   scope controller: :service_worker do
     get :manifest, format: :json
     get :service_worker, path: "service_worker.js"
+  end
+
+  authenticate :user, ->(u) { u.is_super_admin? } do
+    mount Sidekiq::Web, at: "sidekiq"
   end
 end
