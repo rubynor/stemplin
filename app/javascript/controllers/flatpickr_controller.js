@@ -34,7 +34,8 @@ export default class extends Flatpickr {
   change(selectedDates, dateStr, instance) {
     if (this.autoSubmitValue) {
       const form = this.element.closest("form");
-      Rails.fire(form, "submit");
+      if (form)
+        Rails.fire(form, "submit");
     }
     this.updateWidth();
   }
