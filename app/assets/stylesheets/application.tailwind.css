@@ -1,6 +1,7 @@
 @import "./unicons.css";
 @import "./snackbar.css";
 @import "./file_upload.css";
+@import "./flatpickr.css";
 
 @tailwind base;
 @tailwind components;
