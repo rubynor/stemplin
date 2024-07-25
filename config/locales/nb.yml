@@ -242,6 +242,7 @@ nb:
     users: "Brukere"
     remember_to_fill_out: "Husk å fylle ut!"
     archived_task_can_not_be_updated: "Denne oppgaven er arkivert og kan ikke oppdateres."
+    week: "Uke"
 
   notice:
     are_you_sure: "Er du sikker?"

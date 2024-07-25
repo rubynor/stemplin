@@ -1,29 +1,13 @@
-<div class="border border-gray-100 shadow-sm rounded flex flex-row items-center bg-white divide-x divide-gray-100 h-full">
-  <%= link_to root_path(date: @chosen_date - 1.day), class: "px-2 hidden lg:block transform rotate-180" do %>
-    <i class="uc-icon text-gray-600 text-xl">&#xe81f;</i>
-  <% end %>
-  <div class="w-12 lg:w-40 rounded-md lg:rounded-none">
-    <%= form_with url: root_path, method: :get do |form| %>
-      <%= form.hidden_field :date, id: "date_picker_select_cta", value: @chosen_date.strftime("%d %b %Y"), data: { controller: "input" } %>
-      <%= render PhlexUI::Popover.new(options: { trigger: "focusin click" }) do %>
-        <%= render PhlexUI::Popover::Trigger.new(class: "w-full") do %>
-          <div class="py-3 flex justify-center items-center">
-            <span class="hidden lg:block text-sm">
-              <%= l(@chosen_date, format: "%d %b %Y") %>
-            </span>
-            <i class="uc-icon text-xl text-gray-600 lg:hidden">&#xe891;</i>
-          </div>
-        <% end %>
-        <%= render PhlexUI::Popover::Content.new do %>
-          <%= render PhlexUI::Calendar.new(selected_date: @chosen_date, input_id: "#date_picker_select_cta") %>
-          <div class="pt-2 border-t border-gray-100">
-            <%= render ButtonComponent.new(type: "submit", class: "w-full", variant: :secondary) { t("common.update") } %>
-          </div>
-        <% end %>
-      <% end %>
-    <% end %>
-  </div>
-  <%= link_to root_path(date: @chosen_date + 1.day), class: "px-2 hidden lg:block" do %>
-    <i class="uc-icon text-gray-600 text-xl">&#xe81f;</i>
-  <% end %>
-</div>
+<%= form_with url: root_path, method: :get, class: "flex items-stretch" do |form| %>
+  <%= form.text_field :date, value: @chosen_date, class: "flex text-sm md:text-base px-1 md:px-2 cursor-pointer border-none text-center hover:text-primary z-10 hover:underline focus:ring-0",
+    data: {
+      controller: "flatpickr",
+      flatpickr_auto_submit_value: true,
+      flatpickr_fit_width_value: true,
+      flatpickr_locale_value: I18n.locale,
+      flatpickr_week_numbers: true,
+      flatpickr_alt_input: true,
+      flatpickr_alt_format: "[#{t("common.week")}] W",
+    }
+  %>
+<% end %>
