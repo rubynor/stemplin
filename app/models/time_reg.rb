@@ -11,7 +11,7 @@ class TimeReg < ApplicationRecord
   has_one :client, through: :project
   has_one :organization, through: :project
 
-  before_validation :start, if: -> { minutes.zero? && date_worked == Date.today }
+  before_validation :start, if: -> { minutes.zero? && date_worked == Date.today }, on: :create
 
   validates :notes, length: { maximum: 255 }
   validates :minutes, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1440 }

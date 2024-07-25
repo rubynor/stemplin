@@ -47,4 +47,11 @@ class TimeRegTest < ActiveSupport::TestCase
     @time_reg.notes = "First line \n second line"
     assert @time_reg.valid?
   end
+
+  test "#minutes shold allow 0 while inactive" do
+    @time_reg.minutes = 0
+    @time_reg.start_time = nil
+    @time_reg.save
+    assert_not @time_reg.active?
+  end
 end
