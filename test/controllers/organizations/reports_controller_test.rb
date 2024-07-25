@@ -118,5 +118,11 @@ module Organizations
       assert_equal user.name, assigns(:filter).selected_element_name
       assert_equal selected_user_available_tabs, assigns(:filter).tabs
     end
+
+    test "should get detailed" do
+      get :detailed
+      assert_response :success
+      assert_not_nil assigns(:filter)
+    end
   end
 end

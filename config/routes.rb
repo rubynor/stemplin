@@ -65,6 +65,7 @@ Rails.application.routes.draw do
 
   namespace :organizations do
     resources :reports, only: [ :index ]
+    get "reports/detailed", to: "reports#detailed", as: :detailed_reports
   end
 
   # PWA routes

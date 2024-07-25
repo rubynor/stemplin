@@ -9,9 +9,8 @@
         <% if current_user.organization_admin? %>
           <%= link_to t("common.workspace"), workspace_projects_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([workspace_clients_path, workspace_tasks_path, workspace_projects_path, workspace_team_members_path, invite_users_workspace_team_members_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
         <% end %>
-        <%= link_to t("common.reports"), report_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?(report_path) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
         <% if current_user.organization_admin? %>
-          <%= link_to t("common.organization_reports"), organizations_reports_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?(organizations_reports_path) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
+          <%= link_to t("common.reports"), organizations_reports_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?(organizations_reports_path) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
         <% end %>
       </div>
       <div class="flex items-center divide-x divide-gray-100 space-x-4">
@@ -27,39 +26,32 @@
             <% unless current_user.access_info.organization_spectator? %>
               <%= render PhlexUI::Link.new(href: time_regs_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
                 <div class="w-full flex justify-start items-center gap-x-1">
-                  <%= render PhlexUI::Label.new { "Home"} %>
+                <%= render PhlexUI::Label.new { t("common.home") } %>
                 </div>
               <% end %>
             <% end %>
             <% if current_user.organization_admin? %>
               <%= render PhlexUI::Link.new(href: workspace_projects_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
                 <div class="w-full flex justify-start items-center gap-x-1">
-                  <%= render PhlexUI::Label.new { "Workspace"} %>
+                  <%= render PhlexUI::Label.new { t("common.workspace")} %>
                 </div>
               <% end %>
-            <% end %>
-            <%= render PhlexUI::Link.new(href: report_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
-              <div class="w-full flex justify-start items-center gap-x-1">
-                <%= render PhlexUI::Label.new { "Reports"} %>
-              </div>
-            <% end %>
-            <% if current_user.organization_admin? %>
               <%= render PhlexUI::Link.new(href: organizations_reports_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
                 <div class="w-full flex justify-start items-center gap-x-1">
-                  <%= render PhlexUI::Label.new { "Organization Reports"} %>
+                  <%= render PhlexUI::Label.new { t("common.reports") } %>
                 </div>
               <% end %>
             <% end %>
             <%= render PhlexUI::Link.new(href: edit_user_registration_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
               <div class="w-full flex justify-start items-center gap-x-1">
                 <i class="uc-icon text-base text-gray-500">&#xebb2;</i>
-                <%= render PhlexUI::Label.new { "Edit account"} %>
+                <%= render PhlexUI::Label.new { t("common.edit_account") } %>
               </div>
             <% end %>
             <%= render ButtonComponent.new(path: destroy_user_session_path, method: :delete, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
               <div class="w-full flex justify-start items-center gap-x-1">
                 <i class="uc-icon text-base text-gray-500">&#xe978;</i>
-                <%= render PhlexUI::Label.new { "Sign out"} %>
+                <%= render PhlexUI::Label.new { t("common.sign_out") } %>
               </div>
             <% end %>
           <% end %>
