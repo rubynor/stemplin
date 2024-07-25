@@ -5,6 +5,7 @@ class Project < ApplicationRecord
   validates :name, presence: true, length: { minimum: 2, maximum: 30 }, uniqueness: { scope: :client }
   validates :description, length: { maximum: 100 }
   validates :rate, numericality: { only_integer: true }
+  validate :must_have_at_least_one_active_assigned_task
 
   belongs_to :client
   has_one :organization, through: :client
@@ -17,15 +18,9 @@ class Project < ApplicationRecord
   has_many :access_infos, through: :project_accesses
   has_many :users, through: :access_infos
 
-  def update_tasks(task_ids)
-    task_ids = task_ids.reject(&:empty?).map(&:to_i)
-    current_task_ids = tasks.active.ids
-    task_ids_to_remove = current_task_ids - task_ids
-    task_ids_to_add = task_ids - current_task_ids
+  accepts_nested_attributes_for :assigned_tasks, allow_destroy: true
 
-    assigned_tasks.where(task_id: task_ids_to_remove, is_archived: false).update_all(is_archived: true)
-    task_ids_to_add.each do |id_to_add|
-      assigned_tasks.create(task_id: id_to_add)
-    end
+  def must_have_at_least_one_active_assigned_task
+    errors.add(:tasks, :blank) if assigned_tasks.to_a.reject { |assigned_task| assigned_task.marked_for_destruction? || assigned_task.is_archived }.empty?
   end
 end

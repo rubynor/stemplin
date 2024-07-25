@@ -1,35 +1,33 @@
 <div class="flex flex-col gap-y-8">
   <div class="flex flex-row justify-between items-center border-b border-gray-100 py-3">
     <div class="flex flex-row items-center gap-x-2">
-      <span class="font-medium text-gray-600 text-lg"><%= t("common.projects") %></span>
+      <span class="font-medium text-gray-600 text-lg"><%= t("common.clients_and_projects") %></span>
       <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
         <span class="text-gray-700 text-xs font-semibold"><%= @pagy.count %></span>
       </div>
     </div>
     <div class="flex flex-row gap-2">
-      <%= render ButtonComponent.new(path: import_modal_workspace_projects_path, method: :post, variant: :secondary) do %>
+      <%= render ButtonComponent.new(path: import_modal_workspace_projects_path, method: :post, variant: :secondary, class: "hidden") do %>
+        <% # Hidden for the time being %>
         <span class="hidden lg:block mr-2"><%= t("common.import") %></span>
         <i class="uc-icon text-xl">&#xe8ea;</i>
       <% end %>
-      <%= render ButtonComponent.new(path: new_modal_workspace_projects_path, method: :post) do %>
-        <span class="hidden lg:block mr-2"><%= t("common.add_new") %></span>
-        <i class="uc-icon text-xl">&#xe9c7;</i>
+      <%= render ButtonComponent.new(path: new_modal_workspace_clients_path, method: :post) do %>
+        <span class="hidden lg:block mr-2"><%= t("common.new_client") %></span>
+        <i class="uc-icon text-xl">&#xe88a;</i>
       <% end %>
     </div>
   </div>
   <div>
-    <%= render PhlexUI::Table.new do %>
+    <%= render PhlexUI::Table.new(id: :organization_clients) do %>
       <%= render PhlexUI::Table::Header.new do %>
-        <%= render PhlexUI::Table::Row.new do %>
-          <%= render PhlexUI::Table::Head.new { t("common.name") } %>
-          <%= render PhlexUI::Table::Head.new { t("common.client") } %>
+        <%= render PhlexUI::Table::Row.new(class: "text-gray-500" ) do %>
+          <%= render PhlexUI::Table::Head.new { t("common.clients_and_projects") } %>
           <%= render PhlexUI::Table::Head.new { t("common.rate") } %>
           <%= render PhlexUI::Table::Head.new { t("common.actions") } %>
         <% end %>
       <% end %>
-      <%= render PhlexUI::Table::Body.new(id: :organization_projects) do %>
-        <%= render partial: "workspace/projects/project", collection: @projects %>
-      <% end %>
+      <%= render partial: "workspace/projects/client", collection: @clients %>
     <% end %>
     <%= render PaginationComponent.new(pagy: @pagy, path: workspace_projects_path) if @pagy.pages > 1 %>
   </div>

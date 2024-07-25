@@ -7,9 +7,11 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "name should not be unique accross clients" do
-    @organization_one.clients.first.projects.create(name: "Unique client name", description: "Lorem")
+    @task_org_1 = tasks(:debug)
+    @task_org_2 = tasks(:login)
+    @organization_one.clients.first.projects.create(name: "Unique client name", description: "Lorem", assigned_tasks_attributes: [ { task_id: @task_org_1.id } ])
     assert_changes "Project.count" do
-      @organization_two.clients.first.projects.create(name: "Unique client name", description: "Lorem")
+      @organization_two.clients.first.projects.create(name: "Unique client name", description: "Lorem", assigned_tasks_attributes: [ { task_id: @task_org_2.id } ])
     end
   end
 end

@@ -32,22 +32,17 @@ Rails.application.routes.draw do
   namespace :workspace do
     resources :projects do
       post :import_modal, on: :collection
-      post :new_modal, on: :collection
-      put :edit_modal, on: :member
+    end
 
-      scope module: :projects do
-        resources :assigned_tasks do
-          post :new_modal, on: :member
-          post :edit_modal, on: :member
-        end
-
-        resource :tasks do
-          post :new_modal, on: :member
-        end
+    scope module: :projects do
+      resources :assigned_tasks, only: [] do
+        post :add_modal, on: :collection
+        post :add, on: :collection
+        delete :remove, on: :collection
       end
     end
 
-    resources :clients do
+    resources :clients, except: [ :index ] do
       post :new_modal, on: :collection
       post :edit_modal, on: :member
     end
@@ -55,11 +50,6 @@ Rails.application.routes.draw do
     resources :team_members, only: [ :index, :create, :update ] do
       get :invite_users, on: :collection
       put :edit_modal, on: :member
-    end
-
-    resources :tasks do
-      post :new_modal, on: :collection
-      post :edit_modal, on: :member
     end
   end
 

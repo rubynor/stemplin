@@ -16,17 +16,4 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-row gap-x-2">
-    <%= render ButtonComponent.new(path: edit_modal_workspace_project_assigned_task_path(id: assigned_task.id, project_id: assigned_task.project_id), method: :post, variant: :outline) do %>
-      <i class="uc-icon text-gray-500">&#xe972;</i>
-    <% end %>
-    <%- has_time_regs = assigned_task.time_regs.any? %>
-    <%- turbo_body = has_time_regs ? "The task <span class='font-semibold text-primary'>#{assigned_task.task.name}</span> has time registrations and can not be removed from this project." : "#{t("notice.removal_of_the_task")} <span class='font-semibold text-primary'>#{assigned_task.task.name}</span> #{t("notice.cannot_be_undone")}" %>
-
-    <%= render TooltipComponent.new(note: has_time_regs ? "The task has recorded time registrations, can not be removed from this project." : nil) do %>
-      <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_project_assigned_task_path(id: assigned_task.id, project_id: assigned_task.project_id), disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body } }) do %>
-        <i class="uc-icon">&#xeb97;</i>
-      <% end %>
-    <% end %>
-  </div>
 <% end %>

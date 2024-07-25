@@ -7,6 +7,15 @@ export default class extends Controller {
 
   connect() {
     this.toggleElement({ params: { enable: this.initialStatusValue } });
+    document.addEventListener('turbo:morph', () => {
+      this.toggleElement({ params: { enable: this.initialStatusValue } });
+    });
+  }
+
+  disconnect() {
+    document.removeEventListener('turbo:morph', () => {
+      this.toggleElement({ params: { enable: this.initialStatusValue } });
+    });
   }
 
   toggleElement({ params: { enable } }) {

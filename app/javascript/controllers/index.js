@@ -67,6 +67,9 @@ application.register("custom-disable", CustomDisableController);
 import ShowOnValueController from './show_on_value_controller';
 application.register("show-on-value", ShowOnValueController);
 
+import DynamicTaskUrlController from './dynamic_task_url_controller';
+application.register("dynamic-task-url", DynamicTaskUrlController);
+
 import InviteUsersController from './invite_users_controller';
 application.register("invite-users", InviteUsersController);
 

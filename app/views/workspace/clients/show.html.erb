@@ -1,0 +1,52 @@
+<%= content_tag :div, id: "#{dom_id(@client)}_show" do %>
+  <div class="flex flex-wrap justify-between gap-y-3 py-3 border-b border-gray-100" id=1>
+    <div class="flex flex-row items-center gap-x-3">
+      <%= link_to workspace_projects_path, class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out" do %>
+        <i class="uc-icon text-2xl">&#xe833;</i>
+      <% end %>
+      <div class="flex flex-col">
+        <div class="font-medium text-gray-600 text-lg flex items-center gap-x-2">
+          <span><%= @client.name %></span>
+          <%= render PhlexUI::Badge.new(variant: :purple, class: "!rounded-full flex gap-x-1") { t("common.client") } %>
+        </div>
+        <span class="text-gray-500 text-xs font-regular py-1"><%="#{t("common.created")} #{l(@client.created_at, format: "%A, %d %B %Y")}" %></span>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-y-1 gap-x-3">
+      <%= render ButtonComponent.new(path: edit_modal_workspace_client_path(@client), method: :post, variant: :outline, class: "!py-3") do %>
+        <span class="hidden lg:block mr-2"><%= t("common.edit") %></span>
+        <i class="uc-icon">&#xe972;</i>
+      <% end %>
+      <%- has_projects = @client.projects.any? %>
+      <%- turbo_body = "#{t("common.deletion_of_the_client")} <span class='font-semibold text-primary'>#{@client.name}</span>? #{t("common.cannot_be_undone")}" %>
+      <%= render TooltipComponent.new(note: has_projects ? t("common.the_client_has_associated_projects") : nil) do %>
+        <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_client_path(@client), disabled: has_projects, form: { data: { turbo_confirm: turbo_body } }) do %>
+          <span class="hidden lg:block mr-2"><%= t("common.delete") %></span>
+          <i class="uc-icon">&#xeb97;</i>
+        <% end %>
+      <% end %>
+      <%= render ButtonComponent.new(path: new_workspace_project_path(client_id: @client.id), method: :get, variant: :secondary, class: "relative") do %>
+        <span class="hidden sm:block mr-2"><%= t("common.new_project").titleize %></span>
+        <i class="uc-icon">&#xead3;</i>
+        <% if @client.projects.empty? %>
+          <span class="animate-ping absolute right-0 top-0 w-2 h-2 rounded-full bg-primary"></span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <%= simple_format @client.description, class: "my-6" %>
+
+  <% if @client.projects.any? %>
+    <%= render PhlexUI::Table.new do %>
+      <%= render PhlexUI::Table::Row.new(class: "text-gray-500" ) do %>
+        <%= render PhlexUI::Table::Head.new { t("common.projects") } %>
+        <%= render PhlexUI::Table::Head.new { t("common.rate") } %>
+        <%= render PhlexUI::Table::Head.new { t("common.actions") } %>
+      <% end %>
+      <%= render PhlexUI::Table::Body.new(id: :organization_projects) do %>
+        <%= render partial: "workspace/projects/project", collection: @client.projects %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
