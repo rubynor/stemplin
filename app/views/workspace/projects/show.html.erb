@@ -1,19 +1,18 @@
 <div class="flex flex-col gap-y-8">
   <div class="flex flex-row justify-between items-start border-b border-gray-100 py-3">
     <div class="flex flex-row items-center gap-x-3">
-      <%= link_to workspace_client_path(@project.client), class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out" do %>
+      <%= link_to_back_or workspace_projects_path, class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out" do %>
         <i class="uc-icon text-2xl">&#xe833;</i>
       <% end %>
       <div class="flex flex-col">
-        <span class="font-medium text-gray-600 text-lg"><%= @project.name %></span>
+        <div class="font-medium text-gray-600 text-lg flex items-center gap-x-2">
+          <span><%= @project.name %></span>
+          <%= render PhlexUI::Badge.new(variant: :purple, class: "!rounded-full flex gap-x-1") { t("common.project") } %>
+        </div>
         <span class="text-gray-500 text-sm font-regular"><%= @project.description %></span>
       </div>
     </div>
     <div class="flex flex-row gap-2">
-      <%= render ButtonComponent.new(path: organizations_reports_path(filter: { project_id: @project.id, category: :tasks, time_frame: :month }), method: :get, variant: :outline) do %>
-        <span class="hidden lg:block mr-2"><%= t("common.report")%></span>
-        <i class="uc-icon">&#xea07;</i>
-      <% end %>
       <%= render ButtonComponent.new(path: edit_workspace_project_path(@project), method: :get, variant: :outline) do %>
         <span class="hidden lg:block mr-2"><%= t("common.edit")%></span>
         <i class="uc-icon">&#xe972;</i>
@@ -27,6 +26,11 @@
           <i class="uc-icon">&#xeb97;</i>
         <% end %>
       <% end %>
+
+      <%= render ButtonComponent.new(path: organizations_reports_path(filter: { project_id: @project.id, category: :tasks, time_frame: :month }), method: :get, variant: :outline) do %>
+        <span class="hidden lg:block mr-2"><%= t("common.report")%></span>
+        <i class="uc-icon">&#xea07;</i>
+      <% end %>
     </div>
   </div>
   <div class="mt-4 flex flex-col gap-y-8 lg:gap-y-12 overflow-y-auto px-4">
@@ -36,7 +40,7 @@
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
         <span class="font-regular"><%= t("common.client")%></span>
-        <span class="font-semibold"><%= @project.client.name %></span>
+        <%= link_to @project.client.name, workspace_client_path(@project.client), class: "font-semibold underline text-primary" %>
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
         <span class="font-regular"><%= t("common.rate")%></span>

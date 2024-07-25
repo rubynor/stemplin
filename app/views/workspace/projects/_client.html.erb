@@ -1,8 +1,8 @@
 
 <%= render PhlexUI::Table::Body.new(id: dom_id(client), class: "border-b") do %>
-  <%= render PhlexUI::Table::Row.new(class: "bg-gray-50") do %>
+  <%= render PhlexUI::Table::Row.new do %>
     <%= render PhlexUI::Table::Cell.new do %>
-      <%= link_to workspace_client_path(client), class: "text-primary hover:underline " do %>
+      <%= link_to workspace_client_path(client), class: "text-primary underline" do %>
         <div class="flex flex-row items-center gap-x-1">
           <span class="font-medium text-primary text-lg"><%= client.name %></span>
         </div>
@@ -12,22 +12,37 @@
     <%= render PhlexUI::Table::Cell.new(class: "w-36") do %>
     <% end %>
 
-    <%= render PhlexUI::Table::Cell.new(class: "w-0") do %>
-      <div class="flex flex-row gap-x-2">
-        <%= render TooltipComponent.new(note: t("common.edit")) do %>
-          <%= render ButtonComponent.new(path: edit_modal_workspace_client_path(client), method: :post, variant: :secondary) do %>
-            <i class="uc-icon">&#xe972;</i>
-          <% end %>
-        <% end %>
-        <%= render TooltipComponent.new(note: t("common.new_project")) do %>
-          <%= render ButtonComponent.new(path: new_workspace_project_path(client_id: client.id), method: :get, variant: :secondary, class: "relative") do %>
-              <i class="uc-icon">&#xead3;</i>
+    <%= render PhlexUI::Table::Cell.new(class: "flex justify-center") do %>
+      <%= render PhlexUI::DropdownMenu.new(options: { placement: 'bottom-end', duration: 0, offset: 0 }) do %>
+        <%= render PhlexUI::DropdownMenu::Trigger.new do %>
+          <%= render ButtonComponent.new(type: :button, variant: :outline, class: "relative") do %>
+            <i class="uc-icon text-gray-500">&#xe975;</i>
             <% if client.projects.empty? %>
               <span class="animate-ping absolute right-0 top-0 w-2 h-2 opacity-60 rounded-full bg-primary"></span>
             <% end %>
           <% end %>
         <% end %>
-      </div>
+        <%= render PhlexUI::DropdownMenu::Content.new(class: "flex flex-col w-fit min-w-0 !p-0") do %>
+          <%= render ButtonComponent.new(path: new_workspace_project_path(client_id: client.id), method: :get, variant: :outline, class: class_names("w-full", client.projects.empty? ? "text-primary border-l-2 border-primary" : nil)) do %>
+            <span><%= t("common.new_project") %></span>
+            <i class="uc-icon ml-2">&#xead3;</i>
+          <% end %>
+
+          <%= render ButtonComponent.new(path: edit_modal_workspace_client_path(client), method: :post, variant: :outline, class: "flex w-full") do %>
+            <span><%= t("common.edit") %></span>
+            <i class="uc-icon text-gray-500 ml-2">&#xe972;</i>
+          <% end %>
+
+          <%- has_projects = client.projects.any? %>
+          <%- turbo_body = "#{t("common.deletion_of_the_client")} <span class='font-semibold text-primary'>#{client.name}</span>? #{t("common.cannot_be_undone")}" %>
+          <%= render TooltipComponent.new(note: false ? t("common.project_has_recorded_time") : nil, class: "flex", options: { placement: "top" }) do %>
+            <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_client_path(client), class: "flex w-full", disabled: has_projects, form: { data: { turbo_confirm: turbo_body }, class: "w-full" }) do %>
+              <span><%= t("common.delete") %></span>
+              <i class="uc-icon ml-2">&#xeb97;</i>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
     <% end %>
   <% end %>
   <%= render partial: "workspace/projects/project", collection: client.projects %>

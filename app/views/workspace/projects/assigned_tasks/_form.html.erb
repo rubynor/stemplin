@@ -12,48 +12,21 @@
               <div class="text-red-600 text-xs italic mt-1"><%= message %></div>
             <% end %>
             <%= form.fields_for :task do |task_form|%>
-              <%= task_form.hidden_field :is_new_task, value: is_new_task  %>
-              <%= task_form.hidden_field :unassigned_task_ids, value: unassigned_tasks.ids.to_json  %>
+              <%= task_form.hidden_field :unassigned_task_ids, value: unassigned_tasks.ids.to_json %>
 
-              <% if is_new_task %>
-                <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-                  <%= render PhlexUI::Label.new { t("common.name") } %>
-                  <%= task_form.text_field :name, class: "border-gray-200 rounded-md w-full", autofocus: true %>
-                <% end %>
-              <% else %>
-                <%= render PhlexUI::Form::Item.new do  %>
-                  <%= render PhlexUI::Label.new { t("common") } %>
-                  <div class="flex flex-row gap-x-4">
-                    <%= render PhlexUI::Select.new do  %>
-                      <%= render PhlexUI::Select::Input.new(id: "select-new-task", name: "assigned_task[task_attributes][name]") %>
-                      <%= render PhlexUI::Select::Trigger.new(class: "!border-gray-200", autofocus: true) do %>
-                        <%= render PhlexUI::Select::Value.new(placeholder: t("common.select_task"), id: "select-new-task") { t("common.select_task") } %>
-                      <% end %>
-                      <%= render PhlexUI::Select::Content.new(outlet_id: "select-new-task") do %>
-                        <%= render PhlexUI::Select::Group.new do %>
-                          <% unassigned_tasks.each do |task| %>
-                            <%= render PhlexUI::Select::Item.new(value: task.name) { task.name } %>
-                          <% end %>
-                        <% end %>
-                      <% end %>
-                    <% end %>
-                  </div>
-                <% end %>
+              <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+                <%= render PhlexUI::Label.new { t("common.name") } %>
+                <%= task_form.text_field :name, class: "border-gray-200 rounded-md w-full", autofocus: true, autocomplete: "off", list: "unassigned-tasks-list" %>
+                <datalist id="unassigned-tasks-list">
+                  <% unassigned_tasks.each do |task| %>
+                    <option value="<%= task.name %>">
+                  <% end %>
+                </datalist>
               <% end %>
               <% task_form.object.errors.full_messages_for(:name).each do |message|%>
                 <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs leading-3 !my-0") { message }  %>
               <% end %>
             <% end %>
-
-            <div class="text-center">
-              <% if !is_new_task %>
-                <p class="leading-3"><%= t("common.or") %></p>
-                <%= link_to t("common.create_new_task"), add_modal_workspace_assigned_tasks_path(is_new_task: true), data: { turbo_method: :post }, class: "mt-4 inline-block bg-secondary text-primary py-2 px-4 rounded transition-colors" %>
-              <% elsif !unassigned_tasks.blank? %>
-                <p class="leading-3"><%= t("common.or") %></p>
-                <%= link_to t("common.select_from_existing_tasks"), add_modal_workspace_assigned_tasks_path(is_new_task: false), data: { turbo_method: :post }, class: "mt-4 inline-block bg-secondary text-primary py-2 px-4 rounded transition-colors" %>
-              <% end %>
-            </div>
 
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
               <%= render PhlexUI::Label.new { "#{t("common.rates_per_hour")}" } %>

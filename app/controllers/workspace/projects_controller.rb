@@ -52,7 +52,8 @@ module Workspace
     def destroy
       authorize! @project
       if @project.discard
-        redirect_back fallback_location: workspace_projects_path, notice: t("notice.project_was_successfully_deleted")
+        flash[:success] = t("notice.project_was_successfully_deleted")
+        redirect_to workspace_projects_path
       else
         render turbo_stream: turbo_flash(type: :error, data: "Unable to proceed, could not delete project.")
       end

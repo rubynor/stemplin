@@ -5,8 +5,11 @@
         <i class="uc-icon text-2xl">&#xe833;</i>
       <% end %>
       <div class="flex flex-col">
-        <span class="font-medium text-gray-600 text-lg"><%= @client.name %></span>
-        <span class="text-gray-500 text-sm font-regular"><%="#{t("common.created")} #{l(@client.created_at, format: "%A, %d %B %Y")}" %></span>
+        <div class="font-medium text-gray-600 text-lg flex items-center gap-x-2">
+          <span><%= @client.name %></span>
+          <%= render PhlexUI::Badge.new(variant: :purple, class: "!rounded-full flex gap-x-1") { t("common.client") } %>
+        </div>
+        <span class="text-gray-500 text-xs font-regular py-1"><%="#{t("common.created")} #{l(@client.created_at, format: "%A, %d %B %Y")}" %></span>
       </div>
     </div>
     <div class="flex flex-wrap gap-y-1 gap-x-3">
@@ -15,7 +18,7 @@
         <i class="uc-icon">&#xe972;</i>
       <% end %>
       <%- has_projects = @client.projects.any? %>
-      <%- turbo_body = has_projects ? "The client <span class='font-semibold text-primary'>#{@client.name}</span> has active associated projects. Please remove all projects before deleting the client." : "#{t("common.deletion_of_the_client")} <span class='font-semibold text-primary'>#{@client.name}</span>? #{t("common.cannot_be_undone")}" %>
+      <%- turbo_body = "#{t("common.deletion_of_the_client")} <span class='font-semibold text-primary'>#{@client.name}</span>? #{t("common.cannot_be_undone")}" %>
       <%= render TooltipComponent.new(note: has_projects ? t("common.the_client_has_associated_projects") : nil) do %>
         <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_client_path(@client), disabled: has_projects, form: { data: { turbo_confirm: turbo_body } }) do %>
           <span class="hidden lg:block mr-2"><%= t("common.delete") %></span>
