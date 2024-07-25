@@ -48,6 +48,6 @@ class AssignedTask < ApplicationRecord
   end
 
   def destroy_task_if_no_assigned_tasks
-    task.destroy if task.assigned_tasks.empty?
+    task.destroy if task.assigned_tasks.empty? && task.time_regs.empty?
   end
 end
