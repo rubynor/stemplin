@@ -70,4 +70,13 @@ application.register("show-on-value", ShowOnValueController);
 import DynamicTaskUrlController from './dynamic_task_url_controller';
 application.register("dynamic-task-url", DynamicTaskUrlController);
 
+import InviteUsersController from './invite_users_controller';
+application.register("invite-users", InviteUsersController);
+
+import FlatpickrController from './flatpickr_controller';
+document.addEventListener('turbo:load', () => {
+  application.register("flatpickr", FlatpickrController);
+});
+
+
 // TODO: fetch controllers from app/javascript/controllers/**/*_controller.js and load/register everything automatically, the filename of the controller will then be used as the controller identifier in the DOM

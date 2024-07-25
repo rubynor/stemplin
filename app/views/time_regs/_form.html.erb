@@ -4,7 +4,7 @@
   <% end %>
   <%= render PhlexUI::Dialog::Content.new(class: "bg-white") do %>
     <%= content = capture do %>
-      <%= form_with(model: time_reg, id: dom_id(time_reg), method: time_reg.new_record? ? :post : :put, data: { controller: "custom-input", "custom-input-active_text_value": time_reg.new_record? ? t("common.create_time_reg") : t("common.update_time_reg") }.merge(@chosen_date != Date.today ? { "custom-input-inactive_text_value": t("common.create_time_reg") } : {"custom-input-inactive_text_value": t("common.start_timer")})) do |form| %>
+      <%= form_with(model: time_reg, id: dom_id(time_reg), method: time_reg.new_record? ? :post : :put, data: { controller: "custom-input custom-disable", custom_disable_initial_status_value: time_reg.task.present?, "custom-input-active_text_value": time_reg.new_record? ? t("common.create_time_reg") : t("common.update_time_reg") }.merge(@chosen_date != Date.today ? { "custom-input-inactive_text_value": t("common.create_time_reg") } : {"custom-input-inactive_text_value": t("common.start_timer")})) do |form| %>
         <%= render PhlexUI::Dialog::Header.new do %>
           <%= render PhlexUI::Dialog::Title.new { title } %>
           <%= render PhlexUI::Dialog::Description.new { format_date(chosen_date) } %>
@@ -19,11 +19,11 @@
               <div class="mb-4" data-time-tasks-target="project">
                 <%= form.label :project_id, t('common.project'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
                 <%= form.grouped_collection_select :project_id, clients, :items, :name, :id, :name, {
-                  disabled: "",
                   selected: time_reg.project&.id || "",
                   prompt: t('common.select_project'),
                 }, {
-                  class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
+                  class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white',
+                  data: { action: "change->custom-disable#toggleElement", custom_disable_enable_param: true }
                 } %>
               </div>
 
@@ -65,7 +65,7 @@
         <% end %>
         <%= render PhlexUI::Dialog::Footer.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
           <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->dismissable#dismiss' }) { t("common.cancel") } %>
-          <%= render ButtonComponent.new(type: :submit, data: { custom_input_target: "submitButton" }) {} %>
+          <%= render ButtonComponent.new(type: :submit, data: { custom_input_target: "submitButton", custom_disable_target: "content" }) {} %>
         <% end %>
       <% end %>
     <% end %>

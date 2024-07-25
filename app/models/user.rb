@@ -1,8 +1,10 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  self.ignored_columns += [ "is_verified" ]
 
   has_many :time_regs
   has_many :access_infos
@@ -45,5 +47,24 @@ class User < ApplicationRecord
 
   def project_restricted?(organization)
     access_infos.find_by(organization: organization).project_restricted?
+  end
+
+  def pending_invitation?
+    !accepted_or_not_invited?
+  end
+
+  def update_or_create_access_info(role, organization)
+    access_info = self.access_info(organization)
+    if access_info
+      access_info.update!(role: AccessInfo.roles[role])
+    else
+      access_info = access_infos.create!(organization: organization, role: AccessInfo.roles[role])
+    end
+    access_info
+  end
+
+  def is_super_admin?
+    return true if Rails.env.development? # We do not yet have a `super_admin` functionality so let's at least have this in development for now
+    access_info.super_admin?
   end
 end

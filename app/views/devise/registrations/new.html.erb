@@ -1,14 +1,11 @@
 <div class="flex flex-col gap-y-4 w-full">
-  <%# TODO: let's revamp our logo at the right time  %>
-  <div class="flex gap-x-4 items-center">
-    <%= show_svg("logo.svg") %>
-  </div>
   <span class="text-xl font-semibold text-gray-600"><%= t("login_page.sign_up") %></span>
   <div class="flex flex-col mt-4 gap-y-2">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), class: "w-full") do |form| %>
       <%= render AlertComponent.new(variant: :destructive, title: "Unable to proceed!", message: resource.errors.full_messages) if resource.errors.any? %>
       <div class="w-full flex gap-y-4 flex-col mt-4">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <%= form.hidden_field :locale, value: I18n.locale %>
         <div class="flex flex-col w-full gap-y-4 lg:gap-y-8 mb-4">
           <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
             <%= render PhlexUI::Label.new { t("registration.first_name") } %>

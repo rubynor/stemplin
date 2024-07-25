@@ -9,7 +9,7 @@
       <% end %>
     </div>
     <div class="flex flex-row items-start w-full gap-x-2">
-      <div class="flex flex-col w-auto">
+      <div class="flex flex-col w-full lg:w-auto">
         <div class="flex flex-row gap-x-2 justify-between lg:justify-start">
           <div class="flex flex-col lg:flex-row lg:items-center text-sm lg:text-base text-gray-600 gap-x-2 w-fit">
             <span><%= time_reg.task.name %></span>
@@ -28,8 +28,8 @@
         <div class="w-fit">
           <span class="text-sm text-gray-800"><%= time_reg.project.client.name %></span>
         </div>
-        <div class="w-full md:w-3/4 lg:w-1/2">
-          <p class="text-xs text-gray-500"><%= time_reg.notes %></p>
+        <div class="w-full lg:pr-6">
+          <%= simple_format time_reg.notes, class: "text-xs text-gray-500" %>
         </div>
       </div>
     </div>
@@ -41,12 +41,12 @@
     <% else %>
       <i class="uc-icon text-base">&#xead1;</i>
     <% end %>
-    <span class="hidden lg:block"><%= time_reg.active? ? t("common.stop") : t("common.start") %></span>
+    <span class="hidden md:block"><%= time_reg.active? ? t("common.stop") : t("common.start") %></span>
   <% end %>
 
     <%= render ButtonComponent.new(path: edit_modal_time_reg_path(time_reg, date: @chosen_date), method: :put, class: "gap-x-2", variant: :outline) do %>
       <i class="uc-icon text-base">&#xe972;</i>
-      <span class="hidden lg:block"><%= t("common.edit") %></span>
+      <span class="hidden md:block"><%= t("common.edit") %></span>
     <% end %>
 
     <%- turbo_body = "
@@ -61,7 +61,7 @@
 
     <%= render ButtonComponent.new(variant: :destructive, method: :delete, path: time_reg_path(time_reg), form: { data: { turbo_confirm: turbo_body } }) do %>
       <i class="uc-icon text-base">&#xeb97;</i>
-      <span class="hidden lg:block"><%= t("common.delete") %></span>
+      <span class="hidden md:block"><%= t("common.delete") %></span>
     <% end %>
   </div>
 <% end %>

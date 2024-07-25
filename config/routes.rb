@@ -1,16 +1,14 @@
+require "sidekiq/web"
+
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { invitations: "users/invitations" }
 
   root "time_regs#index"
 
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
 
-  resources :onboarding, only: [ :new, :create ] do
-    get :skip_and_verify_account, on: :collection
-    get :edit_password, on: :collection
-    put :update_password, on: :collection
-  end
+  resources :onboarding, only: [ :new, :create ]
 
   post "/set_current_organization/:id" => "organizations#set_current_organization", as: :set_current_organization
 
@@ -50,14 +48,14 @@ Rails.application.routes.draw do
     end
 
     resources :team_members, only: [ :index, :create, :update ] do
-      post :new_modal, on: :collection
+      get :invite_users, on: :collection
       put :edit_modal, on: :member
-      post :add_to_organization, on: :collection
     end
   end
 
   namespace :organizations do
     resources :reports, only: [ :index ]
+    get "reports/detailed", to: "reports#detailed", as: :detailed_reports
   end
 
   # PWA routes
@@ -65,5 +63,9 @@ Rails.application.routes.draw do
   scope controller: :service_worker do
     get :manifest, format: :json
     get :service_worker, path: "service_worker.js"
+  end
+
+  authenticate :user, ->(u) { u.is_super_admin? } do
+    mount Sidekiq::Web, at: "sidekiq"
   end
 end

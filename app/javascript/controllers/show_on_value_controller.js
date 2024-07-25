@@ -6,6 +6,10 @@ export default class extends Controller {
   static targets = ['input', 'toggle'];
   static values = { accepted: Array };
 
+  initialize() {
+    document.addEventListener('turbo:morph', this.updateVisibility.bind(this));
+  }
+
   connect() {
     this.updateVisibility();
     this.inputTarget.addEventListener('input', this.updateVisibility.bind(this));

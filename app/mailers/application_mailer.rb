@@ -1,51 +1,71 @@
+# Generates and sends an email
+#
+# @param headers [Hash] The email headers and content
+# @option headers [String] :to The email recipient
+# @option headers [String] :sendgrid_template (optional) The SendGrid template ID
+# @option headers [Hash] :content The content to be passed to SendGrid
+# @option headers[:content] [String] :subject (optional) The email subject (defaults to 'Stemplin' if not provided)
+#
+# @return [Mail::Message] The generated mail object
+#
+# @note If :sendgrid_template is not provided, the mailer will look for a template view as usual
+
 class ApplicationMailer < ActionMailer::Base
   default from: Stemplin.config.emails.from
   layout "mailer"
 
-  def send_mail(to:, subject:, body:)
-    mail(
-      to: to,
-      subject: subject,
-      body: body
-    )
+  # Overrides the default behavior to accommodate SendGrid templates
+  # when they are specified in the headers.
+  def collect_responses(headers, &block)
+    if headers[:sendgrid_template].present?
+      handle_sendgrid_template(headers)
+    else
+      super(headers, &block)
+    end
   end
 
-  def send_with_sendgrid(to:, template_id:, personalization_data: {})
+  # Overrides ActionMailer's create_parts_from_responses method to handle SendGrid templates
+  #
+  # This method serves two purposes:
+  # 1. For SendGrid templates: It prevents ActionMailer from creating parts,
+  #    as the email structure is handled by SendGrid's template system.
+  # 2. For non-SendGrid emails: It maintains the original ActionMailer behavior.
+  #
+  # By returning early when a SendGrid template is present, we avoid unnecessary
+  # processing and conflicts/errors with SendGrid's templating system. -> response structure
+  def create_parts_from_responses(m, responses)
+    return if headers[:sendgrid_template].present?
+    super(m, responses)
+  end
+
+  def handle_sendgrid_template(headers)
     return true unless Rails.env.production?
 
-    mail = build_mail(to: to, template_id: template_id, personalization_data: personalization_data)
-    send_email(mail)
+    mail = build_mail(headers)
+    sg = SendGrid::API.new(api_key: ENV["SENDGRID_API_KEY"])
+    sg.client.mail._("send").post(request_body: mail.to_json)
   end
 
   private
 
-  def build_mail(to:, template_id:, personalization_data: {})
+  def build_mail(headers)
     mail = SendGrid::Mail.new
-    mail.template_id = template_id
+    mail.template_id = headers[:sendgrid_template]
 
-    add_personalization(mail, to: to, personalization_data: personalization_data) if personalization_data.present?
+    add_personalization(mail, headers) if headers[:content].present?
 
     mail.from = SendGrid::Email.new(email: Stemplin.config.emails.from)
     mail
   end
 
-  def add_personalization(mail, to:, personalization_data: {})
+  def add_personalization(mail, headers)
     personalization = SendGrid::Personalization.new
-    personalization.add_to(SendGrid::Email.new(email: to))
+    personalization.add_to(SendGrid::Email.new(email: headers[:to]))
 
-    personalization_data.each do |key, value|
+    headers[:content]&.each do |key, value|
       personalization.add_dynamic_template_data(key => value)
     end
 
     mail.add_personalization(personalization)
-  end
-
-  def send_email(mail)
-    data = mail.to_json
-
-    sg = SendGrid::API.new(api_key: ENV["SENDGRID_API_KEY"])
-    response = sg.client.mail._("send").post(request_body: data)
-
-    response.status_code
   end
 end

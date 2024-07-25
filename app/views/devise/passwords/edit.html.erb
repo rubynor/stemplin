@@ -1,25 +1,27 @@
-<h2>Change your password</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
-
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+<div class="flex flex-col gap-y-4 w-full">
+  <span class="text-xl font-semibold text-gray-600"><%= t("password_reset.edit.reset_password") %></span>
+  <div class="flex flex-col mt-4 gap-y-2">
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), class: "w-full", html: { method: :put }) do |form| %>
+      <%= render AlertComponent.new(variant: :destructive, title: t("alert.unable_to_proceed"), message: resource.errors.full_messages) if resource.errors.any? %>
+      <div class="w-full flex gap-y-4 flex-col mt-4">
+        <%= form.hidden_field :reset_password_token %>
+        <div class="flex flex-col w-full gap-y-4 lg:gap-y-8">
+          <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+            <%= render PhlexUI::Label.new { t("activerecord.attributes.user.password") } %>
+            <%= render PhlexUI::Hint.new { t("password_reset.edit.minimum_password_length", count: @minimum_password_length) if @minimum_password_length } %>
+            <%= form.password_field :password, id: "password", autofocus: true, required: true, placeholder: t("activerecord.attributes.user.password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
+          <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+            <%= render PhlexUI::Label.new { t("activerecord.attributes.user.password_confirmation") } %>
+            <%= form.password_field :password_confirmation, id: "password_confirm", autofocus: true, required: true, placeholder: t("activerecord.attributes.user.password_confirmation"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
+        </div>
+        <%= render ButtonComponent.new(type: "submit") { t("password_reset.edit.change_my_password") } %>
+        <div class="text-sm  w-full text-center">
+          <span><%= t("password_reset.new.cant_find_what_you_re_looking_for") %></span>
+          <%= link_to t("password_reset.new.continue_to_login"), new_session_path(resource_name), class: "font-semibold text-primary" %>
+        </div>
+      </div>
     <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
   </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
