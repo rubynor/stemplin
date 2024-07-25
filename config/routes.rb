@@ -3,7 +3,11 @@ require "sidekiq/web"
 Rails.application.routes.draw do
   devise_for :users, controllers: { invitations: "users/invitations" }
 
-  root "time_regs#index"
+  authenticated :user do
+    root to: "time_regs#index", as: :authenticated_root
+  end
+
+  root "landing_page#index"
 
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
