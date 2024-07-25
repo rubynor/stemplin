@@ -62,4 +62,9 @@ class User < ApplicationRecord
     end
     access_info
   end
+
+  def is_super_admin?
+    return true if Rails.env.development? # We do not yet have a `super_admin` functionality so let's at least have this in development for now
+    access_info.super_admin?
+  end
 end
