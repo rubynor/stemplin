@@ -102,10 +102,6 @@
               <% end %>
             <% end %>
             <%# team end %>
-            <div class="flex flex-col">
-              <span class="text-xs text-gray-400 font-medium uppercase"><%= t('common.detailed_report') %></span>
-              <%= render SwitchComponent.new(form: form, attribute: :detailed_report, initial_value: form_data.detailed_report) %>
-            </div>
           </div>
           <div class="flex flex-row items-center gap-x-4">
             <%= link_to report_path, class: "text-xs text-gray-400 underline text-nowrap" do %>

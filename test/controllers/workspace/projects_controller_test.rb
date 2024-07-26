@@ -20,10 +20,38 @@ module Workspace
       task = tasks(:e2e_testing)
       user = users(:organization_user)
       assert_difference("Project.count") do
-        post :create, params: { project: { name: "Test Project", description: "Project description", billable: true, rate_nok: 100, client_id: @client.id, task_ids: [ task.id ], user_ids: [ user.id ] } }
+        assert_difference("AssignedTask.count") do
+          post :create, params: { project: {
+            name: "Test Project",
+            description: "Project description",
+            billable: true,
+            rate_nok: 100,
+            client_id: @client.id,
+            user_ids: [ user.id ],
+            assigned_tasks_attributes: [
+              { task_id: task.id }
+            ]
+          } }
+        end
       end
+      new_project = @organization_admin.current_organization.projects.last
+      assert_equal "Test Project", new_project.name
+      assert_redirected_to workspace_project_path(new_project)
+    end
 
-      assert_response :success
+    test "should not create project without assigned_tasks" do
+      user = users(:organization_user)
+      assert_no_difference("Project.count") do
+        post :create, params: { project: {
+          name: "Test Project",
+          description: "Project description",
+          billable: true,
+          rate_nok: 100,
+          client_id: @client.id,
+          user_ids: [ user.id ]
+        } }
+      end
+      assert_response :unprocessable_entity
     end
 
     test "should show project" do
@@ -40,7 +68,9 @@ module Workspace
     test "should update project" do
       user = users(:ron)
       patch :update, params: { id: @project.id, project: { name: "Updated Project", user_ids: [ user.id ] } }
-      assert_response :success
+
+      assert_redirected_to workspace_project_path(@project)
+      assert @project.name, "Updated Project"
     end
 
     test "should destroy project" do
@@ -49,30 +79,16 @@ module Workspace
         delete :destroy, params: { id: to_delete_project.id }
       end
 
-      assert_response :success
+      assert_response :redirect
     end
 
     test "should archive assigned_task task with time_regs" do
-      task_ids = @project.tasks.ids
-      task_ids.pop
+      active_assigned_task = @project.active_assigned_tasks.first
 
       assert_difference("@project.active_assigned_tasks.count", -1) do
-        patch :update, params: { id: @project.id, project: { task_ids: task_ids } }
+        patch :update, params: { id: @project.id, project: { assigned_tasks_attributes: [ { id: active_assigned_task.id, _destroy: true } ] } }
       end
-    end
-
-    test "should create assigned_task task" do
-      project_tasks = @project.tasks
-      non_project_task = @tasks.where.not(id: project_tasks).first
-      task_ids = project_tasks.ids + [ non_project_task.id ]
-
-      assert_difference("AssignedTask.count", 1) do
-        patch :update, params: { id: @project.id, project: { task_ids: task_ids } }
-      end
-
-      assert_equal non_project_task, AssignedTask.last.task
-      assert_not AssignedTask.last.is_archived
-      assert_equal @project, AssignedTask.last.project
+      assert_redirected_to workspace_project_path(@project)
     end
   end
 end

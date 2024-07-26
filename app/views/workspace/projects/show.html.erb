@@ -1,16 +1,19 @@
-<div class="flex flex-col gap-y-8" id=<%= "#{dom_id(@project)}_show" %>>
+<div class="flex flex-col gap-y-8">
   <div class="flex flex-row justify-between items-start border-b border-gray-100 py-3">
-    <div class="flex flex-row items-start gap-x-2">
-      <%= link_to workspace_projects_path, class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out" do %>
+    <div class="flex flex-row items-center gap-x-3">
+      <%= link_to_back_or workspace_projects_path, class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out" do %>
         <i class="uc-icon text-2xl">&#xe833;</i>
       <% end %>
-      <div class="flex flex-col gap-y-2">
-        <span class="font-medium text-gray-600 text-lg"><%= @project.name %></span>
+      <div class="flex flex-col">
+        <div class="font-medium text-gray-600 text-lg flex items-center gap-x-2">
+          <span><%= @project.name %></span>
+          <%= render PhlexUI::Badge.new(variant: :purple, class: "!rounded-full flex gap-x-1") { t("common.project") } %>
+        </div>
         <span class="text-gray-500 text-sm font-regular"><%= @project.description %></span>
       </div>
     </div>
     <div class="flex flex-row gap-2">
-      <%= render ButtonComponent.new(path: edit_modal_workspace_project_path(@project), method: :put, variant: :outline) do %>
+      <%= render ButtonComponent.new(path: edit_workspace_project_path(@project), method: :get, variant: :outline) do %>
         <span class="hidden lg:block mr-2"><%= t("common.edit")%></span>
         <i class="uc-icon">&#xe972;</i>
       <% end %>
@@ -23,6 +26,11 @@
           <i class="uc-icon">&#xeb97;</i>
         <% end %>
       <% end %>
+
+      <%= render ButtonComponent.new(path: organizations_reports_path(filter: { project_id: @project.id, category: :tasks, time_frame: :month }), method: :get, variant: :outline) do %>
+        <span class="hidden lg:block mr-2"><%= t("common.report")%></span>
+        <i class="uc-icon">&#xea07;</i>
+      <% end %>
     </div>
   </div>
   <div class="mt-4 flex flex-col gap-y-8 lg:gap-y-12 overflow-y-auto px-4">
@@ -32,7 +40,7 @@
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
         <span class="font-regular"><%= t("common.client")%></span>
-        <span class="font-semibold"><%= @project.client.name %></span>
+        <%= link_to @project.client.name, workspace_client_path(@project.client), class: "font-semibold underline text-primary" %>
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
         <span class="font-regular"><%= t("common.rate")%></span>
@@ -60,12 +68,6 @@
         <%= render partial: "workspace/projects/assigned_task", collection: @active_assigned_tasks %>
       <% end %>
       <%= render PaginationComponent.new(pagy: @pagy, path: workspace_project_path(@project)) if @pagy.pages > 1 %>
-      <div class="mt-2 py-4 font-medium flex flex-row gap-x-1 justify-end">
-        <span><%= t("common.need_to_add_more_tasks")%></span>
-        <%= render ButtonComponent.new(path: new_modal_workspace_project_assigned_task_path(@project), method: :post, variant: :link, class!: "underline text-primary") do %>
-          <span class="mr-2"><%= t("common.add_more")%></span>
-        <% end %>
-      </div>
     </div>
   </div>
 </div>

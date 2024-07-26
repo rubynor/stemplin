@@ -15,6 +15,7 @@ module Stemplin
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
     config.i18n.available_locales = [ :en, :nb ]
+    config.active_job.queue_adapter = :sidekiq
 
     # Using custom controller ErrorsController for exceptions
     config.exceptions_app = self.routes

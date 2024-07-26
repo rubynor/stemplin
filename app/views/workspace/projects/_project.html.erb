@@ -1,41 +1,50 @@
 <%= render PhlexUI::Table::Row.new(id: "#{dom_id(project)}_listitem") do %>
   <%= render PhlexUI::Table::Cell.new do %>
-    <%= link_to workspace_project_path(project), class: "flex flex-col" do %>
+    <%= link_to workspace_project_path(project), class: "flex flex-col pl-2" do %>
       <div class="flex flex-row items-center gap-x-1">
         <span class="font-medium text-gray-700 text-sm"><%= project.name %></span>
-        <%= render PhlexUI::Badge.new(variant: project.billable ? :green : :gray, class: "!rounded-full flex gap-x-1") do %>
-          <span><%= project.billable ? t("common.billable") : t("common.non_billable") %></span>
-        <% end %>
       </div>
-      <div class="w-36 lg:w-48 xl:w-64 truncate">
+      <div class="w-32 sm:w-64 lg:w-80 xl:w-96 truncate">
         <span class="text-gray-500 text-xs"><%= project.description %></span>
       </div>
     <% end %>
   <% end %>
-  <%= render PhlexUI::Table::Cell.new { project.client.name } %>
-  <%= render PhlexUI::Table::Cell.new do %>
-    <div>
-      <span class="text-gray-400">NOK</span>
-      <span class="font-medium"><%= project.rate_nok %></span>
-    </div>
+
+  <%= render PhlexUI::Table::Cell.new(class: "w-36") do %>
+    <% if project.billable %>
+      <div>
+        <span class="text-gray-400">NOK</span>
+        <span class="font-medium"><%= project.rate_nok %></span>
+      </div>
+    <% else %>
+      <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") do %>
+        <span><%= t("common.non_billable") %></span>
+      <% end %>
+    <% end %>
   <% end %>
-  <%= render PhlexUI::Table::Cell.new do %>
-    <div class="flex flex-row gap-x-2">
-      <%= render ButtonComponent.new(path: workspace_project_path(project), method: :get, variant: :outline) do %>
-        <i class="uc-icon text-gray-500">&#xe9a8;</i>
-      <% end %>
-      <%= render ButtonComponent.new(path: edit_modal_workspace_project_path(project), method: :put, variant: :outline) do %>
-        <i class="uc-icon text-gray-500">&#xe972;</i>
-      <% end %>
 
-      <%- has_time_regs = project.time_regs.any? %>
-      <%- turbo_body = has_time_regs ? "The project <span class='font-semibold text-primary'>#{project.name}</span> has time registrations and can not be deleted." : "#{t("description.proceed_deletion_of_the_task")} <span class='font-semibold text-primary'>#{project.name}</span>, #{t("common.cannot_be_undone")}" %>
-
-      <%= render TooltipComponent.new(note: has_time_regs ? t("common.project_has_recorded_time") : nil) do %>
-        <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_project_path(project), disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body } }) do %>
-          <i class="uc-icon">&#xeb97;</i>
+  <%= render PhlexUI::Table::Cell.new(class: "flex justify-center") do %>
+    <%= render PhlexUI::DropdownMenu.new(options: { placement: 'bottom-end', offset: 0, duration: 0 }) do %>
+      <%= render PhlexUI::DropdownMenu::Trigger.new do %>
+        <%= render ButtonComponent.new(type: :button, variant: :outline) do %>
+          <i class="uc-icon text-gray-500">&#xe975;</i>
         <% end %>
       <% end %>
-    </div>
+      <%= render PhlexUI::DropdownMenu::Content.new(class: "flex flex-col w-fit min-w-0 !p-0") do %>
+        <%= render ButtonComponent.new(path: edit_workspace_project_path(project), method: :get, variant: :outline, class: "w-full") do %>
+          <span><%= t("common.edit") %></span>
+          <i class="uc-icon text-gray-500 ml-2">&#xe972;</i>
+        <% end %>
+
+        <%- has_time_regs = project.time_regs.any? %>
+        <%- turbo_body = "#{t("description.proceed_deletion_of_the_task")} <span class='font-semibold text-primary'>#{project.name}</span>? #{t("common.cannot_be_undone")}" %>
+        <%= render TooltipComponent.new(note: has_time_regs ? t("common.project_has_recorded_time") : nil, class: "flex", options: { placement: "top" }) do %>
+          <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_project_path(project), class: "flex w-full",  disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body }, class: "w-full" }) do %>
+            <span><%= t("common.delete") %></span>
+            <i class="uc-icon ml-2">&#xeb97;</i>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>

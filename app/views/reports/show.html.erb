@@ -12,17 +12,13 @@
         <% end %>
       </div>
       <%= render CardComponent.new(class: "flex flex-col !p-4 print:!p-0 z-10 print:!border-none print:!shadow-none") do %>
-        <% if @form_data.detailed_report %>
+        <% if @detailed_report_data&.time_regs&.any? %>
           <%= render partial: "reports/details/extended", locals: {
             structured_report_data: @structured_report_data,
             detailed_report_data: @detailed_report_data,
           } %>
         <% else %>
-          <%= render partial: 'reports/details/basic', locals: {
-            form_data: @form_data,
-            structured_report_data: @structured_report_data,
-          }
-          %>
+          <%= render partial: 'reports/details/no_results' %>
         <% end %>
       <% end %>
     </div>

@@ -1,4 +1,4 @@
-<%= render PhlexUI::Popover.new(options: { placement: "bottom-end", trigger: 'click' }, class: "hidden lg:block pl-4 cursor-pointer") do %>
+<%= render PhlexUI::Popover.new(options: { placement: "bottom-end", trigger: 'click', duration: 0 }, class: "hidden lg:block pl-4 cursor-pointer") do %>
   <%= render PhlexUI::Popover::Trigger.new(class: "w-full flex flex-row justify-between items-center gap-x-8") do %>
     <div class="flex flex-row items-center gap-x-2">
       <div class="bg-gray-100 border border-gray-200 p-2 flex justify-center items-center rounded">

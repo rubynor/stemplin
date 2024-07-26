@@ -5,17 +5,19 @@ module  Workspace
     setup do
       @organization_admin = users(:organization_admin)
       sign_in @organization_admin
+
+      @client = clients(:e_corp)
     end
 
-    test "should get index" do
-      get :index
+    test "should show a client" do
+      get :show, params: { id: @client.id }
       assert_response :success
     end
 
-    test "spectator user should not get index" do
+    test "spectator should not show a client" do
       sign_in users(:organization_spectator)
-      get :index
-      assert_redirected_to report_path
+      get :show, params: { id: @client.id }
+      assert_redirected_to root_path
     end
 
     test "should create a client" do

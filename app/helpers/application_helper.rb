@@ -23,4 +23,9 @@ module ApplicationHelper
       raw file.read
     end
   end
+
+  def link_to_back_or(url, **options, &block)
+    dont_use_fallback = request.referer.present? && request.referer != request.original_url
+    link_to((dont_use_fallback ? :back : url), **options, &block)
+  end
 end

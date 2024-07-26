@@ -91,21 +91,44 @@ module Organizations
         @task_3 = Task.create!(name: "Task3", organization: @organization)
         @task_4 = Task.create!(name: "Task4", organization: @organization)
 
-        # Projects
-        @project1 = Project.create!(name: "Project1", client: @client1, rate: 150, billable: true)
-        @project2 = Project.create!(name: "Project2", client: @client1, rate: 200, billable: false)
-        @project3 = Project.create!(name: "Project3", client: @client2, rate: 250, billable: true)
-        @project4 = Project.create!(name: "Project4", client: @client2, rate: 300, billable: true)
+        # Create Projects without validation (because of circular dependency)
+        @project1 = Project.new(name: "Project1", client: @client1, rate: 150, billable: true)
+        @project2 = Project.new(name: "Project2", client: @client1, rate: 200, billable: false)
+        @project3 = Project.new(name: "Project3", client: @client2, rate: 250, billable: true)
+        @project4 = Project.new(name: "Project4", client: @client2, rate: 300, billable: true)
 
-        # AssignedTasks
-        @assigned_task1 = AssignedTask.create!(task: @task1, project: @project1)
-        @assigned_task2 = AssignedTask.create!(task: @task2, project: @project2)
-        @assigned_task3 = AssignedTask.create!(task: @task_3, project: @project3)
-        @assigned_task4 = AssignedTask.create!(task: @task_4, project: @project4)
+        # Create AssignedTasks without validation (because of circular dependency)
+        @assigned_task1 = AssignedTask.new(task: @task1, project: @project1)
+        @assigned_task2 = AssignedTask.new(task: @task2, project: @project2)
+        @assigned_task3 = AssignedTask.new(task: @task_3, project: @project3)
+        @assigned_task4 = AssignedTask.new(task: @task_4, project: @project4)
+        @assigned_task5 = AssignedTask.new(task: @task2, project: @project1, rate: 243)
+        @assigned_task6 = AssignedTask.new(task: @task_4, project: @project3, rate: 300)
+        @assigned_task7 = AssignedTask.new(task: @task_4, project: @project2, rate: 100)
 
-        @assigned_task5 = AssignedTask.create!(task: @task2, project: @project1, rate: 243)
-        @assigned_task6 = AssignedTask.create!(task: @task_4, project: @project3, rate: 300)
-        @assigned_task7 = AssignedTask.create!(task: @task_4, project: @project2, rate: 100)
+        # Save Projects without validation
+        @project1.save!(validate: false)
+        @project2.save!(validate: false)
+        @project3.save!(validate: false)
+        @project4.save!(validate: false)
+
+        # Save AssignedTasks without validation
+        @assigned_task1.save!(validate: false)
+        @assigned_task2.save!(validate: false)
+        @assigned_task3.save!(validate: false)
+        @assigned_task4.save!(validate: false)
+        @assigned_task5.save!(validate: false)
+        @assigned_task6.save!(validate: false)
+        @assigned_task7.save!(validate: false)
+
+        # Validate Projects and AssignedTasks separately
+        [ @project1, @project2, @project3, @project4 ].each do |project|
+          project.validate!
+        end
+
+        [ @assigned_task1, @assigned_task2, @assigned_task3, @assigned_task4, @assigned_task5, @assigned_task6, @assigned_task7 ].each do |assigned_task|
+          assigned_task.validate!
+        end
 
         # TimeRegs
         @time_reg1 = TimeReg.create!(user: @user1, assigned_task: @assigned_task1, minutes: 60, date_worked: Date.today - 1)

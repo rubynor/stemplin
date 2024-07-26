@@ -1,21 +1,9 @@
 <div class="px-4">
   <ul class="space-y-1">
     <li>
-      <%= link_to workspace_clients_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?(workspace_clients_path) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
-        <i class="uc-icon text-xl">&#xe88a;</i>
-        <span><%= t("common.client") %></span>
-      <% end %>
-    </li>
-    <li>
-      <%= link_to workspace_tasks_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?(workspace_tasks_path) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
-        <i class="uc-icon text-xl">&#xe8f2;</i>
-        <span><%= t("common.tasks") %></span>
-      <% end %>
-    </li>
-    <li>
-      <%= link_to workspace_projects_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_projects_path, workspace_project_path(@project || 0)]) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
+      <%= link_to workspace_projects_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_projects_path, new_workspace_project_path, edit_workspace_project_path(@project&.id || 0), workspace_project_path(@project&.id || 0), workspace_client_path(@client&.id || 0)]) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
         <i class="uc-icon text-xl">&#xe94f;</i>
-        <span><%= t("common.projects") %></span>
+        <span><%= t("common.clients_and_projects") %></span>
       <% end %>
     </li>
     <li>

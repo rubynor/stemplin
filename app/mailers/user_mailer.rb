@@ -1,4 +1,4 @@
-class UserMailer < ApplicationMailer
+class UserMailer < Devise::Mailer
   def welcome_email(user:, organization_name:, url:)
     mail(
       to: user.email,

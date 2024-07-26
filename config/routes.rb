@@ -1,3 +1,5 @@
+require "sidekiq/web"
+
 Rails.application.routes.draw do
   devise_for :users, controllers: { invitations: "users/invitations" }
 
@@ -30,22 +32,17 @@ Rails.application.routes.draw do
   namespace :workspace do
     resources :projects do
       post :import_modal, on: :collection
-      post :new_modal, on: :collection
-      put :edit_modal, on: :member
+    end
 
-      scope module: :projects do
-        resources :assigned_tasks do
-          post :new_modal, on: :member
-          post :edit_modal, on: :member
-        end
-
-        resource :tasks do
-          post :new_modal, on: :member
-        end
+    scope module: :projects do
+      resources :assigned_tasks, only: [] do
+        post :add_modal, on: :collection
+        post :add, on: :collection
+        delete :remove, on: :collection
       end
     end
 
-    resources :clients do
+    resources :clients, except: [ :index ] do
       post :new_modal, on: :collection
       post :edit_modal, on: :member
     end
@@ -54,15 +51,11 @@ Rails.application.routes.draw do
       get :invite_users, on: :collection
       put :edit_modal, on: :member
     end
-
-    resources :tasks do
-      post :new_modal, on: :collection
-      post :edit_modal, on: :member
-    end
   end
 
   namespace :organizations do
     resources :reports, only: [ :index ]
+    get "reports/detailed", to: "reports#detailed", as: :detailed_reports
   end
 
   # PWA routes
@@ -70,5 +63,9 @@ Rails.application.routes.draw do
   scope controller: :service_worker do
     get :manifest, format: :json
     get :service_worker, path: "service_worker.js"
+  end
+
+  authenticate :user, ->(u) { u.is_super_admin? } do
+    mount Sidekiq::Web, at: "sidekiq"
   end
 end
