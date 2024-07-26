@@ -16,13 +16,14 @@
             <span class="hidden lg:block">-</span>
             <span class="font-semibold"><%= time_reg.project.name %></span>
           </div>
-          <div>
+          <div class="flex flex-row-reverse lg:flex-row items-center h-fit gap-2">
             <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") do %>
               <i class="uc-icon text-sm text-gray-600">&#xe8bb;</i>
               <span data-refresh-minutes-target="minutes">
                 <%= convert_time_int(time_reg.current_minutes) %>
               </span>
             <% end %>
+            <%= render partial: "zero_minutes_warning", locals: { time_reg: time_reg } %>
           </div>
         </div>
         <div class="w-fit">

@@ -339,6 +339,7 @@ en:
       success: "Success"
   time_regs:
     active_timer_description: "Kindly note that you have an active timer running."
+    zero_minutes: "Zero minutes!"
   organizations:
     reports_filter:
       tabs:

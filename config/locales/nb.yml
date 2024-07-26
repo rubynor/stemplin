@@ -464,6 +464,7 @@ nb:
       success: "Suksess"
   time_regs:
     active_timer_description: "Vær oppmerksom på at du har en stoppeklokke som går."
+    zero_minutes: "Null minutter!"
   organizations:
     reports_filter:
       tabs:

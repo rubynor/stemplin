@@ -1,0 +1,17 @@
+<%= render PhlexUI::Tooltip.new(class: "#{"invisible" unless !time_reg.active? && time_reg.minutes.zero?}") do %>
+  <%= render PhlexUI::Tooltip::Trigger.new do %>
+    <%= render PhlexUI::Badge.new(variant: :red, class: "!rounded-full flex gap-x-1 cursor-default") do %>
+      <span class="flex items-center gap-1">
+        <i class="uc-icon">&#xe99b;</i>
+        <span class="hidden sm:block">
+          <%= t("time_regs.zero_minutes") %>
+        </span>
+      </span>
+    <% end %>
+  <% end %>
+  <%= render PhlexUI::Tooltip::Content.new(class: "sm:hidden") do %>
+    <span>
+      <%= t("time_regs.zero_minutes") %>
+    </span>
+  <% end %>
+<% end %>

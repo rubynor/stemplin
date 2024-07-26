@@ -18,6 +18,7 @@ class TimeRegsController < ApplicationController
     @total_minutes_week = @time_regs_week.sum(&:current_minutes)
     @active_time_reg = authorized_scope(TimeReg, type: :relation, as: :own).all_active.first
     @current_minutes = @active_time_reg&.current_minutes
+    @time_regs_zero_min = @time_regs_week.where(minutes: 0, start_time: nil).group(:date_worked).count
   end
 
   def new_modal
