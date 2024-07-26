@@ -14,7 +14,7 @@ module Organizations
     def detailed
       set_form_data
 
-      total_billable_minutes = @time_regs.joins(:project).where(project: { billable: true }).sum(&:minutes)
+      total_billable_minutes = @time_regs.joins(:project).where(projects: { billable: true }).sum(&:minutes)
       total_minutes = @time_regs.sum(&:minutes)
       clients = authorized_scope(Client, type: :relation).joins(:time_regs).where(time_regs: { id: @time_regs }).distinct
       projects = authorized_scope(Project, type: :relation).joins(:time_regs).where(time_regs: { id: @time_regs }).distinct
