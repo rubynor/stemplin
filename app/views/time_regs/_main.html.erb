@@ -9,7 +9,7 @@
           <% (@chosen_date.beginning_of_week..@chosen_date.end_of_week).each do |given_date| %>
             <div class="relative">
               <%= link_to root_path(date: given_date), class: class_names("flex flex-col items-center lg:items-start p-2 md:p-4 lg:p-6 transition duration-300 ease-in-out",  "bg-gradient-to-t from-pink-50 lg:from-pink-100": given_date == @chosen_date) do %>
-                <%= tag.i "&#xe99b".html_safe, class: class_names("absolute right-0 top-0 md:right-2 md:top-1 uc-icon text-destructive-foreground", "invisible": @time_regs_zero_min[given_date].nil?) %>
+                <%= tag.i "&#xe99b;".html_safe, class: class_names("absolute right-0 top-0 md:right-2 md:top-1 uc-icon text-destructive-foreground text-xs md:text-base", "invisible": @time_regs_zero_min[given_date].nil?) %>
                 <%= content_tag(:span, given_date.strftime("%d"), class: class_names("text-base md:text-xl lg:text-2xl font-regular text-gray-400 transition duration-300 ease-in-out", "text-gray-600 font-semibold": given_date == @chosen_date) ) %>
                 <%= content_tag(:span, l(given_date, format: "%A"), class: class_names("hidden lg:block text-sm font-semibold transition duration-300 ease-in-out", "text-primary": given_date == @chosen_date) ) %>
                 <%= content_tag(:span, l(given_date, format: "%a"), class: class_names("lg:hidden text-sm font-semibold transition duration-300 ease-in-out", "text-primary": given_date == @chosen_date) ) %>

@@ -46,6 +46,10 @@ class TimeReg < ApplicationRecord
     start_time.present?
   end
 
+  def is_zero_minutes?
+    minutes.zero? && !active?
+  end
+
   def toggle_active
     active? ? stop : start
     save!
