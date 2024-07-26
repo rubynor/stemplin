@@ -473,9 +473,13 @@ nb:
     reports_filter:
       tabs:
         clients: Kunder
+        client: Kunde
         projects: Prosjekter
+        project: Prosjekt
         tasks: Oppgaver
+        task: Oppgave
         users: Teammedlemmer
+        user: Teammedlem
       time_frames:
         week: "Uke"
         month: "Måned"

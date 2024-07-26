@@ -1,7 +1,8 @@
 <%= render PhlexUI::Table::Row.new(class: "!py-4") do %>
   <%= render PhlexUI::Table::Cell.new do %>
     <%# TODO: Refactor this and find a way to persist old unchanged query params %>
-    <%= link_to @filter.selected_element_name.present? ? "#" : organizations_reports_path(filter: { **@filter.current_time_range, time_frame: @filter.time_frame, **result[:group_link] }), class: class_names("flex flex-col", @filter.selected_element_name.present? ? "cursor-default" : "underline text-blue-600") do %>
+    <%- disable_link = @filter.visible_tabs.length <= 1 -%>
+    <%= link_to disable_link ? "#" : organizations_reports_path(filter: @filter.to_h(**result[:group_link])), class: class_names("flex flex-col", disable_link ? "cursor-default" : "underline text-blue-600") do %>
       <div class="flex flex-row items-center gap-x-1">
         <span class="font-medium text-sm"><%= result[:attribute_name] %></span>
       </div>

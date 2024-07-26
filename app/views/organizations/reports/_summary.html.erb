@@ -1,4 +1,16 @@
 <div class="flex flex-col lg:flex-row print:!flex-row gap-4 lg:gap-8 xl:gap-12 border-b border-gray-100 py-4 divide-x divide-gray-100">
+  <% unless selected_elements_names.blank? %>
+    <div class="grid grid-cols-2 auto-rows-min gap-2 pl-4 max-w-lg">
+      <% selected_elements_names.each do |element, names| %>
+        <span><%= I18n.t("organizations.reports_filter.tabs.#{names.length > 1 ? element : element.singularize}") %>:</span>
+        <div class="text-primary font-bold">
+          <% names.each do |name| %>
+            <p><%= name %></p>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
   <div class="flex flex-row items-start gap-x-2 pl-4">
     <div class="print:hidden"><i class="uc-icon text-2xl text-gray-300">&#xe8bb;</i></div>
     <div class="flex flex-col">

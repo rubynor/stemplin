@@ -10,7 +10,6 @@
   <div class="flex flex-col">
     <%= render partial: "organizations/reports/top_nav/selected_time_range" %>
     <% unless @filter.default_period? %>
-      <%# TODO: Find a better way to persist query params %>
       <%= link_to organizations_reports_path(filter: { category: @filter.category }), class: "text-xs text-gray-400 underline" do %>
         <span>Reset default</span>
         <i class="uc-icon">&#xeb8c;</i>

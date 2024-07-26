@@ -12,6 +12,8 @@ module Organizations
     end
 
     def detailed
+      set_form_data
+
       total_billable_minutes = @time_regs.joins(:project).where(project: { billable: true }).sum(&:minutes)
       total_minutes = @time_regs.sum(&:minutes)
       clients = authorized_scope(Client, type: :relation).joins(:time_regs).where(time_regs: { id: @time_regs }).distinct
@@ -34,7 +36,7 @@ module Organizations
     private
 
     def filter_params
-      params.fetch(:filter, {}).permit(:start_date, :end_date, :category, :time_frame, Organizations::Reports::Filter::FILTER_MAPPINGS.keys)
+      params.fetch(:filter, {}).permit(:start_date, :end_date, :category, :time_frame, client_ids: [], project_ids: [], user_ids: [], task_ids: [])
     end
 
     def set_time_regs
@@ -51,6 +53,33 @@ module Organizations
       end
 
       collection
+    end
+
+    def set_form_data
+      @form_data = OpenStruct.new(
+        selectable_clients: authorized_scope(Client, type: :relation).order(:name),
+        selectable_projects: authorized_scope(Project, type: :relation).order(:name),
+        selectable_tasks: authorized_scope(Task, type: :relation).order(:name),
+        selectable_users: authorized_scope(User, type: :relation).order(:last_name),
+      )
+
+      unless @filter.client_ids.blank?
+        @form_data.selectable_projects = authorized_scope(Project, type: :relation).joins(:client)
+                                                .where(client: { id: @filter.client_ids })
+                                                .distinct.order(:name)
+      end
+
+      unless @filter.project_ids.blank?
+        @form_data.selectable_tasks = authorized_scope(Task, type: :relation).joins(:projects)
+                                          .where(projects: { id: @filter.project_ids })
+                                          .distinct.order(:name)
+      end
+
+      unless @filter.project_ids.blank?
+        @form_data.selectable_users = authorized_scope(User, type: :relation).joins(:projects)
+                                          .where(projects: { id: @filter.project_ids })
+                                          .distinct.order(:last_name)
+      end
     end
   end
 end

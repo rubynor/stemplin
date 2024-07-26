@@ -64,7 +64,7 @@ module Organizations
             total_billable_minutes: total_billable_minutes,
             total_billable_amount: total_billable_amount,
             total_billable_minutes_percentage: total_billable_minutes_percentage,
-            group_link: { "#{singular_attribute}_id": group.id, category: @filter_class.new(category: attribute).possible_tabs_for(attribute).first }
+            group_link: { "#{singular_attribute}_ids": [ group.id ], category: nil }
           }
         end
       end

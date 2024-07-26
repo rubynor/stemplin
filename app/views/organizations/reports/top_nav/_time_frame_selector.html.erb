@@ -1,6 +1,5 @@
 <div class="border border-gray-200 shadow-sm rounded flex flex-row items-center bg-white h-full print:hidden">
-  <%# TODO: Find a better way to persist query params %>
-  <%= link_to organizations_reports_path(filter: { **@filter.previous_period, category: @filter.category, time_frame: @filter.time_frame }), class: "p-2 transform rotate-180" do %>
+  <%= link_to organizations_reports_path(filter: @filter.to_h(**@filter.previous_period)), class: "p-2 transform rotate-180" do %>
     <i class="uc-icon text-gray-600 text-xl">&#xe81f;</i>
   <% end %>
   <div class="border-l border-r border-gray-100 h-full p-2">
@@ -20,7 +19,7 @@
       <% end %>
     <% end %>
   </div>
-  <%= link_to organizations_reports_path(filter: { **@filter.next_period, category: @filter.category, time_frame: @filter.time_frame }), class: "p-2" do %>
+  <%= link_to organizations_reports_path(filter: @filter.to_h(**@filter.next_period)), class: "p-2" do %>
     <i class="uc-icon text-gray-600 text-xl">&#xe81f;</i>
   <% end %>
 </div>

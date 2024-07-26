@@ -40,7 +40,7 @@ module Organizations
             total_billable_minutes: total_billable_minutes,
             total_billable_amount: ConvertKroneOre.out(billable_time_regs.sum(&:billed_amount)),
             total_billable_minutes_percentage: (total_billable_minutes / total_minutes.to_f * 100).truncate(2),
-            group_link: { "#{singular_attribute}_id": group.id, category: @filter.possible_tabs_for(attribute).first }
+            group_link: { "#{singular_attribute}_ids": [ group.id ], category: nil }
           }
         end
       end

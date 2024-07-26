@@ -1,5 +1,4 @@
 <%= form_with scope: :filter, url: organizations_reports_path, method: :get, class: "flex flex-col lg:flex-row lg:items-center gap-4" do |form| %>
-  <%# TODO: Find a better way to persist query params %>
   <%= form.hidden_field :category, value: @filter.category %>
   <%= form.hidden_field :time_frame, value: @filter.time_frame %>
   <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
