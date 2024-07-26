@@ -30,9 +30,8 @@ module TimeRegsHelper
     time_reg.new_record? ? t("common.create_time_reg") : t("common.update_time_reg")
   end
 
-  def inactive_text(time_reg, chosen_date)
-    inactive_text_value = chosen_date == Date.today ? t("common.start_timer") : t("common.create_time_reg")
-    inactive_text_value = t("common.update_time_reg") if !time_reg.new_record? && time_reg.minutes.zero?
-    inactive_text_value
+  def inactive_text(time_reg)
+    return t("common.update_time_reg") if !time_reg.new_record?
+    time_reg.date_worked == Date.today ? t("common.start_timer") : t("common.create_time_reg")
   end
 end

@@ -10,7 +10,7 @@
         controller: "custom-input custom-disable", 
         custom_disable_initial_status_value: time_reg.task.present?, 
         "custom-input-active_text_value": active_text(time_reg), 
-        "custom-input-inactive_text_value": inactive_text(time_reg, @chosen_date)
+        "custom-input-inactive_text_value": inactive_text(time_reg)
       }) do |form| %>
         <%= render PhlexUI::Dialog::Header.new do %>
           <%= render PhlexUI::Dialog::Title.new { title } %>

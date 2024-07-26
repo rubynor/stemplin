@@ -22,7 +22,7 @@ class TimeRegsController < ApplicationController
   end
 
   def new_modal
-    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new
+    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(date_worked: @chosen_date)
     authorize! @time_reg
     if current_user.current_organization.projects.empty?
       flash[:alert] = I18n.t("alert.create_project_before_registering_time")
