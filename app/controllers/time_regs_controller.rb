@@ -18,10 +18,11 @@ class TimeRegsController < ApplicationController
     @total_minutes_week = @time_regs_week.sum(&:current_minutes)
     @active_time_reg = authorized_scope(TimeReg, type: :relation, as: :own).all_active.first
     @current_minutes = @active_time_reg&.current_minutes
+    @time_regs_zero_min = @time_regs_week.where(minutes: 0, start_time: nil).group(:date_worked).count
   end
 
   def new_modal
-    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new
+    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(date_worked: @chosen_date)
     authorize! @time_reg
     if current_user.current_organization.projects.empty?
       flash[:alert] = I18n.t("alert.create_project_before_registering_time")
