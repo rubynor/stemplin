@@ -78,5 +78,7 @@ document.addEventListener('turbo:load', () => {
   application.register("flatpickr", FlatpickrController);
 });
 
+import LottieFileController from "./lottie_file_controller";
+application.register("lottie-file", LottieFileController);
 
 // TODO: fetch controllers from app/javascript/controllers/**/*_controller.js and load/register everything automatically, the filename of the controller will then be used as the controller identifier in the DOM

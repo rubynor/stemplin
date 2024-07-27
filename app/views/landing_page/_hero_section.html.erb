@@ -1,0 +1,29 @@
+<section class="section-container">
+  <div class="grid grid-cols-1 md:grid-cols-2">
+    <div class="flex flex-col py-4 lg:py-8 xl:py-16 gap-y-4 lg:gap-y-8">
+      <div class="hero-txt flex flex-col">
+        <span class="text-6xl font-bold text-new-primary leading-none lg:leading-tight">Streamline<br />your<br />workflow</span>
+      </div>
+      <span class="text-sm lg:text-base font-regular text-new-secondary-text">Boost collaboration and simplify project execution.<br /> Assign tasks, tract time and generate insightful reports all in one place.</span>
+      <div class="flex flex-row items-center gap-x-4 lg:gap-x-8">
+        <%= render ButtonComponent.new(variant: :primary, class: "!bg-new-primary") { "Get Started" } %>
+        <%= link_to "#{new_user_session_url}", class: "text-new-primary flex items-center gap-x-1" do %>
+          <i class="uc-icon text-2xl">&#xead0;</i>
+          <span class="font-medium text-base">Watch a demo</span>
+        <% end %>
+      </div>
+    </div>
+    <div class="hidden md:block relative">
+      <%= image_tag "hero_section.svg", class: "hero-img" %>
+      <%#= content_tag(:canvas, data: { controller: "lottie-file", lottie_file_options_value: {}, lottie_file_src_value: "https://lottie.host/4db68bbd-31f6-4cd8-84eb-189de081159a/IGmMCqhzpt.lottie" }) %>
+<!--      <canvas-->
+<!--        id="canvas-lottie"-->
+<!--        data-controller="lottie-file"-->
+<!--        data-lottie-file-options-value='{}'-->
+<!--        class="hero-img"-->
+<!--        style="width:1200px; height: 1200px"-->
+<!--        data-lottie-file-src-value="<%#= asset_path("lottie/hero_section.json") %>">-->
+<!--      </canvas>-->
+    </div>
+  </div>
+</section>

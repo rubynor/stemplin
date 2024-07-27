@@ -2,6 +2,7 @@
 @import "./snackbar.css";
 @import "./file_upload.css";
 @import "./flatpickr.css";
+@import "./landing_page.css";
 
 @tailwind base;
 @tailwind components;
@@ -36,6 +37,11 @@
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
     --radius: 0.5rem;
+    /* I'm adding here below new palette, i'll clean this up and merge with our current colors */
+    --new-primary: #282661;
+    --new-secondary: #ef7e56;
+    --new-primary-text: #212121;
+    --new-secondary-text: #757575;
   }
 
   .dark {

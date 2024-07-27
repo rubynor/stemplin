@@ -71,6 +71,10 @@ module.exports = {
           DEFAULT: "var(--accent)",
           foreground: "var(--accent-foreground)",
         },
+        "new-primary": "var(--new-primary)",
+        "new-secondary": "var(--new-secondary)",
+        "new-primary-text": "var(--new-primary-text)",
+        "new-secondary-text": "var(--new-secondary-text)",
       },
       fontFamily: {
         montserrat: ["Montserrat", ...defaultTheme.fontFamily.sans],

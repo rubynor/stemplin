@@ -1,0 +1,20 @@
+<nav class="section-container">
+  <div class=" flex justify-between items-center py-4">
+    <%= image_tag "stemplin-logo-dark.svg", class: "w-24 md:w-36" %>
+    <div class="flex items-center gap-x-4 hidden lg:block">
+      <%= link_to "#", class: "border-b-2 border-new-secondary p-2" do %>
+        <span class="font-semibold text-new-primary">Home</span>
+      <% end %>
+      <%= link_to "#services", class: "p-2 nav-link group" do %>
+        <span class="font-regular text-gray-600 opacity-70 group-hover:opacity-100 transition duration-400">Services</span>
+      <% end %>
+      <%= link_to "#testimonials", class: "p-2 nav-link group" do %>
+        <span class="font-regular text-gray-600 opacity-70 group-hover:opacity-100 transition duration-400">Testimonials</span>
+      <% end %>
+    </div>
+    <div class="flex gap-x-6 items-center">
+      <%= link_to "Login", new_user_session_url, class: "text-gray-600 hover:text-new-primary transition duration-300" %>
+      <%= render ButtonComponent.new(variant: :primary, class: "!bg-new-primary") { "Signup" } %>
+    </div>
+  </div>
+</nav>
