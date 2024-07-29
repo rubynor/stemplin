@@ -36,8 +36,9 @@ class User < ApplicationRecord
     access_info&.organization_admin?
   end
 
-  def organization_spectator?
-    access_info&.organization_spectator?
+  def spectator_in_organization?(organization)
+    false unless organization
+    access_infos.find_by(organization: organization, role: :organization_spectator).present?
   end
 
   def current_organization
