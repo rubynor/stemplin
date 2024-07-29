@@ -28,7 +28,7 @@ class TimeRegsController < ApplicationController
 
     # Autofill with previous task if available
     unless @time_reg.assigned_task_id
-      previous_time_reg = authorized_scope(TimeReg, type: :relation, as: :own).where("date_worked < ?", @chosen_date).order(:date_worked).last
+      previous_time_reg = authorized_scope(TimeReg, type: :relation, as: :own).order(:created_at).last
       @time_reg.assigned_task_id = previous_time_reg&.assigned_task_id
     end
     set_assigned_tasks
