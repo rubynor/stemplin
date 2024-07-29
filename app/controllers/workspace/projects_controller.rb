@@ -1,6 +1,6 @@
 module Workspace
   class ProjectsController < WorkspaceController
-    before_action :set_project, except: %i[new index create import_modal]
+    before_action :set_project_and_members, except: %i[new index create import_modal]
     before_action :prepare_form_data, only: %i[new edit create update]
 
     def new
@@ -72,10 +72,10 @@ module Workspace
       proj_params.except(:user_ids)
     end
 
-    def set_project
+    def set_project_and_members
       @project = authorized_scope(Project, type: :relation).find(params[:id])
-      @pagy, @active_assigned_tasks = pagy @project.active_assigned_tasks, items: 6
-      @members = @project.users
+      @pagy_active_assigned_tasks, @active_assigned_tasks = pagy @project.active_assigned_tasks, items: 6
+      @pagy_members, @members = pagy @project.users, items: 6
     end
 
     def prepare_form_data
