@@ -40,14 +40,21 @@
     </div>
   </div>
   <div class="flex gap-x-4 justify-end">
-    <%= render ButtonComponent.new(path: time_reg_toggle_active_path(time_reg), method: :patch, class: "gap-x-2", variant: time_reg.active? ? :secondary : :outline, disabled: time_reg.date_worked != Date.today && !time_reg.active?) do %>
-    <% if time_reg.active? %>
-      <i class="uc-icon text-base">&#xeb59;</i>
+    <% if time_reg.date_worked != Date.today && !time_reg.active? %>
+      <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: Date.today, assigned_task_id: time_reg.assigned_task_id, notes: time_reg.notes), method: :post, class: "gap-x-2", variant: :outline) do %>
+        <i class="uc-icon text-base">&#xe9c7;</i>
+        <span class="hidden md:block"><%= t("common.copy_to_today") %></span>
+      <% end %>
     <% else %>
-      <i class="uc-icon text-base">&#xead1;</i>
+      <%= render ButtonComponent.new(path: time_reg_toggle_active_path(time_reg), method: :patch, class: "gap-x-2", variant: time_reg.active? ? :secondary : :outline) do %>
+        <% if time_reg.active? %>
+          <i class="uc-icon text-base">&#xeb59;</i>
+        <% else %>
+          <i class="uc-icon text-base">&#xead1;</i>
+        <% end %>
+        <span class="hidden md:block"><%= time_reg.active? ? t("common.stop") : t("common.start") %></span>
+      <% end %>
     <% end %>
-    <span class="hidden md:block"><%= time_reg.active? ? t("common.stop") : t("common.start") %></span>
-  <% end %>
 
     <%= render ButtonComponent.new(path: edit_modal_time_reg_path(time_reg, date: @chosen_date), method: :put, class: "gap-x-2", variant: :outline) do %>
       <i class="uc-icon text-base">&#xe972;</i>

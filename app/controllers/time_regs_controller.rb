@@ -22,8 +22,17 @@ class TimeRegsController < ApplicationController
   end
 
   def new_modal
-    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(date_worked: @chosen_date)
+    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(params.permit(:assigned_task_id, :notes))
+    @time_reg.date_worked = @chosen_date
     authorize! @time_reg
+
+    # Autofill with previous task if available
+    unless @time_reg.assigned_task_id
+      previous_time_reg = authorized_scope(TimeReg, type: :relation, as: :own).where("date_worked < ?", @chosen_date).order(:date_worked).last
+      @time_reg.assigned_task_id = previous_time_reg&.assigned_task_id
+    end
+    set_assigned_tasks
+
     if current_user.current_organization.projects.empty?
       flash[:alert] = I18n.t("alert.create_project_before_registering_time")
       redirect_back fallback_location: time_regs_path
@@ -122,6 +131,7 @@ class TimeRegsController < ApplicationController
       OpenStruct.new(name: client.name, items: projects)
     end
   end
+
   def set_chosen_date
     @chosen_date = params.has_key?(:date) ? Date.parse(params[:date]) : Date.today
   end

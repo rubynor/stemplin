@@ -230,6 +230,7 @@ en:
     or: "or"
     select_from_existing_tasks: "Select from existing tasks"
     week: "Week"
+    copy_to_today: "Copy to today"
 
   notice:
     are_you_sure: "Are you sure?"
