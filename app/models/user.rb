@@ -36,6 +36,10 @@ class User < ApplicationRecord
     access_info&.organization_admin?
   end
 
+  def organization_spectator?
+    access_info&.organization_spectator?
+  end
+
   def current_organization
     access_info&.organization
   end

@@ -75,6 +75,7 @@ module Workspace
     def set_project
       @project = authorized_scope(Project, type: :relation).find(params[:id])
       @pagy, @active_assigned_tasks = pagy @project.active_assigned_tasks, items: 6
+      @members = @project.users
     end
 
     def prepare_form_data

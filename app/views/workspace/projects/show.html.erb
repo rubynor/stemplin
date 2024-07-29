@@ -57,17 +57,38 @@
         <span class="font-semibold"><%= l(@project.created_at, format: "%A, %d %B %Y") %></span>
       </div>
     </div>
-    <div class="divide-y divide-gray-100 flex flex-col">
-      <div class="flex flex-row items-center gap-x-2 pb-2">
-        <span class="font-medium text-gray-600 text-lg"><%= t("common.tasks")%></span>
-        <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
-          <span class="text-gray-700 text-xs font-semibold"><%= @pagy.count %></span>
-        </div>
-      </div>
-      <%= content_tag(:div, id: "#{dom_id(@project)}_assigned_tasks", class: "divide-y divide-gray-100") do %>
-        <%= render partial: "workspace/projects/assigned_task", collection: @active_assigned_tasks %>
+    <%= render PhlexUI::Tabs.new(default: "tasks") do %>
+      <%= render PhlexUI::Tabs::List.new(class: "border-b-2 h-fit w-full !p-0 rounded-none !justify-start") do %>
+        <%= render PhlexUI::Tabs::Trigger.new(value: "tasks", class!: "h-full py-4 transition duration-300 ease-in-out px-4 data-[state=active]:text-primary  data-[state=active]:font-semibold border-b-2 border-transparent data-[state=active]:border-primary") do %>
+          <div class="flex flex-row items-center gap-x-2 pb-2">
+            <span class="font-medium text-gray-600 text-lg"><%= t("common.tasks")%></span>
+            <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
+              <span class="text-gray-700 text-xs font-semibold"><%= @pagy.count %></span>
+            </div>
+          </div>
+        <% end %>
+        <%= render PhlexUI::Tabs::Trigger.new(value: "members", class!: "h-full py-4 transition duration-300 ease-in-out px-4 data-[state=active]:text-primary  data-[state=active]:font-semibold border-b-2 border-transparent data-[state=active]:border-primary") do %>
+          <div class="flex flex-row items-center gap-x-2 pb-2">
+            <span class="font-medium text-gray-600 text-lg"><%= t("common.members")%></span>
+            <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
+              <span class="text-gray-700 text-xs font-semibold"><%= @members.count %></span>
+            </div>
+          </div>
+        <% end %>
       <% end %>
-      <%= render PaginationComponent.new(pagy: @pagy, path: workspace_project_path(@project)) if @pagy.pages > 1 %>
-    </div>
+      <%= render PhlexUI::Tabs::Content.new(value: "tasks") do %>
+        <%= content_tag(:div, id: "#{dom_id(@project)}_assigned_tasks", class: "divide-y divide-gray-100") do %>
+          <%= render partial: "workspace/projects/assigned_task", collection:  @active_assigned_tasks %>
+        <% end %>
+        <%= render PaginationComponent.new(pagy: @pagy, path: workspace_project_path(@project)) if @pagy.pages > 1 %>
+      <% end %>
+
+      <%= render PhlexUI::Tabs::Content.new(value: "members") do %>
+        <p class="mt-6"><%= raw t("common.users_project_access") %></p>
+        <%= content_tag(:div, id: "#{dom_id(@project)}_members", class: "divide-y divide-gray-100") do %>
+          <%= render partial: "workspace/projects/member", collection: @members %>
+        <% end %>
+      <% end %>
+    <% end %>
   </div>
 </div>
