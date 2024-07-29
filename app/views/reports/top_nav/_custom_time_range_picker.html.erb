@@ -1,4 +1,4 @@
-<%= form_with scope: :filter, url: organizations_reports_path, method: :get, class: "flex flex-col lg:flex-row lg:items-center gap-4" do |form| %>
+<%= form_with scope: :filter, url: reports_path, method: :get, class: "flex flex-col lg:flex-row lg:items-center gap-4" do |form| %>
   <% @filter.to_h(start_date: nil, end_date: nil).each do |key, value| %>
     <% if value.is_a?(Array) %>
       <% value.each do |v| %>
@@ -34,7 +34,7 @@
     <% end %>
   <% end %>
   <div class="flex flex-row items-center gap-x-4">
-    <%= link_to organizations_reports_path(filter: @filter.to_h(time_frame: nil, start_date: nil, end_date: nil)), class: "text-xs text-gray-400 underline text-nowrap" do %>
+    <%= link_to reports_path(filter: @filter.to_h(time_frame: nil, start_date: nil, end_date: nil)), class: "text-xs text-gray-400 underline text-nowrap" do %>
       <span><%= t('common.reset') %></span>
       <i class="uc-icon">&#xeb8c;</i>
     <% end %>

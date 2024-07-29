@@ -1,6 +1,5 @@
-module Organizations
-  module Reports
-    class Summary
+module Reports
+  class Summary
     def initialize(time_regs:)
       @time_regs = time_regs
     end
@@ -23,7 +22,6 @@ module Organizations
 
     def total_non_billable_minutes
       total_minutes - total_billable_minutes
-    end
     end
   end
 end

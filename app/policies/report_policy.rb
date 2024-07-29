@@ -1,5 +1,5 @@
 class ReportPolicy < ApplicationPolicy
-  %i[ show update export ].each do |action|
+  %i[ index detailed ].each do |action|
     define_method("#{action}?") { true }
   end
 end

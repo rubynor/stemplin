@@ -1,8 +1,8 @@
-<%= render partial: "organizations/reports/details/filter", locals: { filter: @filter, form_data: @form_data } %>
+<%= render partial: "reports/details/filter", locals: { filter: @filter, form_data: @form_data } %>
 <div class="py-4 lg:py-6 px-4">
   <div class="max-w-7xl mx-auto flex flex-col gap-y-4 print:gap-y-2">
     <div class="flex justify-between items-center py-3 print:py-1">
-      <%= link_to organizations_reports_path(filter: @filter.to_h), class: "print:!hidden w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out" do %>
+      <%= link_to reports_path(filter: @filter.to_h), class: "print:!hidden w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out" do %>
         <i class="uc-icon text-2xl">&#xe833;</i>
       <% end %>
       <div class="ml-5 mr-auto print:m-0">
@@ -14,7 +14,7 @@
       <% end %>
     </div>
     <%= render CardComponent.new(class: "flex flex-col !p-4 print:!p-0 z-10 print:!border-none print:!shadow-none") do %>
-      <%= render partial: "organizations/reports/details/extended", locals: {
+      <%= render partial: "reports/details/extended", locals: {
         structured_report_data: @structured_report_data,
         detailed_report_data: @detailed_report_data,
       } %>

@@ -1,11 +1,11 @@
 <div class="bg-gray-100 border-b py-4 border-gray-200 px-4 print:hidden">
   <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between lg:items-center gap-y-6 lg:gap-y-0">
-    <%= render partial: "organizations/reports/top_nav/period_indicator" %>
+    <%= render partial: "reports/top_nav/period_indicator" %>
     <div class="flex lg:items-center gap-x-4">
       <% if @filter.is_custom_time_frame? %>
-        <%= render partial: "organizations/reports/top_nav/custom_time_range_picker" %>
+        <%= render partial: "reports/top_nav/custom_time_range_picker" %>
       <% else %>
-        <%= render partial: "organizations/reports/top_nav/time_frame_selector" %>
+        <%= render partial: "reports/top_nav/time_frame_selector" %>
       <% end %>
     </div>
   </div>
