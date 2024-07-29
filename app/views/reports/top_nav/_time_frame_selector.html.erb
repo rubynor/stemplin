@@ -1,5 +1,5 @@
 <div class="border border-gray-200 shadow-sm rounded flex flex-row items-center bg-white h-full print:hidden">
-  <%= link_to organizations_reports_path(filter: @filter.to_h(**@filter.previous_period)), class: "p-2 transform rotate-180" do %>
+  <%= link_to reports_path(filter: @filter.to_h(**@filter.previous_period)), class: "p-2 transform rotate-180" do %>
     <i class="uc-icon text-gray-600 text-xl">&#xe81f;</i>
   <% end %>
   <div class="border-l border-r border-gray-100 h-full p-2">
@@ -10,7 +10,7 @@
       <% end  %>
       <%= render PhlexUI::Popover::Content.new(class: "divide-y divide-gray-50 w-48") do %>
         <% @filter.time_frames.each do |time_frame| %>
-          <%= render PhlexUI::Link.new(href: organizations_reports_path(filter: @filter.to_h(time_frame: time_frame[:value], start_date: nil, end_date: nil)), variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+          <%= render PhlexUI::Link.new(href: reports_path(filter: @filter.to_h(time_frame: time_frame[:value], start_date: nil, end_date: nil)), variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
             <div class="w-full flex justify-start items-center gap-x-1">
               <%= render PhlexUI::Label.new(class: "capitalize") { time_frame[:label] } %>
             </div>
@@ -19,7 +19,7 @@
       <% end %>
     <% end %>
   </div>
-  <%= link_to organizations_reports_path(filter: @filter.to_h(**@filter.next_period)), class: "p-2" do %>
+  <%= link_to reports_path(filter: @filter.to_h(**@filter.next_period)), class: "p-2" do %>
     <i class="uc-icon text-gray-600 text-xl">&#xe81f;</i>
   <% end %>
 </div>

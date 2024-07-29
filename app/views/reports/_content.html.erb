@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center py-3 print:py-1">
       <div class="flex flex-row items-center gap-x-2">
         <% unless @filter.selected_elements_names.blank? %>
-          <%= link_to organizations_reports_path(filter: { **@filter.current_time_range, time_frame: @filter.time_frame }), class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out print:hidden" do %>
+          <%= link_to reports_path(filter: { **@filter.current_time_range, time_frame: @filter.time_frame }), class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out print:hidden" do %>
             <i class="uc-icon text-2xl">&#xe833;</i>
           <% end %>
         <% end %>
@@ -11,7 +11,7 @@
           <span><%= t('common.report') %></span>
           <div class="hidden print:block">
             <span>-</span>
-            <%= render partial: "organizations/reports/top_nav/selected_time_range" %>
+            <%= render partial: "reports/top_nav/selected_time_range" %>
           </div>
         </div>
       </div>
@@ -22,13 +22,13 @@
       <% end %>
     </div>
     <%= render CardComponent.new(class: "flex flex-col !p-4 print:!p-0 z-10 print:!border-none print:!shadow-none") do %>
-      <%= render partial: "organizations/reports/summary", locals:{ selected_elements_names: @filter.selected_elements_names } %>
+      <%= render partial: "reports/summary", locals:{ selected_elements_names: @filter.selected_elements_names } %>
       <div class="flex flex-row items-center border-b w-full overflow-y-auto">
         <% @filter.tabs.each do |tab| %>
-          <%= link_to tab[:label], organizations_reports_path(filter: @filter.to_h(category: tab[:value])), class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out px-4", @filter.active_tab === tab[:value] ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600 print:hidden") %>
+          <%= link_to tab[:label], reports_path(filter: @filter.to_h(category: tab[:value])), class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out px-4", @filter.active_tab === tab[:value] ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600 print:hidden") %>
         <% end %>
         <div class="ml-auto print:hidden">
-          <%= render ButtonComponent.new(path: organizations_detailed_reports_path(filter: @filter.to_h), method: :get, variant: :secondary) do %>
+          <%= render ButtonComponent.new(path: detailed_reports_path(filter: @filter.to_h), method: :get, variant: :secondary) do %>
             <%= t("task.detailed_report") %>
           <% end %>
         </div>
@@ -45,7 +45,7 @@
           <% end %>
           <%= render PhlexUI::Table::Body.new do %>
             <% @results.grouped.each do |result| %>
-              <%= render partial: "organizations/reports/row", locals: { result: result } %>
+              <%= render partial: "reports/row", locals: { result: result } %>
             <% end %>
             <%= render PhlexUI::Table::Row.new(class: "!py-4") do %>
               <%= render PhlexUI::Table::Cell.new(class: "text-sm font-segoe-regular") { t("common.total") } %>

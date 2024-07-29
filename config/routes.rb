@@ -14,8 +14,6 @@ Rails.application.routes.draw do
 
   get "/locale", to: "locale#set_locale", as: "locale"
 
-  resource :report, only: [ :show, :update ]
-
   resources :clients
 
   resources :time_regs do
@@ -53,10 +51,9 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :organizations do
-    resources :reports, only: [ :index ]
-    get "reports/detailed", to: "reports#detailed", as: :detailed_reports
-  end
+  resources :reports, only: [ :index ]
+  get "reports/detailed", to: "reports#detailed", as: :detailed_reports
+
 
   # PWA routes
 
