@@ -73,12 +73,9 @@ module Organizations
         @form_data.selectable_tasks = authorized_scope(Task, type: :relation).joins(:projects)
                                           .where(projects: { id: @filter.project_ids })
                                           .distinct.order(:name)
-      end
-
-      unless @filter.project_ids.blank?
         @form_data.selectable_users = authorized_scope(User, type: :relation).joins(:projects)
                                           .where(projects: { id: @filter.project_ids })
-                                          .distinct.order(:last_name)
+                                          .distinct.ordered_by_name
       end
     end
   end
