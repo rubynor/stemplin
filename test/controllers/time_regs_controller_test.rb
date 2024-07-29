@@ -93,6 +93,6 @@ class TimeRegsControllerTest < ActionController::TestCase
     assert_no_difference("TimeReg.count") do
       post :create, params: { time_reg: { date_worked: @current_date, minutes: 0, project_id: used_project.id, assigned_task_id: used_project.assigned_tasks.first.id } }
     end
-    assert_redirected_to report_path
+    assert_redirected_to organizations_reports_path
   end
 end

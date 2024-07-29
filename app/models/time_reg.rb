@@ -37,10 +37,10 @@ class TimeReg < ApplicationRecord
   scope :all_active, -> { where.not(start_time: nil) }
   scope :billable, -> { joins(:project).where(projects: { billable: true }) }
 
-  scope :by_client, ->(client_id) { joins(project: :client).where(clients: { id: client_id }) }
-  scope :by_project, ->(project_id) { where(assigned_task: AssignedTask.where(project_id: project_id)) }
-  scope :by_user, ->(user_id) { where(user_id: user_id) }
-  scope :by_task, ->(task_id) { where(assigned_task: AssignedTask.where(task_id: task_id)) }
+  scope :by_clients, ->(client_ids) { joins(project: :client).where(clients: { id: client_ids }) }
+  scope :by_projects, ->(project_ids) { where(assigned_task: AssignedTask.where(project_id: project_ids)) }
+  scope :by_users, ->(user_ids) { where(user_id: user_ids) }
+  scope :by_tasks, ->(task_ids) { where(assigned_task: AssignedTask.where(task_id: task_ids)) }
 
   def active?
     start_time.present?

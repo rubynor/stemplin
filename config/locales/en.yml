@@ -347,9 +347,13 @@ en:
     reports_filter:
       tabs:
         clients: Clients
+        client: Client
         projects: Projects
+        project: Project
         tasks: Tasks
+        task: Task
         users: Team members
+        user: Team member
       time_frames:
         week: Week
         month: Month

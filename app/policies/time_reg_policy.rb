@@ -22,7 +22,7 @@ class TimeRegPolicy < ApplicationPolicy
       relation.joins(:organization).where(organizations: organization).distinct
     elsif user.access_info.organization_spectator?
       projects = authorized_scope(Project.all, type: :relation).all
-      relation.joins(:project).where(project: projects).distinct
+      relation.joins(:project).where(projects: projects).distinct
     else
       relation.joins(:organization, :user).where(organizations: organization, users: user).distinct
     end

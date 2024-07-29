@@ -16,10 +16,10 @@ module Organizations
         @filter_class.new(params)
       end
 
-      test "default time range when not set should be current date beginning_of_week and end_of_week" do
+      test "default time range when not set should be current date beginning_of_month and end_of_month" do
         filter = filter_with
-        assert_equal @default_date.beginning_of_week, filter.start_date
-        assert_equal @default_date.end_of_week, filter.end_date
+        assert_equal @default_date.beginning_of_month, filter.start_date
+        assert_equal @default_date.end_of_month, filter.end_date
       end
 
       test "default category should be CLIENTS" do
@@ -27,23 +27,23 @@ module Organizations
         assert_equal @filter_class::CLIENTS, filter.category
       end
 
-      test "default time_frame should be WEEK" do
+      test "default time_frame should be MONTH" do
         filter = filter_with
-        assert_equal @filter_class::WEEK, filter.time_frame
+        assert_equal @filter_class::MONTH, filter.time_frame
       end
 
-      test "#selected_element_name returns the name of the selected element" do
-        filter = filter_with(client_id: @client.id)
-        assert_equal @client.name, filter.selected_element_name
+      test "#selected_element_names returns hash with names of the selected elements" do
+        filter = filter_with(client_ids: [ @client.id ])
+        assert_equal @client.name, filter.selected_elements_names[@filter_class::CLIENTS].first
 
-        filter = filter_with(project_id: @project.id)
-        assert_equal @project.name, filter.selected_element_name
+        filter = filter_with(project_ids: [ @project.id ])
+        assert_equal @project.name, filter.selected_elements_names[@filter_class::PROJECTS].first
 
-        filter = filter_with(task_id: @task.id)
-        assert_equal @task.name, filter.selected_element_name
+        filter = filter_with(task_ids: [ @task.id ])
+        assert_equal @task.name, filter.selected_elements_names[@filter_class::TASKS].first
 
-        filter = filter_with(user_id: @user.id)
-        assert_equal @user.name, filter.selected_element_name
+        filter = filter_with(user_ids: [ @user.id ])
+        assert_equal @user.name, filter.selected_elements_names[@filter_class::USERS].first
       end
 
       test "#next_period increments the period by 1 week when selected time_frame is week" do
@@ -93,25 +93,11 @@ module Organizations
         assert_equal({ start_date: filter.start_date, end_date: filter.end_date }, filter.current_time_range)
       end
 
-      test "#current_selection returns the current selected element" do
-        filter = filter_with(client_id: @client.id)
-        assert_equal({ client_id: @client.id }, filter.current_selection)
-
-        filter = filter_with(project_id: @project.id)
-        assert_equal({ project_id: @project.id }, filter.current_selection)
-
-        filter = filter_with(task_id: @task.id)
-        assert_equal({ task_id: @task.id }, filter.current_selection)
-
-        filter = filter_with(user_id: @user.id)
-        assert_equal({ user_id: @user.id }, filter.current_selection)
-      end
-
       test "#default_period? returns true when the selected time_frame is the default period" do
-        filter = filter_with(start_date: @default_date.beginning_of_week, end_date: @default_date.end_of_week)
+        filter = filter_with(start_date: @default_date.beginning_of_month, end_date: @default_date.end_of_month)
         assert filter.default_period?
 
-        filter = filter_with(start_date: @default_date.beginning_of_month, end_date: @default_date.end_of_month, time_frame: @filter_class::MONTH)
+        filter = filter_with(start_date: @default_date.beginning_of_week, end_date: @default_date.end_of_week, time_frame: @filter_class::WEEK)
         assert filter.default_period?
 
         filter = filter_with(start_date: @default_date.beginning_of_year, end_date: @default_date.end_of_year, time_frame: @filter_class::YEAR)
@@ -130,10 +116,10 @@ module Organizations
       end
 
       test "#valid_time_frame? returns true when the selected time_frame is a valid period range i.e (a week, a month or a year)" do
-        filter = filter_with(start_date: @default_date.beginning_of_week, end_date: @default_date.end_of_week)
+        filter = filter_with(start_date: @default_date.beginning_of_month, end_date: @default_date.end_of_month)
         assert filter.valid_time_frame?
 
-        filter = filter_with(start_date: @default_date.beginning_of_month, end_date: @default_date.end_of_month, time_frame: @filter_class::MONTH)
+        filter = filter_with(start_date: @default_date.beginning_of_week, end_date: @default_date.end_of_week, time_frame: @filter_class::WEEK)
         assert filter.valid_time_frame?
 
         filter = filter_with(start_date: @default_date.beginning_of_year, end_date: @default_date.end_of_year, time_frame: @filter_class::YEAR)
@@ -149,34 +135,17 @@ module Organizations
         filter = filter_with
         assert_equal filter.generate_tabs(*@filter_class::CATEGORIES), filter.tabs
 
-        filter = filter_with(client_id: @client.id)
+        filter = filter_with(client_ids: [ @client.id ])
         assert_equal filter.generate_tabs(*@filter_class::CLIENT_TABS), filter.tabs
 
-        filter = filter_with(project_id: @project.id)
+        filter = filter_with(project_ids: [ @project.id ])
         assert_equal filter.generate_tabs(*@filter_class::PROJECT_TABS), filter.tabs
 
-        filter = filter_with(task_id: @task.id)
+        filter = filter_with(task_ids: [ @task.id ])
         assert_equal filter.generate_tabs(*@filter_class::TASK_TABS), filter.tabs
 
-        filter = filter_with(user_id: @user.id)
+        filter = filter_with(user_ids: [ @user.id ])
         assert_equal filter.generate_tabs(*@filter_class::USER_TABS), filter.tabs
-      end
-
-      test "#possible_tabs_for returns the right tabs for the selected category" do
-        filter = filter_with
-        assert_equal [], filter.possible_tabs_for(:unavailable)
-
-        filter = filter_with
-        assert_equal @filter_class::CLIENT_TABS, filter.possible_tabs_for(@filter_class::CLIENTS)
-
-        filter = filter_with(project_id: @project.id)
-        assert_equal @filter_class::PROJECT_TABS, filter.possible_tabs_for(@filter_class::PROJECTS)
-
-        filter = filter_with(task_id: @task.id)
-        assert_equal @filter_class::TASK_TABS, filter.possible_tabs_for(@filter_class::TASKS)
-
-        filter = filter_with(user_id: @user.id)
-        assert_equal @filter_class::USER_TABS, filter.possible_tabs_for(@filter_class::USERS)
       end
 
       test "#active_tab returns the active tab for the selected category" do
