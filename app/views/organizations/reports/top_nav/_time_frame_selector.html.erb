@@ -10,7 +10,7 @@
       <% end  %>
       <%= render PhlexUI::Popover::Content.new(class: "divide-y divide-gray-50 w-48") do %>
         <% @filter.time_frames.each do |time_frame| %>
-          <%= render PhlexUI::Link.new(href: organizations_reports_path(filter: { category: @filter.category, time_frame: time_frame[:value] }), variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+          <%= render PhlexUI::Link.new(href: organizations_reports_path(filter: @filter.to_h(time_frame: time_frame[:value], start_date: nil, end_date: nil)), variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
             <div class="w-full flex justify-start items-center gap-x-1">
               <%= render PhlexUI::Label.new(class: "capitalize") { time_frame[:label] } %>
             </div>

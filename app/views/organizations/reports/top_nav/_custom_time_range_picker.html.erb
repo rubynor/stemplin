@@ -1,6 +1,14 @@
 <%= form_with scope: :filter, url: organizations_reports_path, method: :get, class: "flex flex-col lg:flex-row lg:items-center gap-4" do |form| %>
-  <%= form.hidden_field :category, value: @filter.category %>
-  <%= form.hidden_field :time_frame, value: @filter.time_frame %>
+  <% @filter.to_h(start_date: nil, end_date: nil).each do |key, value| %>
+    <% if value.is_a?(Array) %>
+      <% value.each do |v| %>
+        <%= hidden_field_tag "filter[#{key}][]", v %>
+      <% end %>
+    <% else %>
+      <%= hidden_field_tag "filter[#{key}]", value %>
+    <% end %>
+  <% end %>
+  
   <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
     <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
       <i class="uc-icon text-sm text-gray-500">&#xe891;</i>
@@ -26,7 +34,7 @@
     <% end %>
   <% end %>
   <div class="flex flex-row items-center gap-x-4">
-    <%= link_to organizations_reports_path(filter: { category: @filter.category }), class: "text-xs text-gray-400 underline text-nowrap" do %>
+    <%= link_to organizations_reports_path(filter: @filter.to_h(time_frame: nil, start_date: nil, end_date: nil)), class: "text-xs text-gray-400 underline text-nowrap" do %>
       <span><%= t('common.reset') %></span>
       <i class="uc-icon">&#xeb8c;</i>
     <% end %>

@@ -10,8 +10,8 @@
   <div class="flex flex-col">
     <%= render partial: "organizations/reports/top_nav/selected_time_range" %>
     <% unless @filter.default_period? %>
-      <%= link_to organizations_reports_path(filter: { category: @filter.category }), class: "text-xs text-gray-400 underline" do %>
-        <span>Reset default</span>
+      <%= link_to organizations_reports_path(filter: @filter.to_h(start_date: nil, end_date: nil)), class: "text-xs text-gray-400 underline" do %>
+        <span><%= t('common.reset') %></span>
         <i class="uc-icon">&#xeb8c;</i>
       <% end %>
     <% end %>
