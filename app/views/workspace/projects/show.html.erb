@@ -80,7 +80,7 @@
         <%= content_tag(:div, id: "#{dom_id(@project)}_assigned_tasks", class: "divide-y divide-gray-100") do %>
           <%= render partial: "workspace/projects/assigned_task", collection:  @active_assigned_tasks %>
         <% end %>
-        <%= render PaginationComponent.new(pagy: @pagy_active_assigned_tasks, path: workspace_project_path(@project), tab: "tasks") if @pagy_active_assigned_tasks.pages > 1 %>
+        <%= render PaginationComponent.new(pagy: @pagy_active_assigned_tasks, path: workspace_project_path(@project), params: { tab: "tasks" }) if @pagy_active_assigned_tasks.pages > 1 %>
       <% end %>
 
       <%= render PhlexUI::Tabs::Content.new(value: "members") do %>
@@ -88,7 +88,7 @@
         <%= content_tag(:div, id: "#{dom_id(@project)}_members", class: "divide-y divide-gray-100") do %>
           <%= render partial: "workspace/projects/member", collection: @members %>
         <% end %>
-        <%= render PaginationComponent.new(pagy: @pagy_members, path: workspace_project_path(@project), tab: "members") if @pagy_members.pages > 1 %>
+        <%= render PaginationComponent.new(pagy: @pagy_members, path: workspace_project_path(@project), params: { tab: "members" }) if @pagy_members.pages > 1 %>
       <% end %>
     <% end %>
   </div>
