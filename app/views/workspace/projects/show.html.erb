@@ -27,7 +27,7 @@
         <% end %>
       <% end %>
 
-      <%= render ButtonComponent.new(path: organizations_reports_path(filter: { project_id: @project.id, category: :tasks, time_frame: :month }), method: :get, variant: :outline) do %>
+      <%= render ButtonComponent.new(path: organizations_reports_path(filter: { project_ids: [ @project.id ] }), method: :get, variant: :outline) do %>
         <span class="hidden lg:block mr-2"><%= t("common.report")%></span>
         <i class="uc-icon">&#xea07;</i>
       <% end %>
