@@ -246,6 +246,7 @@ nb:
     or: "eller"
     select_from_existing_tasks: "Velg blant eksisterende oppgaver"
     week: "Uke"
+    copy_to_today: "Kopier til i dag"
 
   notice:
     are_you_sure: "Er du sikker?"
