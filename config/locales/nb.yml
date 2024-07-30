@@ -250,6 +250,9 @@ nb:
     week: "Uke"
     copy_to_today: "Kopier til i dag"
     unable_to_proceed: "Kan ikke fortsette"
+    organization_settings: "Organisasjonsinnstillinger"
+    settings: "Innstillinger"
+    currency: "Valuta"
 
   notice:
     are_you_sure: "Er du sikker?"

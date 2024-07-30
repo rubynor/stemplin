@@ -49,6 +49,11 @@ Rails.application.routes.draw do
       get :invite_users, on: :collection
       put :edit_modal, on: :member
     end
+
+    get "settings", to: "settings#show"
+    get "settings/edit", to: "settings#edit"
+    patch "settings/edit", to: "settings#update"
+    put "settings/edit", to: "settings#update"
   end
 
   resources :reports, only: [ :index ]

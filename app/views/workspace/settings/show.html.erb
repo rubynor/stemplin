@@ -1,0 +1,23 @@
+<div class="flex flex-col gap-y-8">
+  <div class="flex flex-row justify-between items-center border-b border-gray-100 py-3">
+    <div class="flex flex-row items-center gap-x-2">
+      <span class="font-medium text-gray-600 text-lg"><%= t("common.organization_settings") %></span>
+    </div>
+    <div class="flex flex-row gap-2">
+      <%= render ButtonComponent.new(path: workspace_settings_edit_path, method: :get) do %>
+        <span class="hidden lg:block mr-2"><%= t("common.edit") %></span>
+        <i class="uc-icon text-xl">&#xe972;</i>
+      <% end %>
+    </div>
+  </div>
+  <div>
+    <%= render PhlexUI::Table.new do %>
+      <%= render PhlexUI::Table::Body.new(id: :organization_users, class: "text-base") do %>
+        <%= render PhlexUI::Table::Row.new do %>
+          <%= render PhlexUI::Table::Cell.new(class: "py-4 font-medium") { t("common.currency") } %>
+          <%= render PhlexUI::Table::Cell.new(class: "py-4") { currency_title_and_code @organization.currency } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
