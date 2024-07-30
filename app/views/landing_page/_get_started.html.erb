@@ -1,5 +1,69 @@
-<section class="bg-new-primary h-screen">
-  <div class="section-container">
-    Get started
+<section class="bg-new-primary get-started-section mt-24">
+  <div class="section-container flex justify-center flex-col-reverse lg:flex-row items-center py-16 gap-y-8 lg:py-20 gap-x-8">
+    <div class="flex-1">
+      <%= image_tag "workspace-administration-gray.svg", class: "rounded-md" %>
+<!--      <dotlottie-player class="rounded-md" style="width: 588px; height: 536px" src="<%#= asset_path("lottie/get_started.json") %>" background="transparent" speed="1" loop="false" autoplay></dotlottie-player>-->
+    </div>
+    <div class="flex-1 flex flex-col gap-y-4 text-left justify-center">
+      <span class="text-new-secondary font-medium text-base">How it works?</span>
+      <span class="text-3xl font-semibold text-white">Get started</span>
+      <span class="text-lg text-white mt-2 font-regular">In just a few steps, you're all set to manager your team's work time. Track all activities with our app in one convenient place.</span>
+      <div class="mt-4 bg-new-primary shadow-sm p-4 rounded-md flex flex-col">
+        <ul role="list">
+          <li>
+            <div class="relative pb-8">
+              <span
+                class="absolute left-6 top-4 -ml-px h-full w-0.5 bg-new-secondary"></span>
+              <div class="relative flex gap-x-3 items-center">
+                <div>
+                  <div class="h-12 w-12 rounded-full flex items-center justify-center bg-new-secondary">
+                    <span class="text-base text-new-primary font-semibold">1</span>
+                  </div>
+                </div>
+                <div class="flex flex-col flex-1">
+                  <p class="text-sm font-regular text-white">
+                    Signup & Add Organization
+                  </p>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="relative pb-8">
+              <span
+                class="absolute left-6 top-4 -ml-px h-full w-0.5 border-l-2 border-white border-dashed"></span>
+              <div class="relative flex gap-x-3 items-center">
+                <div>
+                  <div class="h-12 w-12 rounded-full flex items-center justify-center bg-new-secondary">
+                    <span class="text-base text-new-primary font-semibold">2</span>
+                  </div>
+                </div>
+                <div class="flex flex-col flex-1">
+                  <p class="text-sm font-regular text-white">
+                    Setup your workspace
+                  </p>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="relative pb-8">
+              <div class="relative flex gap-x-3 items-center">
+                <div>
+                  <div class="h-12 w-12 rounded-full flex items-center justify-center bg-white">
+                    <span class="text-base text-new-primary font-semibold">3</span>
+                  </div>
+                </div>
+                <div class="flex flex-col flex-1">
+                  <p class="text-sm font-regular text-white">
+                    All set, Time to start tracking!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>

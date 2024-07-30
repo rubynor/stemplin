@@ -14,7 +14,7 @@
     </div>
     <div class="flex gap-x-6 items-center">
       <%= link_to "Login", new_user_session_url, class: "text-gray-600 hover:text-new-primary transition duration-300" %>
-      <%= render ButtonComponent.new(variant: :primary, class: "!bg-new-primary") { "Signup" } %>
+      <%= render ButtonComponent.new(variant: :primary, class: "!bg-new-primary rounded-md", method: :get, path: new_user_registration_path) { "Signup" } %>
     </div>
   </div>
 </nav>
