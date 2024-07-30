@@ -29,7 +29,7 @@
             <% end %>
 
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-              <%= render PhlexUI::Label.new { "#{t("common.rates_per_hour")}" } %>
+              <%= render PhlexUI::Label.new { "#{t("common.rates_per_hour")} - #{@currency}" } %>
               <%= render PhlexUI::Hint.new { t("common.optional_project") } %>
               <%= form.number_field :rate_nok, class: "border-gray-200 rounded-md", step: 0.01 %>
             <% end %>

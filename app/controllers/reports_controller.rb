@@ -1,4 +1,6 @@
 class ReportsController < AuthenticatedController
+  include SetCurrency
+
   before_action :authorize!
   before_action :set_time_regs
 

@@ -1,6 +1,7 @@
 module Workspace
   module Projects
     class AssignedTasksController < ApplicationController
+      include SetCurrency
       skip_verify_authorized
 
       # This controller does not persist any data, but is used for the 'Tasks' section in the Project form.

@@ -34,7 +34,7 @@
         </div>
         <% unless assigned_task.rate.zero? %>
           <div class="text-sm">
-            <span class="text-gray-400">NOK</span>
+            <span class="text-gray-400"><%= @currency %></span>
             <span class="font-medium"><%= assigned_task.rate_nok %></span>
           </div>
         <% end %>
