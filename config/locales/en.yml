@@ -233,6 +233,7 @@ en:
     select_from_existing_tasks: "Select from existing tasks"
     week: "Week"
     copy_to_today: "Copy to today"
+    unable_to_proceed: "Unable to proceed"
 
   notice:
     are_you_sure: "Are you sure?"
@@ -325,6 +326,7 @@ en:
     sign_in: "Sign in"
     sign_up: "Sign up"
     password: "Password"
+    new_password: "New password"
     remember_me: "Remember me"
     confirm_password: "Confirm password"
 

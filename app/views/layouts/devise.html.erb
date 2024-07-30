@@ -23,6 +23,8 @@
   <body class="font-montserrat">
     <%= highlight_missing_translations if Rails.env.development? %>
     <%= render partial: "shared/flash_messages" %>
+    <%= render AlertDialogComponent.new %>
+
     <main>
       <div class="grid grid-cols-1 lg:grid-cols-2 h-screen">
         <div class="bg-gray-50 h-full relative">

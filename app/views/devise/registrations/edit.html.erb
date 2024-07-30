@@ -1,58 +1,48 @@
-<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900"><%= t('common.edit_user') %></h2>
-<div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-  <div class="w-full max-w-md space-y-8">
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-      <div class="-space-y-px rounded-md shadow-sm">
-        <% resource.errors.full_messages.each do |error| %>
-          <div class="text-sm italic text-red-600">
-            <%= error %>
-          </div>
-        <% end %>
-        <div class="-space-y-px rounded-md shadow-sm">
-          <div>
-            <%= f.label :first_name, class: "sr-only" %>
-            <%= f.text_field :first_name, autocomplete: "given-name", required: true, class: "relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: t('registration.first_name') %>
-          </div>
+<div class="flex flex-col w-full mt-12">
+  <span class="text-xl font-semibold text-gray-600"><%= t("common.edit_user") %></span>
+  <span class="text-sm text-gray-400"><%= resource.email %></span>
 
-          <div>
-            <%= f.label :last_name, class: "sr-only" %>
-            <%= f.text_field :last_name, autocomplete: "family-name", required: true, class: "relative block w-full border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: t('registration.last_name') %>
-          </div>
-
-          <div>
-            <%= f.label :email, class: "sr-only" %>
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true, class: "relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: t('registration.email') %>
-          </div>
-
-          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-            <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <div class="flex flex-col mt-4 gap-y-2">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |form| %>
+      <%= render AlertComponent.new(variant: :destructive, title: t("common.unable_to_proceed"), message: resource.errors.full_messages) if resource.errors.any? %>
+      <div class="w-full flex gap-y-4 flex-col mt-4">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <div class="flex flex-col w-full gap-y-4 mb-4">
+          <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+            <%= render PhlexUI::Label.new { t("registration.first_name") } %>
+            <%= form.text_field :first_name, id: "first-name", autocomplete: "given-name", required: true, placeholder: t("registration.first_name"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>
-
-          <div>
-            <%= f.label :password, class: "sr-only" %> 
-            <%= f.password_field :password, autocomplete: "new-password", class: "relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: t('registration.password_blank') %>
-          </div>
-
-          <div>
-            <%= f.label :password_confirmation, class: "sr-only" %>
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: t('registration.confirm_password') %>
-          </div>
-
-          <div>
-            <br>
-            <%= f.label :current_password, class: "sr-only" %> <i>(<%= t('registration.confirm_changes') %>)</i>
-            <br>
-            <%= f.password_field :current_password, autocomplete: "current-password", class: "relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-seaGreenDark sm:text-sm sm:leading-6", placeholder: t('registration.current_password') %>
-          </div>
-
-          <div>
-            <%= f.submit t('registration.update'), class: "group relative flex w-full justify-center rounded-md !bg-seaGreen py-2 px-3 text-sm font-semibold text-white !hover:bg-seaGreenDark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-seaGreenDark" %>
-          </div>
+          <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+            <%= render PhlexUI::Label.new { t("registration.last_name") } %>
+            <%= form.text_field :last_name, id: "last-name", autocomplete: "family-name", required: true, placeholder: t("registration.last_name"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
+          <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+            <%= render PhlexUI::Label.new { t("registration.email") } %>
+            <%= form.email_field :email, id: "email-address", autocomplete: "email", required: true, placeholder: t("registration.email"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
+          <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+            <%= render PhlexUI::Label.new { t("registration.new_password") } %>
+            <%= form.password_field :password, id: "password", autocomplete: "new-password", placeholder: t("registration.password_blank"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
+          <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
+            <%= render PhlexUI::Label.new { t("registration.confirm_password") } %>
+            <%= form.password_field :password_confirmation, id: "password_confirm", autocomplete: "new-password", placeholder: t("registration.confirm_password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
+          <%= render PhlexUI::Form::Item.new(class: "flex flex-col mt-6") do  %>
+            <%= render PhlexUI::Label.new { t("registration.confirm_changes") } %>
+            <%= form.password_field :current_password, autocomplete: "current-password", required: true, placeholder: t("registration.current_password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
         </div>
+
+        <%= render ButtonComponent.new(type: "submit") { t("registration.update") } %>
       </div>
-      <div class="space-y-px mt-8"><%= t('registration.unhappy') %>? <%= button_to t('registration.cancel_account'), registration_path(resource_name), data: { confirm: t('notice.are_you_sure'), turbo_confirm: t('notice.are_you_sure') }, method: :delete, class: "btn btn-danger text-red-600 p-1 pb-2 hover:text-red-700" %></div>
-      <%= link_to t('common.back'), :back, class: "italic text-gray-600 hover:text-gray-800" %>
-    <% end %>  
+    <% end %>
+    <% if false # TODO: We need to decide how we want to handle user deletion first %>
+      <div class="text-sm w-full mt-3">
+        <%= t('registration.unhappy') %>?
+        <%= link_to t('registration.cancel_account'), registration_path(resource_name), class: "text-red-600 hover:underline", data: { turbo_method: :delete, turbo_confirm: t('notice.are_you_sure') }  %>
+      </div>
+    <% end %>
+    <%= link_to t("common.back"), root_path, class: "mt-3 underline hover:text-primary" %>
   </div>
 </div>
-

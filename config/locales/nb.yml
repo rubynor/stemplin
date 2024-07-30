@@ -249,6 +249,7 @@ nb:
     select_from_existing_tasks: "Velg blant eksisterende oppgaver"
     week: "Uke"
     copy_to_today: "Kopier til i dag"
+    unable_to_proceed: "Kan ikke fortsette"
 
   notice:
     are_you_sure: "Er du sikker?"
@@ -342,6 +343,7 @@ nb:
     sign_in: "Logg inn"
     sign_up: "Registrer deg"
     password: "Passord"
+    new_password: "Nytt passord"
     remember_me: "Husk meg"
     confirm_password: "Bekreft passord"
 
@@ -374,6 +376,7 @@ nb:
         email: "E-post"
         password: "Passord"
         password_confirmation: "Bekreft passord"
+        current_password: "Nåværende passord"
 
 
     errors:
@@ -434,6 +437,8 @@ nb:
         
         user:
           attributes:
+            current_password:
+              invalid: "er feil"
             email:
               taken: "har allerede blitt tatt"
             password:
