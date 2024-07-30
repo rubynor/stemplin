@@ -1,0 +1,15 @@
+<%= content_tag(:div, class: "py-4 flex justify-between items-center", id: dom_id(member)) do %>
+  <div class="flex flex-row gap-x-2 items-center">
+    <div class="bg-gray-50 rounded-full w-10 h-10 flex justify-center items-center">
+      <i class="uc-icon text-lg">&#xebb2;</i>
+    </div>
+    <div class="flex flex-col gap-y-1">
+      <div class="flex flex-row gap-x-2">
+        <span class="text-sm text-gray-500 font-medium"><%= member.name %></span>
+        <%= render PhlexUI::Badge.new(variant: member.spectator_in_organization?(current_user.current_organization) ? :gray : :purple, class: "!rounded-full flex gap-x-1 w-fit") do %>
+          <span><%= member.spectator_in_organization?(current_user.current_organization) ? t("access_info.role.organization_spectator_short") : t("access_info.role.organization_user_short") %></span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

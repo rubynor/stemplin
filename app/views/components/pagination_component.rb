@@ -3,6 +3,7 @@
 class PaginationComponent < ApplicationComponent
   def initialize(**attrs)
     @attrs = attrs
+    @params = attrs[:params]
     @pagy = attrs[:pagy]
     @path = attrs[:path]
   end
@@ -71,7 +72,7 @@ class PaginationComponent < ApplicationComponent
 
   def page_path(page_number)
     uri = URI.parse(@path)
-    uri.query = { page: page_number }.to_query
+    uri.query = @params.merge({ page: page_number }).to_query
     uri.to_s
   end
 end
