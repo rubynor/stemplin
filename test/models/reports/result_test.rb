@@ -70,7 +70,7 @@ module Reports
 
     def generate_dummy_data
       # Organization
-      @organization = Organization.create!(name: "My report test organization")
+      @organization = Organization.create!(name: "My report test organization", currency: "DKK")
 
       # User
       @user1 = User.create!(first_name: "User1", last_name: "User1", email: "user1@gmail.com", password: "password")
