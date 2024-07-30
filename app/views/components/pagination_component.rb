@@ -3,7 +3,7 @@
 class PaginationComponent < ApplicationComponent
   def initialize(**attrs)
     @attrs = attrs
-    @params = attrs[:params]
+    @params = attrs[:params] || {}
     @pagy = attrs[:pagy]
     @path = attrs[:path]
   end
