@@ -50,10 +50,7 @@ Rails.application.routes.draw do
       put :edit_modal, on: :member
     end
 
-    get "settings", to: "settings#show"
-    get "settings/edit", to: "settings#edit"
-    patch "settings/edit", to: "settings#update"
-    put "settings/edit", to: "settings#update"
+    resource :settings, only: [ :show, :edit, :update ]
   end
 
   resources :reports, only: [ :index ]

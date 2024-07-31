@@ -4,7 +4,7 @@
       <span class="font-medium text-gray-600 text-lg"><%= t("common.organization_settings") %></span>
     </div>
     <div class="flex flex-row gap-2">
-      <%= render ButtonComponent.new(path: workspace_settings_edit_path, method: :get) do %>
+      <%= render ButtonComponent.new(path: edit_workspace_settings_path, method: :get) do %>
         <span class="hidden lg:block mr-2"><%= t("common.edit") %></span>
         <i class="uc-icon text-xl">&#xe972;</i>
       <% end %>
