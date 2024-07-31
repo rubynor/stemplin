@@ -4,6 +4,8 @@ import momentDurationFormatSetup from "moment-duration-format";
 
 momentDurationFormatSetup(moment); // Setup moment-duration-format plugin
 
+const MINUTE = 1000 * 60;
+
 // Connects to data-controller="refresh-minutes"
 export default class extends Controller {
   static targets = ['minutes'];
@@ -37,7 +39,7 @@ export default class extends Controller {
   toggleRefresh() {
     this.clearCurrentTimeout();
     if (this.activeValue && !this.timeoutId) {
-      this.interval = 1000;
+      this.interval = MINUTE;
       this.expected = Date.now() + this.interval;
       this.now = Date.now();
 
