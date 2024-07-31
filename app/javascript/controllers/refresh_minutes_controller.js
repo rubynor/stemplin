@@ -4,7 +4,7 @@ import momentDurationFormatSetup from "moment-duration-format";
 
 momentDurationFormatSetup(moment); // Setup moment-duration-format plugin
 
-const intervalLength = 1000;
+const MINUTE = 1000 * 60;
 
 // Connects to data-controller="refresh-minutes"
 export default class extends Controller {
@@ -21,7 +21,7 @@ export default class extends Controller {
   }
 
   disconnect() {
-    this.clearCurrentInterval();
+    this.clearCurrentTimeout();
   }
 
   minutesValueChanged() {
@@ -37,19 +37,34 @@ export default class extends Controller {
   }
 
   toggleRefresh() {
-    this.clearCurrentInterval();
-    if (this.activeValue && !this.intervalId) {
-      this.intervalId = setInterval(() => {
-        this.totalMillis += intervalLength;
-        this.minutesTarget.textContent = this.formatedStamp();
-      }, intervalLength);
+    this.clearCurrentTimeout();
+    if (this.activeValue && !this.timeoutId) {
+      this.interval = MINUTE;
+      this.expected = Date.now() + this.interval;
+      this.now = Date.now();
+
+      // Start self adjusting timer
+      this.timeoutId = setTimeout(this.selfAdjustingTimeout.bind(this), this.interval);
     }
   }
 
-  clearCurrentInterval() {
-    if (!this.intervalId) return;
-    clearInterval(this.intervalId);
-    this.intervalId = undefined;
+  selfAdjustingTimeout() {
+    if (this.activeValue) {
+      this.totalMillis += this.interval;
+
+      // Calculates time drifting
+      const driftMillis = Date.now() - this.expected;
+      this.expected += this.interval;
+
+      this.minutesTarget.textContent = this.formatedStamp();
+      this.timeoutId = setTimeout(this.selfAdjustingTimeout.bind(this), Math.max(0, this.interval - driftMillis));
+    }
+  }
+
+  clearCurrentTimeout() {
+    if (!this.timeoutId) return;
+    clearTimeout(this.timeoutId);
+    this.timeoutId = undefined;
   }
 
   formatedStamp = () => moment.duration(this.totalMillis, "milliseconds").format(this.formatValue, { trunc: true, trim: false });
