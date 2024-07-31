@@ -1,22 +1,21 @@
-<!--<section class="section-container mt-24 lg:mt-32"> Use when using image instead of lotti file in hero_section-->
-<section class="section-container -mt-8">
+<section class="section-container" id="services">
   <div class="flex flex-col py-4 lg:py-8">
-    <div class="flex flex-col gap-y-2 text-center max-w-3xl mx-auto">
+    <div class="flex flex-col gap-y-2 text-left max-w-3xl mr-auto capitalize bg-white">
       <span class="text-new-secondary font-medium text-base">Why use Stemplin?</span>
-      <span class="text-3xl font-semibold text-new-primary">Simple, Quick, Affordable</span>
+      <span class="text-2xl lg:text-3xl font-semibold text-new-primary">Simple, Quick, Affordable</span>
       <span class="text-lg text-new-secondary-text mt-2 font-regular">Our platform simplifies work time tracking. Team members log hours easily on various tasks, helping managers oversee projects. When it's time to bill clients, the data is ready to use. It's straightforward for everyone and makes billing hassle-free.</span>
     </div>
-    <div class="mt-16">
-      <%= render PhlexUI::Tabs.new(default: @services.first[:identifier], class: "grid grid-cols-1 lg:grid-cols-2") do %>
-        <%= render PhlexUI::Tabs::List.new(class!: "flex flex-col divide-y divide-gray-200 pr-4 lg:pr-12") do %>
+    <div class="mt-12 bg-white lg:shadow-xl lg:rounded-lg lg:pl-8 border border-gray-100">
+      <%= render PhlexUI::Tabs.new(default: @services.first[:identifier], class: "grid grid-cols-1 lg:grid-cols-2 !h-full") do %>
+        <%= render PhlexUI::Tabs::List.new(class!: "flex flex-col divide-y divide-gray-100 lg:pr-12 py-4") do %>
           <% @services.each_with_index do |service, idx| %>
             <%= render partial: "landing_page/services/tab_button", locals: { service: service, count: idx + 1 } %>
           <% end %>
         <% end %>
-        <div class="hidden lg:block">
+        <div class="hidden lg:block h-full">
           <% @services.each do |service| %>
-            <%= render PhlexUI::Tabs::Content.new(value: service[:identifier]) do %>
-              <%= image_tag service[:illustration], class: "rounded-md" %>
+            <%= render PhlexUI::Tabs::Content.new(value: service[:identifier], class: "!mt-0 !h-full") do %>
+              <%= image_tag service[:illustration], class: "rounded-r-lg w-full h-full" %>
             <% end %>
           <% end %>
         </div>

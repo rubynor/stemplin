@@ -1,21 +1,19 @@
-<section class="section-container">
-  <div class="grid grid-cols-1 md:grid-cols-2">
-    <div class="flex flex-col py-4 lg:py-8 xl:py-16 gap-y-4 lg:gap-y-8">
-      <div class="hero-txt flex flex-col">
-        <span class="text-6xl font-bold text-new-primary leading-none lg:leading-tight">Streamline<br />your<br />workflow</span>
-      </div>
-      <span class="text-sm lg:text-base font-regular text-new-secondary-text">Boost collaboration and simplify project execution.<br /> Assign tasks, tract time and generate insightful reports all in one place.</span>
-      <div class="flex flex-row items-center gap-x-4 lg:gap-x-8">
-        <%= render ButtonComponent.new(variant: :primary, class: "!bg-new-primary") { "Get Started" } %>
-        <%= link_to "#{new_user_session_url}", class: "text-new-primary flex items-center gap-x-1" do %>
-          <i class="uc-icon text-2xl">&#xead0;</i>
-          <span class="font-medium text-base">Watch a demo</span>
-        <% end %>
-      </div>
+<section class="section-container flex flex-col relative justify-center items-center">
+  <div class="flex flex-col py-4 lg:py-8 gap-y-4 lg:gap-y-8 justify-center items-center">
+    <div class="hero-txt flex flex-col">
+      <span class="text-5xl lg:text-6xl font-semibold text-white leading-none lg:leading-tight text-center">Because time<br />is money</span>
     </div>
-    <div class="hidden md:block relative">
-      <%#= image_tag "hero_section.svg", class: "hero-img" %>
-      <dotlottie-player style="width: 1089px; height: 726px" src="<%= asset_path("lottie/hero_section.json") %>" speed="0.7" loop="false" autoplay></dotlottie-player>
+    <span class="text-sm lg:text-base font-regular text-white text-center">Timetracking and invoicing made easy.<br /> Boost your organization's efficiency and productivity.</span>
+    <div class="flex flex-row items-center gap-x-4 lg:gap-x-8">
+      <%= render ButtonComponent.new(variant: :primary, class: "!bg-white !text-new-primary rounded-md", method: :get, path: new_user_registration_path) { "Get started" } %>
+      <%= link_to "#{new_user_session_url}", class: "text-white flex items-center gap-x-1" do %>
+        <i class="uc-icon text-2xl">&#xead0;</i>
+        <span class="font-medium text-base">Watch a demo</span>
+      <% end %>
     </div>
+  </div>
+  <div class="flex justify-center items-center absolute top-0 w-4/5 lg:w-full my-96">
+    <%= image_tag "main.svg", class: "w-full lg:w-4/5 hidden lg:block" %>
+    <%= image_tag "main-mobile.svg", class: "w-full lg:hidden" %>
   </div>
 </section>

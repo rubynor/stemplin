@@ -1,8 +1,11 @@
-<div class="hero-section">
+<div class="hero-section pb-[27rem] relative shadow-xl">
   <%= render partial: "landing_page/nav" %>
   <%= render partial: "landing_page/hero_section" %>
-  <%= render partial: "landing_page/services/index" %>
 </div>
-<%= render partial: "landing_page/get_started" %>
-<%= render partial: "landing_page/testimonials" %>
-<%= render partial: "landing_page/footer" %>
+<div class="pt-[25rem] lg:pt-[27rem] pb-12 -mt-48 cards-pattern-section">
+  <%= render partial: "landing_page/services/index" %>
+  <div class="bg-new-primary lg:mt-16">
+    <%= render partial: "landing_page/get_started/index" %>
+  </div>
+</div>
+<%= render partial: "landing_page/testimonials/index" %>

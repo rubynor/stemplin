@@ -196,11 +196,6 @@
   resolved "https://registry.yarnpkg.com/@kurkle/color/-/color-0.3.2.tgz#5acd38242e8bde4f9986e7913c8fdf49d3aa199f"
   integrity sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==
 
-"@lottiefiles/dotlottie-web@^0.29.2":
-  version "0.29.2"
-  resolved "https://registry.yarnpkg.com/@lottiefiles/dotlottie-web/-/dotlottie-web-0.29.2.tgz#9258155fad08c19c77f5ae5e739c17d84b3fd809"
-  integrity sha512-2rzm4SJ6MZPbZBjVLI8zuLDxRDvWvYcri8SF9TY4ifgZn2M+6JsQbXwl5P6cDdMctfU78kJvENOXGAO0jKsBTQ==
-
 "@motionone/animation@^10.17.0":
   version "10.17.0"
   resolved "https://registry.yarnpkg.com/@motionone/animation/-/animation-10.17.0.tgz#7633c6f684b5fee2b61c405881b8c24662c68fca"

@@ -1,7 +1,11 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .hero-section {
-    background: url("pattern-wavy-with-gradients.svg") no-repeat center/cover transparent;
-    overflow-x: hidden;
-    width: 100%;
+    background: var(--new-primary) url("pattern-wavy.svg") no-repeat center/cover;
+    /*border-radius: 0 0 100vw 0 / 0 60vw 15vw 0;*/
+    border-radius: 0 100% 100% 0 / 100% 0 25% 0;
 }
 
 .section-container {
@@ -48,31 +52,182 @@
     top: 3rem;
 }
 
-.hero-animation {
+.map-container {
+    background: url("map.svg") no-repeat center/contain transparent;
+    /*min-height: 50vh;*/
+}
 
+.service-tab-desc {
+    display: none;
+    opacity: 0;
+    transform: translate3d(0px, 0px, 0px) scale3d(0.9, 0.9, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    transform-style: preserve-3d;
+    height: 0px;
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out, height 0s ease-out;
+}
+
+.service-tab[data-state="active"] .service-tab-desc {
+    display: block;
+    opacity: 1;
+    transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    transform-style: preserve-3d;
+    height: 100%;
+    transition: opacity 0.4s ease-in, transform 0.4s ease-in, height 0s ease-in;
+}
+
+.service-tab-arrow {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.service-tab:hover .service-tab-arrow {
+    opacity: 1;
+    transform: translateX(4px);
+}
+
+.service-tab:hover .service-tab-title {
+    color: var(--new-secondary);
+}
+
+.service-tab[data-state="active"] .service-tab-arrow {
+    opacity: 1;
+    color: var(--new-secondary);
+}
+
+.service-tab[data-state="active"] .service-tab-title {
+    color: var(--new-secondary);
+}
+
+.cards-pattern-section {
+    background: url("ornament-cards.svg") no-repeat center/cover transparent;
+    width: 100%;
+}
+
+.get-started-section {
+    border-radius: 0 100% 100% 0 / 100% 25% 0 0;
+}
+
+.testimonial-container {
+    @apply w-72 h-72 lg:w-96 lg:h-96 rounded-full border-4 border-new-secondary shadow-xl flex justify-center items-center relative;
+}
+
+.testimonial-card {
+    @apply absolute flex flex-col justify-center items-center gap-y-2 w-72 h-72 lg:w-96 lg:h-96;
+    position: absolute;
+
+}
+
+.testimonial-card:nth-child(1) {
+    /*top: 8rem;*/
+    top: 6rem;
+}
+
+.testimonial-card:nth-child(2) {
+    /*left: -18rem;*/
+    /*top:0;*/
+    left: -9rem;
+    top: 2rem;
+}
+
+.testimonial-card:nth-child(3) {
+    /*left: 12rem;*/
+    left: 6rem;
+    top: 4rem;
+}
+
+.testimonial-card:nth-child(4) {
+    /*top: 0;*/
+    top: 2rem;
+    left: 0;
+}
+
+.testimonial-avatar {
+    @apply text-white w-12 h-12 md:w-16 md:h-16 flex justify-center items-center rounded-full border-2 md:border-4 border-white shadow-lg cursor-pointer transition duration-300 ease-in-out;
+    z-index: 4;
+}
+
+.testimonial-card:nth-child(1) .testimonial-avatar {
+    background-color: #FF77D9;
+}
+
+.testimonial-card:nth-child(2) .testimonial-avatar {
+    background-color: #6640FF;
+}
+
+.testimonial-card:nth-child(3) .testimonial-avatar {
+    background-color: #EF7E56;
+}
+
+.testimonial-card:nth-child(4) .testimonial-avatar {
+    background-color: var(--new-primary);
+}
+
+.testimonial-quote {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0px, 0px, 0px) scale3d(0.9, 0.9, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    transform-style: preserve-3d;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease-in-out;
+}
+
+.testimonial-avatar:hover + .testimonial-quote {
+    opacity: 1;
+    visibility: visible;
+    z-index: 5;
+    transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    transform-style: preserve-3d;
+    transition: opacity 0.4s ease-in, transform 0.4s ease-in, height 0s ease-in;
 }
 
 @media (min-width: 480px) {
     .hero-txt::after {
-        width: 80%;
+        /*width: 80%;*/
         height: 30px;
     }
 }
 
 @media (min-width: 600px) {
     .hero-txt::after {
-        width: 60%;
+        /*width: 60%;*/
         height: 25px;
+    }
+    .service-tab-desc {
+        display: block;
+    }
+
+    .service-tab[data-state="active"] .service-tab-desc {
+        display: block;
     }
 }
 
 @media (min-width: 760px) {
     .hero-txt::after {
-        width: 50%;
-        height: 25px;
+        height: 28px;
     }
     .hero-img {
         right: -6rem;
+    }
+    .map-container {
+        min-height: 65vh;
+    }
+
+    .testimonial-card:nth-child(1) {
+        top: 8rem;
+    }
+
+    .testimonial-card:nth-child(2) {
+        left: -18rem;
+        top:0;
+    }
+
+    .testimonial-card:nth-child(3) {
+        left: 12rem;
+        top: 4rem;
+    }
+
+    .testimonial-card:nth-child(4) {
+        top: 0;
+        left: 0;
     }
 }
 
@@ -83,9 +238,6 @@
 }
 
 @media (min-width: 1000px) {
-    .hero-txt::after {
-        width: 60%;
-    }
     .hero-img {
         right: -13rem;
     }
@@ -115,42 +267,3 @@
     }
 }
 
-.service-tab-desc {
-    opacity: 0;
-    transform: translate3d(0px, 0px, 0px) scale3d(0.9, 0.9, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
-    transform-style: preserve-3d;
-    height: 0px;
-    transition: opacity 0.2s ease-out, transform 0.2s ease-out, height 0s ease-out;
-}
-
-.service-tab[data-state="active"] .service-tab-desc {
-    opacity: 1;
-    transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
-    transform-style: preserve-3d;
-    height: 100%;
-    transition: opacity 0.4s ease-in, transform 0.4s ease-in, height 0s ease-in;
-}
-
-.service-tab-arrow {
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-.service-tab:hover .service-tab-arrow {
-    opacity: 1;
-    transform: translateX(4px);
-}
-
-.service-tab:hover .service-tab-title {
-    color: var(--new-secondary);
-}
-
-.service-tab[data-state="active"] .service-tab-arrow {
-    opacity: 1;
-    color: var(--new-secondary);
-}
-
-.get-started-section {
-    background: url("cards-pattern.svg") no-repeat center/cover transparent;
-    width: 100%;
-}

@@ -1,0 +1,18 @@
+<section class="section-container overflow-y-hidden" id="testimonials">
+  <div class="flex flex-col py-4 lg:py-8">
+    <div class="flex flex-col gap-y-2 text-center max-w-3xl mx-auto capitalize">
+      <span class="text-new-secondary font-medium text-base">what they say?</span>
+      <span class="text-3xl font-semibold text-new-primary">hear from our customers</span>
+      <span class="text-lg text-new-secondary-text mt-2 font-regular">here are some testimonials from our user after using Stemplin to manage their operations.</span>
+    </div>
+    <div class="my-16 map-container flex justify-center items-center">
+      <div class="relative flex justify-center items-center flex-col w-full">
+        <div class="testimonial-container">
+          <% @testimonials.each do |testimonial| %>
+            <%= render partial: "landing_page/testimonials/user_card", locals: { testimonial: testimonial } %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

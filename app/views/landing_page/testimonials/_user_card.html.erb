@@ -1,0 +1,13 @@
+<%= content_tag(:div, class: "testimonial-card") do %>
+  <%= content_tag(:div, class: "testimonial-avatar") do %>
+    <%= content_tag(:span, "#{testimonial[:first_name][0]}#{testimonial[:last_name][0]}", class: "text-base font-semibold") %>
+  <% end %>
+  <%= content_tag(:div, class: "testimonial-quote flex flex-col justify-center items-center") do %>
+    <%= content_tag(:div, "", class: "w-0 h-0 border-l-[12px] md:border-l-[25px] border-l-transparent border-b-[15px] md:border-b-[30px] border-b-white border-r-[12px] md:border-r-[25px] border-r-transparent") %>
+    <%= content_tag(:div, class: "flex flex-col bg-white shadow-xl rounded-md p-4 text-center w-full") do %>
+      <%= content_tag(:span, testimonial[:quote], class: "text-xs md:text-sm text-new-secondary-text font-regular") %>
+      <%= content_tag(:span, "#{testimonial[:first_name]} #{testimonial[:last_name]}", class: "text-new-primary text-base md:text-lg font-semibold mt-4") %>
+      <%= content_tag(:span, testimonial[:role], class: "text-new-primary text-xs md:text-sm font-medium") %>
+    <% end %>
+  <% end %>
+<% end %>
