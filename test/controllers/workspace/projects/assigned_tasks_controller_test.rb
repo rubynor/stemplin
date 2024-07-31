@@ -13,6 +13,11 @@ module Workspace
         assert_response :success
       end
 
+      test "should get edit_modal" do
+        post :edit_modal, xhr: true, params: { assigned_task: { rate: 0, task_attributes: { name: "Test" } } }
+        assert_response :success
+      end
+
       test "should add assigned task from exsting task" do
         task = @organization_admin.current_organization.tasks.first
         post :add, params: { assigned_task: { task_attributes: { name: task.name }, rate_nok: 100 } }
@@ -26,6 +31,22 @@ module Workspace
 
       test "should not add assigned task without task" do
         post :add, params: { assigned_task: { task_attributes: { name: "" }, rate_nok: 100 } }
+        assert_response :unprocessable_entity
+      end
+
+      test "should edit persisted assigned task" do
+        assigned_task = @organization_admin.current_organization.assigned_tasks.first
+        post :edit, params: { assigned_task: { id: assigned_task.id, task_attributes: { name: assigned_task.task.name }, rate_nok: 100 } }
+        assert_response :success
+      end
+
+      test "should edit unpersisted assigned task" do
+        post :edit, params: { assigned_task: { id: nil, task_attributes: { name: "New task name" }, rate_nok: 0 } }
+        assert_response :success
+      end
+
+      test "should not edit assigned task without task" do
+        post :edit, params: { assigned_task: { id: nil, task_attributes: { name: "" }, rate_nok: 100 } }
         assert_response :unprocessable_entity
       end
 
