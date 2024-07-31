@@ -4,9 +4,12 @@
   <% end %>
   <%= render PhlexUI::Dialog::Content.new(class: "bg-white") do %>
     <%= turbo_frame_tag :modal do %>
-      <%= form_with url: add_workspace_assigned_tasks_path, method: :post, scope: assigned_task do |form| %>
+      <%= form_with url: edit ? edit_workspace_assigned_tasks_path : add_workspace_assigned_tasks_path, method: :post, scope: assigned_task do |form| %>
+        <%= form.hidden_field :id %>
+        <%= form.hidden_field :domid, value: @domid unless @domid.blank? %>
+
         <div class="flex flex-col gap-y-4">
-          <span class="font-semibold text-gray-600 text-lg"><%= t("common.add_task") %></span>
+          <span class="font-semibold text-gray-600 text-lg"><%= edit ? "#{t("common.edit_task")}: #{assigned_task.task.name}" : t("common.add_task") %></span>
           <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
             <% assigned_task.errors.full_messages_for(:base).each do |message| %>
               <div class="text-red-600 text-xs italic mt-1"><%= message %></div>
@@ -31,11 +34,11 @@
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
               <%= render PhlexUI::Label.new { "#{t("common.rates_per_hour")}" } %>
               <%= render PhlexUI::Hint.new { t("common.optional_project") } %>
-              <%= form.number_field :rate_nok, class: "border-gray-200 rounded-md", step: 0.01 %>
+              <%= form.number_field :rate_nok, value: assigned_task.rate > 0 ? assigned_task.rate/100.0 : nil, class: "border-gray-200 rounded-md", step: 0.01 %>
             <% end %>
           <% end %>
           <div class="mt-4 w-full">
-            <%= render ButtonComponent.new(type: :submit, class: "w-full") { t("common.add") } %>
+            <%= render ButtonComponent.new(type: :submit, class: "w-full") { edit ? t("common.edit") : t("common.add") } %>
           </div>
         </div>
       <% end %>

@@ -36,6 +36,8 @@ Rails.application.routes.draw do
       resources :assigned_tasks, only: [] do
         post :add_modal, on: :collection
         post :add, on: :collection
+        post :edit_modal, on: :collection
+        post :edit, on: :collection
         delete :remove, on: :collection
       end
     end

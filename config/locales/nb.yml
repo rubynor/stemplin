@@ -124,6 +124,7 @@ nb:
     new_project: "Nytt prosjekt"
     project_tasks: "Prosjektoppgaver"
     add_task: "Legg til oppgave"
+    edit_task: "Rediger oppgave"
     assign_task: "Tildel oppgave"
     edit_task_on_project: "Vil du endre oppgaven i prosjektet? Trykk"
     here: "her"
