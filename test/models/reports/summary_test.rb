@@ -11,8 +11,8 @@ module Reports
       assert_equal @time_regs.billable.sum(&:billed_amount), @summary.total_billable_amount
     end
 
-    test "#total_billable_amount_nok returns the sum of all billable time_regs in NOK" do
-      assert_equal ConvertKroneOre.out(@time_regs.billable.sum(&:billed_amount)), @summary.total_billable_amount_nok
+    test "#total_billable_amount_currency returns the sum of all billable time_regs, converted back from hundredths to decimal number" do
+      assert_equal ConvertCurrencyHundredths.out(@time_regs.billable.sum(&:billed_amount)), @summary.total_billable_amount_currency
     end
 
     test "#total_minutes returns the sum of all time_regs minutes" do
