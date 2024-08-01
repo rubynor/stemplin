@@ -8,7 +8,7 @@
         <%= render PhlexUI::Table::Row.new do %>
           <%= render PhlexUI::Table::Cell.new(class: "py-4 font-medium") { t("common.currency") } %>
           <%= render PhlexUI::Table::Cell.new(class: "py-4") do %>
-            <%= form.select :currency, Stemplin.config.currencies.keys.map { |code| [currency_title_and_code(code), code] }, { required: true }, class: "border-gray-200 rounded-md" %>
+            <%= form.select :currency, for_select(@available_currencies), { required: true }, class: "border-gray-200 rounded-md" %>
           <% end %>
         <% end %>
       <% end %>

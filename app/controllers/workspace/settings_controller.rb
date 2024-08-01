@@ -8,6 +8,7 @@ module Workspace
 
     def edit
       authorize! @organization
+      @available_currencies = Stemplin.config.currencies.keys
     end
 
     def update
