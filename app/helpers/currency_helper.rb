@@ -12,6 +12,6 @@ module CurrencyHelper
   end
 
   def for_select(currencies)
-    currencies.map { |code| [currency_title_and_code(code), code] }
+    currencies.map { |code| [ currency_title_and_code(code), code ] }
   end
 end
