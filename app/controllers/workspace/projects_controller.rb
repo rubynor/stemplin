@@ -1,5 +1,7 @@
 module Workspace
   class ProjectsController < WorkspaceController
+    include SetCurrency
+
     before_action :set_project, except: %i[new index create import_modal]
     before_action :prepare_form_data, only: %i[new edit create update]
 

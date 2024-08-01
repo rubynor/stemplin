@@ -13,7 +13,7 @@
   <%= render PhlexUI::Table::Cell.new(class: "w-36") do %>
     <% if project.billable %>
       <div>
-        <span class="text-gray-400">NOK</span>
+        <span class="text-gray-400"><%= @currency %></span>
         <span class="font-medium"><%= project.rate_nok %></span>
       </div>
     <% else %>

@@ -17,6 +17,6 @@
   <% end %>
   <%= render PhlexUI::Table::Cell.new do %>
     <span><%= result[:total_billable_amount] %></span>
-    <span class="text-xs text-gray-400">NOK</span>
+    <span class="text-xs text-gray-400"><%= @currency %></span>
   <% end %>
 <% end %>
