@@ -43,9 +43,10 @@
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
               <%= render DropdownComponent::Content.new do %>
-                <div class="flex flex-col text-sm w-max">
+                <div class="flex flex-col text-sm w-max" data-controller="checkbox">
+                  <%= single_filter_check_box(form, "all_client_ids", "All", false, { data: { "checkbox-target": "checkboxAll", action: "change->checkbox#toggleAll" }}) %>
                   <%= form.collection_check_boxes :client_ids, form_data.selectable_clients, :id, :name, include_hidden: false do |cb| %>
-                    <%= filter_check_box(cb, filter.client_ids&.include?(cb.value.to_s)) %>
+                    <%= filter_check_box(cb, filter.client_ids&.include?(cb.value.to_s), { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
                   <% end %>
                 </div>
               <% end %>
@@ -60,9 +61,10 @@
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
               <%= render DropdownComponent::Content.new do %>
-                <div class="flex flex-col text-sm w-max">
+                <div class="flex flex-col text-sm w-max" data-controller="checkbox">
+                  <%= single_filter_check_box(form, "all_project_ids", "All", false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
                   <%= form.collection_check_boxes :project_ids, form_data.selectable_projects, :id, :name, include_hidden: false do |cb| %>
-                    <%= filter_check_box(cb, filter.project_ids&.include?(cb.value.to_s)) %>
+                    <%= filter_check_box(cb, filter.project_ids&.include?(cb.value.to_s), { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
                   <% end %>
                 </div>
               <% end %>
@@ -77,9 +79,10 @@
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
               <%= render DropdownComponent::Content.new do %>
-                <div class="flex flex-col text-sm w-max">
+                <div class="flex flex-col text-sm w-max" data-controller="checkbox">
+                  <%= single_filter_check_box(form, "all_task_ids", "All", false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
                   <%= form.collection_check_boxes :task_ids, form_data.selectable_tasks, :id, :name, include_hidden: false do |cb| %>
-                    <%= filter_check_box(cb, filter.task_ids&.include?(cb.value.to_s)) %>
+                    <%= filter_check_box(cb, filter.task_ids&.include?(cb.value.to_s), { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
                   <% end %>
                 </div>
               <% end %>
@@ -94,9 +97,10 @@
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
               <%= render DropdownComponent::Content.new do %>
-                <div class="flex flex-col text-sm w-max">
+                <div class="flex flex-col text-sm w-max" data-controller="checkbox">
+                  <%= single_filter_check_box(form, "all_user_ids", "All", false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
                   <%= form.collection_check_boxes :user_ids, form_data.selectable_users, :id, :name, include_hidden: false do |cb| %>
-                    <%= filter_check_box(cb, filter.user_ids&.include?(cb.value.to_s)) %>
+                    <%= filter_check_box(cb, filter.user_ids&.include?(cb.value.to_s), { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
                   <% end %>
                 </div>
               <% end %>
