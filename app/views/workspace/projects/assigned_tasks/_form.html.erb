@@ -32,9 +32,9 @@
             <% end %>
 
             <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-              <%= render PhlexUI::Label.new { "#{t("common.rates_per_hour")}" } %>
+              <%= render PhlexUI::Label.new { "#{t("common.rates_per_hour")} - #{@currency}" } %>
               <%= render PhlexUI::Hint.new { t("common.optional_project") } %>
-              <%= form.number_field :rate_nok, value: assigned_task.rate > 0 ? assigned_task.rate/100.0 : nil, class: "border-gray-200 rounded-md", step: 0.01 %>
+              <%= form.number_field :rate_currency, value: assigned_task.rate > 0 ? assigned_task.rate/100.0 : nil, class: "border-gray-200 rounded-md", step: 0.01 %>
             <% end %>
           <% end %>
           <div class="mt-4 w-full">

@@ -1,6 +1,7 @@
 module Workspace
   module Projects
     class AssignedTasksController < ApplicationController
+      include SetCurrency
       skip_verify_authorized
 
       # This controller does not persist any data, but is used for the 'Tasks' section in the Project form.
@@ -13,7 +14,7 @@ module Workspace
 
       def add
         @task = authorized_scope(Task, type: :relation).find_or_initialize_by(name: assigned_task_params[:task_attributes][:name])
-        @assigned_task = authorized_scope(AssignedTask, type: :relation).new(project: nil, task: @task, rate_nok: assigned_task_params[:rate_nok])
+        @assigned_task = authorized_scope(AssignedTask, type: :relation).new(project: nil, task: @task, rate_currency: assigned_task_params[:rate_currency])
         @assigned_task.build_project
 
         if @assigned_task.valid?
@@ -35,7 +36,7 @@ module Workspace
 
       def edit
         @task = authorized_scope(Task, type: :relation).find_or_initialize_by(name: assigned_task_params[:task_attributes][:name])
-        @assigned_task = authorized_scope(AssignedTask, type: :relation).new(project: nil, task: @task, id: assigned_task_params[:id], rate_nok: assigned_task_params[:rate_nok])
+        @assigned_task = authorized_scope(AssignedTask, type: :relation).new(project: nil, task: @task, id: assigned_task_params[:id], rate_currency: assigned_task_params[:rate_currency])
         @assigned_task.build_project
         @domid = assigned_task_params[:domid]
 
@@ -64,11 +65,11 @@ module Workspace
       private
 
       def assigned_task_params
-        params.require(:assigned_task).permit(:id, :domid, :rate_nok, task_attributes: [ :name, :unassigned_task_ids ])
+        params.require(:assigned_task).permit(:id, :domid, :rate_currency, task_attributes: [ :name, :unassigned_task_ids ])
       end
 
       def edit_modal_assigned_task_params
-        params.require(:assigned_task).permit(:id, :rate_nok, task_attributes: [ :name ])
+        params.require(:assigned_task).permit(:id, :rate_currency, task_attributes: [ :name ])
       end
 
       def taken_task_ids

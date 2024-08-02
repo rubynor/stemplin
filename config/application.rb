@@ -44,6 +44,7 @@ module Stemplin
     config.http_url = "#{config.http_protocol}://#{config.http_host}".freeze
 
     config.emails = config_for(:emails)
+    config.currencies = config_for(:currencies)
   end
 
   def self.config

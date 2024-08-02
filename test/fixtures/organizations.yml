@@ -1,11 +1,15 @@
 organization_one:
   name: Company Inc
+  currency: USD
 
 organization_two:
   name: Enterprice Inc
+  currency: EUR
 
 organization_three:
   name: Factory Inc
+  currency: NOK
 
 organization_w_one_admin:
   name: Organization One Admin
+  currency: USD

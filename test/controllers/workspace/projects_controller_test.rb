@@ -25,7 +25,7 @@ module Workspace
             name: "Test Project",
             description: "Project description",
             billable: true,
-            rate_nok: 100,
+            rate_currency: 100,
             client_id: @client.id,
             user_ids: [ user.id ],
             assigned_tasks_attributes: [
@@ -46,7 +46,7 @@ module Workspace
           name: "Test Project",
           description: "Project description",
           billable: true,
-          rate_nok: 100,
+          rate_currency: 100,
           client_id: @client.id,
           user_ids: [ user.id ]
         } }

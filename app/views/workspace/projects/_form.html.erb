@@ -60,9 +60,9 @@
 
       <%= content_tag(:div, data: { custom_disable_target: "content" }) do %>
         <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-          <%= render PhlexUI::Label.new { t("common.rates_per_hour") } %>
+          <%= render PhlexUI::Label.new { "#{t("common.rates_per_hour")} - #{@currency}" } %>
           <%= render PhlexUI::Hint.new { t("common.track_billable_rates") } %>
-          <%= form.text_field :rate_nok, class: "border-gray-200 rounded-md" %>
+          <%= form.text_field :rate_currency, class: "border-gray-200 rounded-md" %>
         <% end %>
       <% end %>
 

@@ -1,0 +1,1459 @@
+# Source: https://github.com/gibbs/currency-data
+shared:
+  USD:
+    title: United States Dollar
+    name: dollar
+    code: USD
+    symbol: $
+    entity: '&#x24;'
+    discern: ~
+    ltr: true
+
+  EUR:
+    title: Euro
+    name: euro
+    code: EUR
+    symbol: €
+    entity: '&#x20AC;'
+    discern: ~
+    ltr: true
+
+  GBP:
+    title: Pound sterling
+    name: pound
+    code: GBP
+    symbol: £
+    entity: '&#xA3;'
+    discern: ~
+    ltr: true
+  
+  CAD:
+    title: Canadian Dollar
+    name: dollar
+    code: CAD
+    symbol: $
+    entity: '&#x24;'
+    discern: CA$
+    ltr: true
+
+  NOK:
+    title: Norwegian Krone
+    name: krone
+    code: NOK
+    symbol: kr
+    entity: '&#x6B;&#x72;'
+    discern: ~
+    ltr: true
+
+  AED:
+    title: United Arab Emirates Dirham
+    name: dirham
+    code: AED
+    symbol: د.إ
+    entity: '&#1583;.&#1573;'
+    discern: ~
+    ltr: false
+
+  AFN:
+    title: Afghan Afghani
+    name: afghani
+    code: AFN
+    symbol: ؋
+    entity: '&#x60B;'
+    discern: ~
+    ltr: false
+
+  ALL:
+    title: Lek
+    name: lek
+    code: ALL
+    symbol: L
+    entity: '&#x4C;'
+    discern: ~
+    ltr: true
+
+  AMD:
+    title: Armenian Dram
+    name: dram
+    code: AMD
+    symbol: ֏
+    entity: '&#x58F;'
+    discern: ~
+    ltr: true
+
+  ANG:
+    title: Netherlands Antillean Guilder
+    name: guilder
+    code: ANG
+    symbol: ƒ
+    entity: '&#x192;'
+    discern: ~
+    ltr: true
+
+  AOA:
+    title: Angolan Kwanza
+    name: kwanza
+    code: AOA
+    symbol: Kz
+    entity: '&#x4B;&#x7A;'
+    discern: ~
+    ltr: true
+
+  ARS:
+    title: Argentine Peso
+    name: peso
+    code: ARS
+    symbol: $
+    entity: '&#x24;'
+    discern: ~
+    ltr: true
+
+  AUD:
+    title: Australian Dollar
+    name: dollar
+    code: AUD
+    symbol: $
+    entity: '&#x24;'
+    discern: AU$
+    ltr: true
+
+  AWG:
+    title: Aruban Florin
+    name: florin
+    code: AWG
+    symbol: ƒ
+    entity: '&#x192;'
+    discern: Afl.
+    ltr: true
+
+  AZN:
+    title: Azerbaijani Manat
+    name: manat
+    code: AZN
+    symbol: ₼
+    entity: '&#x20BC;'
+    discern: ~
+    ltr: true
+
+  BAM:
+    title: Bosnia and Herzegovina Convertible Mark
+    name: convertible mark
+    code: BAM
+    symbol: КМ
+    entity: '&#x41A;&#x41C;'
+    discern: ~
+    ltr: true
+
+  BBD:
+    title: Barbadian Dollar
+    name: dollar
+    code: BBD
+    symbol: $
+    entity: '&#x24;'
+    discern: Bds$
+    ltr: true
+
+  BDT:
+    title: Bangladeshi Taka
+    name: taka
+    code: BDT
+    symbol: ৳
+    entity: '&#x9F3;'
+    discern: Tk.
+    ltr: true
+
+  BGN:
+    title: Bulgarian Lev
+    name: lev
+    code: BGN
+    symbol: лв.
+    entity: '&#x43B;&#x432;&#x2E;'
+    discern: ~
+    ltr: true
+
+  BHD:
+    title: Bahraini Dinar
+    name: dinar
+    code: BHD
+    symbol: .د.ب
+    entity: '&#x2E;&#x62F;&#x2E;&#x628;'
+    discern: BD
+    ltr: true
+
+  BIF:
+    title: Burundian Franc
+    name: franc
+    code: BIF
+    symbol: FBu
+    entity: '&#x46;&#x42;&#x75;'
+    discern: ~
+    ltr: true
+
+  BMD:
+    title: Bermudian Dollar
+    name: dollar
+    code: BMD
+    symbol: $
+    entity: '&#x24;'
+    discern: BD$
+    ltr: true
+
+  BND:
+    title: Brunei Dollar
+    name: dollar
+    code: BND
+    symbol: $
+    entity: '&#x24;'
+    discern: B$
+    ltr: true
+
+  BOB:
+    title: Bolivian Boliviano
+    name: boliviano
+    code: BOB
+    symbol: Bs
+    entity: '&#x42;&#x73;'
+    discern: B$
+    ltr: true
+
+  BOV:
+    title: Mvdol
+    name: mvdol
+    code: BOV
+    symbol: '-'
+    entity: '&#x2D;'
+    discern: ~
+    ltr: true
+
+  BRL:
+    title: Brazilian Real
+    name: real
+    code: BRL
+    symbol: R$
+    entity: '&#x52;&#x24;'
+    discern: ~
+    ltr: true
+
+  BSD:
+    title: Bahamian Dollar
+    name: dollar
+    code: BSD
+    symbol: $
+    entity: '&#x24;'
+    discern: B$
+    ltr: true
+
+  BTN:
+    title: Ngultrum
+    name: ngultrum
+    code: BTN
+    symbol: Nu.
+    entity: '&#x4E;&#x75;&#x2E;'
+    discern: ~
+    ltr: true
+
+  BWP:
+    title: Pula
+    name: pula
+    code: BWP
+    symbol: P
+    entity: '&#x50;'
+    discern: ~
+    ltr: true
+
+  BYN:
+    title: Belarusian Ruble
+    name: ruble
+    code: BYN
+    symbol: Br
+    entity: '&#x42;&#x72;'
+    discern: ~
+    ltr: true
+
+  BZD:
+    title: Belize Dollar
+    name: dollar
+    code: BZD
+    symbol: $
+    entity: '&#x24;'
+    discern: BZ$
+    ltr: true
+
+  CDF:
+    title: Congolese Franc
+    name: franc
+    code: CDF
+    symbol: FC
+    entity: '&#x46;&#x43;'
+    discern: CF
+    ltr: true
+
+  CHF:
+    title: Swiss Franc
+    name: franc
+    code: CHF
+    symbol: Fr
+    entity: '&#x46;&#x72;'
+    discern: SFr
+    ltr: true
+
+  CLF:
+    title: Unidad de Fomento
+    name: Unidad de Fomento
+    code: CLF
+    symbol: UF
+    entity: '&#x55;&#x46;'
+    discern: ~
+    ltr: true
+
+  CLP:
+    title: Chilean Peso
+    name: peso
+    code: CLP
+    symbol: $
+    entity: '&#x24;'
+    discern: CLP$
+    ltr: true
+
+  CNY:
+    title: Yuan Renminbi
+    name: yuan
+    code: CNY
+    symbol: ¥
+    entity: '&#xA5;'
+    discern: ~
+    ltr: true
+
+  COP:
+    title: Colombian Peso
+    name: peso
+    code: COP
+    symbol: $
+    entity: '&#x24;'
+    discern: COP$
+    ltr: true
+
+  CRC:
+    title: Costa Rican Colon
+    name: colon
+    code: CRC
+    symbol: ₡
+    entity: '&#x20A1;'
+    discern: ~
+    ltr: true
+
+  CUC:
+    title: Peso Convertible
+    name: peso
+    code: CUC
+    symbol: $
+    entity: '&#x24;'
+    discern: CUC$
+    ltr: true
+
+  CUP:
+    title: Cuban Peso
+    name: peso
+    code: CUP
+    symbol: $
+    entity: '&#x24;'
+    discern: $MN
+    ltr: true
+
+  CVE:
+    title: Cabo Verde Escudo
+    name: escudo
+    code: CVE
+    symbol: Esc
+    entity: '&#x45;&#x73;&#x63;'
+    discern: ~
+    ltr: true
+
+  CZK:
+    title: Czech Koruna
+    name: koruna
+    code: CZK
+    symbol: Kč
+    entity: '&#x4B;&#x10D;'
+    discern: ~
+    ltr: true
+
+  DJF:
+    title: Djibouti Franc
+    name: franc
+    code: DJF
+    symbol: Fdj
+    entity: '&#x46;&#x64;&#x6A;'
+    discern: ~
+    ltr: true
+
+  DKK:
+    title: Danish Krone
+    name: krone
+    code: DKK
+    symbol: kr
+    entity: '&#x6B;&#x72;'
+    discern: DKK
+    ltr: true
+
+  DOP:
+    title: Dominican Peso
+    name: peso
+    code: DOP
+    symbol: $
+    entity: '&#x24;'
+    discern: RD$
+    ltr: true
+
+  DZD:
+    title: Algerian Dinar
+    name: dinar
+    code: DZD
+    symbol: دج
+    entity: '&#x62F;&#x62C;'
+    discern: DA
+    ltr: false
+
+  EGP:
+    title: Egyptian Pound
+    name: pound
+    code: EGP
+    symbol: £
+    entity: '&#xA3;'
+    discern: £E
+    ltr: true
+
+  ETB:
+    title: Ethiopian Birr
+    name: birr
+    code: ETB
+    symbol: ብር
+    entity: '&#x1265;&#x122D;'
+    discern: Br
+    ltr: true
+
+  ERN:
+    title: Nakfa
+    name: nakfa
+    code: ERN
+    symbol: Nkf
+    entity: '&#x4E;&#x6B;&#x66;'
+    discern: ~
+    ltr: true
+
+  FJD:
+    title: Fiji Dollar
+    name: dollar
+    code: FJD
+    symbol: $
+    entity: '&#x24;'
+    discern: FJ$
+    ltr: true
+
+  FKP:
+    title: Falkland Islands Pound
+    name: pound
+    code: FKP
+    symbol: £
+    entity: '&#xA3;'
+    discern: FK£
+    ltr: true
+
+  GEL:
+    title: Lari
+    name: lari
+    code: GEL
+    symbol: ₾
+    entity: '&#x20BE;'
+    discern: ~
+    ltr: true
+
+  GHS:
+    title: Ghana Cedi
+    name: cedi
+    code: GHS
+    symbol: ₵
+    entity: '&#x20B5;'
+    discern: GH¢
+    ltr: true
+
+  GIP:
+    title: Gibraltar Pound
+    name: pound
+    code: GIP
+    symbol: £
+    entity: '&#xA3;'
+    discern: ~
+    ltr: true
+
+  GMD:
+    title: Dalasi
+    name: dalasi
+    code: GMD
+    symbol: D
+    entity: '&#x44;'
+    discern: ~
+    ltr: true
+
+  GNF:
+    title: Guinean Franc
+    name: franc
+    code: GNF
+    symbol: FG
+    entity: '&#x46;&#x47;'
+    discern: GFr
+    ltr: true
+
+  GTQ:
+    title: Quetzal
+    name: quetzal
+    code: GTQ
+    symbol: Q
+    entity: '&#x51;'
+    discern: ~
+    ltr: true
+
+  GYD:
+    title: Guyana Dollar
+    name: dollar
+    code: GYD
+    symbol: $
+    entity: '&#x24;'
+    discern: GY$
+    ltr: true
+
+  HKD:
+    title: Hong Kong Dollar
+    name: dollar
+    code: HKD
+    symbol: $
+    entity: '&#x24;'
+    discern: HK$
+    ltr: true
+
+  HNL:
+    title: Lempira
+    name: lempira
+    code: HNL
+    symbol: L
+    entity: '&#x4C;'
+    discern: ~
+    ltr: true
+
+  HTG:
+    title: Gourde
+    name: gourde
+    code: HTG
+    symbol: G
+    entity: '&#x47;'
+    discern: ~
+    ltr: true
+
+  HUF:
+    title: Forint
+    name: forint
+    code: HUF
+    symbol: Ft
+    entity: '&#x46;&#x74;'
+    discern: ~
+    ltr: true
+
+  IDR:
+    title: Rupiah
+    name: rupiah
+    code: IDR
+    symbol: Rp
+    entity: '&#x52;&#x70;'
+    discern: ~
+    ltr: true
+
+  ILS:
+    title: New Israeli Sheqel
+    name: sheqel
+    code: ILS
+    symbol: ₪
+    entity: '&#x20AA;'
+    discern: NIS
+    ltr: true
+
+  INR:
+    title: Indian Rupee
+    name: rupee
+    code: INR
+    symbol: ₹
+    entity: '&#x20B9;'
+    discern: ~
+    ltr: true
+
+  IQD:
+    title: Iraqi Dinar
+    name: dinar
+    code: IQD
+    symbol: د.ع
+    entity: '&#x62F;&#x2E;&#x639;'
+    discern: ~
+    ltr: false
+
+  IRR:
+    title: Iranian Rial
+    name: rial
+    code: IRR
+    symbol: ﷼
+    entity: '&#xFDFC;'
+    discern: ~
+    ltr: false
+
+  ISK:
+    title: Iceland Krona
+    name: krona
+    code: ISK
+    symbol: kr
+    entity: '&#x6B;&#x72;'
+    discern: ISK
+    ltr: false
+
+  JEP:
+    title: Jersey Pound
+    name: pound
+    code: JEP
+    symbol: £
+    entity: '&#xA3;'
+    discern: JEP
+    ltr: true
+
+  JMD:
+    title: Jamaican Dollar
+    name: dollar
+    code: JMD
+    symbol: $
+    entity: '&#x24;'
+    discern: J$
+    ltr: true
+
+  JOD:
+    title: Jordanian Dinar
+    name: dinar
+    code: JOD
+    symbol: د.أ
+    entity: '&#x62F;&#x2E;&#x623;'
+    discern: ~
+    ltr: false
+
+  JPY:
+    title: Yen
+    name: yen
+    code: JPY
+    symbol: ¥
+    entity: '&#xA5;'
+    discern: JP¥
+    ltr: true
+
+  KES:
+    title: Kenyan Shilling
+    name: shilling
+    code: KES
+    symbol: KSh
+    entity: '&#x4B;&#x53;&#x68;'
+    discern: ~
+    ltr: true
+
+  KGS:
+    title: Som
+    name: som
+    code: KGS
+    symbol: сом
+    entity: '&#x441;&#x43E;&#x43C;'
+    discern: ~
+    ltr: true
+
+  KHR:
+    title: Riel
+    name: riel
+    code: KHR
+    symbol: ៛
+    entity: '&#x17DB;'
+    discern: ~
+    ltr: true
+
+  KMF:
+    title: Comorian Franc
+    name: franc
+    code: KMF
+    symbol: CF
+    entity: '&#x43;&#x46;'
+    discern: ~
+    ltr: true
+
+  KPW:
+    title: North Korean Won
+    name: won
+    code: KPW
+    symbol: ₩
+    entity: '&#x20A9;'
+    discern: ~
+    ltr: true
+
+  KRW:
+    title: Won
+    name: won
+    code: KRW
+    symbol: ₩
+    entity: '&#x20A9;'
+    discern: ~
+    ltr: true
+
+  KWD:
+    title: Kuwaiti Dinar
+    name: dinar
+    code: KWD
+    symbol: د.ك
+    entity: '&#x62F;&#x2E;&#x643;'
+    discern: ~
+    ltr: false
+
+  KYD:
+    title: Cayman Islands Dollar
+    name: dollar
+    code: KYD
+    symbol: $
+    entity: '&#x24;'
+    discern: CI$
+    ltr: true
+
+  KZT:
+    title: Tenge
+    name: tenge
+    code: KZT
+    symbol: ₸
+    entity: '&#x20B8;'
+    discern: ~
+    ltr: true
+
+  LAK:
+    title: Lao Kip
+    name: kip
+    code: LAK
+    symbol: ₭
+    entity: '&#x20AD;'
+    discern: ₭N
+    ltr: true
+
+  LBP:
+    title: Lebanese Pound
+    name: pound
+    code: LBP
+    symbol: ل.ل.
+    entity: '&#x644;&#x2E;&#x644;&#x2E;'
+    discern: LL
+    ltr: false
+
+  LKR:
+    title: Sri Lanka Rupee
+    name: rupee
+    code: LKR
+    symbol: ₨
+    entity: '&#x20A8;'
+    discern: LKR
+    ltr: true
+
+  LRD:
+    title: Liberian Dollar
+    name: dollar
+    code: LRD
+    symbol: $
+    entity: '&#x24;'
+    discern: L$
+    ltr: true
+
+  LSL:
+    title: Loti
+    name: loti
+    code: LSL
+    symbol: L
+    entity: '&#x4C;'
+    discern: ~
+    ltr: true
+
+  LYD:
+    title: Libyan Dinar
+    name: dinar
+    code: LYD
+    symbol: .د
+    entity: '&#x2E;&#x62F;'
+    discern: LD
+    ltr: false
+
+  MAD:
+    title: Moroccan Dirham
+    name: dirham
+    code: MAD
+    symbol: د.م.
+    entity: '&#x62F;&#x2E;&#x645;&#x2E;'
+    discern: DH
+    ltr: false
+
+  MDL:
+    title: Moldovan Leu
+    name: leu
+    code: MDL
+    symbol: L
+    entity: '&#x4C;'
+    discern: ~
+    ltr: true
+
+  MGA:
+    title: Malagasy Ariary
+    name: ariary
+    code: MGA
+    symbol: Ar
+    entity: '&#x41;&#x72;'
+    discern: ~
+    ltr: true
+
+  MKD:
+    title: Denar
+    name: denar
+    code: MKD
+    symbol: ден
+    entity: '&#x434;&#x435;&#x43D;'
+    discern: ~
+    ltr: true
+
+  MMK:
+    title: Kyat
+    name: kyat
+    code: MMK
+    symbol: K
+    entity: '&#x4B;'
+    discern: ~
+    ltr: true
+
+  MNT:
+    title: Tugrik
+    name: tugrik
+    code: MNT
+    symbol: ₮
+    entity: '&#x20AE;'
+    discern: ~
+    ltr: true
+
+  MOP:
+    title: Pataca
+    name: pataca
+    code: MOP
+    symbol: MOP$
+    entity: '&#x4D;&#x4F;&#x50;&#x24;'
+    discern: ~
+    ltr: true
+
+  MRU:
+    title: Ouguiya
+    name: ouguiya
+    code: MRU
+    symbol: UM
+    entity: '&#x55;&#x4D;'
+    discern: ~
+    ltr: true
+
+  MUR:
+    title: Mauritius Rupee
+    name: rupee
+    code: MUR
+    symbol: ₨
+    entity: '&#x20A8;'
+    discern: ~
+    ltr: true
+
+  MVR:
+    title: Rufiyaa
+    name: rufiyaa
+    code: MVR
+    symbol: Rf.
+    entity: '&#x52;&#x66;&#x2E;'
+    discern: MRf
+    ltr: true
+
+  MWK:
+    title: Malawi Kwacha
+    name: kwacha
+    code: MWK
+    symbol: K
+    entity: '&#x4B;'
+    discern: ~
+    ltr: true
+
+  MXN:
+    title: Mexican Peso
+    name: peso
+    code: MXN
+    symbol: $
+    entity: '&#x24;'
+    discern: MX$
+    ltr: true
+
+  MXV:
+    title: Mexican Unidad de Inversion (UDI)
+    name: udi
+    code: MXV
+    symbol: '-'
+    entity: '&#x2D;'
+    discern: ~
+    ltr: true
+
+  MYR:
+    title: Malaysian Ringgit
+    name: ringgit
+    code: MYR
+    symbol: RM
+    entity: '&#x52;&#x4D;'
+    discern: ~
+    ltr: true
+
+  MZN:
+    title: Mozambique Metical
+    name: metical
+    code: MZN
+    symbol: MT
+    entity: '&#x4D;&#x54;'
+    discern: MTn
+    ltr: true
+
+  NAD:
+    title: Namibia Dollar
+    name: dollar
+    code: NAD
+    symbol: $
+    entity: '&#x24;'
+    discern: N$
+    ltr: true
+
+  NGN:
+    title: Naira
+    name: naira
+    code: NGN
+    symbol: ₦
+    entity: '&#x20A6;'
+    discern: ~
+    ltr: true
+
+  NIO:
+    title: Cordoba Oro
+    name: cordoba
+    code: NIO
+    symbol: C$
+    entity: '&#x43;&#x24;'
+    discern: ~
+    ltr: true
+
+  NPR:
+    title: Nepalese Rupee
+    name: rupee
+    code: NPR
+    symbol: रु
+    entity: '&#x930;&#x941;'
+    discern: ₨
+    ltr: true
+
+  NZD:
+    title: New Zealand Dollar
+    name: dollar
+    code: NZD
+    symbol: $
+    entity: '&#x24;'
+    discern: NZ$
+    ltr: true
+
+  OMR:
+    title: Rial Omani
+    name: rial
+    code: OMR
+    symbol: ر.ع.
+    entity: '&#x631;&#x2E;&#x639;&#x2E;'
+    discern: R.O.
+    ltr: false
+
+  PAB:
+    title: Balboa
+    name: balboa
+    code: PAB
+    symbol: B/.
+    entity: '&#x42;&#x2F;&#x2E;'
+    discern: ~
+    ltr: true
+
+  PEN:
+    title: Sol
+    name: sol
+    code: PEN
+    symbol: S/
+    entity: '&#x53;&#x2F;'
+    discern: ~
+    ltr: true
+
+  PGK:
+    title: Kina
+    name: kina
+    code: PKG
+    symbol: K
+    entity: '&#x4B;'
+    discern: ~
+    ltr: true
+
+  PHP:
+    title: Philippine Peso
+    name: peso
+    code: PHP
+    symbol: ₱
+    entity: '&#x20B1;'
+    discern: ~
+    ltr: true
+
+  PKR:
+    title: Pakistan Rupee
+    name: rupee
+    code: PKR
+    symbol: ₨
+    entity: '&#x20A8;'
+    discern: ~
+    ltr: true
+
+  PLN:
+    title: Zloty
+    name: zloty
+    code: PLN
+    symbol: zł
+    entity: '&#x7A;&#x142;'
+    discern: ~
+    ltr: true
+
+  PYG:
+    title: Guarani
+    name: guarani
+    code: PYG
+    symbol: ₲
+    entity: '&#x20B2;'
+    discern: ~
+    ltr: true
+
+  QAR:
+    title: Qatari Rial
+    name: riyal
+    code: QAR
+    symbol: ر.ق
+    entity: '&#x631;&#x2E;&#x642;&#xA;'
+    discern: QR
+    ltr: false
+
+  RON:
+    title: Romanian Leu
+    name: leu
+    code: RON
+    symbol: L
+    entity: '&#x4C;'
+    discern: ~
+    ltr: false
+
+  RSD:
+    title: Serbian Dinar
+    name: dinar
+    code: RSD
+    symbol: дин
+    entity: '&#x434;&#x438;&#x43D;'
+    discern: ~
+    ltr: true
+
+  RUB:
+    title: Russian Ruble
+    name: ruble
+    code: RUB
+    symbol: ₽
+    entity: '&#x20BD;'
+    discern: ~
+    ltr: true
+
+  RWF:
+    title: Rwanda Franc
+    name: franc
+    code: RWF
+    symbol: FRw
+    entity: '&#x46;&#x52;&#x77;'
+    discern: R₣
+    ltr: true
+
+  SAR:
+    title: Saudi Riyal
+    name: riyal
+    code: SAR
+    symbol: ر.س
+    entity: '&#x631;&#x2E;&#x633;&#xA;'
+    discern: SAR
+    ltr: false
+
+  SBD:
+    title: Solomon Islands Dollar
+    name: dollar
+    code: SBD
+    symbol: $
+    entity: '&#x24;'
+    discern: SI$
+    ltr: true
+
+  SCR:
+    title: Seychelles Rupee
+    name: rupee
+    code: SCR
+    symbol: ₨
+    entity: '&#x20A8;'
+    discern: SRe
+    ltr: true
+
+  SDG:
+    title: Sudanese Pound
+    name: pound
+    code: SDG
+    symbol: £
+    entity: '&#xA3;'
+    discern: £SD
+    ltr: true
+
+  SEK:
+    title: Swedish Krona
+    name: krona
+    code: SEK
+    symbol: kr
+    entity: '&#x6B;&#x72;'
+    discern: ~
+    ltr: true
+
+  SGD:
+    title: Singapore Dollar
+    name: dollar
+    code: SGD
+    symbol: $
+    entity: '&#x24;'
+    discern: S$
+    ltr: true
+
+  SHP:
+    title: Saint Helena Pound
+    name: pound
+    code: SHP
+    symbol: £
+    entity: '&#xA3;'
+    discern: ~
+    ltr: true
+
+  SLE:
+    title: Leone
+    name: leone
+    code: SLE
+    symbol: Le
+    entity: '&#x4C;&#x65;'
+    discern: ~
+    ltr: true
+
+  SLL:
+    title: Leone
+    name: leone
+    code: SLL
+    symbol: Le
+    entity: '&#x4C;&#x65;'
+    discern: ~
+    ltr: true
+
+  SOS:
+    title: Somali Shilling
+    name: shilling
+    code: SOS
+    symbol: Sh.So.
+    entity: '&#x53;&#x68;&#x2E;&#x53;&#x6F;&#x2E;'
+    discern: ~
+    ltr: true
+
+  SRD:
+    title: Surinam Dollar
+    name: dollar
+    code: SRD
+    symbol: $
+    entity: '&#x24;'
+    discern: Sr$
+    ltr: true
+
+  STN:
+    title: Dobra
+    name: dobra
+    code: STN
+    symbol: Db
+    entity: '&#x44;&#x62;'
+    discern: ~
+    ltr: true
+
+  SSP:
+    title: South Sudanese Pound
+    name: pound
+    code: SSP
+    symbol: £
+    entity: '&#xA3;'
+    discern: SS£
+    ltr: true
+
+  SYP:
+    title: Syrian Pound
+    name: pound
+    code: SYP
+    symbol: £
+    entity: '&#xA3;'
+    discern: £S
+    ltr: true
+
+  SZL:
+    title: Lilangeni
+    name: lilangeni
+    code: SZL
+    symbol: L
+    entity: '&#x4C;'
+    discern: ~
+    ltr: true
+
+  THB:
+    title: Baht
+    name: baht
+    code: THB
+    symbol: ฿
+    entity: '&#xE3F;'
+    discern: ~
+    ltr: true
+
+  TJS:
+    title: Somoni
+    name: somoni
+    code: TJS
+    symbol: SM
+    entity: '&#x53;&#x4D;'
+    discern: ~
+    ltr: true
+
+  TMT:
+    title: Turkmenistan New Manat
+    name: manat
+    code: TMT
+    symbol: m
+    entity: '&#x6D;'
+    discern: ~
+    ltr: true
+
+  TND:
+    title: Tunisian Dinar
+    name: dinar
+    code: TND
+    symbol: د.ت
+    entity: '&#x62F;&#x2E;&#x62A;'
+    discern: DT
+    ltr: false
+
+  TOP:
+    title: Pa’anga
+    name: pa’anga
+    code: TOP
+    symbol: T$
+    entity: '&#x54;&#x24;'
+    discern: PT
+    ltr: true
+
+  TRY:
+    title: Turkish Lira
+    name: lira
+    code: TRY
+    symbol: ₺
+    entity: '&#x20BA;'
+    discern: ~
+    ltr: false
+
+  TTD:
+    title: Trinidad and Tobago Dollar
+    name: dollar
+    code: TTD
+    symbol: $
+    entity: '&#x24;'
+    discern: TT$
+    ltr: true
+
+  TWD:
+    title: New Taiwan Dollar
+    name: dollar
+    code: TWD
+    symbol: $
+    entity: '&#x24;'
+    discern: NT$
+    ltr: true
+
+  TZS:
+    title: Tanzanian Shilling
+    name: shiling
+    code: TZS
+    symbol: TSh
+    entity: '&#x54;&#x53;&#x68;'
+    discern: ~
+    ltr: true
+
+  UAH:
+    title: Hryvnia
+    name: hryvnia
+    code: UAH
+    symbol: ₴
+    entity: '&#x20B4;'
+    discern: грн
+    ltr: true
+
+  UGX:
+    title: Uganda Shilling
+    name: shilling
+    code: UGX
+    symbol: USh
+    entity: '&#x55;&#x53;&#x68;'
+    discern: ~
+    ltr: true
+
+  UYU:
+    title: Peso Uruguayo
+    name: peso
+    code: UYU
+    symbol: $
+    entity: '&#x24;'
+    discern: $U
+    ltr: true
+
+  UZS:
+    title: Uzbekistan Sum
+    name: sum
+    code: UZS
+    symbol: сум
+    entity: '&#x441;&#x443;&#x43C;'
+    discern: ~
+    ltr: true
+
+  VED:
+    title: Bolívar Soberano
+    name: bolívar
+    code: VED
+    symbol: Bs.
+    entity: '&#x42;&#x73;&#x2E;'
+    discern: ~
+    ltr: true
+
+  VES:
+    title: Bolívar Soberano
+    name: bolívar
+    code: VES
+    symbol: Bs.S
+    entity: '&#x42;&#x73;&#x2E;&#x53;'
+    discern: ~
+    ltr: true
+
+  VND:
+    title: Dong
+    name: dong
+    code: VND
+    symbol: ₫
+    entity: '&#x20AB;'
+    discern: ~
+    ltr: true
+
+  VUV:
+    title: Vatu
+    name: vatu
+    code: VUV
+    symbol: VT
+    entity: '&#x56;&#x54;'
+    discern: ~
+    ltr: true
+
+  WST:
+    title: Tala
+    name: tala
+    code: WST
+    symbol: $
+    entity: '&#x24;'
+    discern: WS$
+    ltr: true
+
+  XAF:
+    title: CFA Franc BEAC
+    name: franc
+    code: XAF
+    symbol: FCFA
+    entity: '&#x46;&#x43;&#x46;&#x41;'
+    discern: ~
+    ltr: true
+
+  XCD:
+    title: East Caribbean Dollar
+    name: dollar
+    code: XCD
+    symbol: $
+    entity: '&#x24;'
+    discern: EC$
+    ltr: true
+
+  XDR:
+    title: SDR (Special Drawing Right)
+    name: SDR
+    code: XDR
+    symbol: SDR
+    entity: '&#x53;&#x44;&#x52;'
+    discern: ~
+    ltr: true
+
+  XOF:
+    title: CFA Franc BCEAO
+    name: franc
+    code: XOF
+    symbol: CFA
+    entity: '&#x43;&#x46;&#x41;'
+    discern: ~
+    ltr: true
+
+  XPF:
+    title: CFP Franc
+    name: franc
+    code: XPF
+    symbol: ₣
+    entity: '&#x20A3;'
+    discern: ~
+    ltr: true
+
+  YER:
+    title: Yemeni Rial
+    name: rial
+    code: YER
+    symbol: ر.ي
+    entity: '&#x631;&#x2E;&#x64A;'
+    discern: ~
+    ltr: false
+
+  ZAR:
+    title: Rand
+    name: rand
+    code: ZAR
+    symbol: R
+    entity: '&#x52;'
+    discern: ~
+    ltr: true
+
+  ZMW:
+    title: Zambian Kwacha
+    name: kwacha
+    code: ZMW
+    symbol: K
+    entity: '&#x4B;'
+    discern: ZK
+    ltr: true
+
+  ZWL:
+    title: Zimdollar
+    name: dollar
+    code: ZWL
+    symbol: $
+    entity: '&#x24;'
+    discern: ZWL$
+    ltr: true

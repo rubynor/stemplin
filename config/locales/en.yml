@@ -235,6 +235,10 @@ en:
     week: "Week"
     copy_to_today: "Copy to today"
     unable_to_proceed: "Unable to proceed"
+    organization_name: "Organization name"
+    organization_settings: "Organization settings"
+    settings: "Settings"
+    currency: "Currency"
 
   notice:
     are_you_sure: "Are you sure?"

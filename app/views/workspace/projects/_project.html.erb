@@ -13,8 +13,8 @@
   <%= render PhlexUI::Table::Cell.new(class: "w-36") do %>
     <% if project.billable %>
       <div>
-        <span class="text-gray-400">NOK</span>
-        <span class="font-medium"><%= project.rate_nok %></span>
+        <span class="text-gray-400"><%= @currency %></span>
+        <span class="font-medium"><%= project.rate_currency %></span>
       </div>
     <% else %>
       <%= render PhlexUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") do %>

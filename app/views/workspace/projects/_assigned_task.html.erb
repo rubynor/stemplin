@@ -11,8 +11,8 @@
         <% end %>
       </div>
       <div class="text-sm">
-        <span class="text-gray-400">NOK</span>
-        <span class="font-medium"><%= assigned_task.rate.zero? ? assigned_task.project.rate_nok : assigned_task.rate_nok %></span>
+        <span class="text-gray-400"><%= @currency %></span>
+        <span class="font-medium"><%= assigned_task.rate.zero? ? assigned_task.project.rate_currency : assigned_task.rate_currency %></span>
       </div>
     </div>
   </div>

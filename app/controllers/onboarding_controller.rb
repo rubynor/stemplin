@@ -30,6 +30,6 @@ class OnboardingController < ApplicationController
   end
 
   def onboarding_params
-    params.require(:organization).permit(:name)
+    params.require(:organization).permit(:name, :currency)
   end
 end

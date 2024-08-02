@@ -20,33 +20,33 @@ module Workspace
 
       test "should add assigned task from exsting task" do
         task = @organization_admin.current_organization.tasks.first
-        post :add, params: { assigned_task: { task_attributes: { name: task.name }, rate_nok: 100 } }
+        post :add, params: { assigned_task: { task_attributes: { name: task.name }, rate_currency: 100 } }
         assert_response :success
       end
 
       test "should add assigned task from new task" do
-        post :add, params: { assigned_task: { task_attributes: { name: "New task name" }, rate_nok: 0 } }
+        post :add, params: { assigned_task: { task_attributes: { name: "New task name" }, rate_currency: 0 } }
         assert_response :success
       end
 
       test "should not add assigned task without task" do
-        post :add, params: { assigned_task: { task_attributes: { name: "" }, rate_nok: 100 } }
+        post :add, params: { assigned_task: { task_attributes: { name: "" }, rate_currency: 100 } }
         assert_response :unprocessable_entity
       end
 
       test "should edit persisted assigned task" do
         assigned_task = @organization_admin.current_organization.assigned_tasks.first
-        post :edit, params: { assigned_task: { id: assigned_task.id, task_attributes: { name: assigned_task.task.name }, rate_nok: 100 } }
+        post :edit, params: { assigned_task: { id: assigned_task.id, task_attributes: { name: assigned_task.task.name }, rate_currency: 100 } }
         assert_response :success
       end
 
       test "should edit unpersisted assigned task" do
-        post :edit, params: { assigned_task: { id: nil, task_attributes: { name: "New task name" }, rate_nok: 0 } }
+        post :edit, params: { assigned_task: { id: nil, task_attributes: { name: "New task name" }, rate_currency: 0 } }
         assert_response :success
       end
 
       test "should not edit assigned task without task" do
-        post :edit, params: { assigned_task: { id: nil, task_attributes: { name: "" }, rate_nok: 100 } }
+        post :edit, params: { assigned_task: { id: nil, task_attributes: { name: "" }, rate_currency: 100 } }
         assert_response :unprocessable_entity
       end
 
