@@ -78,5 +78,30 @@ class ReportsController < AuthenticatedController
                                         .where(projects: { id: @filter.project_ids })
                                         .distinct.ordered_by_name
     end
+
+    # Logic for checking checkboxes
+
+    if @filter.project_ids&.any? && !@filter.client_ids&.any?
+      @filter.client_ids = @form_data.selectable_clients.map(&:id).map(&:to_s)
+    end
+
+    if @filter.client_ids&.any? && !@filter.project_ids&.any?
+      @filter.project_ids = @form_data.selectable_projects.map(&:id).map(&:to_s)
+    end
+
+    if @filter.project_ids&.any? && !@filter.task_ids&.any?
+      @filter.task_ids = @form_data.selectable_tasks.map(&:id).map(&:to_s)
+    end
+
+    if @filter.project_ids&.any? && !@filter.user_ids&.any?
+      @filter.user_ids = @form_data.selectable_users.map(&:id).map(&:to_s)
+    end
+
+    if [ @filter.client_ids, @filter.project_ids, @filter.task_ids, @filter.user_ids ].flatten.compact.empty?
+      @filter.client_ids = @form_data.selectable_clients.map(&:id).map(&:to_s)
+      @filter.project_ids = @form_data.selectable_projects.map(&:id).map(&:to_s)
+      @filter.task_ids = @form_data.selectable_tasks.map(&:id).map(&:to_s)
+      @filter.user_ids = @form_data.selectable_users.map(&:id).map(&:to_s)
+    end
   end
 end
