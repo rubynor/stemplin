@@ -38,8 +38,8 @@ module Reports
           attribute_name: group.send(attribute_name_method),
           total_minutes: total_minutes,
           total_billable_minutes: total_billable_minutes,
-          total_billable_amount: ConvertKroneOre.out(billable_time_regs.sum(&:billed_amount)),
           total_billable_minutes_percentage: total_billable_minutes_percentage,
+          total_billable_amount: ConvertCurrencyHundredths.out(billable_time_regs.sum(&:billed_amount)),
           group_link: { "#{singular_attribute}_ids": [ group.id ], category: nil }
         }
       end

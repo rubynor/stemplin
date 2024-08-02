@@ -52,7 +52,7 @@
               <%= render PhlexUI::Table::Cell.new(class: "font-semibold text-lg") { minutes_to_float @summary.total_minutes } %>
               <%= render PhlexUI::Table::Cell.new(class: "font-semibold text-lg") { minutes_to_float @summary.total_billable_minutes } %>
               <%= render PhlexUI::Table::Cell.new do %>
-                <div><span class="font-semibold text-lg"><%= @summary.total_billable_amount_nok %></span>
+                <div><span class="font-semibold text-lg"><%= @summary.total_billable_amount_currency %></span>
                 <span class="text-sm font-semibold text-gray-400"><%= @currency %></span></div>
               <% end %>
             <% end %>

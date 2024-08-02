@@ -7,6 +7,10 @@ export default class extends Controller {
     this.element.addEventListener("turbo:frame-load", () => this.updateCheckboxAll());
   }
 
+  checkboxAllTargetConnected() {
+    this.updateCheckboxAll();
+  }
+
   check() {
     this.checkboxTarget.checked = true;
   }

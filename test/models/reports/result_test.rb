@@ -54,7 +54,7 @@ module Reports
         billable_time_regs = time_regs.select { |time_reg| time_reg.project.billable }
         total_minutes = time_regs.sum(&:minutes)
         total_billable_minutes = billable_time_regs.sum(&:minutes)
-        total_billable_amount = ConvertKroneOre.out(billable_time_regs.sum(&:billed_amount))
+        total_billable_amount = ConvertCurrencyHundredths.out(billable_time_regs.sum(&:billed_amount))
         total_billable_minutes_percentage = (total_billable_minutes / total_minutes.to_f * 100).truncate(2)
 
         {

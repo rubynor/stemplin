@@ -36,4 +36,12 @@ module ReportsHelper
       "#{checkbox_tag} #{label_text}".html_safe
     end
   end
+
+  def single_filter_check_box(form, method, label_text, checked, options = {})
+    form.label(method, class: "font-bold bg-white px-3 py-1.5 rounded-sm cursor-pointer") do
+      checkbox_tag = form.check_box(method, checked: checked, class: "mr-2", **options)
+
+      "#{checkbox_tag} #{label_text}".html_safe
+    end
+  end
 end
