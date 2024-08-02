@@ -8,8 +8,8 @@ module Reports
       @total_billable_amount ||= @time_regs.billable.sum(&:billed_amount)
     end
 
-    def total_billable_amount_nok
-      ConvertKroneOre.out(total_billable_amount)
+    def total_billable_amount_currency
+      ConvertCurrencyHundredths.out(total_billable_amount)
     end
 
     def total_minutes
