@@ -32,13 +32,14 @@ module Reports
         billable_time_regs = time_regs.select(&method(:project_billable?))
         total_minutes = time_regs.sum(&:minutes)
         total_billable_minutes = billable_time_regs.sum(&:minutes)
+        total_billable_minutes_percentage = total_minutes.zero? ? 0.00 : (total_billable_minutes / total_minutes.to_f * 100).truncate(2)
 
         {
           attribute_name: group.send(attribute_name_method),
           total_minutes: total_minutes,
           total_billable_minutes: total_billable_minutes,
           total_billable_amount: ConvertKroneOre.out(billable_time_regs.sum(&:billed_amount)),
-          total_billable_minutes_percentage: (total_billable_minutes / total_minutes.to_f * 100).truncate(2),
+          total_billable_minutes_percentage: total_billable_minutes_percentage,
           group_link: { "#{singular_attribute}_ids": [ group.id ], category: nil }
         }
       end
