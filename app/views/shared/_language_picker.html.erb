@@ -1,8 +1,8 @@
 <%= render PhlexUI::Popover.new(options: { placement: "bottom-end", trigger: "click", duration: 0 }, class: "cursor-pointer") do %>
   <%= render PhlexUI::Popover::Trigger.new(class: "flex flex-row items-center gap-x-2 cursor-pointer") do %>
     <%= image_tag t("language.flag", locale: I18n.locale), class: "w-6" %>
-    <span class="text-sm text-gray-600 hidden lg:block"><%= t("language.name", locale: I18n.locale) %></span>
-    <span class="text-sm text-gray-600 lg:hidden"><%= t("language.short_name", locale: I18n.locale) %></span>
+    <span class="text-sm hidden lg:block"><%= t("language.name", locale: I18n.locale) %></span>
+    <span class="text-sm lg:hidden"><%= t("language.short_name", locale: I18n.locale) %></span>
   <% end %>
   <%= render PhlexUI::Popover::Content.new do %>
     <%- Stemplin.config.i18n.available_locales.each do |locale| %>

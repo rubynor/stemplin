@@ -1,0 +1,13 @@
+<%= render PhlexUI::Dialog.new do %>
+  <%= render PhlexUI::Dialog::Trigger.new do %>
+    <div class="text-white flex items-center gap-x-1 cursor-pointer">
+      <i class="uc-icon text-2xl">&#xead0;</i>
+      <span class="font-medium text-base">
+          <%= t("landing_page.hero_section.watch_a_demo") %>
+        </span>
+    </div>
+  <% end %>
+  <%= render PhlexUI::Dialog::Content.new(class: "bg-white video-container", size: :xl) do %>
+    <%= content_tag :iframe, nil, src: "https://res.cloudinary.com/do334blmj/video/upload/v1723006323/Stemplin_Signup_1_qrvlga.mp4", frameborder: 0, allow: "", allowfullscreen: true, allow: "autoplay; encrypted-media" %>
+  <% end %>
+<% end %>

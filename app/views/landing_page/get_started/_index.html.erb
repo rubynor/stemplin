@@ -4,13 +4,13 @@
       <%= image_tag "workspace-administration-gray.svg", class: "rounded-md" %>
     </div>
     <div class="flex-1 flex flex-col gap-y-4 text-left justify-center capitalize">
-      <span class="text-new-secondary font-medium text-base">How it works?</span>
-      <span class="text-2xl lg:text-3xl font-semibold text-white">Get started</span>
-      <span class="text-lg text-white mt-2 font-regular">In just a few steps, you're all set to manager your team's work time. Track all activities with our app in one convenient place.</span>
+      <span class="text-new-secondary font-medium text-base"><%= t("landing_page.get_started.question") %></span>
+      <span class="text-2xl lg:text-3xl font-semibold text-white"><%= t("landing_page.get_started.title") %></span>
+      <span class="text-lg text-white mt-2 font-regular"><%= t("landing_page.get_started.sub_text") %></span>
       <div class="mt-4 bg-new-primary shadow-sm p-4 rounded-md flex flex-col">
         <ul role="list">
-          <% @getting_started_steps.each_with_index do |step, idx| %>
-            <%= render partial: "landing_page/get_started/step", locals: { count: idx + 1, description: step, total_count: @getting_started_steps.size } %>
+          <% t("landing_page.get_started.steps").each_with_index do |step, idx| %>
+            <%= render partial: "landing_page/get_started/step", locals: { count: idx + 1, description: step, total_count: t('landing_page.get_started.steps').size } %>
           <% end %>
         </ul>
       </div>

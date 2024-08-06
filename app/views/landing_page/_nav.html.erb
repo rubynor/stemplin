@@ -3,18 +3,25 @@
     <%= image_tag "stemplin-logo-white.svg", class: "w-24 md:w-36" %>
     <div class="items-center gap-x-4 hidden lg:flex">
       <%= link_to "#", class: "border-b-2 border-new-secondary p-2" do %>
-        <span class="font-semibold text-white">Home</span>
+        <span class="font-semibold text-white"><%= t("landing_page.nav_bar.home") %></span>
       <% end %>
       <%= link_to "#services", class: "p-2 nav-link group" do %>
-        <span class="font-regular text-white opacity-70 group-hover:opacity-100 transition duration-400">Services</span>
+        <span class="font-regular text-white opacity-70 group-hover:opacity-100 transition duration-400">
+          <%= t("landing_page.nav_bar.services") %>
+        </span>
       <% end %>
       <%= link_to "#testimonials", class: "p-2 nav-link group" do %>
-        <span class="font-regular text-white opacity-70 group-hover:opacity-100 transition duration-400">Testimonials</span>
+        <span class="font-regular text-white opacity-70 group-hover:opacity-100 transition duration-400">
+          <%= t("landing_page.nav_bar.testimonials") %>
+        </span>
       <% end %>
     </div>
     <div class="flex gap-x-2 items-center">
-      <%= render ButtonComponent.new(variant: :primary, class: "!bg-new-primary border !border-white rounded-md", method: :get, path: new_user_session_url) { "Login" } %>
-      <%= render ButtonComponent.new(variant: :primary, class: "!bg-white !text-new-primary rounded-md", method: :get, path: new_user_registration_path) { "Signup" } %>
+      <div class="!text-white border-r pr-4 mr-4 border-white">
+        <%= render partial: "shared/language_picker" %>
+      </div>
+      <%= render ButtonComponent.new(variant: :primary, class: "!bg-new-primary border !border-white rounded-md", method: :get, path: new_user_session_url) { t("landing_page.nav_bar.login") } %>
+      <%= render ButtonComponent.new(variant: :primary, class: "!bg-white !text-new-primary rounded-md hidden lg:block", method: :get, path: new_user_registration_path) { t("landing_page.nav_bar.signup") } %>
     </div>
   </div>
 </nav>
