@@ -193,10 +193,23 @@ html {
     border: none;
 }
 
+.services-section {
+    padding-top: 16rem;
+}
+
+@media (min-width: 360px) {
+    .services-section {
+        padding-top: 25rem;
+    }
+}
+
 @media (min-width: 480px) {
     .hero-txt::after {
         /*width: 80%;*/
         height: 30px;
+    }
+    .services-section {
+        padding-top: 34rem;
     }
 }
 
@@ -211,6 +224,9 @@ html {
 
     .service-tab[data-state="active"] .service-tab-desc {
         display: block;
+    }
+    .services-section {
+        padding-top: 38rem;
     }
 }
 
@@ -243,7 +259,9 @@ html {
     .testimonial-card:nth-child(4) {
         top: 8rem;
     }
-
+    .services-section {
+        padding-top: 32rem;
+    }
 }
 
 @media (min-width: 840px) {
