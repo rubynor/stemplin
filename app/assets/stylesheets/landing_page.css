@@ -1,0 +1,290 @@
+html {
+    scroll-behavior: smooth;
+}
+
+.hero-section {
+    background: var(--new-primary) url("pattern-wavy.svg") no-repeat center/cover;
+    /*border-radius: 0 100% 100% 0 / 100% 0 25% 0;*/
+    margin-top: -12rem;
+    padding-top: 12rem;
+}
+
+.skew-section {
+    transform: skewY(-10deg);
+}
+
+.un-skew-content {
+    transform: skewY(10deg);
+}
+
+.section-container {
+    @apply max-w-full md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl mx-auto p-4;
+}
+
+.nav-link {
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+}
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    display: block;
+    background: none repeat scroll 0 0 transparent;
+    height: 2px;
+    width: 0;
+    background: var(--new-secondary);
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    bottom: 0;
+}
+.nav-link:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+.hero-txt::after {
+    background: url("underline.svg") no-repeat center/cover;
+    content: "";
+    height: 25px;
+    opacity: 1;
+    width: 100%;
+    margin-top: 1rem;
+    transition: opacity 0.5s ease-in-out, height 1s ease-in-out;
+}
+
+.hero-img {
+    position: absolute;
+    right: -4rem;
+    transform: scale(1.15);
+    max-width: -webkit-fill-available;
+    top: 3rem;
+}
+
+.map-container {
+    background: url("map.svg") no-repeat center/contain transparent;
+    /*min-height: 50vh;*/
+}
+
+.service-tab-desc {
+    display: none;
+    opacity: 0;
+    transform: translate3d(0px, 0px, 0px) scale3d(0.9, 0.9, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    transform-style: preserve-3d;
+    height: 0px;
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out, height 0s ease-out;
+}
+
+.service-tab[data-state="active"] .service-tab-desc {
+    display: block;
+    opacity: 1;
+    transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    transform-style: preserve-3d;
+    height: 100%;
+    transition: opacity 0.4s ease-in, transform 0.4s ease-in, height 0s ease-in;
+}
+
+.service-tab-arrow {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.service-tab:hover .service-tab-arrow {
+    opacity: 1;
+    transform: translateX(4px);
+}
+
+.service-tab:hover .service-tab-title {
+    color: var(--new-secondary);
+}
+
+.service-tab[data-state="active"] .service-tab-arrow {
+    opacity: 1;
+    color: var(--new-secondary);
+}
+
+.service-tab[data-state="active"] .service-tab-title {
+    color: var(--new-secondary);
+}
+
+.cards-pattern-section {
+    background: url("ornament-cards.svg") no-repeat center/cover transparent;
+    width: 100%;
+}
+
+.get-started-section {
+    border-radius: 0 100% 100% 0 / 100% 25% 0 0;
+}
+
+.testimonial-container {
+    @apply w-72 h-72 lg:w-96 lg:h-96 rounded-full border-4 border-new-secondary shadow-xl flex justify-center items-center relative;
+}
+
+.testimonial-card {
+    @apply absolute flex flex-col justify-center items-center gap-y-2 w-72 h-72 lg:w-96 lg:h-96;
+    position: absolute;
+
+}
+
+.testimonial-card:nth-child(1) {
+    top: 2rem;
+    left: 0;
+}
+
+.testimonial-card:nth-child(2) {
+    left: -9rem;
+    top: 2rem;
+}
+
+.testimonial-card:nth-child(3) {
+    left: 6rem;
+    top: 4rem;
+}
+
+.testimonial-card:nth-child(4) {
+    top: 6rem;
+}
+
+.testimonial-avatar {
+    @apply text-white w-12 h-12 md:w-16 md:h-16 flex justify-center items-center rounded-full border-2 md:border-4 border-white shadow-lg cursor-pointer transition duration-300 ease-in-out;
+    z-index: 4;
+}
+
+.testimonial-card:nth-child(1) .testimonial-avatar {
+    background-color: #FF77D9;
+}
+
+.testimonial-card:nth-child(2) .testimonial-avatar {
+    background-color: #6640FF;
+}
+
+.testimonial-card:nth-child(3) .testimonial-avatar {
+    background-color: #EF7E56;
+}
+
+.testimonial-card:nth-child(4) .testimonial-avatar {
+    background-color: var(--new-primary);
+}
+
+.testimonial-quote {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0px, 0px, 0px) scale3d(0.9, 0.9, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    transform-style: preserve-3d;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease-in-out;
+}
+
+.testimonial-avatar:hover + .testimonial-quote {
+    opacity: 1;
+    visibility: visible;
+    z-index: 5;
+    transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    transform-style: preserve-3d;
+    transition: opacity 0.4s ease-in, transform 0.4s ease-in, height 0s ease-in;
+}
+
+.video-container {
+    padding-top: 2rem !important;
+}
+
+.video-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+@media (min-width: 480px) {
+    .hero-txt::after {
+        /*width: 80%;*/
+        height: 30px;
+    }
+}
+
+@media (min-width: 600px) {
+    .hero-txt::after {
+        /*width: 60%;*/
+        height: 25px;
+    }
+    .service-tab-desc {
+        display: block;
+    }
+
+    .service-tab[data-state="active"] .service-tab-desc {
+        display: block;
+    }
+}
+
+@media (min-width: 760px) {
+    .hero-txt::after {
+        height: 28px;
+    }
+    .hero-img {
+        right: -6rem;
+    }
+    .map-container {
+        min-height: 65vh;
+    }
+
+    .testimonial-card:nth-child(1) {
+        top: 0;
+        left: 0;
+    }
+
+    .testimonial-card:nth-child(2) {
+        left: -18rem;
+        top:0;
+    }
+
+    .testimonial-card:nth-child(3) {
+        left: 12rem;
+        top: 4rem;
+    }
+
+    .testimonial-card:nth-child(4) {
+        top: 8rem;
+    }
+
+}
+
+@media (min-width: 840px) {
+    .hero-img {
+        right: -12rem;
+    }
+    .video-container {
+        width: 1280px !important;
+        height: 720px !important;
+        max-width: 90vw !important;
+        max-height: 90vh !important;
+    }
+}
+
+@media (min-width: 1000px) {
+    .hero-img {
+        right: -13rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    .hero-img {
+        right: -12rem;
+    }
+}
+
+@media (min-width: 1440px) {
+    .hero-img {
+        right: -14rem;
+    }
+}
+
+@media (min-width: 1560px) {
+    .hero-img {
+        right: -20rem;
+    }
+}
+
+@media (min-width: 1780px) {
+    .hero-img {
+        right: -28rem;
+    }
+}
+

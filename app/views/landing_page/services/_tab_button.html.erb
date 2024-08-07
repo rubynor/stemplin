@@ -1,0 +1,15 @@
+<%= render PhlexUI::Tabs::Trigger.new(value: value, class!: "w-full flex flex-col service-tab hover:bg-gray-100 p-4 rounded-md") do %>
+  <div class="flex flex-col text-left gap-y-4 py-4">
+    <div class="flex flex-row items-center justify-between">
+      <div class="flex flex-row gap-x-4 items-center">
+        <span class="text-new-secondary text-sm">0<%= count %></span>
+        <span class="text-xl lg:text-2xl font-medium service-tab-title"><%= service[:title] %></span>
+      </div>
+      <i class="uc-icon text-xl service-tab-arrow">&#xe836;</i>
+    </div>
+    <div class="service-tab-desc">
+      <span class="text-new-secondary-text text-base"><%= service[:sub_text] %></span>
+      <%= image_tag service[:illustration], class: "lg:hidden mt-4 rounded-md" %>
+    </div>
+  </div>
+<% end %>

@@ -545,3 +545,51 @@ nb:
       title: "Intern Serverfeil"
       message: "Vi beklager, men noe gikk galt."
       sub_message: "Vennligst prøv igjen senere."
+
+  landing_page:
+    nav_bar:
+      home: "Hjem"
+      services: "Tjenester"
+      testimonials: "Attester"
+      login: "Logg inn"
+      signup: "Ny brukker"
+    hero_section:
+      title: "Fordi tid er<br /> penger"
+      sub_text: "Timeregistrering og fakturering gjort enkelt. Øk<br /> effektiviteten og produktiviteten i din organisasjon."
+      get_started: "Prøv nå"
+      watch_a_demo: "Se vår demo"
+    services:
+      question: "Hvorfor bruke Stemplin?"
+      title: "Enkelt, raskt og rimelig"
+      sub_text: "Stemplin sørger for rask og enkel timeregistrering på din arbeidsplass.  Timene registreres enkelt på ulike oppgaver og prosjekter, noe som gir prosjektledere god oversikt over timebruken.Ved lønnsutbetaling og fakturering av kunder hentes timedataen enkelt ut i fine og oversiktlige rapporter. Timeføring og fakturering har aldri vært enklere."
+      items:
+        - title: "Enkel timeføring"
+          sub_text: "Team members effortlessly record work hours on various tasks, ensuring every minute is tracked accurately and efficiently across multiple projects and activities."
+          illustration: "easy-time-logging.svg"
+        - title: "Enkel fakturering"
+          sub_text: "Ledere kan enkelt sende fakturaer til kunder basert på registrert tid, og legge ved oversiktlige tidsrapporter som sikrer transparens og god kundetilfredshet."
+          illustration: "full-visibility.svg"
+        - title: "Effektiv administrasjon"
+          sub_text: "Administrer og onboard teammedlemmer enkelt i ditt arbeidsområde, og sikre sømløst og effektivt samarbeid på alle prosjekter og oppgaver."
+          illustration: "workspace-administration.svg"
+        - title: "God timeoversikt"
+          sub_text: "Tidsregistrering gir ledere detaljert innsikt i aktiviteter og tidsbruk på tvers av alle prosjekter. Dataene presenteres i oversiktlige rapporter, som kan brukes til å forbedre effektivitet og produktivitet."
+          illustration: "performance-tracking.svg"
+    get_started:
+      question: "Hvordan fungerer det?"
+      title: "Kom i gang"
+      sub_text: "Å komme i gang med Stemplin er veldig enkelt, og krever kun noen få steg. Trykk på “ny bruker”, så hjelper vi deg med å komme i gang."
+      steps:
+        - "Opprett en bruker"
+        - "Lag et prosjekt"
+        - "Inviter teamet ditt"
+        - "Start timeføringen"
+    testimonials:
+      question: "Hva sier brukerne?"
+      title: "Hør hva våre kunder synes om produktet"
+      sub_text: "Dette sier  brukerne våre etter å ha brukt Stemplin til å administrere tiden på sine prosjekter"
+      items:
+        - first_name: "Jonas"
+          last_name: ""
+          quote: "We at Big Five are very satisfied with Stemplin! They outcompete all other time tracking tools we have used, both in terms of user-friendliness and price."
+          organization: "Big Five"

@@ -1,0 +1,20 @@
+<section class="section-container flex flex-col relative justify-center items-center">
+  <div class="flex flex-col py-4 lg:py-8 gap-y-6 lg:gap-y-8 xl:gap-y-10 justify-center items-center">
+    <div class="hero-txt flex flex-col">
+      <span class="text-5xl lg:text-6xl font-semibold text-white leading-none lg:leading-tight text-center">
+        <%= t("landing_page.hero_section.title").html_safe %>
+      </span>
+    </div>
+    <span class="text-sm lg:text-base font-regular text-white text-center">
+      <%= t("landing_page.hero_section.sub_text").html_safe %>
+    </span>
+    <div class="flex flex-row items-center gap-x-4 lg:gap-x-8 z-10">
+      <%= render ButtonComponent.new(variant: :primary, class: "!bg-white !text-new-primary rounded-md", method: :get, path: new_user_registration_path) { t("landing_page.hero_section.get_started") } %>
+      <%= render partial: "landing_page/demo_video" %>
+    </div>
+  </div>
+  <div class="flex justify-center items-center absolute top-0 w-4/5 lg:w-full my-96">
+    <%= image_tag "main.svg", class: "w-full lg:w-4/5 hidden lg:block mt-20" %>
+    <%= image_tag "main-mobile.svg", class: "w-full lg:hidden " %>
+  </div>
+</section>

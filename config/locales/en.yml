@@ -432,3 +432,51 @@ en:
       title: "Internal Server Error"
       message: "We're sorry, something went wrong on our end."
       sub_message: "Please try again later."
+
+  landing_page:
+    nav_bar:
+      home: "Home"
+      services: "Services"
+      testimonials: "Testimonials"
+      login: "Login"
+      signup: "Signup"
+    hero_section:
+      title: "Because time<br /> is money"
+      sub_text: "Timetracking and invoicing made easy. <br />Boost your organization's efficiency and productivity."
+      get_started: "Get started"
+      watch_a_demo: "Watch a demo"
+    services:
+      question: "Why use Stemplin?"
+      title: "Simple, Quick, Free"
+      sub_text: "Our platform simplifies work time tracking. Team members log hours easily on various tasks, helping managers oversee projects. When it's time to bill clients, the data is ready to use. It's straightforward for everyone and makes billing hassle-free."
+      items:
+        - title: "Easy time logging"
+          sub_text: "Team members effortlessly record work hours on various tasks, ensuring every minute is tracked accurately and efficiently across multiple projects and activities."
+          illustration: "easy-time-logging.svg"
+        - title: "Easy billing"
+          sub_text: "Managers can easily send invoices to clients based on registered time, and include comprehensive time reports, ensuring transparency and customer satisfaction."
+          illustration: "full-visibility.svg"
+        - title: "Workspace administration"
+          sub_text: "Easily manage and onboard team members with your workspace, ensuring seamless and effective collaboration on all tasks."
+          illustration: "workspace-administration.svg"
+        - title: "Comprehensive insights"
+          sub_text: "Time tracking provides managers with detailed insights into activities and time allocations across all projects. The data is presented in comprehensive reports that can be leveraged to improve efficiency and productivity."
+          illustration: "performance-tracking.svg"
+    get_started:
+      question: "How it works?"
+      title: "Get started"
+      sub_text: "In just a few steps, you're all set to manager your team's work time. Track all activities with our app in one convenient place."
+      steps:
+        - "Sign up"
+        - "Create a project"
+        - "Invite your team"
+        - "Start tracking time"
+    testimonials:
+      question: "What they say?"
+      title: "Hear from our customers"
+      sub_text: "here are some testimonials from our user after using Stemplin to manage their operations."
+      items:
+        - first_name: "Jonas"
+          last_name: ""
+          quote: "We at Big Five are very satisfied with Stemplin! They outcompete all other time tracking tools we have used, both in terms of user-friendliness and price."
+          organization: "Big Five"

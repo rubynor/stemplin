@@ -1,9 +1,9 @@
 <%= render PhlexUI::Dialog.new do %>
   <%= render PhlexUI::Dialog::Trigger.new(class: "block bg-gray-50 px-6 py-2 rounded-md border border-gray-50 hover:text-primary cursor-pointer") do %>
     <div class="flex gap-x-4">
-      <%= show_svg("logo.svg") %>
+      <%= image_tag "stemplin-ico.svg" %>
       <div class="flex flex-col">
-        <span class="font-bold text-xl">Stemplin</span>
+        <%= image_tag "stemplin-text.svg", class: "w-24" %>
         <span class="text-sm text-gray-400 font-regular"><%= user.current_organization.name %></span>
       </div>
       <div class="flex justify-center items-center ml-4">

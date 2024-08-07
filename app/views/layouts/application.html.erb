@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 
     <%= favicon_link_tag "logo.svg" %>
 
@@ -26,12 +27,12 @@
     <%= render partial: "shared/flash_messages" %>
     <%= render AlertDialogComponent.new %>
 
-    <%= render "layouts/navbar"%>
+    <%= render "layouts/navbar" if user_signed_in? %>
     <main>
       <%= yield %>
     </main>
 
-    <footer class="print:hidden bottom-0 h-16 items-center flex space-x-2 justify-center fixed w-full text-center z-0">
+    <footer class="print:hidden bottom-0 h-16 items-center flex space-x-2 justify-center w-full text-center z-0">
       <%- if @active_time_reg %>
         <%= render BannerComponent.new(title: "Notice", message: t("time_regs.active_timer_description"), variant: :warning, dismissible: false, action: { url: root_path(date: @active_time_reg.date_worked), method: :get }) %>
           <a href="" class="font-regular text-sm text-gray-400 hidden">Stemplin <%= Date.current.year %></a>
