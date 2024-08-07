@@ -19,7 +19,7 @@
         <%= render ButtonComponent.new(type: "submit") { t("password_reset.edit.change_my_password") } %>
         <div class="text-sm  w-full text-center">
           <span><%= t("password_reset.new.cant_find_what_you_re_looking_for") %></span>
-          <%= link_to t("password_reset.new.continue_to_login"), new_session_path(resource_name), class: "font-semibold text-primary" %>
+          <%= link_to t("password_reset.new.continue_to_login"), new_session_path(resource_name), class: "font-semibold text-primary-600" %>
         </div>
       </div>
     <% end %>

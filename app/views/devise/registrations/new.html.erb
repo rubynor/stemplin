@@ -32,7 +32,7 @@
         <%= render ButtonComponent.new(type: "submit") { t("login_page.sign_up") } %>
         <div class="text-sm  w-full text-center">
           <span><%= t("login_page.already_have_an_account") %></span>
-          <%= link_to t("login_page.sign_in"), new_session_path(resource_name), class: "font-semibold text-primary" %>
+          <%= link_to t("login_page.sign_in"), new_session_path(resource_name), class: "font-semibold text-primary-600" %>
         </div>
       </div>
     <% end %>

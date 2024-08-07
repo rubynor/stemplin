@@ -1,19 +1,19 @@
 <div class="px-4">
   <ul class="space-y-1">
     <li>
-      <%= link_to workspace_projects_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_projects_path, new_workspace_project_path, edit_workspace_project_path(@project&.id || 0), workspace_project_path(@project&.id || 0), workspace_client_path(@client&.id || 0)]) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
+      <%= link_to workspace_projects_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_projects_path, new_workspace_project_path, edit_workspace_project_path(@project&.id || 0), workspace_project_path(@project&.id || 0), workspace_client_path(@client&.id || 0)]) ? "bg-gray-100 text-primary-600": "hover:text-primary-700 text-gray-700") do %>
         <i class="uc-icon text-xl">&#xe94f;</i>
         <span><%= t("common.clients_and_projects") %></span>
       <% end %>
     </li>
     <li>
-      <%= link_to workspace_team_members_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_team_members_path, invite_users_workspace_team_members_path]) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
+      <%= link_to workspace_team_members_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_team_members_path, invite_users_workspace_team_members_path]) ? "bg-gray-100 text-primary-600": "hover:text-primary-700 text-gray-700") do %>
         <i class="uc-icon text-xl">&#xebb3;</i>
         <span><%= t("common.team_members") %></span>
       <% end %>
     </li>
     <li>
-      <%= link_to workspace_settings_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_settings_path, edit_workspace_settings_path]) ? "bg-gray-100 text-primary": "hover:text-primary text-gray-700") do %>
+      <%= link_to workspace_settings_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_settings_path, edit_workspace_settings_path]) ? "bg-gray-100 text-primary-600": "hover:text-primary-700 text-gray-700") do %>
         <i class="uc-icon text-xl">&#xe8f2;</i>
         <span><%= t("common.settings") %></span>
       <% end %>

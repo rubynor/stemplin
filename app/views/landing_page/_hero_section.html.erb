@@ -9,7 +9,7 @@
       <%= t("landing_page.hero_section.sub_text").html_safe %>
     </span>
     <div class="flex flex-row items-center gap-x-4 lg:gap-x-8 z-10">
-      <%= render ButtonComponent.new(variant: :primary, class: "!bg-white !text-new-primary rounded-md", method: :get, path: new_user_registration_path) { t("landing_page.hero_section.get_started") } %>
+      <%= render ButtonComponent.new(variant: :none, class: "bg-white text-primary rounded-md", method: :get, path: new_user_registration_path) { t("landing_page.hero_section.get_started") } %>
       <%= render partial: "landing_page/demo_video" %>
     </div>
   </div>

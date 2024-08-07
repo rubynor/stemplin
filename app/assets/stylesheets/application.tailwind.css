@@ -19,10 +19,23 @@
   :root {
     --background: #ffffff;
     --foreground: #4b5563;
-    --primary: #7e22ce;
+    --primary: #282661;
     --primary-foreground: #ffffff;
-    --secondary: #f3e8ff;
-    --secondary-foreground: #7e22ce;
+    --primary-50: #f1f3fd;
+    --primary-100: #dfe4fa;
+    --primary-200: #c6cff7;
+    --primary-300: #9fb0f1;
+    --primary-400: #7288e8;
+    --primary-500: #5161e0;
+    --primary-600: #3c44d4;
+    --primary-700: #3433c2;
+    --primary-800: #322f9e;
+    --primary-900: #2c2b7d;
+    --secondary: #ffffff;
+    --secondary-foreground: #282661;
+    --brown: #ef7e56;
+    --primary-text: #212121;
+    --secondary-text: #757575;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
     --accent: #ffffff;
@@ -37,11 +50,6 @@
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
     --radius: 0.5rem;
-    /* I'm adding here below new palette, i'll clean this up and merge with our current colors */
-    --new-primary: #282661;
-    --new-secondary: #ef7e56;
-    --new-primary-text: #212121;
-    --new-secondary-text: #757575;
   }
 
   .dark {
@@ -90,6 +98,5 @@
 }
 
 .auth-illustration-wrapper {
-  background: url("pattern.svg") no-repeat center/cover #171E28;
-  /*background: url("pattern.svg") no-repeat center/cover #7e22ce;*/
+  background: url("pattern-wavy.svg") no-repeat center/cover var(--primary);
 }

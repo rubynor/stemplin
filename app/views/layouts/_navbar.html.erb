@@ -4,12 +4,12 @@
     <% if user_signed_in? %>
       <div class="hidden lg:flex h-full gap-x-12">
         <% unless current_user.access_info.organization_spectator? %>
-          <%= link_to t("common.home"), time_regs_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([root_path, time_regs_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
+          <%= link_to t("common.home"), time_regs_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([root_path, time_regs_path]) ? "text-primary-600 font-semibold border-b-2 border-primary-600": "hover:text-primary-600 text-gray-600") %>
         <% end %>
         <% if current_user.organization_admin? %>
-            <%= link_to t("common.workspace"), workspace_projects_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([workspace_team_members_path, invite_users_workspace_team_members_path, workspace_projects_path, new_workspace_project_path, edit_workspace_project_path(@project&.id || 0), workspace_project_path(@project&.id || 0), workspace_client_path(@client&.id || 0), workspace_settings_path, edit_workspace_settings_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
+            <%= link_to t("common.workspace"), workspace_projects_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([workspace_team_members_path, invite_users_workspace_team_members_path, workspace_projects_path, new_workspace_project_path, edit_workspace_project_path(@project&.id || 0), workspace_project_path(@project&.id || 0), workspace_client_path(@client&.id || 0), workspace_settings_path, edit_workspace_settings_path]) ? "text-primary-600 font-semibold border-b-2 border-primary-600": "hover:text-primary-600 text-gray-600") %>
         <% end %>
-        <%= link_to t("common.reports"), reports_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([reports_path, detailed_reports_path]) ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600") %>
+        <%= link_to t("common.reports"), reports_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([reports_path, detailed_reports_path]) ? "text-primary-600 font-semibold border-b-2 border-primary-600": "hover:text-primary-600 text-gray-600") %>
       </div>
       <div class="flex items-center divide-x divide-gray-100 space-x-4">
         <div class="text-gray-600">

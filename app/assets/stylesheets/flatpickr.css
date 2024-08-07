@@ -23,20 +23,20 @@
 .flatpickr-day.selected.nextMonthDay,
 .flatpickr-day.startRange.nextMonthDay,
 .flatpickr-day.endRange.nextMonthDay {
-  background: var(--primary);
+  background: var(--primary-600);
   -webkit-box-shadow: none;
           box-shadow: none;
   color: #fff;
-  border-color: var(--primary);
+  border-color: var(--primary-600);
 }
 .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
 .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)),
 .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
-  -webkit-box-shadow: -10px 0 0 var(--primary);
-          box-shadow: -10px 0 0 var(--primary);
+  -webkit-box-shadow: -10px 0 0 var(--primary-600);
+          box-shadow: -10px 0 0 var(--primary-600);
 }
 .flatpickr-day.week.selected {
   border-radius: 0;
-  -webkit-box-shadow: -5px 0 0 var(--primary), 5px 0 0 var(--primary);
-          box-shadow: -5px 0 0 var(--primary), 5px 0 0 var(--primary);
+  -webkit-box-shadow: -5px 0 0 var(--primary-600), 5px 0 0 var(--primary-600);
+          box-shadow: -5px 0 0 var(--primary-600), 5px 0 0 var(--primary-600);
 }

@@ -1,6 +1,32 @@
 # frozen_string_literal: true
 
 class ButtonComponent < ApplicationComponent
+  module Styles
+    BASE = "py-2 !h-12"
+
+    VARIANTS = {
+      primary: "!bg-primary-600 !text-white hover:!bg-primary-700",
+      secondary: "!bg-primary-100 !text-primary-600 hover:!bg-primary-200",
+      outline: "!bg-transparent border !border-gray-300 !text-gray-600 hover:!bg-gray-100",
+      ghost: "!bg-transparent hover:!bg-gray-100 !text-gray-600",
+      none: "font-medium text-sm shadow px-4 hover:opacity-80 rounded-md"
+    }
+
+    STATES = {
+      disabled: "opacity-50 !cursor-not-allowed",
+      loading: "opacity-75 !cursor-wait"
+    }
+
+    def self.compose(variant, state = nil, custom_class = nil)
+      [
+        BASE,
+        VARIANTS[variant] || VARIANTS[:primary],
+        state ? STATES[state] : nil,
+        custom_class
+      ].compact.join(" ")
+    end
+  end
+
   def initialize(path: nil, method: nil, **attrs)
     @attrs = attrs
     @path = path
@@ -35,15 +61,15 @@ class ButtonComponent < ApplicationComponent
     {
       **@attrs,
       type!: default_type,
-      class: tokens(@attrs[:class], "py-2 !h-12", is_outline?: "border !border-gray-100", is_disabled?: "!pointer-events-auto !cursor-not-allowed")
+      class: button_classes
     }
   end
 
-  def is_outline?
-    @attrs[:variant] == :outline
-  end
+  def button_classes
+    variant = @attrs[:variant] || :primary
+    state = :disabled if @attrs[:disabled]
+    state = :loading if @attrs[:loading]
 
-  def is_disabled?
-    @attrs[:disabled]
+    Styles.compose(variant, state, @attrs[:class])
   end
 end
