@@ -1,44 +1,20 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Stemplin</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= turbo_refresh_method_tag :morph %>
-    <%= turbo_refresh_scroll_tag :preserve %>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-    <%= hotwire_livereload_tags if Rails.env.development? %>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
-
-    <%= favicon_link_tag "logo.svg" %>
-
-    <%= render partial: "layouts/pwa_meta_tags" %>
-    <%= clarity_tracker if Rails.env.production? %>
-  </head>
-  <body class="font-montserrat">
-    <%= highlight_missing_translations if Rails.env.development? %>
-    <%= render partial: "shared/flash_messages" %>
-    <%= render AlertDialogComponent.new %>
-
-    <%= render "layouts/navbar" if user_signed_in? %>
-    <main>
-      <%= yield %>
-    </main>
-
-    <footer class="print:hidden bottom-0 h-16 items-center flex space-x-2 justify-center w-full text-center z-0">
-      <%- if @active_time_reg %>
-        <%= render BannerComponent.new(title: "Notice", message: t("time_regs.active_timer_description"), variant: :warning, dismissible: false, action: { url: root_path(date: @active_time_reg.date_worked), method: :get }) %>
-          <a href="" class="font-regular text-sm text-gray-400 hidden">Stemplin <%= Date.current.year %></a>
-        <% else %>
-          <a href="" class="font-regular text-sm text-gray-400">Stemplin <%= Date.current.year %></a>
+<% content_for :base_layout do %>
+  <%= render "layouts/navbar" if user_signed_in? %>
+  <main>
+    <%= yield %>
+  </main>
+  <%= content_tag(:footer, class: class_names("print:hidden bottom-0 h-16 items-center flex flex-col gap-y-4 space-x-2 justify-center w-full text-center z-0", "fixed pb-8": user_signed_in?)) do %>
+    <%# TODO: Let's configure this the same way `flash_messages` are used in `base.html.erb`, let it be a shareable banner and trigger it with turbo %>
+    <%- if @active_time_reg %>
+      <%= render BannerComponent.new(title: "Notice", message: t("time_regs.active_timer_description"), variant: :warning, dismissible: false, action: { url: root_path(date: @active_time_reg.date_worked), method: :get }) %>
+    <% end %>
+    <%= content_tag(:div, class: class_names("flex justify-between items-center w-full section-container": !user_signed_in?)) do %>
+      <%= content_tag(:span, class: class_names("hidden": user_signed_in?)) do %>
+        Contact us at <%= link_to "contact@stemplin.com", "mailto:contact@stemplin.com", class: "underline text-primary-600 font-medium" %>
       <% end %>
-    </footer>
-  </body>
-</html>
+      <span class="font-regular text-sm text-gray-600">Stemplin <%= Date.current.year %></span>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= render template: "layouts/base" %>

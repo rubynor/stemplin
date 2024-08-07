@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stemplin</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= turbo_refresh_method_tag :morph %>
+    <%= turbo_refresh_scroll_tag :preserve %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= hotwire_livereload_tags if Rails.env.development? %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
+    <%= favicon_link_tag "stemplin-ico.svg" %>
+
+    <%= render partial: "layouts/pwa_meta_tags" %>
+    <%= clarity_tracker if Rails.env.production? %>
+  </head>
+  <body class="font-montserrat">
+    <%= highlight_missing_translations if Rails.env.development? %>
+    <%= render partial: "shared/flash_messages" %>
+    <%= render AlertDialogComponent.new %>
+
+    <%= yield :base_layout %>
+  </body>
+</html>
