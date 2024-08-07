@@ -3,7 +3,7 @@ html {
 }
 
 .hero-section {
-    background: var(--new-primary) url("pattern-wavy.svg") no-repeat center/cover;
+    background: var(--primary) url("pattern-wavy.svg") no-repeat center/cover;
     /*border-radius: 0 100% 100% 0 / 100% 0 25% 0;*/
     margin-top: -12rem;
     padding-top: 12rem;
@@ -34,7 +34,7 @@ html {
     background: none repeat scroll 0 0 transparent;
     height: 2px;
     width: 0;
-    background: var(--new-secondary);
+    background: var(--brown);
     transition: width 0.3s ease 0s, left 0.3s ease 0s;
     bottom: 0;
 }
@@ -95,16 +95,16 @@ html {
 }
 
 .service-tab:hover .service-tab-title {
-    color: var(--new-secondary);
+    color: var(--brown);
 }
 
 .service-tab[data-state="active"] .service-tab-arrow {
     opacity: 1;
-    color: var(--new-secondary);
+    color: var(--brown);
 }
 
 .service-tab[data-state="active"] .service-tab-title {
-    color: var(--new-secondary);
+    color: var(--brown);
 }
 
 .cards-pattern-section {
@@ -117,7 +117,7 @@ html {
 }
 
 .testimonial-container {
-    @apply w-72 h-72 lg:w-96 lg:h-96 rounded-full border-4 border-new-secondary shadow-xl flex justify-center items-center relative;
+    @apply w-72 h-72 lg:w-96 lg:h-96 rounded-full border-4 border-brown shadow-xl flex justify-center items-center relative;
 }
 
 .testimonial-card {
@@ -163,7 +163,7 @@ html {
 }
 
 .testimonial-card:nth-child(4) .testimonial-avatar {
-    background-color: var(--new-primary);
+    background-color: var(--primary);
 }
 
 .testimonial-quote {

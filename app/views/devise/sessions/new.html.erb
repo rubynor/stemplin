@@ -40,12 +40,12 @@
               <%= t("login_page.remember_me") %>
             <% end %>
           </div>
-          <%= link_to t("login_page.forgot_password"), new_password_path(resource_name), class: "text-sm font-medium text-primary" %>
+          <%= link_to t("login_page.forgot_password"), new_password_path(resource_name), class: "text-sm font-medium text-primary-600" %>
         </div>
         <%= render ButtonComponent.new(type: "submit") { t("login_page.sign_in") } %>
         <div class="text-sm  w-full text-center">
           <span><%= t("login_page.dont_have_an_account") %></span>
-          <%= link_to t("login_page.sign_up"), new_registration_path(resource_name), class: "font-semibold text-primary" %>
+          <%= link_to t("login_page.sign_up"), new_registration_path(resource_name), class: "font-semibold text-primary-600" %>
         </div>
       </div>
     <% end %>

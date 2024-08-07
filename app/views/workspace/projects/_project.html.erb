@@ -30,8 +30,8 @@
           <i class="uc-icon text-gray-500">&#xe975;</i>
         <% end %>
       <% end %>
-      <%= render PhlexUI::DropdownMenu::Content.new(class: "flex flex-col w-fit min-w-0 !p-0") do %>
-        <%= render ButtonComponent.new(path: edit_workspace_project_path(project), method: :get, variant: :outline, class: "w-full") do %>
+      <%= render PhlexUI::DropdownMenu::Content.new(class: "flex flex-col w-fit min-w-0 !p-0 divide-y divide-gray-100") do %>
+        <%= render ButtonComponent.new(path: edit_workspace_project_path(project), method: :get, variant: :ghost, class: "w-full") do %>
           <span><%= t("common.edit") %></span>
           <i class="uc-icon text-gray-500 ml-2">&#xe972;</i>
         <% end %>
@@ -39,7 +39,7 @@
         <%- has_time_regs = project.time_regs.any? %>
         <%- turbo_body = "#{t("description.proceed_deletion_of_the_task")} <span class='font-semibold text-primary'>#{project.name}</span>? #{t("common.cannot_be_undone")}" %>
         <%= render TooltipComponent.new(note: has_time_regs ? t("common.project_has_recorded_time") : nil, class: "flex", options: { placement: "top" }) do %>
-          <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_project_path(project), class: "flex w-full",  disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body }, class: "w-full" }) do %>
+          <%= render ButtonComponent.new(variant: :ghost, method: :delete, path: workspace_project_path(project), class: "flex w-full",  disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body }, class: "w-full" }) do %>
             <span><%= t("common.delete") %></span>
             <i class="uc-icon ml-2">&#xeb97;</i>
           <% end %>

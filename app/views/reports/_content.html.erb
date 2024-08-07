@@ -25,7 +25,7 @@
       <%= render partial: "reports/summary", locals:{ selected_elements_names: @filter.selected_elements_names } %>
       <div class="flex flex-row items-center border-b w-full overflow-y-auto">
         <% @filter.tabs.each do |tab| %>
-          <%= link_to tab[:label], reports_path(filter: @filter.to_h(category: tab[:value])), class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out px-4", @filter.active_tab === tab[:value] ? "text-primary font-semibold border-b-2 border-primary": "hover:text-primary text-gray-600 print:hidden") %>
+          <%= link_to tab[:label], reports_path(filter: @filter.to_h(category: tab[:value])), class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out px-4", @filter.active_tab === tab[:value] ? "text-primary-600 font-semibold border-b-2 border-primary-600": "hover:text-primary-600 text-gray-600 print:hidden") %>
         <% end %>
         <div class="ml-auto print:hidden">
           <%= render ButtonComponent.new(path: detailed_reports_path(filter: @filter.to_h), method: :get, variant: :secondary) do %>
@@ -49,10 +49,10 @@
             <% end %>
             <%= render PhlexUI::Table::Row.new(class: "!py-4") do %>
               <%= render PhlexUI::Table::Cell.new(class: "text-sm font-segoe-regular") { t("common.total") } %>
-              <%= render PhlexUI::Table::Cell.new(class: "font-semibold text-lg") { minutes_to_float @summary.total_minutes } %>
-              <%= render PhlexUI::Table::Cell.new(class: "font-semibold text-lg") { minutes_to_float @summary.total_billable_minutes } %>
+              <%= render PhlexUI::Table::Cell.new(class: "font-semibold text-lg text-primary-600") { minutes_to_float @summary.total_minutes } %>
+              <%= render PhlexUI::Table::Cell.new(class: "font-semibold text-lg text-primary-600") { minutes_to_float @summary.total_billable_minutes } %>
               <%= render PhlexUI::Table::Cell.new do %>
-                <div><span class="font-semibold text-lg"><%= @summary.total_billable_amount_currency %></span>
+                <div><span class="font-semibold text-lg text-primary-600"><%= @summary.total_billable_amount_currency %></span>
                 <span class="text-sm font-semibold text-gray-400"><%= @currency %></span></div>
               <% end %>
             <% end %>

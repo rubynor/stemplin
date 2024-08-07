@@ -8,7 +8,7 @@
         <i class="uc-icon text-2xl text-gray-400 print:hidden">&#xea95;</i>
         <div>
           <h2 class="text-base print:text-sm font-regular"><%= t("common.total_billable_hours")%></h2>
-          <span class="font-semibold text-2xl print:text-lg text-primary print:text-gray-900">
+          <span class="font-semibold text-2xl print:text-lg text-primary-600 print:text-gray-900">
             <%= minutes_to_float detailed_report_data.total_billable_minutes %>
           </span>
         </div>
@@ -17,7 +17,7 @@
         <i class="uc-icon text-2xl text-gray-400 print:hidden">&#xeb5b;</i>
         <div>
           <h2 class="text-base print:text-sm font-regular"><%= t("common.total_hours")%></h2>
-          <span class="font-semibold text-2xl print:text-lg text-primary print:text-gray-900">
+          <span class="font-semibold text-2xl print:text-lg text-primary-600 print:text-gray-900">
             <%= minutes_to_float detailed_report_data.total_minutes %>
           </span>
         </div>
@@ -90,7 +90,7 @@
           <td></td>
           <td class="text-end">
             <span class="font-medium text-xl print:text-lg"><%= t("common.total")%></span>
-            <span class="font-semibold text-2xl print:text-xl text-primary print:text-gray-900"><%= minutes_to_float detailed_report_data.total_minutes %></span>
+            <span class="font-semibold text-2xl print:text-xl text-primary-600 print:text-gray-900"><%= minutes_to_float detailed_report_data.total_minutes %></span>
           </td>
           <td></td>
         </tr>
