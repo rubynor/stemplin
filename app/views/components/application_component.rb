@@ -11,7 +11,7 @@ class ApplicationComponent < Phlex::HTML
 
   def initialize(**attrs)
     @attrs = default_attrs.merge(attrs)
-    @attrs[:class] = tokens(default_classes, attrs[:class])
+    @attrs[:class] = tokens(default_classes, attrs[:class], @attrs[:class]&.split(" "))
   end
 
   if Rails.env.development?
