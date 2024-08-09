@@ -1,6 +1,6 @@
 <div class="py-4 lg:py-6 px-4">
   <div class="max-w-7xl mx-auto flex flex-col gap-y-4 print:gap-y-2">
-    <div class="flex justify-between items-center py-3 print:py-1">
+    <div class="flex gap-4 justify-between items-center py-3 print:py-1">
       <div class="flex flex-row items-center gap-x-2">
         <% unless @filter.selected_elements_names.blank? %>
           <%= link_to reports_path(filter: { **@filter.current_time_range, time_frame: @filter.time_frame }), class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out print:hidden" do %>
@@ -16,6 +16,11 @@
         </div>
       </div>
 
+      <%= render ButtonComponent.new(class: "ml-auto print:!hidden", path: detailed_reports_path(filter: @filter.to_h), method: :get, variant: :outline) do %>
+        <span class="mr-2"><%= t("task.detailed_report") %></span>
+        <i class="uc-icon text-lg">&#xe9af;</i>
+      <% end %>
+
       <%= render ButtonComponent.new(class: "print:!hidden", variant: :secondary, data: { controller: "print", action: "print#togglePrintLayout" }) do %>
         <span class="mr-2"><%= t('common.print') %></span>
         <i class="uc-icon text-lg">&#xeaea;</i>
@@ -27,11 +32,6 @@
         <% @filter.tabs.each do |tab| %>
           <%= link_to tab[:label], reports_path(filter: @filter.to_h(category: tab[:value])), class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out px-4", @filter.active_tab === tab[:value] ? "text-primary-600 font-semibold border-b-2 border-primary-600": "hover:text-primary-600 text-gray-600 print:hidden") %>
         <% end %>
-        <div class="ml-auto print:hidden">
-          <%= render ButtonComponent.new(path: detailed_reports_path(filter: @filter.to_h), method: :get, variant: :secondary) do %>
-            <%= t("task.detailed_report") %>
-          <% end %>
-        </div>
       </div>
       <div class="p-4">
         <%= render PhlexUI::Table.new do %>
