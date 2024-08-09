@@ -40,3 +40,4 @@
 
 .DS_Store
 coverage
+/dump.rdb
