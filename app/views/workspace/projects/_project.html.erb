@@ -23,14 +23,14 @@
     <% end %>
   <% end %>
 
-  <%= render PhlexUI::Table::Cell.new(class: "flex justify-center") do %>
-    <%= render PhlexUI::DropdownMenu.new(options: { placement: 'bottom-end', offset: 0, duration: 0 }) do %>
+  <%= render PhlexUI::Table::Cell.new(class: "flex justify-center fixed -mt-1") do %>
+    <%= render PhlexUI::DropdownMenu.new do %>
       <%= render PhlexUI::DropdownMenu::Trigger.new do %>
         <%= render ButtonComponent.new(type: :button, variant: :outline) do %>
           <i class="uc-icon text-gray-500">&#xe975;</i>
         <% end %>
       <% end %>
-      <%= render PhlexUI::DropdownMenu::Content.new(class: "flex flex-col w-fit min-w-0 !p-0 divide-y divide-gray-100") do %>
+      <%= render PhlexUI::DropdownMenu::Content.new(class: "flex flex-col w-fit min-w-0 !p-0 divide-y divide-gray-100 min-h-20") do %>
         <%= render ButtonComponent.new(path: edit_workspace_project_path(project), method: :get, variant: :ghost, class: "w-full") do %>
           <span><%= t("common.edit") %></span>
           <i class="uc-icon text-gray-500 ml-2">&#xe972;</i>
