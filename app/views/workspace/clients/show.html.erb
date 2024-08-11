@@ -38,15 +38,17 @@
   <%= simple_format @client.description, class: "my-6" %>
 
   <% if @client.projects.any? %>
-    <%= render PhlexUI::Table.new do %>
-      <%= render PhlexUI::Table::Row.new(class: "text-gray-500" ) do %>
-        <%= render PhlexUI::Table::Head.new { t("common.projects") } %>
-        <%= render PhlexUI::Table::Head.new { t("common.rate") } %>
-        <%= render PhlexUI::Table::Head.new { t("common.actions") } %>
+    <div class="hide-table-overflow">
+      <%= render PhlexUI::Table.new do %>
+        <%= render PhlexUI::Table::Row.new(class: "text-gray-500" ) do %>
+          <%= render PhlexUI::Table::Head.new { t("common.projects") } %>
+          <%= render PhlexUI::Table::Head.new { t("common.rate") } %>
+          <%= render PhlexUI::Table::Head.new { t("common.actions") } %>
+        <% end %>
+        <%= render PhlexUI::Table::Body.new(id: :organization_projects) do %>
+          <%= render partial: "workspace/projects/project", collection: @client.projects %>
+        <% end %>
       <% end %>
-      <%= render PhlexUI::Table::Body.new(id: :organization_projects) do %>
-        <%= render partial: "workspace/projects/project", collection: @client.projects %>
-      <% end %>
-    <% end %>
+    </div>
   <% end %>
 <% end %>

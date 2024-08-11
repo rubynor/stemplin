@@ -3,7 +3,15 @@
     <div class="flex gap-4 justify-between items-center py-3 print:py-1">
       <div class="flex flex-row items-center gap-x-2">
         <% unless @filter.selected_elements_names.blank? %>
-          <%= link_to reports_path(filter: { **@filter.current_time_range, time_frame: @filter.time_frame }), class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out print:hidden" do %>
+          <%# TODO: let's move this to a presenter %>
+          <%#
+            This balances preserving recent navigation history for simple cases(i.e: going back to project page) and
+            maintaining a clear entry point with current filters for complex navigation scenarios.
+            It provides a way to reset to the reports root with current filters when the
+            user has been exploring multiple report views, as :back doesn't retain this
+            entire navigation history
+          %>
+          <%= link_to @filter.selected_elements_names.size == 1 ? :back :reports_path(filter: { **@filter.current_time_range, time_frame: @filter.time_frame }), class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out print:hidden" do %>
             <i class="uc-icon text-2xl">&#xe833;</i>
           <% end %>
         <% end %>
@@ -16,12 +24,12 @@
         </div>
       </div>
 
-      <%= render ButtonComponent.new(class: "ml-auto print:!hidden", path: detailed_reports_path(filter: @filter.to_h), method: :get, variant: :outline) do %>
+      <%= render ButtonComponent.new(class: "ml-auto print:!hidden", path: detailed_reports_path(filter: @filter.to_h), method: :get, variant: :secondary) do %>
         <span class="mr-2"><%= t("task.detailed_report") %></span>
         <i class="uc-icon text-lg">&#xe9af;</i>
       <% end %>
 
-      <%= render ButtonComponent.new(class: "print:!hidden", variant: :secondary, data: { controller: "print", action: "print#togglePrintLayout" }) do %>
+      <%= render ButtonComponent.new(class: "print:!hidden", variant: :primary, data: { controller: "print", action: "print#togglePrintLayout" }) do %>
         <span class="mr-2"><%= t('common.print') %></span>
         <i class="uc-icon text-lg">&#xeaea;</i>
       <% end %>
@@ -49,8 +57,8 @@
             <% end %>
             <%= render PhlexUI::Table::Row.new(class: "!py-4") do %>
               <%= render PhlexUI::Table::Cell.new(class: "text-sm font-segoe-regular") { t("common.total") } %>
-              <%= render PhlexUI::Table::Cell.new(class: "font-semibold text-lg text-primary-600") { minutes_to_float @summary.total_minutes } %>
-              <%= render PhlexUI::Table::Cell.new(class: "font-semibold text-lg text-primary-600") { minutes_to_float @summary.total_billable_minutes } %>
+              <%= render PhlexUI::Table::Cell.new(class: "font-semibold text-lg text-gray-600") { minutes_to_float @summary.total_minutes } %>
+              <%= render PhlexUI::Table::Cell.new(class: "font-semibold text-lg text-gray-600") { minutes_to_float @summary.total_billable_minutes } %>
               <%= render PhlexUI::Table::Cell.new do %>
                 <div><span class="font-semibold text-lg text-primary-600"><%= @summary.total_billable_amount_currency %></span>
                 <span class="text-sm font-semibold text-gray-400"><%= @currency %></span></div>

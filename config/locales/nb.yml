@@ -254,6 +254,9 @@ nb:
     organization_settings: "Organisasjonsinnstillinger"
     settings: "Innstillinger"
     currency: "Valuta"
+    empty:
+      title: "Oops, ingenting her ennå!"
+      subtext: "Det er foreløpig ingenting å se her ennå."
 
   notice:
     are_you_sure: "Er du sikker?"

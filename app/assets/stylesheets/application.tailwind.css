@@ -100,3 +100,7 @@
 .auth-illustration-wrapper {
   background: url("pattern-wavy.svg") no-repeat center/cover var(--primary);
 }
+
+.hide-table-overflow > div {
+  overflow: unset !important; /* Disable overflow on div wrapping table component from PhlexUI */
+}
