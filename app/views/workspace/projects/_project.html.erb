@@ -24,7 +24,7 @@
   <% end %>
 
   <%= render PhlexUI::Table::Cell.new(class: "flex justify-center") do %>
-    <%= render PhlexUI::DropdownMenu.new(options: { placement: 'bottom-end', offset: 0, duration: 0 }) do %>
+    <%= render PhlexUI::DropdownMenu.new(options: { placement: "bottom-end" }) do %>
       <%= render PhlexUI::DropdownMenu::Trigger.new do %>
         <%= render ButtonComponent.new(type: :button, variant: :outline) do %>
           <i class="uc-icon text-gray-500">&#xe975;</i>

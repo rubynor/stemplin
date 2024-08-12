@@ -9,7 +9,7 @@
       </div>
     </div>
     
-    <%= content_tag(:div, class: "flex flex-col gap-y-4", data: { controller: "custom-disable", custom_disable_initial_status_value: project.billable }) do %>
+    <%= content_tag(:div, class: "flex flex-col gap-y-4 lg:gap-y-8", data: { controller: "custom-disable", custom_disable_initial_status_value: project.billable }) do %>
       <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
         <%= render PhlexUI::Label.new { t("common.client") } %>
         <%= render PhlexUI::Input.new(type: "text", value: project.client.name, disabled: true, class: "border-gray-200 rounded-md w-full !opacity-100 bg-gray-100") %>
@@ -73,12 +73,12 @@
       <% end %>
 
       <%= content_tag :div, data: { controller: "dynamic-task-url" } do %>
-        <div class="flex flex-row gap-x-4">
+        <div class="flex flex-row gap-x-4 w-full justify-between items-center border-b border-gray-100 pb-2">
           <div class="flex flex-col">
             <%= render PhlexUI::Label.new { t("common.tasks") } %>
             <%= render PhlexUI::Hint.new { t("common.add_tasks") } %>
           </div>
-          <%= link_to t("common.add_task"), add_modal_workspace_assigned_tasks_path, data: { turbo_method: :post, dynamic_task_url_target: "link" }, class: "bg-secondary text-primary text-sm py-2 px-4 rounded" %>
+          <%= link_to t("common.add_task"), add_modal_workspace_assigned_tasks_path, data: { turbo_method: :post, dynamic_task_url_target: "link" }, class: "bg-primary-100 text-primary-600 hover:bg-primary-200 text-sm font-medium py-2 px-4 h-12 rounded-md flex justify-center items-center" %>
         </div>
         <% project.errors.full_messages_for(:tasks).each do |message|%>
           <%= render PhlexUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>

@@ -238,6 +238,9 @@ en:
     organization_settings: "Organization settings"
     settings: "Settings"
     currency: "Currency"
+    empty:
+      title: "Oops, Nothing Here Yet!"
+      subtext: "There's currently nothing to see here yet."
 
   notice:
     are_you_sure: "Are you sure?"

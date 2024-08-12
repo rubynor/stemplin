@@ -1,0 +1,16 @@
+<%
+  title ||= t("common.empty.title")
+  sub_text ||= t("common.empty.subtext")
+  call_to_action ||= nil # let's use `link_to` props
+%>
+
+<%= content_tag(:div, class: "flex flex-col gap-y-4 justify-center items-center py-8 lg:py-16") do %>
+  <%= image_tag "empty-box.svg", class: "opacity-20 max-w-24" %>
+  <%= content_tag(:div, class: "flex flex-col justify-center items-center") do %>
+    <%= content_tag(:span, title, class: "font-medium text-base text-gray-600") %>
+    <%= content_tag(:span, sub_text, class: "font-regular text-sm text-gray-400") %>
+  <% end %>
+  <% if call_to_action.present? %>
+    <%= link_to call_to_action[:text], call_to_action[:path], class: "bg-primary-100 text-primary-600 hover:bg-primary-200 text-sm font-medium py-2 px-4 h-12 rounded-md flex justify-center items-center", **call_to_action.except(:text, :path, :class) %>
+  <% end %>
+<% end %>

@@ -46,7 +46,8 @@
                 <div class="flex flex-col text-sm w-max" data-controller="checkbox">
                   <%= single_filter_check_box(form, "all_client_ids", "All", false, { data: { "checkbox-target": "checkboxAll", action: "change->checkbox#toggleAll" }}) %>
                   <%= form.collection_check_boxes :client_ids, form_data.selectable_clients, :id, :name, include_hidden: false do |cb| %>
-                    <%= filter_check_box(cb, filter.client_ids&.include?(cb.value.to_s), { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
+                    <%# TODO: Move these logics & calculations to a presenter %>
+                    <%= filter_check_box(cb, filter.client_ids&.include?(cb.value.to_s) || filter.client_ids.blank?, { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
                   <% end %>
                 </div>
               <% end %>
@@ -64,7 +65,7 @@
                 <div class="flex flex-col text-sm w-max" data-controller="checkbox">
                   <%= single_filter_check_box(form, "all_project_ids", "All", false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
                   <%= form.collection_check_boxes :project_ids, form_data.selectable_projects, :id, :name, include_hidden: false do |cb| %>
-                    <%= filter_check_box(cb, filter.project_ids&.include?(cb.value.to_s), { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
+                    <%= filter_check_box(cb, filter.project_ids&.include?(cb.value.to_s) || filter.project_ids.blank?, { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
                   <% end %>
                 </div>
               <% end %>
@@ -82,7 +83,7 @@
                 <div class="flex flex-col text-sm w-max" data-controller="checkbox">
                   <%= single_filter_check_box(form, "all_task_ids", "All", false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
                   <%= form.collection_check_boxes :task_ids, form_data.selectable_tasks, :id, :name, include_hidden: false do |cb| %>
-                    <%= filter_check_box(cb, filter.task_ids&.include?(cb.value.to_s), { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
+                    <%= filter_check_box(cb, filter.task_ids&.include?(cb.value.to_s) || filter.task_ids.blank?, { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
                   <% end %>
                 </div>
               <% end %>
@@ -100,7 +101,7 @@
                 <div class="flex flex-col text-sm w-max" data-controller="checkbox">
                   <%= single_filter_check_box(form, "all_user_ids", "All", false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
                   <%= form.collection_check_boxes :user_ids, form_data.selectable_users, :id, :name, include_hidden: false do |cb| %>
-                    <%= filter_check_box(cb, filter.user_ids&.include?(cb.value.to_s), { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
+                    <%= filter_check_box(cb, filter.user_ids&.include?(cb.value.to_s) || filter.user_ids.blank?, { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
                   <% end %>
                 </div>
               <% end %>

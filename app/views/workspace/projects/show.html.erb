@@ -58,18 +58,18 @@
       </div>
     </div>
     <%= render PhlexUI::Tabs.new(default: params[:tab] || "tasks") do %>
-      <%= render PhlexUI::Tabs::List.new(class: "border-b-2 h-fit w-full !p-0 rounded-none !justify-start") do %>
-        <%= render PhlexUI::Tabs::Trigger.new(value: "tasks", class!: "h-full py-4 transition duration-300 ease-in-out px-4 data-[state=active]:text-primary  data-[state=active]:font-semibold border-b-2 border-transparent data-[state=active]:border-primary") do %>
+      <%= render PhlexUI::Tabs::List.new(class: "border-b h-fit w-full !p-0 rounded-none !justify-start") do %>
+        <%= render PhlexUI::Tabs::Trigger.new(value: "tasks", class!: "h-full py-4 transition duration-300 ease-in-out px-4 data-[state=active]:text-primary-600  data-[state=active]:font-medium border-b-2 border-transparent data-[state=active]:border-primary-600") do %>
           <div class="flex flex-row items-center gap-x-2 pb-2">
-            <span class="font-medium text-gray-600 text-lg"><%= t("common.tasks")%></span>
+            <span class="font-regular text-base"><%= t("common.tasks")%></span>
             <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
               <span class="text-gray-700 text-xs font-semibold"><%= @pagy_active_assigned_tasks.count %></span>
             </div>
           </div>
         <% end %>
-        <%= render PhlexUI::Tabs::Trigger.new(value: "members", class!: "h-full py-4 transition duration-300 ease-in-out px-4 data-[state=active]:text-primary  data-[state=active]:font-semibold border-b-2 border-transparent data-[state=active]:border-primary") do %>
+        <%= render PhlexUI::Tabs::Trigger.new(value: "members", class!: "h-full py-4 transition duration-300 ease-in-out px-4 data-[state=active]:text-primary-600  data-[state=active]:font-medium border-b-2 border-transparent data-[state=active]:border-primary-600") do %>
           <div class="flex flex-row items-center gap-x-2 pb-2">
-            <span class="font-medium text-gray-600 text-lg"><%= t("common.members")%></span>
+            <span class="font-regular text-base"><%= t("common.members")%></span>
             <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
               <span class="text-gray-700 text-xs font-semibold"><%= @pagy_members.count %></span>
             </div>
@@ -87,6 +87,9 @@
         <p class="mt-6"><%= raw t("common.users_project_access") %></p>
         <%= content_tag(:div, id: "#{dom_id(@project)}_members", class: "divide-y divide-gray-100") do %>
           <%= render partial: "workspace/projects/member", collection: @members %>
+          <% if @members.empty? %>
+            <%= render partial: "shared/empty_illustration", locals: { call_to_action: { text: t("common.add_member"), path: edit_workspace_project_path(@project), method: :get } } %>
+          <% end %>
         <% end %>
         <%= render PaginationComponent.new(pagy: @pagy_members, path: workspace_project_path(@project), params: { tab: "members" }) if @pagy_members.pages > 1 %>
       <% end %>
