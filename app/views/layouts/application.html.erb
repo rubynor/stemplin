@@ -8,11 +8,12 @@
     <%- if @active_time_reg %>
       <%= render BannerComponent.new(title: "Notice", message: t("time_regs.active_timer_description"), variant: :warning, dismissible: false, action: { url: root_path(date: @active_time_reg.date_worked), method: :get }) %>
     <% end %>
-    <%= content_tag(:div, class: class_names("flex justify-between items-center w-full section-container": !user_signed_in?)) do %>
-      <%= content_tag(:span, class: class_names("hidden": user_signed_in?)) do %>
-        Contact us at <%= link_to "contact@stemplin.com", "mailto:contact@stemplin.com", class: "underline text-primary-600 font-medium" %>
-      <% end %>
+    <%= content_tag(:div, class: class_names("flex flex-row justify-between items-start lg:items-center w-full section-container py-4 gap-y-4": !user_signed_in?)) do %>
       <span class="font-regular text-sm text-gray-600">Stemplin <%= Date.current.year %></span>
+      <%= content_tag(:div, class: class_names("flex flex-col lg:flex-row items-start justify-center gap-x-4", "hidden": user_signed_in?)) do %>
+        <%= link_to t("privacy_policy.title"), privacy_policy_path, class: "text-gray-600 font-medium underline" %>
+        <%= link_to t("contact_us.title"), "mailto:contact@stemplin.com", class: "text-gray-600 font-medium underline" %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

@@ -480,3 +480,65 @@ en:
           last_name: ""
           quote: "We at Big Five are very satisfied with Stemplin! They outcompete all other time tracking tools we have used, both in terms of user-friendliness and price."
           organization: "Big Five"
+
+  privacy_policy:
+    title: "Privacy Policy"
+    content:
+      - "This privacy policy applies to the processing of personal data related to the website <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. The data controller is Rubynor AS – org. no. 997444345. For other websites and products controlled by Rubynor AS, different privacy policies apply. Please contact us for further information on the terms that apply to other products and services."
+      - "Processing of personal data includes any use of personal data, such as registration, compilation, storage, and disclosure. The data controller determines the purpose of the processing of personal data and the tools to be used."
+    sections:
+      - title: "What Personal Data is Processed"
+        content:
+          - "Depending on the information you provide us, how you use our services, and the permissions you give us, we may have the following information about you:"
+          - "Name, email, information about the organization you are part of (in Stemplin), information about projects within your organization, information about tasks within your organization, and information about the hours you have logged for your organization."
+      - title: "What the Personal Data is Used For"
+        content:
+          - "The personal data is used to:"
+        list_items:
+          - "Ensure technical functionality in Stemplin. For example, personal data is linked to your user account to ensure that time registrations are assigned to the correct user."
+          - "Communicate with our users. This communication may include invitation links to new organizations, password resets, or updates to terms of use."
+        additional_content:
+          - "Stemplin relies on having the aforementioned personal data about a user in order to provide our service. If you do not wish to share the mentioned personal data with Stemplin, it will not be possible to create a user account."
+      - title: "How We Collect Data"
+        items:
+          - title: "Statistics and Usage Patterns"
+            content:
+              - "Stemplin collects anonymized information about visitors to <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. The purpose of this is to compile statistics and understand usage patterns, which are further used to improve and develop the website. Examples of what the statistics may reveal include the type of browser used, whether the visit is from a mobile device or a PC, and the time spent on the website."
+          - title: "Forms on the Website"
+            content:
+              - "The website uses various forms that register different information about the user. The user controls what type of information is provided in these forms. Examples of such forms include creating a new user account and time registration."
+          - title: "Cookies"
+            content:
+              - "Cookies are small text files that are placed on your computer when you download a website. Stemplin uses cookies to store data about your user account. This is used for automatic login so that you do not have to log in again every time you visit <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. Additionally, cookies are used to gather statistics and usage patterns through Microsoft Clarity."
+      - title: "How Long We Store Personal Data"
+        content:
+          - "We only store information about you as long as it is necessary to achieve the purpose for which it was collected or as long as we are required by law to store the information. The information will be deleted or anonymized when it is no longer necessary to achieve the purpose."
+          - "Information can be deleted upon request by written inquiry to Rubynor AS."
+      - title: "Who We Share Personal Data With"
+        content:
+          - "We share personal data with data processors who provide technical services necessary for Stemplin’s functionality. This includes Hetzner Online GmbH."
+      - title: "Your Rights"
+        content:
+          - "Anyone who requests it has the right to basic information about the processing of personal data in a company according to Section 18, 1st paragraph of the Personal Data Act. Stemplin has provided the basic information about the processing of personal data in this statement and refers to this declaration for any inquiries. You have the right to request that we:"
+        list_items:
+          - "Provide you with further information on how we process your personal data."
+          - "Provide you with a copy of the personal data we have about you."
+          - "Update your personal data"
+          - "Delete information that we no longer have the basis to retain."
+          - "Restrict or stop the processing of your information."
+          - "Provide you with the information you have given us in a structured, commonly used, and machine-readable format or, where technically possible, ask us to transfer this information to another company."
+          - "Withdraw any consent you have given us."
+        additional_content:
+          - "If you believe that we process personal data in violation of the Personal Data Act, you have the right to file a complaint with the Norwegian Data Protection Authority. Before you do so, we would like you to contact Stemplin so that we can address your concerns or clarify any misunderstandings."
+      - title: "Changes to the Privacy Policy"
+        content:
+          - "We may update the privacy policy from time to time. You will be notified of any significant changes. You will always find the latest version of our privacy policy on the website."
+      - title: "Contact Information"
+        details:
+          - label: "Postal address"
+            value: "Bedriftsveien 64, 3735 Skien, Norway"
+          - label: "Email"
+            value: "contact@stemplin.com"
+
+  contact_us:
+    title: "Contact us"
