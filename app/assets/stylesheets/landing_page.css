@@ -4,7 +4,6 @@ html {
 
 .hero-section {
     background: var(--primary) url("pattern-wavy.svg") no-repeat center/cover;
-    /*border-radius: 0 100% 100% 0 / 100% 0 25% 0;*/
     margin-top: -12rem;
     padding-top: 12rem;
 }

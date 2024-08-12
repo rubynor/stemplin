@@ -596,3 +596,64 @@ nb:
           last_name: ""
           quote: "We at Big Five are very satisfied with Stemplin! They outcompete all other time tracking tools we have used, both in terms of user-friendliness and price."
           organization: "Big Five"
+
+  privacy_policy:
+    title: "Personvernerklæringen"
+    content:
+      - "Denne personvernerklæringen gjelder for behandling av personopplysninger tilknyttet nettsiden <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. Behandlingsansvarlig er Rubynor AS – org.nr. 997444345. For øvrige nettsider og produkter som kontrolleres av behandlingsansvarlig gjelder andre personvernerklæringer. Ta kontakt for ytterligere informasjon om vilkår som gjelder for øvrige produkter og tjenester."
+      - "Behandlingsansvarlig bestemmer formålet med behandling av personopplysninger og hvilke hjelpemidler som skal brukes. Behandling av personopplysninger er enhver bruk av personopplysninger, som for eksempel registrering, sammenstilling, lagring og utlevering."
+    sections:
+      - title: "Hvilke personopplysninger behandles"
+        content:
+          - "Avhengig av hvilken informasjon du gir oss, hvordan du bruker våre tjenester, og hvilke tillatelser du gir oss, har vi disse opplysningene om deg:"
+          - "Navn, e-post, opplysninger om organisasjonen du er en del av (i Stemplin), opplysninger om prosjektene i din organisasjon, opplysninger om arbeidsoppgavene i din organisasjon, samt opplysninger om timer du har loggført for din organisasjon."
+      - title: "Hva personopplysningene brukes til"
+        content:
+          - "Personopplysningene brukes til:"
+        list_items:
+          - "Å sikre teknisk funksjonalitet i Stemplin. For eksempel knyttes personopplysninger til din bruker for å sikre at timeregistreringer tilordnes riktig bruker."
+          - "Kommunikasjon med våre brukere. Kommunikasjonen kan for eksempel inkludere invitasjonslinker til nye organisasjoner, tilbakestilling av passord, eller oppdateringer i brukervilkår."
+        additional_content:
+          - "Stemplin er avhengig av å ha de nevnte personopplysningene om en bruker, for å være i stand til å tilby vår tjeneste. Dersom det ikke er ønskelig å dele de nevnte personopplysningene med Stemplin, vil det derfor ikke være mulig å opprette en bruker."
+      - title: "Hvordan vi samler inn data"
+        items:
+          - title: "Statistikk og brukermønstre"
+            content:
+              - "Stemplin samler inn avidentifiserte opplysninger om besøkende på <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. Formålet med dette er å utarbeide statistikk og forstå brukermønstre, som videre brukes til å forbedre og videreutvikle nettstedet. Eksempler på hva statistikken gir svar på, er type nettleser som brukes, hvorvidt besøket skjer fra mobil eller pc, og tid brukt på nettstedet."
+          - title: "Skjemaer på nettsiden"
+            content:
+              - "Nettsiden bruker ulike skjemaer som registrerer forskjellige opplysninger om brukeren. Det er brukeren selv som styrer hva slags informasjon som oppgis i disse skjemaene. Eksempler på slike skjemaer er opprettelse av en ny bruker og timeregistrering."
+          - title: "Informasjonskapsler"
+            content:
+              - "Informasjonskapsler (cookies) er små tekstfiler som plasseres på din datamaskin når du laster ned en nettside. Stemplin bruker informasjonskapsler for å lagre data om din bruker. Dette brukes til automatisk innlogging, så du slipper å logge inn på nytt hver gang du besøker <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. I tillegg brukes informasjonskapsler til å innhente statistikk og brukermønstre, gjennom Microsoft Clarity. "
+      - title: "Hvor lenge lagrer vi personopplysninger"
+        content:
+          - "Vi lagrer opplysninger om deg, kun så lenge det er nødvendig for å oppnå formålet de ble innhentet for, eller så lenge vi er pålagt å lagre opplysningene. Opplysningene vil slettes eller anonymiseres når de ikke lengre er nødvendige for å oppnå formålet."
+          - "Informasjon kan slettes på oppfordring ved skriftlig henvendelse til Rubynor AS."
+      - title: "Hvem deler vi personopplysninger med"
+        content:
+          - "Vi deler personopplysninger med databehandlere som leverer tekniske tjenester, nødvendig for Stemplin sin funksjonalitet. Dette inkluderer Hetzner Online GmbH."
+      - title: "Dine rettigheter"
+        content:
+          - "Alle som spør har rett på grunnleggende informasjon om behandlinger av personopplysninger i en virksomhet etter personopplysningslovens § 18, 1. ledd. Stemplin har gitt grunnleggende informasjonen om behandling av personopplysninger ii denne erklæringen, og henvise til denne erklæringen ved eventuelle forespørsler. Du har rett til å be oss om å:"
+        list_items:
+          - "Gi deg ytterligere informasjon om hvordan vi behandler dine personopplysninger."
+          - "Gi deg en kopi av personopplysninger om deg."
+          - "Oppdatere dine personopplysninger."
+          - "Slette opplysninger som vi ikke lengre har grunnlag til å oppbevare."
+          - "Begrense eller stoppe behandling av dine opplysninger."
+          - "Gi deg opplysninger du har gitt til oss i et strukturert, alminnelig anvendt og maskinlesbart format eller, der det er teknisk mulig, be oss om å overføre disse til en annen virksomhet."
+          - "Trekke tilbake eventuelle samtykker du har gitt oss."
+        additional_content:
+          - "Hvis du mener at vi behandler personopplysninger i strid med personopplysningsloven, har du rett til å klage til Datatilsynet. Før du eventuelt gjør dette, vil vi gjerne at du kontakter Stemplin slik at vi kan besvare dine spørsmål, eller oppklare eventuelle misforståelser. "
+      - title: "Endringer i personvernerklæringen"
+        content:
+          - "Vi vil kunne oppdatere personvernerklæringen fra tid til annen. Du vil få beskjed om endringer av betydning. Du vil alltid finne siste versjon av vår personvernerklæring på nettsiden."
+      - title: "Kontaktinformasjon"
+        details:
+          - label: "Postadresse"
+            value: "Bedriftsveien 64, 3735 Skien, Norge"
+          - label: "Epost"
+            value: "contact@stemplin.com"
+  contact_us:
+    title: "kontakt oss"
