@@ -18,7 +18,7 @@
       <% end %>
     </div>
   </div>
-  <div>
+  <div class="hide-table-overflow">
     <%= render PhlexUI::Table.new(id: :organization_clients) do %>
       <%= render PhlexUI::Table::Header.new do %>
         <%= render PhlexUI::Table::Row.new(class: "text-gray-500" ) do %>
