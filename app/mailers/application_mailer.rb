@@ -16,26 +16,13 @@ class ApplicationMailer < ActionMailer::Base
 
   # Overrides the default behavior to accommodate SendGrid templates
   # when they are specified in the headers.
-  def collect_responses(headers, &block)
+
+  def mail(headers = nil, &block)
     if headers[:sendgrid_template].present?
       handle_sendgrid_template(headers)
     else
       super(headers, &block)
     end
-  end
-
-  # Overrides ActionMailer's create_parts_from_responses method to handle SendGrid templates
-  #
-  # This method serves two purposes:
-  # 1. For SendGrid templates: It prevents ActionMailer from creating parts,
-  #    as the email structure is handled by SendGrid's template system.
-  # 2. For non-SendGrid emails: It maintains the original ActionMailer behavior.
-  #
-  # By returning early when a SendGrid template is present, we avoid unnecessary
-  # processing and conflicts/errors with SendGrid's templating system. -> response structure
-  def create_parts_from_responses(m, responses)
-    return if headers[:sendgrid_template].present?
-    super(m, responses)
   end
 
   def handle_sendgrid_template(headers)
