@@ -10,7 +10,6 @@
     </div>
     
     <%= content_tag(:div, class: "flex flex-col gap-y-4 lg:gap-y-8", data: { controller: "custom-disable", custom_disable_initial_status_value: project.billable }) do %>
-      <%= render ComboboxComponent::Bundler.new %>
       <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
         <%= render PhlexUI::Label.new { t("common.client") } %>
         <%= render PhlexUI::Input.new(type: "text", value: project.client.name, disabled: true, class: "border-gray-200 rounded-md w-full !opacity-100 bg-gray-100") %>
@@ -88,6 +87,24 @@
           <%= render partial: "workspace/projects/form_assigned_task", collection: project.active_assigned_tasks, as: :assigned_task %>
         </div>
       <% end %>
+
+      <%# New component start %>
+      <%= render ComboboxComponent::Bundler.new(
+        form: form,
+        collection: Task.all,
+        method: :task_id,
+        value_method: :id,
+        text_method: :name,
+        placeholder: "Add Task",
+        search_placeholder: "Search a Task",
+        selected: {
+          title: "Tasks",
+          items: project.active_assigned_tasks,
+          method: "project[assigned_tasks_attributes][]"
+        },
+        mode: :multiple,
+      ) %>
+      <%# New component end %>
     <% end %>
   </div>
 

@@ -6,7 +6,7 @@ import { ITEM_KEY_ESC } from "./combobox_content_controller";
 export const POPOVER_OPENED = "combobox#popoverOpened";
 
 export default class extends Controller {
-    static targets = ["input", "popover", "content", "search"];
+    static targets = ["input", "popover", "content", "search", "select"];
 
     static values = { closed: Boolean };
 
@@ -43,6 +43,7 @@ export default class extends Controller {
     itemSelected({ value, label }) {
         this.inputTarget.value = value;
         this.contentTarget.innerText = label;
+        if (this.hasSelectTarget) this.selectTarget.value = value;
         this.toogleContent();
     }
 
