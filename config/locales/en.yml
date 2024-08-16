@@ -545,3 +545,10 @@ en:
 
   contact_us:
     title: "Contact us"
+
+  open_graph:
+    title: "Stemplin"
+    description: "Timetracking made easy"
+    image_alt: "Stemplin logo"
+    site_name: "Stemplin"
+    url: "https://stemplin.com/"
