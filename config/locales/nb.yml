@@ -657,3 +657,10 @@ nb:
             value: "contact@stemplin.com"
   contact_us:
     title: "kontakt oss"
+
+  open_graph:
+    title: "Stemplin"
+    description: "Timeføring gjort enkelt"
+    image_alt: "Stemplin logo"
+    site_name: "Stemplin"
+    url: "https://stemplin.com/"
