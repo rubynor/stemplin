@@ -1,25 +1,25 @@
 <div class="flex flex-col gap-y-4 w-full">
   <span class="text-xl font-semibold text-gray-600"><%= t("login_page.sign_in_to_your_account") %></span>
   <div class="flex flex-col mt-4 gap-y-2">
-    <span class="text-gray-600 text-sm"><%= t("login_page.sign_in_with") %></span>
-    <div class="flex flex-row items-center gap-x-2">
-      <%= render ButtonComponent.new(variant: :outline, class: "flex-1 gap-x-2") do %>
-        <%= image_tag "google.svg" %>
-        <span class="font-semibold text-sm text-gray-700">Google</span>
-      <% end %>
-      <%= render ButtonComponent.new(variant: :outline, class: "flex-1 gap-x-2") do %>
-        <%= image_tag "github.svg" %>
-        <span class="font-semibold text-sm text-gray-700">Github</span>
-      <% end %>
-    </div>
-    <div class="relative my-4">
-      <div class="absolute inset-0 flex items-center" aria-hidden="true">
-        <div class="w-full border-t border-gray-200"></div>
-      </div>
-      <div class="relative flex justify-center text-sm font-medium leading-6">
-        <span class="bg-gray-50 px-6 text-gray-600"><%= t("login_page.or_continue_with") %></span>
-      </div>
-    </div>
+    <!-- <span class="text-gray-600 text-sm"><%= t("login_page.sign_in_with") %></span> -->
+    <!-- <div class="flex flex-row items-center gap-x-2"> -->
+      <%#= render ButtonComponent.new(variant: :outline, class: "flex-1 gap-x-2") do %>
+        <%#= image_tag "google.svg" %>
+        <!-- <span class="font-semibold text-sm text-gray-700">Google</span> -->
+      <%# end %>
+      <%#= render ButtonComponent.new(variant: :outline, class: "flex-1 gap-x-2") do %>
+        <%#= image_tag "github.svg" %>
+        <!-- <span class="font-semibold text-sm text-gray-700">Github</span> -->
+      <%# end %>
+    <!-- </div> -->
+    <!-- <div class="relative my-4"> -->
+    <!--   <div class="absolute inset-0 flex items-center" aria-hidden="true"> -->
+    <!--     <div class="w-full border-t border-gray-200"></div> -->
+    <!--   </div> -->
+    <!--   <div class="relative flex justify-center text-sm font-medium leading-6"> -->
+        <!-- <span class="bg-gray-50 px-6 text-gray-600"><%#= t("login_page.or_continue_with") %></span> -->
+    <!--   </div> -->
+    <!-- </div> -->
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "w-full", data: { turbo: false }) do |form| %>
       <div class="w-full flex gap-y-4 flex-col">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
