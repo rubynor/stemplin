@@ -3,7 +3,7 @@
 module ComboboxComponent
   class List < ApplicationComponent
     def initialize(**attrs)
-      @id = "list#{SecureRandom.hex(4)}"
+      @wrapper_id = attrs[:wrapper_id]
       super
     end
 
@@ -15,13 +15,12 @@ module ComboboxComponent
 
     def default_attrs
       {
-        id: @id,
         data: {
-          combobox_content_target: "list"
+          combobox_content_target: "list",
+          wrapper_id: @wrapper_id
         },
         role: "listbox",
         tabindex: "-1",
-        aria_activedescendant: "#{@id}-0",
         class: "max-h-[300px] overflow-y-auto overflow-x-hidden"
       }
     end

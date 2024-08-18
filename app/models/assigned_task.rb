@@ -19,11 +19,7 @@ class AssignedTask < ApplicationRecord
 
   after_destroy :destroy_task_if_no_assigned_tasks
 
-  scope :active_task, -> {
-    joins(:task)
-      .where(is_archived: false)
-      .select('assigned_tasks.*, tasks.name as name')
-  }
+  scope :active_task, -> { where(is_archived: false) }
 
   def updated_active_task
     self.class.where(project: project, task: task).active_task.first

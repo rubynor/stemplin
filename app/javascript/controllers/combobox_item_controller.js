@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import { ITEM_KEY_UP, ITEM_KEY_DOWN, ITEM_KEY_ENTER } from "./combobox_content_controller";
+import { ITEM_ADDED_TO_LIST } from "./combobox_selected_items_controller";
 
 export const ITEM_SELECTED = "combobox-item#selected";
 const ITEM_MOUSEENTER = "combobox-item#mouseenter";
@@ -13,6 +14,7 @@ export default class extends Controller {
         document.addEventListener(ITEM_KEY_UP, (e) => this.handleKeyUp(e.detail), false);
         document.addEventListener(ITEM_KEY_DOWN, (e) => this.handleKeyDown(e.detail), false);
         document.addEventListener(ITEM_KEY_ENTER, (e) => this.handleKeyEnter(e.detail), false);
+        document.addEventListener(ITEM_ADDED_TO_LIST, (e) => this.handleItemAddedToList(e.detail), false);
     }
 
     disconnect() {
@@ -21,6 +23,7 @@ export default class extends Controller {
         document.removeEventListener(ITEM_KEY_UP, (e) => this.handleKeyUp(e.detail), false);
         document.removeEventListener(ITEM_KEY_DOWN, (e) => this.handleKeyDown(e.detail), false);
         document.removeEventListener(ITEM_KEY_ENTER, (e) => this.handleKeyEnter(e.detail), false);
+        document.removeEventListener(ITEM_ADDED_TO_LIST, (e) => this.handleItemAddedToList(e.detail), false);
     }
 
     mouseenter() {
@@ -34,10 +37,10 @@ export default class extends Controller {
     selectItem() {
         this.checkTarget.classList.toggle("invisible", false);
 
-        const { value } = this.element.dataset;
+        const { value, wrapperId } = this.element.dataset;
         const label = this.element.innerText;
 
-        const event = new CustomEvent(ITEM_SELECTED, { detail: { value, label } });
+        const event = new CustomEvent(ITEM_SELECTED, { detail: { value, label, wrapperId } });
         document.dispatchEvent(event);
     }
 
@@ -83,6 +86,12 @@ export default class extends Controller {
     unselect({ value }) {
         if (this.element.dataset.value !== value) {
             this.element.removeAttribute("aria-selected");
+        }
+    }
+
+    handleItemAddedToList({ value, label }) {
+        if (this.element.dataset.value === value) {
+            this.element.remove();
         }
     }
 }

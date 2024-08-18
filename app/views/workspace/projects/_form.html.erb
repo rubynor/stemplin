@@ -88,23 +88,6 @@
         </div>
       <% end %>
 
-      <%# New component start %>
-      <%= render ComboboxComponent::Bundler.new(
-        form: form,
-        collection: Task.all,
-        method: :task_id,
-        value_method: :id,
-        text_method: :name,
-        placeholder: "Add Task",
-        search_placeholder: "Search a Task",
-        selected: {
-          title: "Tasks",
-          items: project.active_assigned_tasks,
-          method: "project[assigned_tasks_attributes][]"
-        },
-        mode: :multiple,
-      ) %>
-      <%# New component end %>
     <% end %>
   </div>
 

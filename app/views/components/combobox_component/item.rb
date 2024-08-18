@@ -4,6 +4,7 @@ module ComboboxComponent
   class Item < ApplicationComponent
     def initialize(value: nil, **attrs)
       @value = value
+      @wrapper_id = attrs[:wrapper_id]
       super(**attrs)
     end
 
@@ -42,7 +43,8 @@ module ComboboxComponent
           selected: false,
           combobox_content_target: "item",
           controller: "combobox-item",
-          action: "click->combobox-item#selectItem mouseenter->combobox-item#mouseenter"
+          action: "click->combobox-item#selectItem mouseenter->combobox-item#mouseenter",
+          wrapper_id: @wrapper_id
         },
         tabindex: "0",
         role: "option"

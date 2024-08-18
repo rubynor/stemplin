@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { ITEM_ADDED_TO_LIST, ITEM_REMOVED_TO_LIST } from "./combobox_selected_items_controller";
 
 const POPOVER_OPENED = "combobox#popoverOpened";
 
@@ -8,15 +9,17 @@ export const ITEM_KEY_ENTER = "combobox-content#keyEnter";
 export const ITEM_KEY_ESC = "combobox-content#keyEsc";
 
 export default class extends Controller {
-    static targets = ["list", "item", "empty", "group", "search"];
+    static targets = ["list", "item", "empty", "group", "search", "optionTemplate"];
 
     connect() {
         document.addEventListener(POPOVER_OPENED, (event) => this.handlePopoverToggle(event), false);
+        document.addEventListener(ITEM_REMOVED_TO_LIST, (e) => this.handleOptionRemovedFromList(e.detail), false);
         this.generateItemsIds();
     }
 
     disconnect() {
         document.removeEventListener(POPOVER_OPENED, (event) => this.handlePopoverToggle(event), false);
+        document.removeEventListener(ITEM_REMOVED_TO_LIST, (e) => this.handleOptionRemovedFromList(e.detail), false);
     }
 
     handlePopoverToggle(event) {
@@ -101,5 +104,17 @@ export default class extends Controller {
     getSelectedItemId() {
         const selectedItem = this.itemTargets.find((item) => item.getAttribute("aria-selected") === "true");
         return selectedItem.getAttribute("id");
+    }
+
+    handleOptionRemovedFromList({ value, label, wrapperId }) {
+        if(this.element.dataset.wrapperId === wrapperId) {
+            const newOption = this.optionTemplateTarget.content.cloneNode(true);
+            const textElement = newOption.querySelector("span");
+
+            newOption.firstElementChild.dataset.value = value;
+            textElement.innerHTML = label;
+
+            this.listTarget.appendChild(newOption);
+        }
     }
 }

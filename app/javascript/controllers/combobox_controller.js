@@ -40,11 +40,14 @@ export default class extends Controller {
         this.toogleContent();
     }
 
-    itemSelected({ value, label }) {
-        this.inputTarget.value = value;
-        this.contentTarget.innerText = label;
-        if (this.hasSelectTarget) this.selectTarget.value = value;
-        this.toogleContent();
+    itemSelected({ value, label, wrapperId }) {
+        // ensuring we're pushing item to the right component i.e multiple use of this component within same view
+        if(this.popoverTarget.dataset.wrapperId === wrapperId) {
+            this.inputTarget.value = value;
+            this.contentTarget.innerText = label;
+            if (this.hasSelectTarget) this.selectTarget.value = value;
+            this.toogleContent();
+        }
     }
 
     toogleContent() {
