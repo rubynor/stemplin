@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 import { computePosition, autoUpdate } from "@floating-ui/dom";
 import { ITEM_SELECTED } from "./combobox_item_controller";
 import { ITEM_KEY_ESC } from "./combobox_content_controller";
+import { NEW_ITEM_ADDED } from "./combobox_content_controller";
 
 export const POPOVER_OPENED = "combobox#popoverOpened";
 
@@ -20,11 +21,13 @@ export default class extends Controller {
 
         document.addEventListener(ITEM_SELECTED, (e) => this.itemSelected(e.detail), false);
         document.addEventListener(ITEM_KEY_ESC, () => this.toogleContent(), false);
+        document.addEventListener(NEW_ITEM_ADDED, () => this.toogleContent(), false);
     }
 
     disconnect() {
         document.removeEventListener(ITEM_SELECTED, (e) => this.itemSelected(e.detail), false);
         document.removeEventListener(ITEM_KEY_ESC, () => this.toogleContent(), false);
+        document.removeEventListener(NEW_ITEM_ADDED, () => this.toogleContent(), false);
         this.cleanup();
     }
 

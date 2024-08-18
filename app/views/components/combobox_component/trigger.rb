@@ -2,14 +2,9 @@
 
 module ComboboxComponent
   class Trigger < ApplicationComponent
-    SIZES = {
-      fixed: "w-[200px]",
-      fill: "w-full"
-    }
-
     def initialize(placeholder:, size: nil, **attrs)
       @placeholder = placeholder
-      @size = SIZES[size&.to_sym] || SIZES[:fixed]
+      @size = size
       super(**attrs)
     end
 

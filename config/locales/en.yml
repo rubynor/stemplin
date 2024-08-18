@@ -560,3 +560,10 @@ en:
     image_alt: "Stemplin logo"
     site_name: "Stemplin"
     url: "https://stemplin.com/"
+
+  components:
+    combobox:
+      empty:
+        note: "No results found."
+      search_input:
+        add_btn: "Add to list"

@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
-import { ITEM_ADDED_TO_LIST, ITEM_REMOVED_TO_LIST } from "./combobox_selected_items_controller";
+import { ITEM_REMOVED_TO_LIST } from "./combobox_selected_items_controller";
 
 const POPOVER_OPENED = "combobox#popoverOpened";
 
@@ -7,6 +7,8 @@ export const ITEM_KEY_UP = "combobox-content#keyUp";
 export const ITEM_KEY_DOWN = "combobox-content#keyDown";
 export const ITEM_KEY_ENTER = "combobox-content#keyEnter";
 export const ITEM_KEY_ESC = "combobox-content#keyEsc";
+
+export const NEW_ITEM_ADDED = "combobox-newItem#added";
 
 export default class extends Controller {
     static targets = ["list", "item", "empty", "group", "search", "optionTemplate"];
@@ -116,5 +118,12 @@ export default class extends Controller {
 
             this.listTarget.appendChild(newOption);
         }
+    }
+
+    addItem() {
+        const { value, dataset: { wrapperId } } = this.searchTarget;
+
+        const event = new CustomEvent(NEW_ITEM_ADDED, { detail: { value, label: value, wrapperId } });
+        document.dispatchEvent(event);
     }
 }

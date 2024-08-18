@@ -4,13 +4,25 @@ module ComboboxComponent
   class SearchInput < ApplicationComponent
     def initialize(placeholder:, **attrs)
       @placeholder = placeholder
+      @can_add = attrs[:can_add]
+      @wrapper_id = attrs[:wrapper_id]
       super(**attrs)
     end
 
     def template
-      input_container do
-        search_icon
-        input(**@attrs)
+      div(class: "flex flex-col") do
+        input_container do
+          search_icon
+          input(**@attrs)
+        end
+        if @can_add
+          div(class: "p-2 hidden", data: { combobox_content_target: "empty" }) do
+            button(**search_btn_attrs) do
+              span(class: "font-medium text-white text-xs") { "Add to list" }
+              i(class: "uc-icon text-lg text-white") { "&#xe9c7;".html_safe }
+            end
+          end
+        end
       end
     end
 
@@ -46,11 +58,22 @@ module ComboboxComponent
         data: {
           action: "input->combobox-content#filter",
           combobox_target: "search",
-          combobox_content_target: "search"
+          combobox_content_target: "search",
+          wrapper_id: @wrapper_id
         },
         autocomplete: "off",
         autocorrect: "off",
         spellcheck: false
+      }
+    end
+
+    def search_btn_attrs
+      {
+        type: "button",
+        data: {
+          action: "click->combobox-content#addItem"
+        },
+        class: "bg-primary-600 rounded-md py-1 w-full flex justify-center items-center gap-x-2"
       }
     end
   end

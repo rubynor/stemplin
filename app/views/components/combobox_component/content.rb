@@ -4,6 +4,7 @@ module ComboboxComponent
   class Content < ApplicationComponent
     def initialize(**attrs)
       @wrapper_id = attrs[:wrapper_id]
+      @size = attrs[:size]
       super
     end
 
@@ -25,7 +26,7 @@ module ComboboxComponent
     def default_attrs
       {
         data: { combobox_target: "popover", wrapper_id: @wrapper_id },
-        class: "invisible absolute top-0 left-0 p-1.5 rounded"
+        class: tokens("invisible absolute top-0 left-0 p-1.5 rounded", @size)
       }
     end
   end

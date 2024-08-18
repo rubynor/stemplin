@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Note: This is mostly a replica of new phlex-ui unreleased component plus our custom features
+#  - list view
+#  - add & remove items to list
+#  - create new item
+
 module ComboboxComponent
   # @param form [ActionView::Helpers::FormBuilder] The form builder object
   # @param method [Symbol] The method/attribute name for the form field
@@ -11,19 +16,24 @@ module ComboboxComponent
   # @param selected [Hash] The selected items hash
   # @option selected [String] :title The selected items title
   # @option selected [Array] :items The selected items
+  # @param can_add [Boolean] This value will determin if it can add new items
   class Bundler < ApplicationComponent
     MODES = { single: :single, multiple: :multiple }.freeze
+
+    SIZES = { fixed: "w-[200px]", fill: "w-full" }.freeze
 
     def initialize(**options)
       @unique_id = "combobox##{SecureRandom.hex(4)}"
       @options = options.with_indifferent_access
       @mode = MODES[@options[:mode]&.to_sym] || MODES[:single]
+      @can_add = options.fetch(:can_add, false)
+      @size = SIZES[@options[:size]&.to_sym] || SIZES[:fixed]
     end
 
     def template
       render ComboboxComponent::Main.new(id: @unique_id) do
         render_selected_or_collection
-        render ComboboxComponent::Trigger.new(placeholder: @options[:placeholder], aria_controls: "list", size: :fill)
+        render ComboboxComponent::Trigger.new(placeholder: @options[:placeholder], aria_controls: "list", size: @size)
         render_content
       end
     end
@@ -36,15 +46,15 @@ module ComboboxComponent
     end
 
     def render_content
-      render ComboboxComponent::Content.new(wrapper_id: @unique_id) do
-        render ComboboxComponent::SearchInput.new(placeholder: @options[:search_placeholder])
+      render ComboboxComponent::Content.new(wrapper_id: @unique_id, size: @size) do
+        render ComboboxComponent::SearchInput.new(placeholder: @options[:search_placeholder], can_add: @can_add, wrapper_id: @unique_id)
+        render ComboboxComponent::Empty.new { t("components.combobox.empty.note") } unless @can_add
         render_list
       end
     end
 
     def render_list
       render ComboboxComponent::List.new(wrapper_id: @unique_id) do
-        render ComboboxComponent::Empty.new { "No results found." }
         @options[:collection]&.each { |item| render_item(item) }
         render_item_template
       end
