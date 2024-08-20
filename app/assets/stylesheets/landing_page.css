@@ -325,3 +325,14 @@ html {
     }
 }
 
+[data-aos="slide-left"] {
+    transform: translateX(50px)!important;
+    opacity: 0!important;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)!important;
+}
+
+[data-aos="slide-left"].aos-animate {
+    transform: translateX(0)!important;
+    opacity: 1!important;
+}
+

@@ -9,7 +9,7 @@
          data-aos-mirror="true"
          data-aos-once="true"
     >
-      <span class="text-5xl lg:text-6xl font-semibold text-white leading-none lg:leading-tight text-center">
+      <span class="text-3xl lg:text-4xl font-semibold text-white leading-none lg:leading-tight text-center">
         <%= t("landing_page.hero_section.title").html_safe %>
       </span>
     </div>
@@ -37,11 +37,15 @@
     </div>
   </div>
   <div
+    data-aos="fade-up"
+    data-aos-offset="200"
+    data-aos-delay="100"
+    data-aos-duration="1000"
+    data-aos-easing="ease-in-out"
+    data-aos-mirror="true"
+    data-aos-once="true"
     class="flex justify-center items-center absolute top-0 w-4/5 lg:w-full my-96">
-    <div class="w-full lg:w-4/5 hidden md:block mt-20">
-      <dotlottie-player src="<%= asset_path("lottie/main.json") %>" speed="1" style="width: 100%; height: 100%;" autoplay></dotlottie-player>
-    </div>
-    <%#= image_tag "main.svg", class: "w-full lg:w-4/5 hidden md:block mt-20" %>
+    <%= image_tag "main.svg", class: "w-full lg:w-4/5 hidden md:block mt-20" %>
     <%= image_tag "main-mobile.svg", class: "w-full sm:w-4/5 md:hidden" %>
   </div>
 </section>
