@@ -78,5 +78,8 @@ document.addEventListener('turbo:load', () => {
   application.register("flatpickr", FlatpickrController);
 });
 
+import SliderTabsController from "./slider_tabs_controller";
+application.register("slider-tabs", SliderTabsController);
+
 
 // TODO: fetch controllers from app/javascript/controllers/**/*_controller.js and load/register everything automatically, the filename of the controller will then be used as the controller identifier in the DOM

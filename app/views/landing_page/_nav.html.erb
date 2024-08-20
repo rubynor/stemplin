@@ -6,23 +6,23 @@
     <%= link_to root_path do %>
       <%= image_tag is_secondary ? "stemplin-logo-dark.svg" : "stemplin-logo-white.svg", class: "w-24 md:w-36" %>
     <% end %>
-    <% if current_page?(root_path) %>
-      <div class="items-center gap-x-4 hidden lg:flex">
-        <%= link_to "#", class: "border-b-2 border-brown p-2" do %>
-          <span class="font-semibold text-white"><%= t("landing_page.nav_bar.home") %></span>
-        <% end %>
-        <%= link_to "#services", class: "p-2 nav-link group" do %>
-        <span class="font-regular text-white opacity-70 group-hover:opacity-100 transition duration-400">
-          <%= t("landing_page.nav_bar.services") %>
-        </span>
-        <% end %>
-        <%= link_to "#testimonials", class: "p-2 nav-link group" do %>
-        <span class="font-regular text-white opacity-70 group-hover:opacity-100 transition duration-400">
-          <%= t("landing_page.nav_bar.testimonials") %>
-        </span>
-        <% end %>
-      </div>
-    <% end %>
+    <%# if current_page?(root_path) %>
+<!--      <div class="items-center gap-x-4 hidden lg:flex">-->
+        <%#= link_to "#", class: "border-b-2 border-brown p-2" do %>
+<!--          <span class="font-semibold text-white"><%#= t("landing_page.nav_bar.home") %></span>-->
+        <%# end %>
+        <%#= link_to "#services", class: "p-2 nav-link group" do %>
+<!--        <span class="font-regular text-white opacity-70 group-hover:opacity-100 transition duration-400">-->
+          <%#= t("landing_page.nav_bar.services") %>
+<!--        </span>-->
+        <%# end %>
+        <%#= link_to "#testimonials", class: "p-2 nav-link group" do %>
+<!--        <span class="font-regular text-white opacity-70 group-hover:opacity-100 transition duration-400">-->
+          <%#= t("landing_page.nav_bar.testimonials") %>
+<!--        </span>-->
+        <%# end %>
+<!--      </div>-->
+    <%# end %>
     <div class="flex gap-x-2 items-center">
       <%= content_tag(:div, class: class_names("border-r pr-4 mr-4", is_secondary ? "!text-gray-600 border-gray-200" : "!text-white border-white")) do %>
         <%= render partial: "shared/language_picker" %>

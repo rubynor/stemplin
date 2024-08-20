@@ -1,25 +1,45 @@
 <section class="section-container" id="services">
-  <div class="flex flex-col py-4 lg:py-8">
-    <div class="flex flex-col gap-y-2 text-left max-w-3xl mr-auto capitalize bg-white">
+  <div class="flex flex-col py-4 lg:py-8 xl:mt-16">
+    <div
+      data-aos="fade-up"
+      data-aos-offset="200"
+      data-aos-delay="100"
+      data-aos-duration="1000"
+      data-aos-easing="ease-in-out"
+      data-aos-once="true"
+      class="flex flex-col gap-y-2 text-left max-w-3xl mr-auto capitalize bg-white">
       <span class="text-brown font-medium text-base"><%= t("landing_page.services.question") %></span>
       <span class="text-2xl lg:text-3xl font-semibold text-primary"><%= t("landing_page.services.title") %></span>
       <span class="text-lg text-brown-text mt-2 font-regular"><%= t("landing_page.services.sub_text") %></span>
     </div>
-    <div class="mt-12 bg-white lg:shadow-xl lg:rounded-lg lg:pl-8 border border-gray-100">
+    <%= content_tag(:div, class: "mt-12 bg-white lg:shadow-xl lg:rounded-lg lg:pl-8 border border-gray-100", data: {
+      controller: "slider-tabs", slider_tabs_interval_value: 5000,
+      aos: "fade-up",
+      aos_offset: "200",
+      aos_delay: "100",
+      aos_duration: "1000",
+      aos_easing: "ease-in-out",
+      aos_once: "true",
+    }) do %>
       <%= render PhlexUI::Tabs.new(default: "tab-1", class: "grid grid-cols-1 lg:grid-cols-2 !h-full") do %>
-        <%= render PhlexUI::Tabs::List.new(class!: "flex flex-col divide-y divide-gray-100 lg:pr-12 py-4") do %>
+        <%= render PhlexUI::Tabs::List.new(class!: "flex flex-col divide-y divide-gray-100 lg:pr-12") do %>
           <% t("landing_page.services.items").each_with_index do |service, idx| %>
             <%= render partial: "landing_page/services/tab_button", locals: { service: service, count: idx + 1, value: "tab-#{idx + 1}" } %>
           <% end %>
         <% end %>
         <div class="hidden lg:block h-full">
           <% t("landing_page.services.items").each_with_index do |service, idx| %>
-            <%= render PhlexUI::Tabs::Content.new(value: "tab-#{idx + 1}", class: "!mt-0 !h-full") do %>
-              <%= image_tag service[:illustration], class: "rounded-r-lg w-full h-full" %>
+            <%= render PhlexUI::Tabs::Content.new(value: "tab-#{idx + 1}", class!: "!mt-0 !h-full") do %>
+              <%= image_tag service[:illustration], class: "rounded-r-lg w-full h-full", data: {
+                slider_tabs_target: "content",
+                aos: "slide-left",
+                aos_duration: "1000",
+                aos_easing: "ease-in-out"
+              } %>
             <% end %>
           <% end %>
         </div>
       <% end %>
-    </div>
+    <% end %>
   </div>
 </section>

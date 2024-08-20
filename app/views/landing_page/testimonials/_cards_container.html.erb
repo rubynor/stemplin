@@ -1,0 +1,27 @@
+<div
+  data-aos="fade-up"
+  data-aos-offset="200"
+  data-aos-delay="100"
+  data-aos-duration="1000"
+  data-aos-easing="ease-in-out"
+  data-aos-once="true"
+  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-8 lg:my-16">
+  <% t("landing_page.testimonials.items").each do |testimonial| %>
+    <div class="flex flex-col justify-between p-6 lg:p-8 rounded-lg shadow-sm border border-gray-100 gap-y-4 new-testimonial-card">
+      <div>
+        <span class="text-xs md:text-sm text-brown-text font-regular capitalize"><%= testimonial[:quote] %></span>
+      </div>
+      <div class="flex flex-row items-center gap-x-4 border-t border-gray-100 pt-4">
+        <div class="new-testimonial-avatar">
+          <span class="text-base font-semibold">
+            <%= "#{testimonial[:first_name][0]}#{testimonial[:last_name][0]}" %>
+          </span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-primary text-base md:text-lg font-semibold"><%= "#{testimonial[:first_name]} #{testimonial[:last_name]}" %></span>
+          <span class="text-primary text-xs md:text-sm font-regular"><%= testimonial[:organization] %></span>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,9 @@
+<div class="my-16 map-container flex justify-center items-center">
+  <div class="relative flex justify-center items-center flex-col w-full">
+    <div class="testimonial-container">
+      <% t("landing_page.testimonials.items").each do |testimonial| %>
+        <%= render partial: "landing_page/testimonials/user_card", locals: { testimonial: testimonial } %>
+      <% end %>
+    </div>
+  </div>
+</div>

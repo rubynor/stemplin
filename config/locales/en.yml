@@ -444,7 +444,7 @@ en:
       login: "Login"
       signup: "Signup"
     hero_section:
-      title: "Because time<br /> is money"
+      title: "Effortless timetracking<br /> for busy professionals"
       sub_text: "Timetracking and invoicing made easy. <br />Boost your organization's efficiency and productivity."
       get_started: "Get started"
       watch_a_demo: "Watch a demo"
@@ -483,6 +483,14 @@ en:
           last_name: ""
           quote: "We at Big Five are very satisfied with Stemplin! They outcompete all other time tracking tools we have used, both in terms of user-friendliness and price."
           organization: "Big Five"
+        - first_name: "Pål A."
+          last_name: "Sundt"
+          quote: "This has just what we need and no bloat! We went from paying over 3000$/year for competing product, to paying nothing for stemplin. Could not be more happy!"
+          organization: "CTO Rubynor"
+        - first_name: "Mario"
+          last_name: "Michelli"
+          quote: "Time tracking could not be easier!"
+          organization: "CEO Swifter"
 
   privacy_policy:
     title: "Privacy Policy"
