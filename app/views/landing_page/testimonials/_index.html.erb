@@ -5,14 +5,6 @@
       <span class="text-3xl font-semibold text-primary"><%= t("landing_page.testimonials.title") %></span>
       <span class="text-lg text-brown-text mt-2 font-regular"><%= t("landing_page.testimonials.sub_text") %></span>
     </div>
-    <div class="my-16 map-container flex justify-center items-center">
-      <div class="relative flex justify-center items-center flex-col w-full">
-        <div class="testimonial-container">
-          <% t("landing_page.testimonials.items").each do |testimonial| %>
-            <%= render partial: "landing_page/testimonials/user_card", locals: { testimonial: testimonial } %>
-          <% end %>
-        </div>
-      </div>
-    </div>
+    <%= render partial: "landing_page/testimonials/cards_container" %>
   </div>
 </section>

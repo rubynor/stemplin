@@ -165,6 +165,26 @@ html {
     background-color: var(--primary);
 }
 
+
+.new-testimonial-avatar {
+    @apply text-white w-12 h-12 flex justify-center items-center rounded-md shadow-lg cursor-pointer transition duration-300 ease-in-out;
+    z-index: 4;
+}
+.new-testimonial-card:nth-child(1) .new-testimonial-avatar {
+    background-color: #6640FF;
+    box-shadow: 0 0 0 6px rgba(102, 64, 255, 0.2);
+}
+
+.new-testimonial-card:nth-child(2) .new-testimonial-avatar {
+    background-color: #FF77D9;
+    box-shadow: 0 0 0 6px rgba(255, 119, 217, 0.2);
+}
+
+.new-testimonial-card:nth-child(3) .new-testimonial-avatar {
+    background-color: #FFB23F;
+    box-shadow: 0 0 0 6px rgba(255, 178, 63, 0.2);
+}
+
 .testimonial-quote {
     opacity: 0;
     visibility: hidden;
