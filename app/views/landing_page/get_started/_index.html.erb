@@ -1,5 +1,5 @@
 <section>
-  <div class="section-container flex justify-center flex-col-reverse lg:flex-row items-center py-16 gap-y-8 lg:py-20 gap-x-8">
+  <div class="section-container flex justify-center flex-col-reverse lg:flex-row items-start py-16 gap-y-8 lg:py-20 gap-x-8">
     <div class="flex-1">
       <%= image_tag "workspace-administration-gray.svg", class: "rounded-md" %>
     </div>
@@ -13,6 +13,14 @@
             <%= render partial: "landing_page/get_started/step", locals: { count: idx + 1, description: step, total_count: t('landing_page.get_started.steps').size } %>
           <% end %>
         </ul>
+        <div class="mt-2 hover:opacity-80 w-fit">
+          <%= render ButtonComponent.new(variant: :none, class: "bg-white text-primary rounded-md", method: :get, path: new_user_registration_path) do %>
+            <div class="flex flex-row items-center gap-x-2">
+              <span><%= t("landing_page.hero_section.get_started") %></span>
+              <i class="uc-icon text-lg">&#xe836;</i>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

@@ -1,20 +1,47 @@
 <section class="section-container flex flex-col relative justify-center items-center">
-  <div class="flex flex-col py-4 lg:py-8 gap-y-6 lg:gap-y-8 xl:gap-y-10 justify-center items-center">
-    <div class="hero-txt flex flex-col">
+  <div class="flex flex-col py-4 gap-y-6 lg:gap-y-8 xl:gap-y-10 justify-center items-center">
+    <div id="top-text" class="hero-txt flex flex-col"
+         data-aos="fade-up"
+         data-aos-offset="200"
+         data-aos-delay="50"
+         data-aos-duration="1000"
+         data-aos-easing="ease-in-out"
+         data-aos-mirror="true"
+         data-aos-once="true"
+    >
       <span class="text-5xl lg:text-6xl font-semibold text-white leading-none lg:leading-tight text-center">
         <%= t("landing_page.hero_section.title").html_safe %>
       </span>
     </div>
-    <span class="text-sm lg:text-base font-regular text-white text-center">
+    <span
+      data-aos="fade-up"
+      data-aos-offset="200"
+      data-aos-delay="100"
+      data-aos-duration="1000"
+      data-aos-easing="ease-in-out"
+      data-aos-once="true"
+      class="text-sm lg:text-base font-regular text-white text-center">
       <%= t("landing_page.hero_section.sub_text").html_safe %>
     </span>
-    <div class="flex flex-row items-center gap-x-4 lg:gap-x-8 z-10">
+    <div
+      data-aos="fade-up"
+      data-aos-offset="200"
+      data-aos-delay="100"
+      data-aos-duration="1000"
+      data-aos-easing="ease-in-out"
+      data-aos-mirror="true"
+      data-aos-once="true"
+      class="flex flex-row items-center gap-x-4 lg:gap-x-8 z-10">
       <%= render ButtonComponent.new(variant: :none, class: "bg-white text-primary rounded-md", method: :get, path: new_user_registration_path) { t("landing_page.hero_section.get_started") } %>
       <%= render partial: "landing_page/demo_video" %>
     </div>
   </div>
-  <div class="flex justify-center items-center absolute top-0 w-4/5 lg:w-full my-96">
-    <%= image_tag "main.svg", class: "w-full lg:w-4/5 hidden md:block mt-20" %>
-    <%= image_tag "main-mobile.svg", class: "w-full sm:w-4/5 md:hidden " %>
+  <div
+    class="flex justify-center items-center absolute top-0 w-4/5 lg:w-full my-96">
+    <div class="w-full lg:w-4/5 hidden md:block mt-20">
+      <dotlottie-player src="<%= asset_path("lottie/main.json") %>" speed="1" style="width: 100%; height: 100%;" autoplay></dotlottie-player>
+    </div>
+    <%#= image_tag "main.svg", class: "w-full lg:w-4/5 hidden md:block mt-20" %>
+    <%= image_tag "main-mobile.svg", class: "w-full sm:w-4/5 md:hidden" %>
   </div>
 </section>
