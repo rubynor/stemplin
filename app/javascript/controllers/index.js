@@ -81,5 +81,17 @@ document.addEventListener('turbo:load', () => {
 import SliderTabsController from "./slider_tabs_controller";
 application.register("slider-tabs", SliderTabsController);
 
+import ComboboxContentController from "./combobox_content_controller";
+application.register("combobox-content", ComboboxContentController);
+
+import ComboboxController from "./combobox_controller";
+application.register("combobox", ComboboxController);
+
+import ComboboxItemController from "./combobox_item_controller";
+application.register("combobox-item", ComboboxItemController);
+
+import ComboboxSelectedItemsController from "./combobox_selected_items_controller";
+application.register("combobox-selected-items", ComboboxSelectedItemsController);
+
 
 // TODO: fetch controllers from app/javascript/controllers/**/*_controller.js and load/register everything automatically, the filename of the controller will then be used as the controller identifier in the DOM
