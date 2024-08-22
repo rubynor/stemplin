@@ -93,5 +93,8 @@ application.register("combobox-item", ComboboxItemController);
 import ComboboxSelectedItemsController from "./combobox_selected_items_controller";
 application.register("combobox-selected-items", ComboboxSelectedItemsController);
 
+import CookieConsentController from "./cookie_consent_controller";
+application.register("cookie-consent", CookieConsentController);
+
 
 // TODO: fetch controllers from app/javascript/controllers/**/*_controller.js and load/register everything automatically, the filename of the controller will then be used as the controller identifier in the DOM

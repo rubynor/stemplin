@@ -36,6 +36,7 @@
     <%= render AlertDialogComponent.new %>
 
     <%= yield :base_layout %>
+    <%= render "shared/cookie_consent" %>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
         AOS.init();
