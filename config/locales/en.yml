@@ -352,6 +352,9 @@ en:
       warning: "Warning"
       error: "Error"
       success: "Success"
+    actions:
+      decline: "Decline"
+      accept: "Accept"
   time_regs:
     active_timer_description: "Kindly note that you have an active timer running."
     zero_minutes: "Zero minutes!"
@@ -567,3 +570,7 @@ en:
         note: "No results found."
       search_input:
         add_btn: "Add to list"
+
+  cookie_consent:
+    title: "Our website use cookies"
+    sub_text: "We use essential cookies to ensure core functionality and analyze site usage."

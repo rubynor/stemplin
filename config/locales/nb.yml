@@ -482,6 +482,9 @@ nb:
       warning: "Advarsel"
       error: "Feil"
       success: "Suksess"
+    actions:
+      decline: "Avslå"
+      accept: "Fortsett"
   time_regs:
     active_timer_description: "Vær oppmerksom på at du har en stoppeklokke som går."
     zero_minutes: "Null minutter!"
@@ -679,3 +682,7 @@ nb:
         note: "No results found."
       search_input:
         add_btn: "Add to list"
+
+  cookie_consent:
+    title: "Vår nettside bruker informasjonskapsler"
+    sub_text: "Vi bruker viktige informasjonskapsler for å sikre kjernefunksjonalitet og analysere bruken av nettstedet."
