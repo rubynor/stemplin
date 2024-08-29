@@ -1,7 +1,8 @@
 class TimeRegPolicy < ApplicationPolicy
   %i[ edit update destroy toggle_active export ].each do |action|
     define_method("#{action}?") do
-      user == record.user
+      is_admin_allowed = user.organization_admin? && record.organization == user.current_organization
+      user == record.user || is_admin_allowed
     end
   end
 

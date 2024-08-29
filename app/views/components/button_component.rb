@@ -9,6 +9,7 @@ class ButtonComponent < ApplicationComponent
       secondary: "!bg-primary-100 !text-primary-600 hover:!bg-primary-200",
       outline: "!bg-transparent border !border-gray-300 !text-gray-600 hover:!bg-gray-100",
       ghost: "!bg-transparent hover:!bg-gray-100 !text-gray-600",
+      destructive: "!bg-red-100 !text-red-600 hover:!bg-red-200",
       none: "font-medium text-sm shadow px-4 rounded-md"
     }
 

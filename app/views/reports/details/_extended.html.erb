@@ -39,6 +39,7 @@
         <td><%= t("common.person")%> (<%= detailed_report_data.users.count %>)</td>
         <td class="w-[6rem] text-end"><%= t("common.hours")%></td>
         <td class="w-6"></td>
+        <%= content_tag(:td, class: "print:hidden") { t("helpers.actions.title") } if current_user.organization_admin? %>
       </tr>
       </thead>
       <tbody class="print:text-sm">
@@ -51,6 +52,7 @@
             <td></td>
             <td class="text-end font-medium"><%= minutes_to_float value.sum { |v| v.minutes } %></td>
             <td></td>
+            <%= content_tag(:td, class: "print:hidden") {} if current_user.organization_admin? %>
           </tr>
           <% value.each do |child| %>
             <tr class="text-base print:text-xs border-b last:border-b-0 border-gray-100">
@@ -76,7 +78,20 @@
               </td>
               <td><%= child.user.name %></td>
               <td class="text-end"><%= minutes_to_float child.minutes %></td>
-              <td></td>
+              <%= content_tag(:td, class: "print:hidden") {} if current_user.organization_admin? %>
+              <% if current_user.organization_admin? %>
+                <td class="print:hidden">
+                  <div class="flex flex-row gap-x-4">
+                    <%= render ButtonComponent.new(path: edit_modal_time_reg_path(child, date: child.date_worked), method: :put, class: "gap-x-2", variant: :outline) do %>
+                      <i class="uc-icon text-base">&#xe972;</i>
+                    <% end %>
+                    <%- turbo_body = t("time_regs.delete_confirmation", project_name: child.project.name, task_name: child.task.name, logged_time: convert_time_int(child.minutes)) %>
+                    <%= render ButtonComponent.new(variant: :destructive, method: :delete, path: time_reg_path(child), form: { data: { turbo_confirm: turbo_body } }) do %>
+                      <i class="uc-icon text-base">&#xeb97;</i>
+                    <% end %>
+                  </div>
+                </td>
+              <% end %>
             </tr>
           <% end %>
         <% end %>
@@ -92,7 +107,6 @@
             <span class="font-medium text-xl print:text-lg"><%= t("common.total")%></span>
             <span class="font-semibold text-2xl print:text-xl text-primary-600 print:text-gray-900"><%= minutes_to_float detailed_report_data.total_minutes %></span>
           </td>
-          <td></td>
         </tr>
       </tfoot>
     </table>
