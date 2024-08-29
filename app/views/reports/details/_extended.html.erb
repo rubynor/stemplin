@@ -81,7 +81,7 @@
               <%= content_tag(:td, class: "print:hidden") {} if current_user.organization_admin? %>
               <% if current_user.organization_admin? %>
                 <td class="print:hidden">
-                  <div class="flex flex-row gap-x-4">
+                  <div class="flex flex-row gap-x-2">
                     <%= render ButtonComponent.new(path: edit_modal_time_reg_path(child, date: child.date_worked), method: :put, class: "gap-x-2", variant: :outline) do %>
                       <i class="uc-icon text-base">&#xe972;</i>
                     <% end %>

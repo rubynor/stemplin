@@ -40,11 +40,12 @@ class TimeRegsController < ApplicationController
   end
 
   def create
-    @time_reg = current_user.time_regs.new(time_reg_params.except(:project_id, :minutes_string))
+    @time_reg = selected_user.time_regs.new(time_reg_params.except(:project_id, :minutes_string))
+
     authorize! @time_reg
 
     if @time_reg.save
-      redirect_to time_regs_path(date: @time_reg.date_worked)
+      redirect_back(fallback_location: time_regs_path, date: @time_reg.date_worked)
     else
       set_assigned_tasks
       render :new_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
@@ -119,7 +120,9 @@ class TimeRegsController < ApplicationController
   private
 
   def time_reg_params
-    params.require(:time_reg).permit(:notes, :minutes, :assigned_task_id, :date_worked, :project_id, :minutes_string)
+    permitted_params = [ :notes, :minutes, :assigned_task_id, :date_worked, :project_id, :minutes_string ]
+    permitted_params << :user_id if provide_user?
+    params.require(:time_reg).permit(*permitted_params)
   end
 
   def set_time_reg
@@ -138,5 +141,14 @@ class TimeRegsController < ApplicationController
 
   def set_assigned_tasks
     @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg&.project&.id).merge(AssignedTask.active_task)
+    @team_members = authorized_scope(User, type: :relation).onboarded if provide_user?
+  end
+
+  def provide_user?
+    params.has_key?(:provide_user) && params[:provide_user] == "true"
+  end
+
+  def selected_user
+    provide_user? ? User.find(time_reg_params[:user_id]) : current_user
   end
 end

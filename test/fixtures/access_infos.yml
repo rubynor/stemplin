@@ -2,7 +2,7 @@ access_info_1:
   user: joe
   organization: organization_one
   active: true
-  role: 1
+  role: 0
 
 access_info_2:
   user: ron

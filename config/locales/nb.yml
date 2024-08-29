@@ -205,6 +205,7 @@ nb:
     reset_filter: "Tilbakestill filter"
     print: "Skriv ut"
     detailed_report: "detaljert rapport"
+    add_time_registration: "Legg til tidsregistrering"
     team: "Gruppe"
     filter: "Filter"
     period: "Periode"
@@ -257,6 +258,10 @@ nb:
     empty:
       title: "Oops, ingenting her ennå!"
       subtext: "Det er foreløpig ingenting å se her ennå."
+    member: "Medlem"
+    select_member: "Velg medlem"
+    date_worked: "Dato jobbet"
+    select_date_worked: "Velg dato arbeidet"
 
   notice:
     are_you_sure: "Er du sikker?"
@@ -483,7 +488,7 @@ nb:
       error: "Feil"
       success: "Suksess"
     actions:
-      title: "Actions"
+      title: "Handlinger"
       decline: "Avslå"
       accept: "Fortsett"
   time_regs:

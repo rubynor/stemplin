@@ -1,3 +1,4 @@
+<%- is_admin_adding_new_record = defined?(team_members) && team_members.present? %>
 <%= render PhlexUI::Dialog.new(open: true, data: { controller: "custom-dialog" }) do %>
   <%= render PhlexUI::Dialog::Trigger.new(class: "hidden", data: { custom_dialog_target: "trigger" }) do %>
     <%= render PhlexUI::Button.new { "Open Dialog" } %>
@@ -14,7 +15,7 @@
       }) do |form| %>
         <%= render PhlexUI::Dialog::Header.new do %>
           <%= render PhlexUI::Dialog::Title.new { title } %>
-          <%= render PhlexUI::Dialog::Description.new { format_date(chosen_date) } %>
+          <%= render PhlexUI::Dialog::Description.new { format_date(chosen_date) } unless is_admin_adding_new_record %>
         <% end %>
         <%= render PhlexUI::Dialog::Middle.new do %>
           <%= content_tag(:div, class: "w-full flex flex-col") do %>
@@ -23,6 +24,31 @@
                 <div  class="text-red-600 text-xs italic mt-1"><%= message %></div>
               <% end %>
               <%= hidden_field_tag :date, chosen_date %>
+              <%= hidden_field_tag :provide_user, is_admin_adding_new_record %>
+              <% if is_admin_adding_new_record %>
+                <div class="mb-4">
+                  <%= form.label :user, t("common.member"), class: 'block text-gray-700 text-sm font-bold mb-2' %>
+                  <%= form.collection_select :user_id, (team_members || [] ), :id, ->(member) { "#{member.first_name} #{member.last_name}" }, { selected: "", prompt: t("common.select_member") }, {
+                    class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
+                  } %>
+                  <% time_reg.errors.full_messages_for(:user).each do |message| %>
+                    <div class="text-red-600 italic text-xs mt-1"><%= t("common.select_member") %></div>
+                  <% end %>
+                </div>
+                <div class="mb-4">
+                  <%= render DropdownComponent.new(options: { close_background_delay: true }, class: "") do %>
+                    <%= form.label :date_worked, t("common.date_worked"), class: 'block text-gray-700 text-sm font-bold mb-2' %>
+                    <%= render DropdownComponent::Trigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-2 py-2 flex items-center gap-x-1 justify-between") do %>
+                      <span class="text-gray-600 text-base"><%= t("common.select_date_worked") %> </span>
+                      <i class="uc-icon text-2xl text-gray-500">&#xe81d;</i>
+                    <% end %>
+                    <%= render DropdownComponent::Content.new do %>
+                      <%= form.hidden_field :date_worked, id: "date_worked", value: chosen_date, data: { controller: "input" } %>
+                      <%= render PhlexUI::Calendar.new(selected_date: chosen_date, input_id: "#date_worked") %>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
               <div class="mb-4" data-time-tasks-target="project">
                 <%= form.label :project_id, t('common.project'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
                 <%= form.grouped_collection_select :project_id, clients, :items, :name, :id, :name, {
@@ -62,7 +88,9 @@
                 }, value: (convert_time_int(time_reg.minutes) unless time_reg.new_record?),
                         class: 'text-end w-full rounded-md p-2 border invalid:border-red-700 border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white text-black placeholder:text-gray-300'
                 %>
-                <%= form.hidden_field :date_worked, value: chosen_date %>
+                <% unless is_admin_adding_new_record %>
+                  <%= form.hidden_field :date_worked, value: chosen_date %>
+                <% end %>
                 <% time_reg.errors.full_messages_for(:minutes).each do |message| %>
                   <div class="text-red-600 italic text-xs mt-1"><%= message %></div>
                 <% end %>

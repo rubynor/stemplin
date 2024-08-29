@@ -16,6 +16,7 @@ class User < ApplicationRecord
   scope :ordered_by_name, -> { order(:first_name, :last_name) }
   scope :ordered_by_role, -> { joins(:access_infos).select("users.*, access_infos.role").order("access_infos.role ASC") }
   scope :project_restricted, ->(organization) { joins(:access_infos).where(access_infos: { organization: organization, role: AccessInfo.project_restricted_roles }) }
+  scope :onboarded, -> { where.not(first_name: nil).or(where.not(last_name: nil)) } # these are provided(validated) when onboarding, i think it's simpler to tell this way compared to checking if invitation accepted, considering first users/admins are not invited etc
 
   validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s) }
   validates :first_name, :last_name, :email, presence: true
