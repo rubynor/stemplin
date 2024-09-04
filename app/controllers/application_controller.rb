@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include ActionView::RecordIdentifier, Pagy::Backend
   include LocaleHandler, Authorization
 
+  before_action :set_paper_trail_whodunnit
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :redirect_if_no_organization
   layout :layout_by_resource
