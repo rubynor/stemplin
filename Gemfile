@@ -114,3 +114,5 @@ gem "devise_invitable", "~> 2.0.9"
 gem "sidekiq", "~> 7.3"
 
 gem "sidekiq-scheduler"
+
+gem "paper_trail"

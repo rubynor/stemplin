@@ -8,10 +8,18 @@
       <div class="ml-5 mr-auto print:m-0">
         <span class="text-base lg:text-lg"><%= t('common.report') %></span>
       </div>
-      <%= render ButtonComponent.new(class: "print:!hidden", variant: :secondary, data: { controller: "print", action: "print#togglePrintLayout" }) do %>
-        <span class="mr-2"><%= t('common.print') %></span>
-        <i class="uc-icon text-lg">&#xeaea;</i>
-      <% end %>
+      <div class="flex flex-row gap-x-2">
+        <% if current_user.organization_admin? %>
+          <%= render ButtonComponent.new(class: "print:!hidden", variant: :outline, path: new_modal_time_regs_path(date: @chosen_date, provide_user: true), method: :post) do %>
+            <span class="mr-2"><%= t('common.add_time_registration') %></span>
+            <i class="uc-icon text-lg">&#xe9c7;</i>
+          <% end %>
+        <% end %>
+        <%= render ButtonComponent.new(class: "print:!hidden", variant: :secondary, data: { controller: "print", action: "print#togglePrintLayout" }) do %>
+          <span class="mr-2"><%= t('common.print') %></span>
+          <i class="uc-icon text-lg">&#xeaea;</i>
+        <% end %>
+      </div>
     </div>
     <%= render CardComponent.new(class: "flex flex-col !p-4 print:!p-0 z-10 print:!border-none print:!shadow-none") do %>
       <%= render partial: "reports/details/extended", locals: {

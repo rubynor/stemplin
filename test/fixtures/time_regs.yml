@@ -49,3 +49,9 @@ time_reg_with_custom_rate_task_1:
   user: joe
   minutes: 450
   <<: *DEFAULTS
+
+time_reg_1_organization_user_1:
+  assigned_task: task_1
+  date_worked: <%= Date.today %>
+  user: organization_user
+  <<: *DEFAULTS

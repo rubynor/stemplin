@@ -3,6 +3,7 @@ class TimeReg < ApplicationRecord
 
   MINUTES_IN_A_DAY = 1.day.in_minutes.to_i
 
+  has_paper_trail
   belongs_to :user
   belongs_to :assigned_task
 

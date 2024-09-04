@@ -205,6 +205,7 @@ nb:
     reset_filter: "Tilbakestill filter"
     print: "Skriv ut"
     detailed_report: "detaljert rapport"
+    add_time_registration: "Legg til tidsregistrering"
     team: "Gruppe"
     filter: "Filter"
     period: "Periode"
@@ -257,6 +258,10 @@ nb:
     empty:
       title: "Oops, ingenting her ennå!"
       subtext: "Det er foreløpig ingenting å se her ennå."
+    member: "Medlem"
+    select_member: "Velg medlem"
+    date_worked: "Dato jobbet"
+    select_date_worked: "Velg dato arbeidet"
 
   notice:
     are_you_sure: "Er du sikker?"
@@ -483,11 +488,13 @@ nb:
       error: "Feil"
       success: "Suksess"
     actions:
+      title: "Handlinger"
       decline: "Avslå"
       accept: "Fortsett"
   time_regs:
     active_timer_description: "Vær oppmerksom på at du har en stoppeklokke som går."
     zero_minutes: "Null minutter!"
+    delete_confirmation: "Ønsker du å gå videre med sletting av timeregistreringen for prosjektet <span class='text-primary-600 font-semibold'>%{project_name}</span> med oppgaven <span class='text-primary-600 font-semibold'>%{task_name}</span> og <span class='text-primary-600 font-semibold'>%{logged_time}</span> logget. Denne handlingen kan ikke bli tatt tilbake."
   organizations:
     reports_filter:
       tabs:

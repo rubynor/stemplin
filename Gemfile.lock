@@ -183,6 +183,9 @@ GEM
     orm_adapter (0.5.0)
     paco (0.2.3)
     pagy (8.4.0)
+    paper_trail (15.1.0)
+      activerecord (>= 6.1)
+      request_store (~> 1.4)
     parallel (1.24.0)
     parser (3.3.0.5)
       ast (~> 2.4.1)
@@ -257,6 +260,8 @@ GEM
     regexp_parser (2.8.0)
     reline (0.3.3)
       io-console (~> 0.5)
+    request_store (1.7.0)
+      rack (>= 1.4)
     require-hooks (0.2.2)
     responders (3.1.0)
       actionpack (>= 5.2)
@@ -397,6 +402,7 @@ DEPENDENCIES
   jsbundling-rails
   letter_opener
   pagy
+  paper_trail
   pg (~> 1.1)
   phlex-rails (~> 1.1)
   phlex_ui (~> 0.1.7)

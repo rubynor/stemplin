@@ -10,7 +10,7 @@ class PaginationComponent < ApplicationComponent
 
   def template(&content)
     render PhlexUI::Pagination.new(class: "py-4") do
-      render PhlexUI::Pagination::Content.new(class: "text-primary") do
+      render PhlexUI::Pagination::Content.new(class: "text-primary-600") do
         render_link_to_first
         render_link_back_one
 
@@ -63,11 +63,11 @@ class PaginationComponent < ApplicationComponent
   end
 
   def active_class
-    "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground"
+    "bg-primary-600 text-primary-foreground hover:bg-primary-600 hover:text-primary-foreground"
   end
 
   def default_class
-    "hover:bg-gray-100 hover:text-primary"
+    "hover:bg-gray-100 hover:text-primary-600"
   end
 
   def page_path(page_number)

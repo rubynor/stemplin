@@ -189,6 +189,7 @@ en:
     reset_filter: "Reset Filter"
     print: "Print"
     detailed_report: "detailed report"
+    add_time_registration: "Add time registration"
     team: "Team"
     filter: "Filter"
     period: "Period"
@@ -241,6 +242,10 @@ en:
     empty:
       title: "Oops, Nothing Here Yet!"
       subtext: "There's currently nothing to see here yet."
+    member: "Member"
+    select_member: "Select member"
+    date_worked: "Date worked"
+    select_date_worked: "Select date worked"
 
   notice:
     are_you_sure: "Are you sure?"
@@ -353,11 +358,13 @@ en:
       error: "Error"
       success: "Success"
     actions:
+      title: "Actions"
       decline: "Decline"
       accept: "Accept"
   time_regs:
     active_timer_description: "Kindly note that you have an active timer running."
     zero_minutes: "Zero minutes!"
+    delete_confirmation: "Do you want to proceed with the deletion of the time registration for the project <span class='text-primary-600 font-semibold'>%{project_name}</span> with a task <span class='text-primary-600 font-semibold'>%{task_name}</span> and <span class='text-primary-600 font-semibold'>%{logged_time}</span> logged. This action cannot be undone."
   organizations:
     reports_filter:
       tabs:
