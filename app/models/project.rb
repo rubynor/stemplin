@@ -2,7 +2,7 @@ class Project < ApplicationRecord
   include RateConvertible
   include Deletable
 
-  validates :name, presence: true, length: { minimum: 2, maximum: 30 }, uniqueness: { scope: :client }
+  validates :name, presence: true, length: { minimum: 2, maximum: 60 }, uniqueness: { scope: :client }
   validates :description, length: { maximum: 100 }
   validates :rate, numericality: { only_integer: true }
   validate :must_have_at_least_one_active_assigned_task
