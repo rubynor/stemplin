@@ -9,7 +9,7 @@
           <span><%= @project.name %></span>
           <%= render PhlexUI::Badge.new(variant: :purple, class: "!rounded-full flex gap-x-1") { t("common.project") } %>
         </div>
-        <span class="text-gray-500 text-sm font-regular"><%= @project.description %></span>
+        <span class="text-gray-500 text-sm font-regular pr-2"><%= @project.description %></span>
       </div>
     </div>
     <div class="flex flex-row gap-2">
