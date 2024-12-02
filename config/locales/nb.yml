@@ -565,7 +565,7 @@ nb:
       services: "Tjenester"
       testimonials: "Attester"
       login: "Logg inn"
-      signup: "Ny brukker"
+      signup: "Ny bruker"
     hero_section:
       title: "Enkel timeføring<br /> for en travel hverdag"
       sub_text: "Timeregistrering og fakturering gjort enkelt. Øk<br /> effektiviteten og produktiviteten i din organisasjon."
