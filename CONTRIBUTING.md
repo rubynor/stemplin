@@ -3,7 +3,6 @@
 * **Do not open GitHub Issues for security vulnerabilities**. If you find a security vulnerability, please send an email to security@stemplin.com that explains the issue.
 * Before opening an Issue, make sure that what you are reporting is not already dealt with in any existing Issues.
 * To report a bug, use the bug report template.
-* To request a feature, use the feature request template.
 ## Creating a Pull Request :octocat:
 * New Pull Requests should always address an existing Issue.
 * Short Pull Requests are GOLDEN. Make them easy to read and fast to review.
