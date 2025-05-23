@@ -28,17 +28,17 @@ class TimeRegPolicy < ApplicationPolicy
   scope_for :relation do |relation|
     organization = user.current_organization
     if user.organization_admin?
-      relation.joins(:organization).where(organizations: organization).distinct
+      relation.joins(:organization).where(organizations: { id: organization.id }).distinct
     elsif user.access_info.organization_spectator?
       projects = authorized_scope(Project.all, type: :relation).all
       relation.joins(:project).where(projects: projects).distinct
     else
-      relation.joins(:organization, :user).where(organizations: organization, users: user).distinct
+      relation.joins(:organization, :user).where(organizations: { id: organization.id }, users: { id: user.id }).distinct
     end
   end
 
   scope_for :relation, :own do |relation|
     organization = user.current_organization
-    relation.joins(:organization, :user).where(organizations: organization, users: user).distinct
+    relation.joins(:organization, :user).where(organizations: { id: organization.id }, users: { id: user.id }).distinct
   end
 end
