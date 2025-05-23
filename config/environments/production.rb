@@ -13,6 +13,32 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
+  config.consider_all_requests_local = false
+  config.action_controller.perform_caching = true
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_options = { from: 'noreply@rubynor.com' }
+
+  config.action_mailer.smtp_settings = {
+    user_name: 'apikey',
+    password: ENV['SENDGRID_API_KEY'],
+    domain: 'stemplin.com',
+    address: 'smtp.sendgrid.net',
+    port: 587,
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
+
+  config.action_mailer.default_url_options = {
+    host: 'stemplin.com',
+    protocol: 'https'
+  }
+
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries = true
+
+
+  # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 

@@ -42,6 +42,27 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :letter_opener
 
+
+  config.action_mailer.perform_caching = false
+  config.action_mailer.default_options = { from: 'noreply@rubynor.com' }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    user_name: 'apikey',
+    password: ENV['SENDGRID_API_KEY'],
+    domain: 'localhost',
+    address: 'smtp.sendgrid.net',
+    port: 587,
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
+
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.perform_deliveries = true
+
+
   # in production, :host should be set tot he actual host of your application :D:D
   config.action_mailer.default_url_options = { host: Stemplin.config.http_url }
 
