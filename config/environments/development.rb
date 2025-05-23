@@ -80,5 +80,5 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
-  config.active_record.allow_deprecated_singular_associations_name = true
+  config.active_record.allow_deprecated_singular_associations_name = false
 end
