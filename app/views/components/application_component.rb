@@ -5,7 +5,7 @@ class ApplicationComponent < Phlex::HTML
   include Phlex::Rails::Helpers::ButtonTo
   include Phlex::Rails::Helpers::ContentTag
   include Phlex::Rails::Helpers::LabelTag
-  include Phlex::Rails::Helpers::CheckboxTag
+  include Phlex::Rails::Helpers::CheckBoxTag
   include Phlex::Rails::Helpers::ImageTag
   include Phlex::Rails::Helpers::LinkTo
   include Phlex::Rails::Helpers::CollectionSelect
