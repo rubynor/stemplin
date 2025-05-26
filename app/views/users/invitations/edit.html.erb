@@ -8,35 +8,35 @@
       <%= f.hidden_field :locale, value: I18n.locale %>
 
       <div class="w-full flex flex-col gap-y-4 lg:gap-y-8">
-        <%= render RubyUI::Form::Item.new(class: "flex flex-col") do %>
+        <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
           <%= render RubyUI::FormFieldLabel.new { t("registration.first_name") } %>
           <%= f.text_field :first_name, class: "border-gray-200 rounded-md w-full placeholder:text-gray-400", autofocus: true, required: true %>
           <% resource.errors.full_messages_for(:first_name).each do |message|%>
-            <%= render RubyUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+            <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
           <% end %>
         <% end %>
 
-        <%= render RubyUI::Form::Item.new(class: "flex flex-col") do %>
+        <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
           <%= render RubyUI::FormFieldLabel.new { t("registration.last_name") } %>
           <%= f.text_field :last_name, class: "border-gray-200 rounded-md w-full placeholder:text-gray-400", required: true %>
           <% resource.errors.full_messages_for(:last_name).each do |message|%>
-            <%= render RubyUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+            <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
           <% end %>
         <% end %>
 
-        <%= render RubyUI::Form::Item.new(class: "flex flex-col") do %>
+        <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
           <%= render RubyUI::FormFieldLabel.new { t("registration.password") } %>
           <%= f.password_field :password, class: "border-gray-200 rounded-md w-full placeholder:text-gray-400", required: true %>
           <% resource.errors.full_messages_for(:password).each do |message|%>
-            <%= render RubyUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+            <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
           <% end %>
         <% end %>
 
-        <%= render RubyUI::Form::Item.new(class: "flex flex-col") do %>
+        <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
           <%= render RubyUI::FormFieldLabel.new { t("registration.confirm_password") } %>
           <%= f.password_field :password_confirmation, class: "border-gray-200 rounded-md w-full placeholder:text-gray-400", required: true %>
           <% resource.errors.full_messages_for(:password_confirmation).each do |message|%>
-            <%= render RubyUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+            <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
           <% end %>
         <% end %>
 

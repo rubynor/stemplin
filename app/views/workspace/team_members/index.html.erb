@@ -16,14 +16,14 @@
   <div>
     <%= render RubyUI::Table.new do %>
       <%= render RubyUI::TableHeader.new do %>
-        <%= render RubyUI::Table::Row.new do %>
-          <%= render RubyUI::Table::Head.new { t("common.name") } %>
-          <%= render RubyUI::Table::Head.new { t("common.email") } %>
-          <%= render RubyUI::Table::Head.new { t("common.role") } %>
-          <%= render RubyUI::Table::Head.new { t("common.actions") } %>
+        <%= render RubyUI::TableRow.new do %>
+          <%= render RubyUI::TableHead.new { t("common.name") } %>
+          <%= render RubyUI::TableHead.new { t("common.email") } %>
+          <%= render RubyUI::TableHead.new { t("common.role") } %>
+          <%= render RubyUI::TableHead.new { t("common.actions") } %>
         <% end %>
       <% end %>
-      <%= render RubyUI::Table::Body.new(id: :organization_users) do %>
+      <%= render RubyUI::TableBody.new(id: :organization_users) do %>
         <%= render partial: "workspace/team_members/user", collection: @users %>
       <% end %>
     <% end %>

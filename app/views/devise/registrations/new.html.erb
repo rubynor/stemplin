@@ -7,23 +7,23 @@
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <%= form.hidden_field :locale, value: I18n.locale %>
         <div class="flex flex-col w-full gap-y-4 lg:gap-y-8 mb-4">
-          <%= render RubyUI::Form::Item.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("registration.first_name") } %>
             <%= form.text_field :first_name, id: "first-name", autocomplete: "given-name", required: true, placeholder: t("registration.first_name"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>
-          <%= render RubyUI::Form::Item.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("registration.last_name") } %>
             <%= form.text_field :last_name, id: "last-name", autocomplete: "family-name", required: true, placeholder: t("registration.last_name"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>
-          <%= render RubyUI::Form::Item.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("registration.email") } %>
             <%= form.email_field :email, id: "email-address", autocomplete: "email", required: true, placeholder: t("registration.email"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>
-          <%= render RubyUI::Form::Item.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("registration.password") } %>
             <%= form.password_field :password, id: "password", autocomplete: "current-password", required: true, placeholder: t("registration.password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>
-          <%= render RubyUI::Form::Item.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("registration.confirm_password") } %>
             <%= form.password_field :password_confirmation, id: "password_confirm", autocomplete: "current-password", required: true, placeholder: t("registration.confirm_password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>

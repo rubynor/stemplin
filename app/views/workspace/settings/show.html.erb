@@ -12,10 +12,10 @@
   </div>
   <div>
     <%= render RubyUI::Table.new do %>
-      <%= render RubyUI::Table::Body.new(id: :organization_users, class: "text-base") do %>
-        <%= render RubyUI::Table::Row.new do %>
-          <%= render RubyUI::Table::Cell.new(class: "py-4 font-medium") { t("common.currency") } %>
-          <%= render RubyUI::Table::Cell.new(class: "py-4") { currency_title_and_code @organization.currency } %>
+      <%= render RubyUI::TableBody.new(id: :organization_users, class: "text-base") do %>
+        <%= render RubyUI::TableRow.new do %>
+          <%= render RubyUI::TableCell.new(class: "py-4 font-medium") { t("common.currency") } %>
+          <%= render RubyUI::TableCell.new(class: "py-4") { currency_title_and_code @organization.currency } %>
         <% end %>
       <% end %>
     <% end %>

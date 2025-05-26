@@ -24,11 +24,11 @@
       <div class="w-full flex gap-y-4 flex-col">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <div class="flex flex-col w-full gap-y-4 lg:gap-y-8">
-          <%= render RubyUI::Form::Item.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("login_page.email") } %>
             <%= form.email_field :email, autocomplete: "email", required: true, placeholder: t("login_page.email_address"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>
-          <%= render RubyUI::Form::Item.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("login_page.password") } %>
             <%= form.password_field :password, autocomplete: "current-password", required: true, placeholder: t("login_page.password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
           <% end %>
