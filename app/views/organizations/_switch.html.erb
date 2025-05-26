@@ -1,5 +1,5 @@
-<%= render PhlexUI::Dialog.new do %>
-  <%= render PhlexUI::Dialog::Trigger.new(class: "block bg-gray-50 px-6 py-2 rounded-md border border-gray-50 hover:text-primary cursor-pointer") do %>
+<%= render RubyUI::Dialog.new do %>
+  <%= render RubyUI::DialogTrigger.new(class: "block bg-gray-50 px-6 py-2 rounded-md border border-gray-50 hover:text-primary cursor-pointer") do %>
     <div class="flex gap-x-4">
       <%= image_tag "stemplin-ico.svg" %>
       <div class="flex flex-col">
@@ -12,11 +12,11 @@
     </div>
     <%# TODO: let's revamp our logo at the right time  %>
   <% end %>
-  <%= render PhlexUI::Dialog::Content.new do %>
-    <%= render PhlexUI::Dialog::Header.new do %>
-      <%= render PhlexUI::Dialog::Title.new { t("common.organizations") } %>
+  <%= render RubyUI::DialogContent.new do %>
+    <%= render RubyUI::DialogHeader.new do %>
+      <%= render RubyUI::DialogTitle.new { t("common.organizations") } %>
     <% end %>
-    <%= render PhlexUI::Dialog::Middle.new do %>
+    <%= render RubyUI::DialogMiddle.new do %>
       <%= content_tag(:div, class: "flex flex-col overflow-y-auto max-h-[600px]") do %>
         <% user.organizations.order(name: :asc).each do |organization| %>
           <div class="relative">

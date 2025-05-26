@@ -3,11 +3,11 @@
     <span class="font-medium text-gray-600 text-lg"><%= t("common.organization_settings") %></span>
   </div>
   <%= form_with url: workspace_settings_path, method: :patch, scope: :organization do |form| %>
-    <%= render PhlexUI::Table.new do %>
-      <%= render PhlexUI::Table::Body.new(id: :organization_users, class: "text-base") do %>
-        <%= render PhlexUI::Table::Row.new do %>
-          <%= render PhlexUI::Table::Cell.new(class: "py-4 font-medium") { t("common.currency") } %>
-          <%= render PhlexUI::Table::Cell.new(class: "py-4") do %>
+    <%= render RubyUI::Table.new do %>
+      <%= render RubyUI::Table::Body.new(id: :organization_users, class: "text-base") do %>
+        <%= render RubyUI::Table::Row.new do %>
+          <%= render RubyUI::Table::Cell.new(class: "py-4 font-medium") { t("common.currency") } %>
+          <%= render RubyUI::Table::Cell.new(class: "py-4") do %>
             <%= form.select :currency, for_select(@available_currencies), { required: true }, class: "border-gray-200 rounded-md" %>
           <% end %>
         <% end %>

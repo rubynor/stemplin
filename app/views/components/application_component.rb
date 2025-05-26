@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "tailwind_merge"
+
 class ApplicationComponent < Phlex::HTML
   include Phlex::Rails::Helpers::Routes
   include Phlex::Rails::Helpers::ButtonTo
@@ -13,9 +15,11 @@ class ApplicationComponent < Phlex::HTML
   include Phlex::Rails::Helpers::HiddenFieldTag
   include Phlex::Rails::Helpers::FieldsFor
 
+  TAILWIND_MERGER = ::TailwindMerge::Merger.new.freeze unless defined?(TAILWIND_MERGER)
+
   def initialize(**attrs)
     @attrs = default_attrs.merge(attrs)
-    @attrs[:class] = tokens(default_classes, attrs[:class], @attrs[:class]&.split(" "))
+    @attrs[:class] = TAILWIND_MERGER.merge([default_classes, attrs[:class], @attrs[:class]&.split(" ")])
   end
 
   if Rails.env.development?

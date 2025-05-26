@@ -6,8 +6,8 @@
       <div class="w-full flex gap-y-4 flex-col mt-4">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <div class="flex flex-col w-full gap-y-4 lg:gap-y-8">
-          <%= render PhlexUI::Form::Item.new(class: "flex flex-col") do  %>
-            <%= render PhlexUI::Label.new { t("activerecord.attributes.user.email") } %>
+          <%= render RubyUI::Form::Item.new(class: "flex flex-col") do  %>
+            <%= render RubyUI::FormFieldLabel.new { t("activerecord.attributes.user.email") } %>
             <%= form.email_field :email, autofocus: true, autocomplete: "email", required: true, placeholder: t("activerecord.attributes.user.email"), class: "border-gray-200 rounded-md w-full" %>
           <% end %>
         </div>
