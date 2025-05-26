@@ -8,8 +8,8 @@ class AlertComponent < ApplicationComponent
     @options = set_options
   end
 
-  def template
-    render PhlexUI::Alert.new(**default_attrs) do
+  def view_template
+    render RubyUI::Alert.new(**default_attrs) do
       image_tag(@options[:icon], class: "h-8")
       content_tag(:div, class: "flex flex-col") do
         content_tag(:h3, @title, class: "text-base font-semibold")
@@ -38,7 +38,7 @@ class AlertComponent < ApplicationComponent
   def default_attrs
     {
       variant: @variant,
-      class: tokens("py-4 px-6 flex flex-row items-start gap-x-2 !ring-2 shadow-sm", @options[:class_names])
+      class: TAILWIND_MERGER.merge(["py-4 px-6 flex flex-row items-start gap-x-2 !ring-2 shadow-sm", @options[:class_names]])
     }
   end
 

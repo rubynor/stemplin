@@ -8,7 +8,7 @@ module ComboboxComponent
       super(**attrs)
     end
 
-    def template(&block)
+    def view_template(&block)
       div(**@attrs) do
         div(class: "invisible text-primary-600", data: { combobox_item_target: "check" }) { icon }
         block.call

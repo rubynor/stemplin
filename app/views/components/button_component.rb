@@ -34,7 +34,7 @@ class ButtonComponent < ApplicationComponent
     @method = method
   end
 
-  def template(&content)
+  def view_template(&content)
     if @path.present?
       if @method == :get
         link_to(@path, **@attrs) { render_button(&content) }
@@ -49,7 +49,7 @@ class ButtonComponent < ApplicationComponent
   private
 
   def render_button(&content)
-    render PhlexUI::Button.new(**default_attrs) { content.call }
+    render RubyUI::Button.new(**default_attrs) { content.call }
   end
 
   def default_type

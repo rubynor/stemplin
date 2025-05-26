@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AlertDialogComponent < ApplicationComponent
-  def template
+  def view_template
     content_tag(:dialog, id: "turbo-confirm-dialog", class: "backdrop:bg-gray-900 backdrop:bg-opacity-80 h-modal rounded-lg shadow-xl") do
       content_tag(:form, method: :dialog) do
         content_tag(:div, class: "relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all min-w-96") do

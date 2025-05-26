@@ -7,7 +7,7 @@ class TooltipComponent < ApplicationComponent
     @trigger_attributes = trigger_attributes
   end
 
-  def template(&content)
+  def view_template(&content)
     if @note.blank?
       content.call
     else
@@ -20,12 +20,12 @@ class TooltipComponent < ApplicationComponent
   def render_tooltip(content)
     # Ref: https://github.com/PhlexUI/phlex_ui_stimulus/blob/main/controllers/popover_controller.js#L2
     # It is built on top of tippy.js https://github.com/atomiks/tippyjs
-    render PhlexUI::Tooltip.new(options: @options) do
-      render PhlexUI::Tooltip::Trigger.new(**@trigger_attributes) do
+    render RubyUI::Tooltip.new(options: @options) do
+      render RubyUI::TooltipTrigger.new(**@trigger_attributes) do
         content.call
       end
-      render PhlexUI::Tooltip::Content.new(class: "bg-gray-700 bg-opacity-90 text-white shadow-none") do
-        render PhlexUI::Typography::P.new { @note }
+      render RubyUI::TooltipContent.new(class: "bg-gray-700 bg-opacity-90 text-white shadow-none") do
+        render RubyUI::Text.new { @note }
       end
     end
   end

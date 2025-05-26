@@ -2,7 +2,7 @@
 
 module ComboboxComponent
   class Separator < ApplicationComponent
-    def template(&)
+    def view_template(&)
       div(**@attrs, &)
     end
 

@@ -8,7 +8,7 @@ module ComboboxComponent
       super
     end
 
-    def template(&)
+    def view_template(&)
       div(**@attrs) do
         div(
           data: {
@@ -26,7 +26,7 @@ module ComboboxComponent
     def default_attrs
       {
         data: { combobox_target: "popover", wrapper_id: @wrapper_id },
-        class: tokens("invisible absolute top-0 left-0 p-1.5 rounded", @size)
+        class: TAILWIND_MERGER.merge(["invisible absolute top-0 left-0 p-1.5 rounded", @size])
       }
     end
   end

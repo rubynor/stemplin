@@ -6,7 +6,7 @@ class CardComponent < ApplicationComponent
     @class_name = @attrs.delete(:class)
   end
 
-  def template(&content)
-    render PhlexUI::Card.new(**@attrs.merge({ class!: tokens("bg-background p-4 border border-gray-100 shadow-sm rounded-md", @class_name) })) { content.call }
+  def view_template(&content)
+    render RubyUI::Card.new(**@attrs.merge({ class!: TAILWIND_MERGER.merge(["bg-background p-4 border border-gray-100 shadow-sm rounded-md", @class_name]) })) { content.call }
   end
 end
