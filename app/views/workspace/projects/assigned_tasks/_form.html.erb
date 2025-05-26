@@ -14,7 +14,7 @@
             <%= form.fields_for :task do |task_form|%>
               <%= task_form.hidden_field :unassigned_task_ids, value: unassigned_tasks.ids.to_json %>
 
-              <%= render RubyUI::Form::Item.new(class: "flex flex-col") do  %>
+              <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
                 <%= render RubyUI::FormFieldLabel.new { t("common.name") } %>
                 <%= task_form.text_field :name, class: "border-gray-200 rounded-md w-full", autofocus: true, autocomplete: "off", list: "unassigned-tasks-list" %>
                 <datalist id="unassigned-tasks-list">
@@ -24,13 +24,13 @@
                 </datalist>
               <% end %>
               <% task_form.object.errors.full_messages_for(:name).each do |message|%>
-                <%= render RubyUI::InputError.new(class: "w-full text-red-600 italic text-xs leading-3 !my-0") { message }  %>
+                <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs leading-3 !my-0") { message }  %>
               <% end %>
             <% end %>
 
-            <%= render RubyUI::Form::Item.new(class: "flex flex-col") do  %>
+            <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
               <%= render RubyUI::FormFieldLabel.new { "#{t("common.rates_per_hour")} - #{@currency}" } %>
-              <%= render RubyUI::Hint.new { t("common.optional_project") } %>
+              <%= render RubyUI::FormFieldHint.new { t("common.optional_project") } %>
               <%= form.number_field :rate_currency, class: "border-gray-200 rounded-md", step: 0.01 %>
             <% end %>
           <% end %>

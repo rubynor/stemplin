@@ -76,14 +76,26 @@ application.register("refresh-minutes", RefreshMinutesController)
 import ReportEditController from "./report_edit_controller"
 application.register("report-edit", ReportEditController)
 
+import RubyUi__CalendarController from "./ruby_ui/calendar_controller"
+application.register("ruby-ui--calendar", RubyUi__CalendarController)
+
+import RubyUi__CalendarInputController from "./ruby_ui/calendar_input_controller"
+application.register("ruby-ui--calendar-input", RubyUi__CalendarInputController)
+
 import RubyUi__DialogController from "./ruby_ui/dialog_controller"
 application.register("ruby-ui--dialog", RubyUi__DialogController)
+
+import RubyUi__DropdownMenuController from "./ruby_ui/dropdown_menu_controller"
+application.register("ruby-ui--dropdown-menu", RubyUi__DropdownMenuController)
 
 import RubyUi__FormFieldController from "./ruby_ui/form_field_controller"
 application.register("ruby-ui--form-field", RubyUi__FormFieldController)
 
 import RubyUi__PopoverController from "./ruby_ui/popover_controller"
 application.register("ruby-ui--popover", RubyUi__PopoverController)
+
+import RubyUi__TabsController from "./ruby_ui/tabs_controller"
+application.register("ruby-ui--tabs", RubyUi__TabsController)
 
 import RubyUi__TooltipController from "./ruby_ui/tooltip_controller"
 application.register("ruby-ui--tooltip", RubyUi__TooltipController)

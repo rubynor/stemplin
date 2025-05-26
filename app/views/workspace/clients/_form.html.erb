@@ -9,18 +9,18 @@
         <div class="flex flex-col gap-y-4">
           <span class="font-semibold text-gray-600 text-lg"><%= client.new_record? ? t("task.new_client") : "#{t("common.edit")} #{client.name}" %></span>
           <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
-            <%= render RubyUI::Form::Item.new(class: "flex flex-col") do  %>
+            <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
               <%= render RubyUI::FormFieldLabel.new { t("common.name") } %>
               <%= form.text_field :name, class: "border-gray-200 rounded-md w-full", autofocus: true %>
               <% client.errors.full_messages_for(:name).each do |message|%>
-                <%= render RubyUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+                <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
               <% end %>
             <% end %>
-            <%= render RubyUI::Form::Item.new(class: "flex flex-col") do  %>
+            <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
               <%= render RubyUI::FormFieldLabel.new { t("common.description") } %>
               <%= form.text_area :description, class: "border-gray-200 rounded-md w-full" %>
               <% client.errors.full_messages_for(:description).each do |message|%>
-                <%= render RubyUI::InputError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+                <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
               <% end %>
             <% end %>
           <% end %>

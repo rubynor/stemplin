@@ -1,5 +1,5 @@
-<%= render RubyUI::Table::Row.new(class: "!py-4") do %>
-  <%= render RubyUI::Table::Cell.new do %>
+<%= render RubyUI::TableRow.new(class: "!py-4") do %>
+  <%= render RubyUI::TableCell.new do %>
     <%# TODO: Refactor this and find a way to persist old unchanged query params %>
     <%- disable_link = @filter.visible_tabs.length <= 1 -%>
     <%= link_to disable_link ? "#" : reports_path(filter: @filter.to_h(**result[:group_link])), class: class_names("flex flex-col", disable_link ? "cursor-default" : "underline text-blue-600") do %>
@@ -8,14 +8,14 @@
       </div>
     <% end %>
   <% end %>
-  <%= render RubyUI::Table::Cell.new { minutes_to_float result[:total_minutes] } %>
-  <%= render RubyUI::Table::Cell.new do %>
+  <%= render RubyUI::TableCell.new { minutes_to_float result[:total_minutes] } %>
+  <%= render RubyUI::TableCell.new do %>
     <div>
       <span><%= minutes_to_float result[:total_billable_minutes] %></span>
       <span>(<%= result[:total_billable_minutes_percentage] %>%)</span>
     </div>
   <% end %>
-  <%= render RubyUI::Table::Cell.new do %>
+  <%= render RubyUI::TableCell.new do %>
     <span><%= result[:total_billable_amount] %></span>
     <span class="text-xs text-gray-400"><%= @currency %></span>
   <% end %>

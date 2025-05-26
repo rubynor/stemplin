@@ -9,15 +9,15 @@
           <span class="font-semibold text-gray-600 text-lg"><%= t("common.edit_member") %>: <%= user.first_name ? user.name : user.email %></span>
           <%= render AlertComponent.new(variant: :destructive, title: t("alert.unable_to_proceed"), message: flash[:error]) if flash[:error].present?  %>
 
-          <%= render RubyUI::Form::Item.new do %>
+          <%= render RubyUI::FormField.new do %>
             <%= render RubyUI::FormFieldLabel.new { t("common.role") } %>
-            <%= render RubyUI::Hint.new { t("common.select_organization_user") } %>
+            <%= render RubyUI::FormFieldHint.new { t("common.select_organization_user") } %>
             <%= form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { prompt: t("common.select_role"), selected: selected_role }, required: true, class: "border-gray-200 rounded-md w-full", data: { show_on_value_target: "input" } %>
           <% end %>
 
-          <%= render RubyUI::Form::Item.new(data: { show_on_value_target: "toggle" }) do  %>
+          <%= render RubyUI::FormField.new(data: { show_on_value_target: "toggle" }) do  %>
             <%= render RubyUI::FormFieldLabel.new { t("common.projects") } %>
-            <%= render RubyUI::Hint.new { t("common.add_projects_optional") } %>
+            <%= render RubyUI::FormFieldHint.new { t("common.add_projects_optional") } %>
             <%= render GroupedSelectMultipleComponent.new form, :project_ids, grouped_projects, :name, :id, :name, { checked: selected_project_ids }, label: t("common.select_projects") %>
           <% end %>
 

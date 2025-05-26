@@ -44,22 +44,22 @@
       <div class="p-4">
         <%= render RubyUI::Table.new do %>
           <%= render RubyUI::TableHeader.new do %>
-            <%= render RubyUI::Table::Row.new do %>
-              <%= render RubyUI::Table::Head.new { t("common.name") } %>
-              <%= render RubyUI::Table::Head.new { t("common.hours") } %>
-              <%= render RubyUI::Table::Head.new { t("common.billable_hours") } %>
-              <%= render RubyUI::Table::Head.new { t("common.billable_amount") } %>
+            <%= render RubyUI::TableRow.new do %>
+              <%= render RubyUI::TableHead.new { t("common.name") } %>
+              <%= render RubyUI::TableHead.new { t("common.hours") } %>
+              <%= render RubyUI::TableHead.new { t("common.billable_hours") } %>
+              <%= render RubyUI::TableHead.new { t("common.billable_amount") } %>
             <% end %>
           <% end %>
-          <%= render RubyUI::Table::Body.new do %>
+          <%= render RubyUI::TableBody.new do %>
             <% @results.grouped.each do |result| %>
               <%= render partial: "reports/row", locals: { result: result } %>
             <% end %>
-            <%= render RubyUI::Table::Row.new(class: "!py-4") do %>
-              <%= render RubyUI::Table::Cell.new(class: "text-sm font-segoe-regular") { t("common.total") } %>
-              <%= render RubyUI::Table::Cell.new(class: "font-semibold text-lg text-gray-600") { minutes_to_float @summary.total_minutes } %>
-              <%= render RubyUI::Table::Cell.new(class: "font-semibold text-lg text-gray-600") { minutes_to_float @summary.total_billable_minutes } %>
-              <%= render RubyUI::Table::Cell.new do %>
+            <%= render RubyUI::TableRow.new(class: "!py-4") do %>
+              <%= render RubyUI::TableCell.new(class: "text-sm font-segoe-regular") { t("common.total") } %>
+              <%= render RubyUI::TableCell.new(class: "font-semibold text-lg text-gray-600") { minutes_to_float @summary.total_minutes } %>
+              <%= render RubyUI::TableCell.new(class: "font-semibold text-lg text-gray-600") { minutes_to_float @summary.total_billable_minutes } %>
+              <%= render RubyUI::TableCell.new do %>
                 <div><span class="font-semibold text-lg text-primary-600"><%= @summary.total_billable_amount_currency %></span>
                 <span class="text-sm font-semibold text-gray-400"><%= @currency %></span></div>
               <% end %>

@@ -4,10 +4,10 @@
   </div>
   <%= form_with url: workspace_settings_path, method: :patch, scope: :organization do |form| %>
     <%= render RubyUI::Table.new do %>
-      <%= render RubyUI::Table::Body.new(id: :organization_users, class: "text-base") do %>
-        <%= render RubyUI::Table::Row.new do %>
-          <%= render RubyUI::Table::Cell.new(class: "py-4 font-medium") { t("common.currency") } %>
-          <%= render RubyUI::Table::Cell.new(class: "py-4") do %>
+      <%= render RubyUI::TableBody.new(id: :organization_users, class: "text-base") do %>
+        <%= render RubyUI::TableRow.new do %>
+          <%= render RubyUI::TableCell.new(class: "py-4 font-medium") { t("common.currency") } %>
+          <%= render RubyUI::TableCell.new(class: "py-4") do %>
             <%= form.select :currency, for_select(@available_currencies), { required: true }, class: "border-gray-200 rounded-md" %>
           <% end %>
         <% end %>
