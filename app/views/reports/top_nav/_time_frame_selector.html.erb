@@ -3,16 +3,16 @@
     <i class="uc-icon text-gray-600 text-xl">&#xe81f;</i>
   <% end %>
   <div class="border-l border-r border-gray-100 h-full p-2">
-    <%= render PhlexUI::Popover.new(options: { placement: "bottom-end" }) do %>
-      <%= render PhlexUI::Popover::Trigger.new(class: "w-full flex flex-row justify-between items-center gap-x-2") do %>
+    <%= render RubyUI::Popover.new(options: { placement: "bottom-end" }) do %>
+      <%= render RubyUI::PopoverTrigger.new(class: "w-full flex flex-row justify-between items-center gap-x-2") do %>
         <span class="capitalize"> <%= t("organizations.reports_filter.time_frames.#{@filter.time_frame}") %> </span>
         <i class="uc-icon text-gray-400 text-lg">&#xe819;</i>
       <% end  %>
-      <%= render PhlexUI::Popover::Content.new(class: "divide-y divide-gray-50 w-48") do %>
+      <%= render RubyUI::PopoverContent.new(class: "divide-y divide-gray-50 w-48") do %>
         <% @filter.time_frames.each do |time_frame| %>
-          <%= render PhlexUI::Link.new(href: reports_path(filter: @filter.to_h(time_frame: time_frame[:value], start_date: nil, end_date: nil)), variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
+          <%= render RubyUI::Link.new(href: reports_path(filter: @filter.to_h(time_frame: time_frame[:value], start_date: nil, end_date: nil)), variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
             <div class="w-full flex justify-start items-center gap-x-1">
-              <%= render PhlexUI::Label.new(class: "capitalize") { time_frame[:label] } %>
+              <%= render RubyUI::FormFieldLabel.new(class: "capitalize") { time_frame[:label] } %>
             </div>
           <% end %>
         <% end %>

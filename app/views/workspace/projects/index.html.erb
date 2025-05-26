@@ -19,12 +19,12 @@
     </div>
   </div>
   <div class="hide-table-overflow">
-    <%= render PhlexUI::Table.new(id: :organization_clients) do %>
-      <%= render PhlexUI::Table::Header.new do %>
-        <%= render PhlexUI::Table::Row.new(class: "text-gray-500" ) do %>
-          <%= render PhlexUI::Table::Head.new { t("common.clients_and_projects") } %>
-          <%= render PhlexUI::Table::Head.new { t("common.rate") } %>
-          <%= render PhlexUI::Table::Head.new { t("common.actions") } %>
+    <%= render RubyUI::Table.new(id: :organization_clients) do %>
+      <%= render RubyUI::TableHeader.new do %>
+        <%= render RubyUI::Table::Row.new(class: "text-gray-500" ) do %>
+          <%= render RubyUI::Table::Head.new { t("common.clients_and_projects") } %>
+          <%= render RubyUI::Table::Head.new { t("common.rate") } %>
+          <%= render RubyUI::Table::Head.new { t("common.actions") } %>
         <% end %>
       <% end %>
       <%= render partial: "workspace/projects/client", collection: @clients %>

@@ -21,15 +21,15 @@
       aos_easing: "ease-in-out",
       aos_once: "true",
     }) do %>
-      <%= render PhlexUI::Tabs.new(default: "tab-1", class: "grid grid-cols-1 lg:grid-cols-2 !h-full") do %>
-        <%= render PhlexUI::Tabs::List.new(class!: "flex flex-col divide-y divide-gray-100 lg:pr-12") do %>
+      <%= render RubyUI::Tabs.new(default: "tab-1", class: "grid grid-cols-1 lg:grid-cols-2 !h-full") do %>
+        <%= render RubyUI::Tabs::List.new(class!: "flex flex-col divide-y divide-gray-100 lg:pr-12") do %>
           <% t("landing_page.services.items").each_with_index do |service, idx| %>
             <%= render partial: "landing_page/services/tab_button", locals: { service: service, count: idx + 1, value: "tab-#{idx + 1}" } %>
           <% end %>
         <% end %>
         <div class="hidden lg:block h-full">
           <% t("landing_page.services.items").each_with_index do |service, idx| %>
-            <%= render PhlexUI::Tabs::Content.new(value: "tab-#{idx + 1}", class!: "!mt-0 !h-full") do %>
+            <%= render RubyUI::TabsContent.new(value: "tab-#{idx + 1}", class!: "!mt-0 !h-full") do %>
               <%= image_tag service[:illustration], class: "rounded-r-lg w-full h-full", data: {
                 slider_tabs_target: "content",
                 aos: "slide-left",
