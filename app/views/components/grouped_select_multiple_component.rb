@@ -12,10 +12,10 @@ class GroupedSelectMultipleComponent < ApplicationComponent
     @id = id || SecureRandom.hex(5)
   end
 
-  def template
+  def view_template
     div(**@attrs) do
       render DropdownComponent.new do
-        render DropdownComponent::Trigger.new do
+        render DropdownComponentTrigger.new do
           select(class: "w-full bg-white border border-gray-200 rounded-md px-3 py-2 flex items-center gap-x-1 justify-between", data_grouped_select_multiple_target: "button") do
             option(data_grouped_select_multiple_target: "label") { @label }
           end

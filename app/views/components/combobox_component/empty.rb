@@ -2,7 +2,7 @@
 
 module ComboboxComponent
   class Empty < ApplicationComponent
-    def template(&)
+    def view_template(&)
       div(**@attrs, &)
     end
 

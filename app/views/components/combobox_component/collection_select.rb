@@ -12,7 +12,7 @@ module ComboboxComponent
       @select_options = options[:select_options] || {}
     end
 
-    def template
+    def view_template
       plain(render_collection_select)
     end
 

@@ -17,7 +17,7 @@ class SnackbarComponent < ApplicationComponent
     @data[:countdown] ||= false
   end
 
-  def template
+  def view_template
     content_tag(:div, **wrapper_options) do
       content_tag(:div, class: "rounded-lg shadow-sm overflow-hidden") do
         content_tag(:div, class: "p-4") do
@@ -56,10 +56,10 @@ class SnackbarComponent < ApplicationComponent
 
   def wrapper_options
     {
-      class: tokens(
+      class: TAILWIND_MERGER.merge([
         "snackbar__container sm:w-96 transition duration-300 ease-in-out shadow-xl opacity-0 translate-x-16",
-        snackbar_variant
-      ),
+         snackbar_variant
+      ]),
       data: {
         controller: "snackbar",
         snackbar_timeout_value: data[:timeout],
@@ -71,10 +71,10 @@ class SnackbarComponent < ApplicationComponent
 
   def text_wrapper_options
     {
-      class: tokens(
+      class: TAILWIND_MERGER.merge([
         "ml-3 flex w-full",
         text_ordering
-      )
+     ])
     }
   end
 

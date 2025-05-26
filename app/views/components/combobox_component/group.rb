@@ -7,7 +7,7 @@ module ComboboxComponent
       super(**attrs)
     end
 
-    def template(&block)
+    def view_template(&block)
       div(**@attrs) do
         render_header if @heading
         render_items(&block)

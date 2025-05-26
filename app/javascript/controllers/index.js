@@ -85,6 +85,9 @@ application.register("ruby-ui--form-field", RubyUi__FormFieldController)
 import RubyUi__PopoverController from "./ruby_ui/popover_controller"
 application.register("ruby-ui--popover", RubyUi__PopoverController)
 
+import RubyUi__TooltipController from "./ruby_ui/tooltip_controller"
+application.register("ruby-ui--tooltip", RubyUi__TooltipController)
+
 import SelectMultipleController from "./select_multiple_controller"
 application.register("select-multiple", SelectMultipleController)
 
