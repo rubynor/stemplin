@@ -7,6 +7,6 @@ class CardComponent < ApplicationComponent
   end
 
   def view_template(&content)
-    render RubyUI::Card.new(**@attrs.merge({ class!: TAILWIND_MERGER.merge(["bg-background p-4 border border-gray-100 shadow-sm rounded-md", @class_name]) })) { content.call }
+    render RubyUI::Card.new(**@attrs.merge({ class!: TAILWIND_MERGER.merge([ "bg-background p-4 border border-gray-100 shadow-sm rounded-md", @class_name ]) })) { content.call }
   end
 end

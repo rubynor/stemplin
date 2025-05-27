@@ -14,7 +14,7 @@ class BannerComponent < ApplicationComponent
 
   def view_template
     if @message.present?
-      content_tag(:div, class: TAILWIND_MERGER.merge(["flex justify-center items-center py-2.5 px-4 mx-auto relative shadow", @options[:container_class_names]])) do
+      content_tag(:div, class: TAILWIND_MERGER.merge([ "flex justify-center items-center py-2.5 px-4 mx-auto relative shadow", @options[:container_class_names] ])) do
         link_to @action[:url] || "#", method: @action[:method], class: "flex-1 items-center" do
           content_tag(:div, class: "flex flex-col lg:flex-row lg:items-center gap-1 lg:justify-center") do
             content_tag(:div, class: "flex flex-row gap-x-1 items-center") do
