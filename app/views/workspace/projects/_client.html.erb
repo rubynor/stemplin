@@ -15,7 +15,7 @@
     <%= render RubyUI::TableCell.new(class: "flex justify-center") do %>
       <%= render RubyUI::DropdownMenu.new(options: { placement: 'bottom-end', duration: 0, offset: 0 }) do %>
         <%= render RubyUI::DropdownMenuTrigger.new do %>
-          <%= render ButtonComponent.new(type: :button, variant: :outline, class: "relative") do %>
+          <%= render ButtonComponent.new(type: :button, variant: :outline) do %>
             <i class="uc-icon text-gray-500">&#xe975;</i>
             <% if client.projects.empty? %>
               <span class="animate-ping absolute right-0 top-0 w-2 h-2 opacity-60 rounded-full bg-primary"></span>

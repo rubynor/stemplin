@@ -24,7 +24,7 @@
       </div>
     </div>
     <%= render RubyUI::DialogFooter.new(class: "mt-4") do %>
-      <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->dismissable#dismiss' }) { t("common.cancel") } %>
+      <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->ruby-ui--dialog#dismiss' }) { t("common.cancel") } %>
       <%= render ButtonComponent.new { t("common.save") } %>
     <% end %>
   <% end %>

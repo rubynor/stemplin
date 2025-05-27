@@ -44,6 +44,10 @@ class DropdownComponentTrigger < ApplicationComponent
       }
     }
   end
+
+  def default_classes
+    "z-0"
+  end
 end
 
 class DropdownComponentContent < ApplicationComponent

@@ -15,9 +15,10 @@ StreamActions.remove_modal = function() {
   const target = this.getAttribute("target");
 
   const elementToRemove = document.getElementById(target);
+  console.log(elementToRemove)
   if (elementToRemove) {
     elementToRemove.remove();
-    const dismissableDivs = document.querySelectorAll('div[data-controller="dismissable"]');
+    const dismissableDivs = document.querySelectorAll('div[data-controller="ruby-ui--dialog"]');
     dismissableDivs?.forEach((el) => el?.remove());
     document?.body?.classList?.remove("overflow-hidden");
   }
