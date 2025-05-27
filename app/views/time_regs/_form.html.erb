@@ -99,7 +99,7 @@
           <% end %>
         <% end %>
         <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
-          <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->dismissable#dismiss' }) { t("common.cancel") } %>
+          <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->ruby-ui--dialog#dismiss' }) { t("common.cancel") } %>
           <%= render ButtonComponent.new(type: :submit, data: { custom_input_target: "submitButton", custom_disable_target: "content" }) {} %>
         <% end %>
       <% end %>
