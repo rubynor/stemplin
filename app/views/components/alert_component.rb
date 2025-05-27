@@ -38,7 +38,7 @@ class AlertComponent < ApplicationComponent
   def default_attrs
     {
       variant: @variant,
-      class: TAILWIND_MERGER.merge(["py-4 px-6 flex flex-row items-start gap-x-2 !ring-2 shadow-sm", @options[:class_names]])
+      class: TAILWIND_MERGER.merge([ "py-4 px-6 flex flex-row items-start gap-x-2 !ring-2 shadow-sm", @options[:class_names] ])
     }
   end
 

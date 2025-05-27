@@ -19,7 +19,7 @@ class ApplicationComponent < Phlex::HTML
 
   def initialize(**attrs)
     @attrs = default_attrs.merge(attrs)
-    @attrs[:class] = TAILWIND_MERGER.merge([default_classes, attrs[:class], @attrs[:class]&.split(" ")])
+    @attrs[:class] = TAILWIND_MERGER.merge([ default_classes, attrs[:class], @attrs[:class]&.split(" ") ])
   end
 
   if Rails.env.development?

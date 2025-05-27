@@ -18,7 +18,7 @@ module RubyUI
 
     def default_attrs
       {
-        aria: {current: @active ? "page" : nil},
+        aria: { current: @active ? "page" : nil },
         class: [
           RubyUI::Button.new(variant: @active ? :outline : :ghost).attrs[:class]
         ]
