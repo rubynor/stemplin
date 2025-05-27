@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ApplicationView < ApplicationComponent
+class Views::ApplicationView < ApplicationComponent
   # The ApplicationView is an abstract class for all your views.
 
   # By default, it inherits from `ApplicationComponent`, but you
