@@ -165,6 +165,7 @@
 }
 
 @layer components {
+  /* TODO: Remove unised calsses, maybe? */
   .dialog-backdrop {
     @apply z-50 overflow-y-auto overflow-x-hidden fixed bg-black inset-0 bg-opacity-70 flex flex-col justify-items-center items-center;
   }
