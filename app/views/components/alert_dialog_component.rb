@@ -2,7 +2,7 @@
 
 class AlertDialogComponent < ApplicationComponent
   def view_template
-    content_tag(:dialog, id: "turbo-confirm-dialog", class: "backdrop:bg-gray-900 backdrop:bg-opacity-80 h-modal rounded-lg shadow-xl") do
+    content_tag(:dialog, id: "turbo-confirm-dialog", class: "backdrop:bg-gray-900/80 h-modal rounded-lg shadow-xl") do
       content_tag(:form, method: :dialog) do
         content_tag(:div, class: "relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all min-w-96") do
           content_tag(:div, class: "bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 mb-5") do
