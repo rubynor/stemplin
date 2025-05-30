@@ -1,17 +1,39 @@
 <div class="flex flex-col gap-y-8">
   <div class="flex flex-row justify-between items-start border-b border-gray-100 py-3">
-    <div class="flex flex-row items-center gap-x-3">
-      <%= link_to_back_or workspace_projects_path, class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out" do %>
-        <i class="uc-icon text-2xl">&#xe833;</i>
-      <% end %>
-      <div class="flex flex-col">
-        <div class="font-medium text-gray-600 text-lg flex items-center gap-x-2">
-          <span><%= @project.name %></span>
-          <%= render RubyUI::Badge.new(variant: :purple, class: "!rounded-full flex gap-x-1") { t("common.project") } %>
+    <div>
+      <div class="flex flex-row items-center gap-x-3">
+        <div class="flex flex-col">
+          <div class="font-medium text-gray-600 text-lg flex items-center gap-x-2">
+            <span><%= @project.name %></span>
+            <%= render RubyUI::Badge.new(variant: :purple, class: "!rounded-full flex gap-x-1") { t("common.project") } %>
+          </div>
+          <span class="text-gray-500 text-sm font-regular pr-2"><%= @project.description %></span>
         </div>
-        <span class="text-gray-500 text-sm font-regular pr-2"><%= @project.description %></span>
+      </div>
+
+      <div class="mt-3">
+        <%= render RubyUI::Breadcrumb::Breadcrumb.new do %>
+          <%= render RubyUI::Breadcrumb::BreadcrumbList.new do %>
+            <%= render RubyUI::Breadcrumb::BreadcrumbItem.new do %>
+              <%= render RubyUI::Breadcrumb::BreadcrumbLink.new(href: workspace_projects_path) { t("common.clients") } %>
+            <% end %>
+
+            <%= render RubyUI::Breadcrumb::BreadcrumbSeparator.new %>
+
+            <%= render RubyUI::Breadcrumb::BreadcrumbItem.new do %>
+              <%= render RubyUI::Breadcrumb::BreadcrumbLink.new(href: workspace_client_path(@project.client)) { @project.client.name } %>
+            <% end %>
+
+            <%= render RubyUI::Breadcrumb::BreadcrumbSeparator.new %>
+
+            <%= render RubyUI::Breadcrumb::BreadcrumbItem.new do %>
+              <%= render RubyUI::Breadcrumb::BreadcrumbPage.new { @project.name } %>
+            <% end %>
+          <% end %>
+        <% end %>
       </div>
     </div>
+
     <div class="flex flex-row gap-2">
       <%= render ButtonComponent.new(path: edit_workspace_project_path(@project), method: :get, variant: :outline) do %>
         <span class="hidden lg:block mr-2"><%= t("common.edit")%></span>
