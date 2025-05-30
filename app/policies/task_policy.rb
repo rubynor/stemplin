@@ -11,7 +11,7 @@ class TaskPolicy < ApplicationPolicy
       projects = authorized_scope(Project.all, type: :relation).all
       relation.joins(:projects).where(projects: projects).distinct
     else
-      relation.joins(:users).where(organization: user.current_organization, users: user).distinct
+      relation.joins(:users).where(organization: user.current_organization, users: { id: user.id }).distinct
     end
   end
 end

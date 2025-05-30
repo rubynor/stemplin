@@ -17,14 +17,14 @@
             <span class="font-semibold"><%= time_reg.project.name %></span>
           </div>
           <div class="flex flex-row-reverse lg:flex-row items-center h-fit gap-2">
-            <%= render PhlexUI::Badge.new(variant: time_reg.is_zero_minutes? ? :red : :gray, class: "!rounded-full flex gap-x-1") do %>
+            <%= render RubyUI::Badge.new(variant: time_reg.is_zero_minutes? ? :red : :gray, class: "!rounded-full flex gap-x-1") do %>
               <i class="uc-icon text-sm">&#xe8bb;</i>
               <span data-refresh-minutes-target="minutes">
                 <%= convert_time_int(time_reg.current_minutes) %>
               </span>
             <% end %>
             <%= render TooltipComponent.new(note: t("time_regs.zero_minutes"), class: "#{"invisible" unless time_reg.is_zero_minutes?}") do %>
-              <%= render PhlexUI::Badge.new(variant: :red, class: "!rounded-full flex gap-x-1 cursor-default") do %>
+              <%= render RubyUI::Badge.new(variant: :red, class: "!rounded-full flex gap-x-1 cursor-default") do %>
                 <i class="uc-icon text-sm">&#xe99b;</i>
               <% end %>
             <% end %>

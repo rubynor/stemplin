@@ -14,16 +14,16 @@
     </div>
   </div>
   <div>
-    <%= render PhlexUI::Table.new do %>
-      <%= render PhlexUI::Table::Header.new do %>
-        <%= render PhlexUI::Table::Row.new do %>
-          <%= render PhlexUI::Table::Head.new { t("common.name") } %>
-          <%= render PhlexUI::Table::Head.new { t("common.email") } %>
-          <%= render PhlexUI::Table::Head.new { t("common.role") } %>
-          <%= render PhlexUI::Table::Head.new { t("common.actions") } %>
+    <%= render RubyUI::Table.new do %>
+      <%= render RubyUI::TableHeader.new do %>
+        <%= render RubyUI::TableRow.new do %>
+          <%= render RubyUI::TableHead.new { t("common.name") } %>
+          <%= render RubyUI::TableHead.new { t("common.email") } %>
+          <%= render RubyUI::TableHead.new { t("common.role") } %>
+          <%= render RubyUI::TableHead.new { t("common.actions") } %>
         <% end %>
       <% end %>
-      <%= render PhlexUI::Table::Body.new(id: :organization_users) do %>
+      <%= render RubyUI::TableBody.new(id: :organization_users) do %>
         <%= render partial: "workspace/team_members/user", collection: @users %>
       <% end %>
     <% end %>

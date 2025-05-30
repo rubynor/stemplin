@@ -15,7 +15,7 @@ module ComboboxComponent
       @wrapper_id = options[:wrapper_id]
     end
 
-    def template
+    def view_template
       div(class: "flex flex-col gap-y-4 mb-4 border-b border-gray-200") do
         render_title
         render_items

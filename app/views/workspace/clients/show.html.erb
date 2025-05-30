@@ -7,7 +7,7 @@
       <div class="flex flex-col">
         <div class="font-medium text-gray-600 text-lg flex items-center gap-x-2">
           <span><%= @client.name %></span>
-          <%= render PhlexUI::Badge.new(variant: :purple, class: "!rounded-full flex gap-x-1") { t("common.client") } %>
+          <%= render RubyUI::Badge.new(variant: :purple, class: "!rounded-full flex gap-x-1") { t("common.client") } %>
         </div>
         <span class="text-gray-500 text-xs font-regular py-1"><%="#{t("common.created")} #{l(@client.created_at, format: "%A, %d %B %Y")}" %></span>
       </div>
@@ -39,13 +39,13 @@
 
   <% if @client.projects.any? %>
     <div class="hide-table-overflow">
-      <%= render PhlexUI::Table.new do %>
-        <%= render PhlexUI::Table::Row.new(class: "text-gray-500" ) do %>
-          <%= render PhlexUI::Table::Head.new { t("common.projects") } %>
-          <%= render PhlexUI::Table::Head.new { t("common.rate") } %>
-          <%= render PhlexUI::Table::Head.new { t("common.actions") } %>
+      <%= render RubyUI::Table.new do %>
+        <%= render RubyUI::TableRow.new(class: "text-gray-500" ) do %>
+          <%= render RubyUI::TableHead.new { t("common.projects") } %>
+          <%= render RubyUI::TableHead.new { t("common.rate") } %>
+          <%= render RubyUI::TableHead.new { t("common.actions") } %>
         <% end %>
-        <%= render PhlexUI::Table::Body.new(id: :organization_projects) do %>
+        <%= render RubyUI::TableBody.new(id: :organization_projects) do %>
           <%= render partial: "workspace/projects/project", collection: @client.projects %>
         <% end %>
       <% end %>

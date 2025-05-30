@@ -1,8 +1,8 @@
-<%= render PhlexUI::Table::Row.new(id: dom_id(user), class: user.pending_invitation? ? "italic text-gray-400" : "") do %>
-  <%= render PhlexUI::Table::Cell.new(class: "py-4") { user.pending_invitation? ? t("common.pending_invitation") : user.name } %>
-  <%= render PhlexUI::Table::Cell.new(class: "py-4") { user.email } %>
-  <%= render PhlexUI::Table::Cell.new(class: "py-4") { t("access_info.role." + user.access_info(current_user.current_organization).role) } %>
-  <%= render PhlexUI::Table::Cell.new do %>
+<%= render RubyUI::TableRow.new(id: dom_id(user), class: user.pending_invitation? ? "italic text-gray-400" : "") do %>
+  <%= render RubyUI::TableCell.new(class: "py-4") { user.pending_invitation? ? t("common.pending_invitation") : user.name } %>
+  <%= render RubyUI::TableCell.new(class: "py-4") { user.email } %>
+  <%= render RubyUI::TableCell.new(class: "py-4") { t("access_info.role." + user.access_info(current_user.current_organization).role) } %>
+  <%= render RubyUI::TableCell.new do %>
     <%= render ButtonComponent.new(path: edit_modal_workspace_team_member_path(user), method: :put, variant: :outline) do %>
       <i class="uc-icon text-gray-500">&#xe972;</i>
     <% end %>

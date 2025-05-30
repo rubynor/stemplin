@@ -12,16 +12,16 @@ class GroupedSelectMultipleComponent < ApplicationComponent
     @id = id || SecureRandom.hex(5)
   end
 
-  def template
+  def view_template
     div(**@attrs) do
       render DropdownComponent.new do
-        render DropdownComponent::Trigger.new do
+        render DropdownComponentTrigger.new do
           select(class: "w-full bg-white border border-gray-200 rounded-md px-3 py-2 flex items-center gap-x-1 justify-between", data_grouped_select_multiple_target: "button") do
             option(data_grouped_select_multiple_target: "label") { @label }
           end
         end
 
-        render DropdownComponent::Content.new(class: "w-full", data_grouped_select_multiple_target: "content") do
+        render DropdownComponentContent.new(class: "w-full", data_grouped_select_multiple_target: "content") do
           div(class: "p-2 divide-y divide-dashed") do
             div(class: "mb-1 hover:bg-slate-100 flex items-center") do
               input type: "checkbox", class: "mr-2", id: "select-all-#{@id}", data: { action: "change->grouped-select-multiple#toggleAll", grouped_select_multiple_target: "selectAllCheckbox" }
@@ -33,7 +33,7 @@ class GroupedSelectMultipleComponent < ApplicationComponent
                   input type: "checkbox", class: "mr-2 group-checkbox", id: "input-#{key[@key_name_method]}-#{@id}", data: { action: "change->grouped-select-multiple#toggleGroup" }
                   label(class: "font-bold block w-full", for: "input-#{key[@key_name_method]}-#{@id}") { key[@key_name_method] }
                 end
-                unsafe_raw (
+                raw (
                   @form.collection_check_boxes @method, @grouped_objects[key], @value_id_method, @value_name_method, @options do |cb|
                     div(class: "hover:bg-slate-100 flex items-center") do
                       span(class: "mx-2") { cb.check_box class: "value-checkbox", data: { action: "change->grouped-select-multiple#updateAllAndGroupCheckboxes" } }

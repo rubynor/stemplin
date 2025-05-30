@@ -12,7 +12,7 @@ class FileUploadComponent < ApplicationComponent
     @caption = caption
   end
 
-  def template
+  def view_template
     content_tag(:div, data: { controller: stimulus_controller_name }) do
       content_tag(:div, data: { file_upload_target: :fileUploadSection }, class: "drag-and-drop-wrapper w-full p-16 bg-gray-50 flex flex-col justify-center items-center cursor-pointer relative group rounded-md") do
         content_tag(:div, id: "dark-overlay", class: "drag-and-drop-overlay transition duration-500 pointer-events-none") do

@@ -9,7 +9,7 @@ module ComboboxComponent
       super(**attrs)
     end
 
-    def template
+    def view_template
       div(class: "flex flex-col") do
         input_container do
           search_icon

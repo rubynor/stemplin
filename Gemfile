@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.2.2"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.4", ">= 7.0.4.2"
+gem "rails", "~> 7.1", ">= 7.0.4.2"
 
 # User authentication
 # In production, :host should be set to the actual host of your application. !!
@@ -17,7 +17,7 @@ gem "sprockets-rails"
 gem "pg", "~> 1.1"
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "~> 5.0"
+gem "puma", "~> 6.0"
 
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem "jsbundling-rails"
@@ -81,6 +81,8 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  gem "ruby_ui", "~> 1.0", require: false
 end
 
 group :test do
@@ -97,10 +99,6 @@ gem "sentry-rails"
 
 gem "dotenv-rails", "~> 2.1", ">= 2.1.1"
 
-gem "phlex-rails", "~> 1.1"
-
-gem "phlex_ui", "~> 0.1.7"
-
 gem "strong_migrations"
 
 gem "pagy"
@@ -116,3 +114,7 @@ gem "sidekiq", "~> 7.3"
 gem "sidekiq-scheduler"
 
 gem "paper_trail"
+
+gem "phlex-rails", "~> 2.0"
+
+gem "tailwind_merge", "~> 1.2"
