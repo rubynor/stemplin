@@ -1,9 +1,4 @@
 // For importing tailwind styles from phlex_ui/phlex_ui_pro gem
-const execSync = require('child_process').execSync;
-
-// Import phlex_ui gem path (To make sure Tailwind loads classes used by phlex_ui gem)
-const outputPhlexUI = execSync('bundle show phlex_ui', { encoding: 'utf-8' });
-const phlexUIPath = outputPhlexUI.trim() + '/**/*.rb';
 
 const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
@@ -13,8 +8,7 @@ module.exports = {
     './app/assets/stylesheets/**/*.css',
     './app/javascript/**/*.js',
     './app/components/**/*.{erb,haml,html,slim,rb}',
-    './app/views/components/**/*.{erb,haml,html,slim,rb}',
-    phlexUIPath
+    './app/views/components/**/*.{erb,haml,html,slim,rb}'
   ],
   extend: {
     screens: {
@@ -122,6 +116,16 @@ module.exports = {
         backgroundColor: "#319895",
         color: "#fff",
         },
+        ".bg-opacity\\/10": { "--tw-bg-opacity": "0.1" },
+        ".bg-opacity\\/20": { "--tw-bg-opacity": "0.2" },
+        ".bg-opacity\\/30": { "--tw-bg-opacity": "0.3" },
+        ".bg-opacity\\/40": { "--tw-bg-opacity": "0.4" },
+        ".bg-opacity\\/50": { "--tw-bg-opacity": "0.5" },
+        ".bg-opacity\\/60": { "--tw-bg-opacity": "0.6" },
+        ".bg-opacity\\/70": { "--tw-bg-opacity": "0.7" },
+        ".bg-opacity\\/80": { "--tw-bg-opacity": "0.8" },
+        ".bg-opacity\\/90": { "--tw-bg-opacity": "0.9" },
+        ".bg-opacity\\/100": { "--tw-bg-opacity": "1" },
       };
       addUtilities(newUtilities, ["responsive", "hover"]);
     },

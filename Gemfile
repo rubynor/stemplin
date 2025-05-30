@@ -81,6 +81,8 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  gem "ruby_ui", "~> 1.0", require: false
 end
 
 group :test do
@@ -97,10 +99,6 @@ gem "sentry-rails"
 
 gem "dotenv-rails", "~> 2.1", ">= 2.1.1"
 
-gem "phlex-rails", "~> 1.1"
-
-gem "phlex_ui", "~> 0.1.7"
-
 gem "strong_migrations"
 
 gem "pagy"
@@ -116,3 +114,7 @@ gem "sidekiq", "~> 7.3"
 gem "sidekiq-scheduler"
 
 gem "paper_trail"
+
+gem "phlex-rails", "~> 2.0"
+
+gem "tailwind_merge", "~> 1.2"

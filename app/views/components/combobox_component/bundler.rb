@@ -30,10 +30,10 @@ module ComboboxComponent
       @size = SIZES[@options[:size]&.to_sym] || SIZES[:fixed]
     end
 
-    def template
+    def view_template
       render ComboboxComponent::Main.new(id: @unique_id) do
         render_selected_or_collection
-        render ComboboxComponent::Trigger.new(placeholder: @options[:placeholder], aria_controls: "list", size: @size)
+        render ComboboxComponentTrigger.new(placeholder: @options[:placeholder], aria_controls: "list", size: @size)
         render_content
       end
     end

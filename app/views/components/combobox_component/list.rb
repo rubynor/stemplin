@@ -7,7 +7,7 @@ module ComboboxComponent
       super
     end
 
-    def template(&)
+    def view_template(&)
       div(**@attrs, &)
     end
 

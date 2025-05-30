@@ -4,7 +4,7 @@ class DropdownComponent < ApplicationComponent
     super(**attrs)
   end
 
-  def template(&block)
+  def view_template(&block)
     div(**@attrs, &block)
   end
 
@@ -25,12 +25,12 @@ class DropdownComponent < ApplicationComponent
   end
 end
 
-class DropdownComponent::Trigger < ApplicationComponent
+class DropdownComponentTrigger < ApplicationComponent
   def initialize(**attrs)
     super(**attrs)
   end
 
-  def template(&block)
+  def view_template(&block)
     div(**@attrs, &block)
   end
 
@@ -44,14 +44,18 @@ class DropdownComponent::Trigger < ApplicationComponent
       }
     }
   end
+
+  def default_classes
+    "z-0"
+  end
 end
 
-class DropdownComponent::Content < ApplicationComponent
+class DropdownComponentContent < ApplicationComponent
   def initialize(**attrs)
     super(**attrs)
   end
 
-  def template(&block)
+  def view_template(&block)
     div(**@attrs, &block)
   end
 

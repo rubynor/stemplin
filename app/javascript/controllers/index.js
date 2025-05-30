@@ -16,23 +16,59 @@ application.register("collapse-delete", CollapseDeleteController)
 import CollapseHoursController from "./collapse_hours_controller"
 application.register("collapse-hours", CollapseHoursController)
 
+import ComboboxContentController from "./combobox_content_controller"
+application.register("combobox-content", ComboboxContentController)
+
+import ComboboxController from "./combobox_controller"
+application.register("combobox", ComboboxController)
+
+import ComboboxItemController from "./combobox_item_controller"
+application.register("combobox-item", ComboboxItemController)
+
+import ComboboxSelectedItemsController from "./combobox_selected_items_controller"
+application.register("combobox-selected-items", ComboboxSelectedItemsController)
+
+import CookieConsentController from "./cookie_consent_controller"
+application.register("cookie-consent", CookieConsentController)
+
+import CustomDialogController from "./custom_dialog_controller"
+application.register("custom-dialog", CustomDialogController)
+
+import CustomDisableController from "./custom_disable_controller"
+application.register("custom-disable", CustomDisableController)
+
+import CustomDropdownController from "./custom_dropdown_controller"
+application.register("custom-dropdown", CustomDropdownController)
+
+import CustomInputController from "./custom_input_controller"
+application.register("custom-input", CustomInputController)
+
+import DynamicTaskUrlController from "./dynamic_task_url_controller"
+application.register("dynamic-task-url", DynamicTaskUrlController)
+
+import FileUploadController from "./file_upload_controller"
+application.register("file-upload", FileUploadController)
+
+import FlatpickrController from "./flatpickr_controller"
+application.register("flatpickr", FlatpickrController)
+
 import FormController from "./form_controller"
 application.register("form", FormController)
 
 import GroupedSelectMultipleController from "./grouped_select_multiple_controller"
 application.register("grouped-select-multiple", GroupedSelectMultipleController)
 
-import SelectMultipleController from "./select_multiple_controller"
-application.register("select-multiple", SelectMultipleController)
-
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
-import CustomInputController from "./custom_input_controller"
-application.register("custom-input", CustomInputController)
+import InviteUsersController from "./invite_users_controller"
+application.register("invite-users", InviteUsersController)
 
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
+
+import PrintController from "./print_controller"
+application.register("print", PrintController)
 
 import RefreshMinutesController from "./refresh_minutes_controller"
 application.register("refresh-minutes", RefreshMinutesController)
@@ -40,61 +76,44 @@ application.register("refresh-minutes", RefreshMinutesController)
 import ReportEditController from "./report_edit_controller"
 application.register("report-edit", ReportEditController)
 
+import RubyUi__CalendarController from "./ruby_ui/calendar_controller"
+application.register("ruby-ui--calendar", RubyUi__CalendarController)
+
+import RubyUi__CalendarInputController from "./ruby_ui/calendar_input_controller"
+application.register("ruby-ui--calendar-input", RubyUi__CalendarInputController)
+
+import RubyUi__DialogController from "./ruby_ui/dialog_controller"
+application.register("ruby-ui--dialog", RubyUi__DialogController)
+
+import RubyUi__DropdownMenuController from "./ruby_ui/dropdown_menu_controller"
+application.register("ruby-ui--dropdown-menu", RubyUi__DropdownMenuController)
+
+import RubyUi__FormFieldController from "./ruby_ui/form_field_controller"
+application.register("ruby-ui--form-field", RubyUi__FormFieldController)
+
+import RubyUi__PopoverController from "./ruby_ui/popover_controller"
+application.register("ruby-ui--popover", RubyUi__PopoverController)
+
+import RubyUi__TabsController from "./ruby_ui/tabs_controller"
+application.register("ruby-ui--tabs", RubyUi__TabsController)
+
+import RubyUi__TooltipController from "./ruby_ui/tooltip_controller"
+application.register("ruby-ui--tooltip", RubyUi__TooltipController)
+
+import SelectMultipleController from "./select_multiple_controller"
+application.register("select-multiple", SelectMultipleController)
+
+import ShowOnValueController from "./show_on_value_controller"
+application.register("show-on-value", ShowOnValueController)
+
+import SliderTabsController from "./slider_tabs_controller"
+application.register("slider-tabs", SliderTabsController)
+
+import SnackbarController from "./snackbar_controller"
+application.register("snackbar", SnackbarController)
+
 import TimeTasksController from "./time_tasks_controller"
 application.register("time-tasks", TimeTasksController)
 
 import VisibilityController from "./visibility_controller"
 application.register("visibility", VisibilityController)
-
-import DialogController from "./custom_dialog_controller";
-application.register("custom-dialog", DialogController);
-
-import SnackbarController from "./snackbar_controller";
-application.register("snackbar", SnackbarController);
-
-import CustomDropdownController from "./custom_dropdown_controller";
-application.register("custom-dropdown", CustomDropdownController);
-
-import PrintController from "./print_controller";
-application.register("print", PrintController);
-
-import FileUploadController from "./file_upload_controller";
-application.register("file-upload", FileUploadController);
-
-import CustomDisableController from "./custom_disable_controller";
-application.register("custom-disable", CustomDisableController);
-
-import ShowOnValueController from './show_on_value_controller';
-application.register("show-on-value", ShowOnValueController);
-
-import DynamicTaskUrlController from './dynamic_task_url_controller';
-application.register("dynamic-task-url", DynamicTaskUrlController);
-
-import InviteUsersController from './invite_users_controller';
-application.register("invite-users", InviteUsersController);
-
-import FlatpickrController from './flatpickr_controller';
-document.addEventListener('turbo:load', () => {
-  application.register("flatpickr", FlatpickrController);
-});
-
-import SliderTabsController from "./slider_tabs_controller";
-application.register("slider-tabs", SliderTabsController);
-
-import ComboboxContentController from "./combobox_content_controller";
-application.register("combobox-content", ComboboxContentController);
-
-import ComboboxController from "./combobox_controller";
-application.register("combobox", ComboboxController);
-
-import ComboboxItemController from "./combobox_item_controller";
-application.register("combobox-item", ComboboxItemController);
-
-import ComboboxSelectedItemsController from "./combobox_selected_items_controller";
-application.register("combobox-selected-items", ComboboxSelectedItemsController);
-
-import CookieConsentController from "./cookie_consent_controller";
-application.register("cookie-consent", CookieConsentController);
-
-
-// TODO: fetch controllers from app/javascript/controllers/**/*_controller.js and load/register everything automatically, the filename of the controller will then be used as the controller identifier in the DOM

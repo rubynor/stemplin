@@ -1,7 +1,7 @@
 
-<%= render PhlexUI::Table::Body.new(id: dom_id(client), class: "border-b") do %>
-  <%= render PhlexUI::Table::Row.new do %>
-    <%= render PhlexUI::Table::Cell.new do %>
+<%= render RubyUI::TableBody.new(id: dom_id(client), class: "border-b") do %>
+  <%= render RubyUI::TableRow.new do %>
+    <%= render RubyUI::TableCell.new do %>
       <%= link_to workspace_client_path(client), class: "text-primary-600 underline" do %>
         <div class="flex flex-row items-center gap-x-1">
           <span class="font-medium text-lg"><%= client.name %></span>
@@ -9,20 +9,20 @@
       <% end %>
     <% end %>
 
-    <%= render PhlexUI::Table::Cell.new(class: "w-36") do %>
+    <%= render RubyUI::TableCell.new(class: "w-36") do %>
     <% end %>
 
-    <%= render PhlexUI::Table::Cell.new(class: "flex justify-center") do %>
-      <%= render PhlexUI::DropdownMenu.new(options: { placement: 'bottom-end', duration: 0, offset: 0 }) do %>
-        <%= render PhlexUI::DropdownMenu::Trigger.new do %>
-          <%= render ButtonComponent.new(type: :button, variant: :outline, class: "relative") do %>
+    <%= render RubyUI::TableCell.new(class: "flex justify-center") do %>
+      <%= render RubyUI::DropdownMenu.new(options: { placement: 'bottom-end', duration: 0, offset: 0 }) do %>
+        <%= render RubyUI::DropdownMenuTrigger.new do %>
+          <%= render ButtonComponent.new(type: :button, variant: :outline) do %>
             <i class="uc-icon text-gray-500">&#xe975;</i>
             <% if client.projects.empty? %>
               <span class="animate-ping absolute right-0 top-0 w-2 h-2 opacity-60 rounded-full bg-primary"></span>
             <% end %>
           <% end %>
         <% end %>
-        <%= render PhlexUI::DropdownMenu::Content.new(class: "flex flex-col w-fit min-w-0 !p-0 divide-y divide-gray-100") do %>
+        <%= render RubyUI::DropdownMenuContent.new(class: "flex flex-col w-fit min-w-0 !p-0 divide-y divide-gray-100") do %>
           <%= render ButtonComponent.new(path: new_workspace_project_path(client_id: client.id), method: :get, variant: :ghost, class: class_names("w-full", client.projects.empty? ? "text-primary border-l-2 border-primary" : nil)) do %>
             <span><%= t("common.new_project") %></span>
             <i class="uc-icon ml-2">&#xead3;</i>

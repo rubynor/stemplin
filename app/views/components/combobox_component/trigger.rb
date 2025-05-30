@@ -8,7 +8,7 @@ module ComboboxComponent
       super(**attrs)
     end
 
-    def template
+    def view_template
       button(**@attrs, type: "button") do
         span(data: { combobox_target: "content" }) { @placeholder }
         icon
@@ -39,10 +39,10 @@ module ComboboxComponent
 
     def default_attrs
       {
-        class: tokens(
-          "inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors disabled:pointer-events-none disabled:opacity-50 border border-gray-200 bg-background hover:bg-gray-100 text-gray-600 font-regular h-10 px-4 py-2 w-[200px] justify-between z-10",
-          @size
-        ),
+        class: TAILWIND_MERGER.merge([
+         "inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors disabled:pointer-events-none disabled:opacity-50 border border-gray-200 bg-background hover:bg-gray-100 text-gray-600 font-regular h-10 px-4 py-2 w-[200px] justify-between z-10",
+         @size
+       ]),
         data: {
           action: "combobox#onClick",
           combobox_target: "input"
