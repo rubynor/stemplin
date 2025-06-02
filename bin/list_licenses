@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+# bin/list_licenses
+
+require 'bundler'
+require 'rubygems'
+
+# Load the current Gemfile.lock dependencies
+definition = Bundler::Definition.build('Gemfile', 'Gemfile.lock', nil)
+specs = definition.specs
+
+puts "📦 Gem Licenses in Your Project"
+puts "-" * 60
+
+specs.sort_by(&:name).each do |spec|
+  name = spec.name
+  version = spec.version.to_s
+
+  # Attempt to get license information
+  begin
+    licenses = spec.licenses
+    license_info = if licenses.nil? || licenses.empty?
+                     "⚠️  No license specified"
+                   else
+                     licenses.join(", ")
+                   end
+  rescue => e
+    license_info = "❌ Error reading license: #{e.message}"
+  end
+
+  puts "#{license_info} - #{name} (#{version})"
+end

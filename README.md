@@ -1,38 +1,24 @@
-# Stemplin time tracking
-Time tracking application written in Ruby on Rails.
+![Frame 1000003871(1)](https://github.com/user-attachments/assets/0e60c1df-c3e7-44da-99d7-f16b1ab01551)
 
-## Getting Started
-If you are using Windows, you will have to use WSL because Redis is not officially supported on Windows.
+# Stemplin time tracking
+Stemplin is a time tracking application written in Ruby on Rails.
 
 ### Setting Up Locally
-If you haven't installed Ruby/Rails, I recommend [this guide](https://gorails.com/setup/windows/11#overview), using the [ASDF](https://asdf-vm.com/) version manager. Make sure you have the correct versions according to the Gemfile.
+Make sure you have the correct versions according to the Gemfile.
 
 Install the project's dependencies by running:
 
 ```shell
-yarn install
-```
-and
-
-
-```shell
 bundle install
-```
-
-### Database
-Follow [this guide](https://www.theodinproject.com/lessons/ruby-on-rails-installing-postgresql) to install PostgreSQL and set up your database.
-
-If Postgres is not running, start it with:
-
-```shell
-sudo service postgresql start
-```
-
-To create the project database, run the migrations and populate it using fixtures, run the following commands:
-
-```shell
+rails assets:precompile
 rails db:create
 rails db:migrate
+yarn install
+```
+
+Populate the database from fixtures:
+
+```shell
 rails db:fixtures:load
 ```
 
@@ -41,16 +27,6 @@ Hotwire will not work without Redis. If it is not running, start it with:
 
 ```shell
 redis-server --daemonize yes
-```
-
-### letter_opener
-To use the letter_opener gem with WSL, you might have to install `wsl-open`:
-
-```shell
-wget https://raw.githubusercontent.com/4U6U57/wsl-open/master/wsl-open.sh
-sudo mv wsl-open.sh /usr/local/bin/wsl-open
-sudo chmod +x /usr/local/bin/wsl-open
-sudo ln -s /usr/local/bin/wsl-open /usr/local/bin/xdg-open
 ```
 
 ### Run the project
