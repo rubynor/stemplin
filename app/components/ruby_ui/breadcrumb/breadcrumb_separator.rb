@@ -29,7 +29,7 @@ module RubyUI
 
     def default_attrs
       {
-        aria: {hidden: true},
+        aria: { hidden: true },
         class: "[&>svg]:w-3.5 [&>svg]:h-3.5",
         role: "presentation"
       }
