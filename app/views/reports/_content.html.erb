@@ -11,11 +11,7 @@
             user has been exploring multiple report views, as :back doesn't retain this
             entire navigation history
           %>
-          <% if request.referer.present? && URI(request.referer).host == request.host %>
-            <%= link_to "javascript:history.back()", class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out print:hidden" do %>
-              <i class="uc-icon text-2xl">&#xe833;</i>
-            <% end %>
-          <% end %>
+          <%= render_back_button_if_needed() %>
         <% end %>
         <div class="text-base lg:text-lg flex items-center gap-x-1">
           <span><%= t('common.report') %></span>
