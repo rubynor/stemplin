@@ -11,8 +11,10 @@
             user has been exploring multiple report views, as :back doesn't retain this
             entire navigation history
           %>
-          <%= link_to @filter.selected_elements_names.size == 1 ? :back :reports_path(filter: { **@filter.current_time_range, time_frame: @filter.time_frame }), class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out print:hidden" do %>
-            <i class="uc-icon text-2xl">&#xe833;</i>
+          <% if should_render_back_button? %>
+            <%= link_to "javascript:history.back()", class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out print:hidden" do %>
+              <i class="uc-icon text-2xl">&#xe833;</i>
+            <% end %>
           <% end %>
         <% end %>
         <div class="text-base lg:text-lg flex items-center gap-x-1">

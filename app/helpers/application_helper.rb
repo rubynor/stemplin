@@ -28,4 +28,15 @@ module ApplicationHelper
     dont_use_fallback = request.referer.present? && request.referer != request.original_url
     link_to((dont_use_fallback ? :back : url), **options, &block)
   end
+
+def should_render_back_button?
+  referer = request.referer
+  return false if referer.blank?
+
+  uri = URI.parse(referer)
+  uri.host == request.host
+
+rescue URI::InvalidURIError
+  false
+end
 end
