@@ -8,6 +8,7 @@
       <div class="w-full flex gap-y-4 flex-col mt-4">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <%= form.hidden_field :locale, value: I18n.locale %>
+        <%= form.invisible_captcha %>
         <div class="flex flex-col w-full gap-y-4 lg:gap-y-8 mb-4">
           <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("registration.first_name") } %>

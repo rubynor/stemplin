@@ -145,6 +145,8 @@ GEM
       railties (>= 7.0.0)
     i18n (1.14.4)
       concurrent-ruby (~> 1.0)
+    invisible_captcha (2.3.0)
+      rails (>= 5.2)
     io-console (0.6.0)
     irb (1.6.4)
       reline (>= 0.3.0)
@@ -402,6 +404,7 @@ DEPENDENCIES
   discard
   dotenv-rails (~> 2.1, >= 2.1.1)
   hotwire-livereload
+  invisible_captcha
   jbuilder
   jsbundling-rails
   letter_opener
