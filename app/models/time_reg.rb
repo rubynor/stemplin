@@ -6,6 +6,7 @@ class TimeReg < ApplicationRecord
   has_paper_trail
   belongs_to :user
   belongs_to :assigned_task
+  broadcasts_refreshes
 
   has_one :project, through: :assigned_task
   has_one :task, through: :assigned_task, source: :task
