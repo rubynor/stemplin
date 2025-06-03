@@ -1,3 +1,5 @@
+<% content_for :title, "#{t('common.edit')} #{resource.first_name} #{resource.last_name}" %>
+
 <div class="flex flex-col w-full mt-12">
   <span class="text-xl font-semibold text-gray-600"><%= t("common.edit_user") %></span>
   <span class="text-sm text-gray-400"><%= resource.email %></span>

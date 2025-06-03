@@ -1,3 +1,5 @@
+<% content_for :title, project.new_record? ? t("common.new_project") : "#{t('common.edit')} #{project.name}" %>
+
 <%= form_with url: project.new_record? ? workspace_projects_path : workspace_project_path(project), method: project.new_record? ? :post : :patch, scope: project do |form| %>
   <div class="flex flex-col gap-y-4">
     <div class="flex flex-row pb-3 border-b items-center">

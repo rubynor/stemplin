@@ -1,3 +1,5 @@
+<% content_for :title, t("common.reports") %>
+
 <%= render partial: "reports/details/filter", locals: { filter: @filter, form_data: @form_data } %>
 <div class="py-4 lg:py-6 px-4">
   <div class="max-w-7xl mx-auto flex flex-col gap-y-4 print:gap-y-2">
