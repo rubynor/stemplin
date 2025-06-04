@@ -1,7 +1,11 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
-  devise_for :users, controllers: { invitations: "users/invitations", registrations: "users/registrations" }
+  devise_for :users, controllers: {
+    invitations: "users/invitations",
+    registrations: "users/registrations",
+    passwords: "users/passwords"
+  }
 
   authenticated :user do
     root to: "time_regs#index", as: :authenticated_root

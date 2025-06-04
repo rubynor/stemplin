@@ -11,6 +11,7 @@
           <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("activerecord.attributes.user.email") } %>
             <%= form.email_field :email, autofocus: true, autocomplete: "email", required: true, placeholder: t("activerecord.attributes.user.email"), class: "border-gray-200 rounded-md w-full" %>
+            <%= form.invisible_captcha %>
           <% end %>
         </div>
         <%= render ButtonComponent.new(type: "submit") { t("password_reset.new.send_instructions") } %>
