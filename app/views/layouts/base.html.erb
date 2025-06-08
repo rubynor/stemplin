@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head data-controller="refresh-minutes" data-refresh-minutes-active-value="true" data-refresh-minutes-minutes-value=<%= @total_minutes_day %> data-refresh-minutes-format-value="HH:mm" >
-    <%- if @active_time_reg %>
-      <title data-refresh-minutes-target="minutes"><%= format_duration(@total_minutes_day) %> | Stemplin</title>
-    <% else%>
-      <title><%= content_for?(:title) ? yield(:title) + " | Stemplin" : "Stemplin" %></title>
+    <% if @active_time_reg %>
+      <title data-refresh-minutes-target="title minutes">
+        <%= format_duration(@total_minutes_day) %> | Stemplin
+      </title>
+    <% else %>
+      <title>
+        <%= content_for?(:title) ? yield(:title) + " | Stemplin" : "Stemplin" %>
+      </title>
     <% end %>
+
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= turbo_refresh_method_tag :morph %>
     <%= turbo_refresh_scroll_tag :preserve %>

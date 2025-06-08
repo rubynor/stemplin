@@ -6,9 +6,8 @@ momentDurationFormatSetup(moment); // Setup moment-duration-format plugin
 
 const MINUTE = 1000 * 60;
 
-// Connects to data-controller="refresh-minutes"
 export default class extends Controller {
-  static targets = ['minutes'];
+  static targets = ['minutes', 'title'];
   static values = {
     active: Boolean,
     minutes: Number,
@@ -42,8 +41,6 @@ export default class extends Controller {
       this.interval = MINUTE;
       this.expected = Date.now() + this.interval;
       this.now = Date.now();
-
-      // Start self adjusting timer
       this.timeoutId = setTimeout(this.selfAdjustingTimeout.bind(this), this.interval);
     }
   }
@@ -51,15 +48,22 @@ export default class extends Controller {
   selfAdjustingTimeout() {
     if (this.activeValue) {
       this.totalMillis += this.interval;
-
-      // Calculates time drifting
       const driftMillis = Date.now() - this.expected;
       this.expected += this.interval;
 
-      this.minutesTarget.textContent = this.formatedStamp();
+      const formatted = this.formatedStamp();
+
+      this.minutesTarget.textContent = formatted;
+
+      if (this.hasTitleTarget) {
+        this.titleTarget.textContent = `${formatted} | Stemplin`;
+      }
+
       this.timeoutId = setTimeout(this.selfAdjustingTimeout.bind(this), Math.max(0, this.interval - driftMillis));
     }
   }
+  formatedStamp = () =>
+    moment.duration(this.totalMillis, "milliseconds").format(this.formatValue, { trunc: true, trim: false });
 
   clearCurrentTimeout() {
     if (!this.timeoutId) return;
@@ -67,5 +71,4 @@ export default class extends Controller {
     this.timeoutId = undefined;
   }
 
-  formatedStamp = () => moment.duration(this.totalMillis, "milliseconds").format(this.formatValue, { trunc: true, trim: false });
 }
