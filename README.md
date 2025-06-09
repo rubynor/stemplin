@@ -3,8 +3,13 @@
 # Stemplin time tracking
 Stemplin is a time tracking application written in Ruby on Rails.
 
-### Setting Up Locally
-Make sure you have the correct versions according to the Gemfile.
+# Contributing
+See the contribution guidelines in:
+
+https://github.com/rubynor/stemplin/blob/main/CONTRIBUTING.md
+
+## Setting Up Locally
+### Installing the project
 
 Install the project's dependencies by running:
 
@@ -45,6 +50,11 @@ Run linter with:
 
 ```shell
 bin/rubocop
+```
+Or run autocorrection with:
+
+```shell
+bin/rubocop -a
 ```
 
 ## Authorization
