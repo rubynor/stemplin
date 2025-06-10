@@ -1,0 +1,6 @@
+<h2>Add a Project for your client</h2>
+<%= form_with model: @project, url: wizard_path, method: :put do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  <%= f.submit "Next" %>
+<% end %> 

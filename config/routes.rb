@@ -77,4 +77,9 @@ Rails.application.routes.draw do
   authenticate :user, ->(u) { u.is_super_admin? } do
     mount Sidekiq::Web, at: "sidekiq"
   end
+
+  resource :onboarding_wizard, only: [] do
+    get 'skip', to: 'onboarding_wizard#skip'
+  end
+  resources :onboarding_wizard, only: [:show, :update], controller: 'onboarding_wizard'
 end

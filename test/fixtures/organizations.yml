@@ -13,3 +13,7 @@ organization_three:
 organization_w_one_admin:
   name: Organization One Admin
   currency: USD
+
+one:
+  name: One Organization
+  currency: USD

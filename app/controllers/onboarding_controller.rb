@@ -18,7 +18,7 @@ class OnboardingController < ApplicationController
       AccessInfo.create!(user: current_user, organization: @organization, role: AccessInfo.roles[:organization_admin])
     end
 
-    redirect_to root_path, notice: "Organization created successfully"
+    redirect_to onboarding_wizard_path(:client), notice: "Organization created successfully"
   rescue => e
     render turbo_stream: turbo_stream.replace(:onboarding_form, partial: "onboarding/form", locals: { organization: @organization })
   end

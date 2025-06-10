@@ -1,0 +1,6 @@
+<h2>Add tasks to the project</h2>
+<%= form_with model: @task, url: wizard_path, method: :put do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  <%= f.submit "Next" %>
+<% end %> 

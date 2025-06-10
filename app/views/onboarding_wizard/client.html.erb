@@ -1,0 +1,7 @@
+<h2>Set up your first client</h2>
+<%= form_with model: @client, url: wizard_path, method: :put do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  <%= f.submit "Next" %>
+<% end %>
+<%= link_to "Skip setup", skip_onboarding_wizard_path %> 
