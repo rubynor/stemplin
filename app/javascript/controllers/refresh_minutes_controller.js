@@ -41,6 +41,8 @@ export default class extends Controller {
       this.interval = MINUTE;
       this.expected = Date.now() + this.interval;
       this.now = Date.now();
+
+      // Start self adjusting timer
       this.timeoutId = setTimeout(this.selfAdjustingTimeout.bind(this), this.interval);
     }
   }
@@ -48,6 +50,8 @@ export default class extends Controller {
   selfAdjustingTimeout() {
     if (this.activeValue) {
       this.totalMillis += this.interval;
+
+      // Calculates time drifting
       const driftMillis = Date.now() - this.expected;
       this.expected += this.interval;
 
@@ -55,6 +59,7 @@ export default class extends Controller {
 
       this.minutesTarget.textContent = formatted;
 
+      // TODO: Make not title specific.
       if (this.hasTitleTarget) {
         this.titleTarget.textContent = `${formatted} | Stemplin`;
       }
@@ -62,8 +67,6 @@ export default class extends Controller {
       this.timeoutId = setTimeout(this.selfAdjustingTimeout.bind(this), Math.max(0, this.interval - driftMillis));
     }
   }
-  formatedStamp = () =>
-    moment.duration(this.totalMillis, "milliseconds").format(this.formatValue, { trunc: true, trim: false });
 
   clearCurrentTimeout() {
     if (!this.timeoutId) return;
@@ -71,4 +74,6 @@ export default class extends Controller {
     this.timeoutId = undefined;
   }
 
+  formatedStamp = () =>
+    moment.duration(this.totalMillis, "milliseconds").format(this.formatValue, { trunc: true, trim: false });
 }
