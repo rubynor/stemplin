@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
-  <head data-controller="refresh-minutes" data-refresh-minutes-active-value="true" data-refresh-minutes-minutes-value=<%= @total_minutes_day %> data-refresh-minutes-format-value="HH:mm" >
+  <head data-controller="refresh-minutes" data-refresh-minutes-active-value="true" data-refresh-minutes-minutes-value="<%= @active_time_reg&.current_minutes%>" data-refresh-minutes-format-value="HH:mm" >
     <% if @active_time_reg %>
       <title data-refresh-minutes-target="title minutes">
-        <%= format_duration(@total_minutes_day) %> | Stemplin
+        <%= format_duration(@active_time_reg.current_minutes) %> | Stemplin
       </title>
+      <%= favicon_link_tag "rotate-time-glass.gif" %>
     <% else %>
       <title>
         <%= content_for?(:title) ? yield(:title) + " | Stemplin" : "Stemplin" %>
       </title>
+      <%= favicon_link_tag "stemplin-ico-squared.svg" %>
     <% end %>
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -32,7 +34,6 @@
     </script>
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
-    <%= favicon_link_tag "stemplin-ico-squared.svg" %>
 
     <%= render partial: "layouts/pwa_meta_tags" %>
     <%= render partial: "layouts/description_meta_tags" %>
