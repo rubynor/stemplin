@@ -2,15 +2,9 @@
 <html>
   <head data-controller="refresh-minutes" data-refresh-minutes-active-value="true" data-refresh-minutes-minutes-value="<%= @active_time_reg&.current_minutes%>" data-refresh-minutes-format-value="HH:mm" >
     <% if @active_time_reg %>
-      <title data-refresh-minutes-target="title">
-        <%= format_duration(@active_time_reg.current_minutes) %> | Stemplin
-      </title>
-      <%= favicon_link_tag "rotate-time-glass.gif" %>
+      <%= active_timer_head(format_duration(@active_time_reg.current_minutes)) %>
     <% else %>
-      <title>
-        <%= content_for?(:title) ? yield(:title) + " | Stemplin" : "Stemplin" %>
-      </title>
-      <%= favicon_link_tag "stemplin-ico-squared.svg" %>
+      <%= default_head %>
     <% end %>
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
