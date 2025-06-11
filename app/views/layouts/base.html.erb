@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= content_for?(:title) ? yield(:title) + " | Stemplin" : "Stemplin" %></title>
+  <head data-controller="refresh-minutes" data-refresh-minutes-active-value="true" data-refresh-minutes-minutes-value="<%= @active_time_reg&.current_minutes%>" data-refresh-minutes-format-value="HH:mm" >
+    <% if @active_time_reg %>
+      <%= active_timer_head(format_duration(@active_time_reg.current_minutes)) %>
+    <% else %>
+      <%= default_head %>
+    <% end %>
+
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= turbo_refresh_method_tag :morph %>
     <%= turbo_refresh_scroll_tag :preserve %>
@@ -23,7 +28,6 @@
     </script>
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
-    <%= favicon_link_tag "stemplin-ico-squared.svg" %>
 
     <%= render partial: "layouts/pwa_meta_tags" %>
     <%= render partial: "layouts/description_meta_tags" %>

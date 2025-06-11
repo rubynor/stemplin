@@ -29,14 +29,29 @@ module ApplicationHelper
     link_to((dont_use_fallback ? :back : url), **options, &block)
   end
 
-def should_render_back_button?
-  referer = request.referer
-  return false if referer.blank?
+  def active_timer_head(title_minutes)
+    safe_join([
+      tag.title(title_minutes + " | Stemplin", data: { refresh_minutes_target: "title" }),
+      favicon_link_tag("rotate-time-glass.gif")
+    ])
+  end
 
-  uri = URI.parse(referer)
-  uri.host == request.host
+  def default_head
+    title_text = content_for?(:title) ? "#{content_for(:title)} | Stemplin" : "Stemplin"
+    safe_join([
+      tag.title(title_text),
+      favicon_link_tag("stemplin-ico-squared.svg")
+    ])
+  end
 
-rescue URI::InvalidURIError
-  false
-end
+  def should_render_back_button?
+    referer = request.referer
+    return false if referer.blank?
+
+    uri = URI.parse(referer)
+    uri.host == request.host
+
+  rescue URI::InvalidURIError
+    false
+  end
 end
