@@ -1,7 +1,10 @@
 ![Frame 1000003871(1)](https://github.com/user-attachments/assets/0e60c1df-c3e7-44da-99d7-f16b1ab01551)
 
+
 # Stemplin time tracking
 Stemplin is a time tracking application written in Ruby on Rails.
+
+![image](https://github.com/user-attachments/assets/7c7bd7a2-4f99-4e1f-b62a-815cc61093c4)
 
 # Contributing
 See the contribution guidelines in:
