@@ -12,20 +12,22 @@ module Workspace
       authorize! @client
     end
 
-    def create
-      @client = authorized_scope(Client, type: :relation).new(client_params)
-      authorize! @client
+  def create
+    @client = authorized_scope(Client, type: :relation).new(client_params)
+    authorize! @client
 
-      if @client.save
-        render turbo_stream: [
-         turbo_flash(type: :success, data: t("notice.client_was_successfully_created")),
-         turbo_stream.append(:organization_clients, partial: "workspace/projects/client", locals: { client: @client }),
-         turbo_stream.action(:remove_modal, :modal)
-        ]
-      else
-        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/clients/form", locals: { client: @client })
-      end
+    if @client.save
+      @pagy, @clients = pagy authorized_scope(Client, type: :relation).order(:name).includes(:projects), items: 6
+
+      render turbo_stream: [
+        turbo_flash(type: :success, data: t("notice.client_was_successfully_created")),
+        turbo_stream.replace(:clients_collection, partial: "workspace/projects/clients_table", locals: { clients: @clients }),
+        turbo_stream.action(:remove_modal, :modal)
+      ]
+    else
+      render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/clients/form", locals: { client: @client })
     end
+  end
 
     def edit_modal
       authorize! @client
