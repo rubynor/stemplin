@@ -1,6 +1,27 @@
-<h2>Add tasks to the project</h2>
-<%= form_with model: @task, url: wizard_path, method: :put do |f| %>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  <%= f.submit "Next" %>
-<% end %> 
+<div class="flex flex-col gap-y-4 w-full">
+  <h1 class="text-2xl font-semibold text-gray-600 mb-1">Let's add tasks to your project</h1>
+  <p class="text-base text-gray-600 mb-4">Tasks help you organize your work within a project. Add at least one task to get started.</p>
+  <%= form_with model: @task, url: wizard_path, method: :put do |form| %>
+    <div class="flex flex-col gap-y-4">
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.name") } %>
+        <%= form.text_field :name, class: "border-gray-200 rounded-md w-full", autofocus: true, autocomplete: "off" %>
+        <% @task.errors.full_messages_for(:name).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs leading-3 !my-0") { message }  %>
+        <% end %>
+      <% end %>
+
+      <% if @project.billable? %>
+        <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormFieldLabel.new { t("common.rates_per_hour") } %>
+          <%= render RubyUI::FormFieldHint.new { t("common.optional_project") } %>
+          <%= form.number_field :rate_currency, class: "border-gray-200 rounded-md", step: 0.01 %>
+        <% end %>
+      <% end %>
+    </div>
+    <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
+      <%= render ButtonComponent.new(variant: :outline, path: skip_onboarding_wizard_path, method: :get) { t("common.skip_setup") } %>
+      <%= render ButtonComponent.new(type: :submit) { t("common.next") } %>
+    <% end %>
+  <% end %>
+</div> 

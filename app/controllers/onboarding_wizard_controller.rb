@@ -1,27 +1,62 @@
 class OnboardingWizardController < ApplicationController
   include Wicked::Wizard
-  include OnboardingSessionHandler
   skip_verify_authorized
 
-  steps :client, :project, :tasks, :finish
+  steps :organization, :setup_choice, :client, :project, :tasks, :finish
 
   before_action :authenticate_user!
   layout "devise"
 
   def show
-    @step_data = step_data
+    if step != :organization && current_user.organizations.empty?
+      redirect_to wizard_path(:organization)
+      return
+    end
+
+    case step
+    when :organization
+      @organization = Organization.new
+    when :setup_choice
+      # No-op, just render the choice view
+    when :client
+      @client = Client.new(organization: current_user.current_organization)
+    when :project
+      @client = Client.find(session[:client_id])
+      @project = Project.new(client_id: session[:client_id], rate: 0)
+    when :tasks
+      @project = Project.find(session[:project_id])
+      @task = Task.new(organization: current_user.current_organization)
+    end
     render_wizard
   end
 
   def update
-    service = step_service.new(current_user, session, params)
-    
-    if service.execute
-      store_step_data(service.step_data)
+    case step
+    when :organization
+      @organization = Organization.new(organization_params)
+      @organization.save!
+      AccessInfo.create!(user: current_user, organization: @organization, role: AccessInfo.roles[:organization_admin])
+      redirect_to next_wizard_path
+    when :setup_choice
+      # No-op, just go to next step
+      redirect_to next_wizard_path
+    when :client
+      @client = Client.new(client_params.merge(organization: current_user.current_organization))
+      @client.save!
+      session[:client_id] = @client.id
+      redirect_to next_wizard_path
+    when :project
+      @project = Project.new(project_params.merge(client_id: session[:client_id], rate: 0, onboarding: true))
+      @project.save!
+      session[:project_id] = @project.id
+      redirect_to next_wizard_path
+    when :tasks
+      @task = Task.new(task_params.merge(organization: current_user.current_organization))
+      @task.save!
+      AssignedTask.create!(project_id: session[:project_id], task: @task)
       redirect_to next_wizard_path
     else
-      @step_data = service.step_data
-      render_wizard
+      redirect_to root_path
     end
   end
 
@@ -31,25 +66,19 @@ class OnboardingWizardController < ApplicationController
 
   private
 
-  def step_data
-    case step
-    when :client
-      { client: Client.new(organization: current_user.current_organization) }
-    when :project
-      { project: Project.new(client_id: session[:client_id], rate: 0) }
-    when :tasks
-      { task: Task.new(organization: current_user.current_organization) }
-    end
+  def organization_params
+    params.require(:organization).permit(:name, :currency)
   end
 
-  def step_service
-    case step
-    when :client
-      Onboarding::ClientStepService
-    when :project
-      Onboarding::ProjectStepService
-    when :tasks
-      Onboarding::TaskStepService
-    end
+  def client_params
+    params.require(:client).permit(:name, :description)
   end
-end 
+
+  def project_params
+    params.require(:project).permit(:name, :description, :billable)
+  end
+
+  def task_params
+    params.require(:task).permit(:name)
+  end
+end

@@ -1,6 +1,44 @@
-<h2>Add a Project for your client</h2>
-<%= form_with model: @project, url: wizard_path, method: :put do |f| %>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  <%= f.submit "Next" %>
-<% end %> 
+<div class="flex flex-col gap-y-4 w-full">
+  <h1 class="text-2xl font-semibold text-gray-600 mb-1">Let's add a project for your client</h1>
+  <p class="text-base text-gray-600 mb-4">Projects are always connected to a client. Add your first project below.</p>
+  <%= form_with model: @project, url: wizard_path, method: :put do |form| %>
+    <div class="flex flex-col gap-y-4">
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.client") } %>
+        <%= render RubyUI::Input.new(type: "text", value: @client.name, disabled: true, class: "border-gray-200 rounded-md w-full !opacity-100 bg-gray-100") %>
+        <%= form.hidden_field :client_id, value: @client.id %>
+      <% end %>
+
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.name") } %>
+        <%= form.text_field :name, class: "border-gray-200 rounded-md w-full", required: true %>
+        <% @project.errors.full_messages_for(:name).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <% end %>
+      <% end %>
+
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.description") } %>
+        <%= form.text_area :description, class: "border-gray-200 rounded-md w-full" %>
+        <% @project.errors.full_messages_for(:description).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <% end %>
+      <% end %>
+
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.billable_project") } %>
+        <div class="flex flex-row gap-4">
+          <%= form.radio_button :billable, true %> <span class="ml-1 mr-4">Yes</span>
+          <%= form.radio_button :billable, false %> <span class="ml-1">No</span>
+        </div>
+        <% @project.errors.full_messages_for(:billable).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <% end %>
+      <% end %>
+    </div>
+    <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
+      <%= render ButtonComponent.new(variant: :outline, path: skip_onboarding_wizard_path, method: :get) { t("common.skip_setup") } %>
+      <%= render ButtonComponent.new(type: :submit) { t("common.next") } %>
+    <% end %>
+  <% end %>
+</div> 
