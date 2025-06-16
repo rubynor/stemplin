@@ -22,7 +22,7 @@ module Workspace
       render turbo_stream: [
         turbo_flash(type: :success, data: t("notice.client_was_successfully_created")),
         turbo_stream.replace(:clients_collection, partial: "workspace/projects/clients_table", locals: { clients: @clients }),
-        turbo_stream.replace(:clients_pagination, partial: " stream for pages", locals: { pagy: @pagy, path: workspace_projects_path }),
+        turbo_stream.replace(:clients_pagination, partial: "shared/pagination", locals: { pagy: @pagy, path: workspace_projects_path }),
         turbo_stream.action(:remove_modal, :modal)
       ]
     else
