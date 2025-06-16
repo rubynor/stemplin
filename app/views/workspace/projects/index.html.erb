@@ -20,9 +20,7 @@
     </div>
   </div>
   <div class="hide-table-overflow">
-    <div id="clients_collection">
-      <%= render partial: "workspace/projects/clients_table", locals: { clients: @clients } %>
-    </div>
+    <%= render partial: "workspace/projects/clients_table", locals: { clients: @clients } %>
     <%= render PaginationComponent.new(pagy: @pagy, path: workspace_projects_path) if @pagy.pages > 1 %>
   </div>
 </div>
