@@ -37,7 +37,7 @@ module ApplicationHelper
   end
 
   def default_head
-    title_text = content_for?(:title) ? "#{content_for(:title)} | Stemplin" : "Stemplin"
+    title_text = content_for?(:title) ? "#{content_for(:title)} | Stemplin".html_safe : "Stemplin"
     safe_join([
       tag.title(title_text),
       favicon_link_tag("stemplin-ico-squared.svg")
