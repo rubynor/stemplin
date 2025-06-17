@@ -246,6 +246,8 @@ en:
     select_member: "Select member"
     date_worked: "Date worked"
     select_date_worked: "Select date worked"
+    skip_setup: "Skip setup"
+    next: "Next"
 
   notice:
     are_you_sure: "Are you sure?"

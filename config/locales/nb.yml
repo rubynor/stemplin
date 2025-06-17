@@ -262,6 +262,8 @@ nb:
     select_member: "Velg medlem"
     date_worked: "Dato jobbet"
     select_date_worked: "Velg dato arbeidet"
+    skip_setup: "Hopp over oppsett"
+    next: "Neste"
 
   notice:
     are_you_sure: "Er du sikker?"
