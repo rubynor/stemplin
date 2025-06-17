@@ -1,5 +1,4 @@
 <% content_for :title, t("common.clients_and_projects") %>
-
 <div class="flex flex-col gap-y-8">
   <div class="flex flex-row justify-between items-center border-b border-gray-100 py-3">
     <div class="flex flex-row items-center gap-x-2">
@@ -21,16 +20,7 @@
     </div>
   </div>
   <div class="hide-table-overflow">
-    <%= render RubyUI::Table.new(id: :organization_clients) do %>
-      <%= render RubyUI::TableHeader.new do %>
-        <%= render RubyUI::TableRow.new(class: "text-gray-500" ) do %>
-          <%= render RubyUI::TableHead.new { t("common.clients_and_projects") } %>
-          <%= render RubyUI::TableHead.new { t("common.rate") } %>
-          <%= render RubyUI::TableHead.new { t("common.actions") } %>
-        <% end %>
-      <% end %>
-      <%= render partial: "workspace/projects/client", collection: @clients %>
-    <% end %>
-    <%= render PaginationComponent.new(pagy: @pagy, path: workspace_projects_path) if @pagy.pages > 1 %>
+    <%= render partial: "workspace/projects/clients_table", locals: { clients: @clients } %>
+    <%= render partial: "shared/pagination" %>
   </div>
 </div>
