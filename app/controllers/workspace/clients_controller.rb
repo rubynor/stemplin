@@ -12,23 +12,29 @@ module Workspace
       authorize! @client
     end
 
-  def create
-    @client = authorized_scope(Client, type: :relation).new(client_params)
-    authorize! @client
+    def create
+      @client = authorized_scope(Client, type: :relation).new(client_params)
+      authorize! @client
 
-    if @client.save
-      @pagy, @clients = pagy authorized_scope(Client, type: :relation).order(:name).includes(:projects), items: 6
+      if @client.save
+        current_page = extract_page_from_referrer || 1
 
-      render turbo_stream: [
-        turbo_flash(type: :success, data: t("notice.client_was_successfully_created")),
-        turbo_stream.replace(:clients_collection, partial: "workspace/projects/clients_table", locals: { clients: @clients }),
-        turbo_stream.replace(:clients_pagination, partial: "shared/pagination", locals: { pagy: @pagy, path: workspace_projects_path }),
-        turbo_stream.action(:remove_modal, :modal)
-      ]
-    else
-      render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/clients/form", locals: { client: @client })
+        @pagy, @clients = pagy authorized_scope(Client, type: :relation).order(:name).includes(:projects),
+                              items: 6, page: current_page
+
+        render turbo_stream: [
+          turbo_flash(type: :success, data: t("notice.client_was_successfully_created")),
+          turbo_stream.replace(:clients_collection, partial: "workspace/projects/clients_table", locals: { clients: @clients }),
+          turbo_stream.replace(:clients_pagination, partial: "shared/pagination", locals: {
+            pagy: @pagy,
+            path: workspace_projects_path
+          }),
+          turbo_stream.action(:remove_modal, :modal)
+        ]
+      else
+        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/clients/form", locals: { client: @client })
+      end
     end
-  end
 
     def edit_modal
       authorize! @client
@@ -66,6 +72,16 @@ module Workspace
 
     def set_client
       @client = Client.find(params[:id])
+    end
+
+    def extract_page_from_referrer
+      return nil unless request.referrer
+
+      uri = URI.parse(request.referrer)
+      query_params = Rack::Utils.parse_query(uri.query)
+      query_params['page']&.to_i
+    rescue URI::InvalidURIError
+      nil
     end
   end
 end
