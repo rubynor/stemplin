@@ -262,6 +262,35 @@ nb:
     select_member: "Velg medlem"
     date_worked: "Dato jobbet"
     select_date_worked: "Velg dato arbeidet"
+    skip_setup: "Hopp over oppsett"
+    next: "Neste"
+    onboarding:
+      setup_choice:
+        title: "Velg hvordan du vil sette opp"
+        guided_setup:
+          title: "Guidet oppsett"
+          description: "La oss hjelpe deg med å sette opp din første kunde, prosjekt og oppgaver"
+        or: "eller"
+        skip_to_workspace:
+          title: "Hopp til arbeidsområde"
+          description: "Start med et rent arbeidsområde og sett opp senere"
+      organization:
+        title: "Gratulerer! La oss legge til din organisasjon"
+        description: "Nesten der! For å komme i gang og få mest ut av din opplevelse, la oss sette opp arbeidsområdet ditt. Bare et raskt steg igjen, så er du klar til å komme i gang!"
+        create: "Opprett"
+      client:
+        title: "La oss opprette din første kunde"
+        description: "Alle dine prosjekter må være knyttet til en kunde."
+      project:
+        title: "La oss legge til et prosjekt for din kunde"
+        description: "Prosjekter er alltid knyttet til en kunde. Legg til ditt første prosjekt nedenfor."
+      tasks:
+        title: "La oss legge til oppgaver til prosjektet ditt"
+        description: "Oppgaver hjelper deg med å organisere arbeidet ditt innenfor et prosjekt. Legg til minst én oppgave for å komme i gang."
+      finish:
+        title: "Alt klart!"
+        description: "Arbeidsområdet ditt er klart til bruk. Du kan nå begynne å registrere tid for dine prosjekter og oppgaver."
+        start_tracking: "Start tidsregistrering"
 
   notice:
     are_you_sure: "Er du sikker?"

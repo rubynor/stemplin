@@ -42,3 +42,9 @@ user_wo_access_info:
   first_name: user
   last_name: without access info
   <<: *DEFAULTS
+
+one:
+  email: one@example.com
+  first_name: One
+  last_name: User
+  <<: *DEFAULTS

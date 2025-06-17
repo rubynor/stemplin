@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   layout :layout_by_resource
 
   def after_sign_in_path_for(resource)
-    return new_onboarding_path if current_user.organizations.empty?
+    return onboarding_wizard_path(:organization) if should_redirect_to_onboarding?
     root_path
   end
 
@@ -37,7 +37,11 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_if_no_organization
-    allowed_controllers = %w[onboarding invitations service_worker sessions]
-    redirect_to new_onboarding_path if current_user&.organizations&.empty? && !allowed_controllers.include?(controller_name)
+    redirect_to onboarding_wizard_path(:organization) if should_redirect_to_onboarding?
+  end
+
+  def should_redirect_to_onboarding?
+    allowed_controllers = %w[onboarding_wizard invitations service_worker sessions]
+    current_user&.organizations&.empty? && !allowed_controllers.include?(controller_name)
   end
 end
