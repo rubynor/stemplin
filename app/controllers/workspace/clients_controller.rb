@@ -12,20 +12,33 @@ module Workspace
       authorize! @client
     end
 
-    def create
-      @client = authorized_scope(Client, type: :relation).new(client_params)
-      authorize! @client
+  def create
+    @client = authorized_scope(Client, type: :relation).new(client_params)
+    authorize! @client
 
-      if @client.save
-        render turbo_stream: [
-         turbo_flash(type: :success, data: t("notice.client_was_successfully_created")),
-         turbo_stream.append(:organization_clients, partial: "workspace/projects/client", locals: { client: @client }),
-         turbo_stream.action(:remove_modal, :modal)
-        ]
-      else
-        render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/clients/form", locals: { client: @client })
-      end
+    if @client.save
+      render turbo_stream: [
+        turbo_flash(type: :success, data: t("notice.client_was_successfully_created")),
+        *clients_collection_streams,
+        turbo_stream.action(:remove_modal, :modal)
+      ]
+    else
+      render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/clients/form", locals: { client: @client })
     end
+  end
+
+  def destroy
+    authorize! @client
+
+    if @client.discard
+      render turbo_stream: [
+        turbo_flash(type: :success, data: t("notice.client_was_successfully_deleted")),
+        *clients_collection_streams
+      ]
+    else
+      render turbo_stream: turbo_flash(type: :error, data: "Unable to proceed, could not delete client.")
+    end
+  end
 
     def edit_modal
       authorize! @client
@@ -45,17 +58,26 @@ module Workspace
       end
     end
 
-    def destroy
-      authorize! @client
-      if @client.discard
-        flash[:success] = t("notice.client_was_successfully_deleted")
-        redirect_to workspace_projects_path
-      else
-        render turbo_stream: turbo_flash(type: :error, data: "Unable to proceed, could not delete client.")
-      end
-    end
+
 
     private
+
+    def clients_collection_streams
+      load_clients_with_pagination
+      [
+        turbo_stream.replace(:clients_collection, partial: "workspace/projects/clients_table", locals: { clients: @clients }),
+        turbo_stream.replace(:clients_pagination, partial: "shared/pagination", locals: {
+          pagy: @pagy,
+          path: workspace_projects_path
+        })
+      ]
+    end
+
+    def load_clients_with_pagination
+      current_page = extract_page_from_referrer || 1
+      @pagy, @clients = pagy authorized_scope(Client, type: :relation).order(:name).includes(:projects),
+        items: 6, page: current_page
+    end
 
     def client_params
       params.require(:client).permit(:name, :description)
@@ -63,6 +85,16 @@ module Workspace
 
     def set_client
       @client = Client.find(params[:id])
+    end
+
+    def extract_page_from_referrer
+      return nil unless request.referrer
+
+      uri = URI.parse(request.referrer)
+      query_params = Rack::Utils.parse_query(uri.query)
+      query_params["page"]&.to_i
+    rescue URI::InvalidURIError
+      nil
     end
   end
 end
