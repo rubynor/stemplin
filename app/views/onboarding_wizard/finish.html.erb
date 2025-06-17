@@ -1,2 +1,16 @@
-<h2>All done!</h2>
-<%= link_to "Go to dashboard", root_path %> 
+<div class="flex flex-col gap-y-4 w-full">
+  <div class="flex flex-col items-center text-center">
+    <%= image_tag "tada.png", class: "w-16 h-16 mb-4" %>
+    <h1 class="text-2xl font-semibold text-gray-600 mb-2">All done!</h1>
+    <p class="text-base text-gray-600 mb-6">Your workspace is ready to go. You can now start tracking time for your projects and tasks.</p>
+  </div>
+
+  <div class="flex justify-center">
+    <%= link_to root_path, class: "text-primary-600 hover:text-primary-700 font-medium" do %>
+      <div class="flex items-center gap-2">
+        <span>Start tracking time</span>
+        <i class="uc-icon">&#xe81f;</i>
+      </div>
+    <% end %>
+  </div>
+</div> 
