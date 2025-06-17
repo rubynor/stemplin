@@ -79,7 +79,7 @@ Rails.application.routes.draw do
   end
 
   resource :onboarding_wizard, only: [] do
-    get 'skip', to: 'onboarding_wizard#skip'
+    get "skip", to: "onboarding_wizard#skip"
   end
-  resources :onboarding_wizard, only: [:show, :update], controller: 'onboarding_wizard'
+  resources :onboarding_wizard, only: [ :show, :update ], controller: "onboarding_wizard"
 end
