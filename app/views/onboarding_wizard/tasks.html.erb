@@ -10,14 +10,6 @@
           <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs leading-3 !my-0") { message }  %>
         <% end %>
       <% end %>
-
-      <% if @project.billable? %>
-        <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
-          <%= render RubyUI::FormFieldLabel.new { t("common.rates_per_hour") } %>
-          <%= render RubyUI::FormFieldHint.new { t("common.optional_project") } %>
-          <%= form.number_field :rate_currency, class: "border-gray-200 rounded-md", step: 0.01 %>
-        <% end %>
-      <% end %>
     </div>
     <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
       <%= render ButtonComponent.new(variant: :outline, path: skip_onboarding_wizard_path, method: :get) { t("common.skip_setup") } %>

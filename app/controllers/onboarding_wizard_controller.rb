@@ -46,7 +46,7 @@ class OnboardingWizardController < ApplicationController
       session[:client_id] = @client.id
       redirect_to next_wizard_path
     when :project
-      @project = Project.new(project_params.merge(client_id: session[:client_id], rate: 0, onboarding: true))
+      @project = Project.new(project_params.merge(client_id: session[:client_id], onboarding: true))
       @project.save!
       session[:project_id] = @project.id
       redirect_to next_wizard_path
@@ -75,7 +75,7 @@ class OnboardingWizardController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:name, :description, :billable)
+    params.require(:project).permit(:name, :description, :billable, :rate_currency)
   end
 
   def task_params
