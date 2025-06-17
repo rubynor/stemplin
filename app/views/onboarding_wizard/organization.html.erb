@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-y-1">
   <%= image_tag "tada.png", class: "w-12 h-12" %>
-  <span class="font-semibold text-xl text-gray-700">Congratulations! Let's Add Your Organization</span>
-  <span class="font-regular text-base text-gray-500">Almost there! To get started and make the most of your experience, let's set up your workspace. Just a quick step to go and you're all set to dive in!</span>
+  <span class="font-semibold text-xl text-gray-700"><%= t("common.onboarding.organization.title") %></span>
+  <span class="font-regular text-base text-gray-500"><%= t("common.onboarding.organization.description") %></span>
   <div id="onboarding_form" class="mt-6">
     <%= form_with method: :put, model: @organization, url: wizard_path do |form| %>
       <div class="flex flex-col gap-y-4">
@@ -23,7 +23,7 @@
         <% end %>
       </div>
       <div class="mt-8">
-        <%= render ButtonComponent.new(type: :submit, class: "w-full") { "Create" } %>
+        <%= render ButtonComponent.new(type: :submit, class: "w-full") { t("common.onboarding.organization.create") } %>
       </div>
     <% end %>
   </div>

@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-y-4 w-full">
-  <h1 class="text-2xl font-semibold text-gray-600 mb-1">Let's add a project for your client</h1>
-  <p class="text-base text-gray-600 mb-4">Projects are always connected to a client. Add your first project below.</p>
+  <h1 class="text-2xl font-semibold text-gray-600 mb-1"><%= t("common.onboarding.project.title") %></h1>
+  <p class="text-base text-gray-600 mb-4"><%= t("common.onboarding.project.description") %></p>
   <%= form_with model: @project, url: wizard_path, method: :put do |form| %>
     <%= content_tag(:div, class: "flex flex-col gap-y-4", data: { controller: "custom-disable", custom_disable_initial_status_value: @project.billable }) do %>
       <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>

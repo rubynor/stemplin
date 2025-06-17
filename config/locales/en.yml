@@ -248,6 +248,33 @@ en:
     select_date_worked: "Select date worked"
     skip_setup: "Skip setup"
     next: "Next"
+    onboarding:
+      setup_choice:
+        title: "Choose how to set up"
+        guided_setup:
+          title: "Guided setup"
+          description: "Let us help you set up your first client, project, and tasks"
+        or: "or"
+        skip_to_workspace:
+          title: "Skip to workspace"
+          description: "Start with a clean workspace and set up later"
+      organization:
+        title: "Congratulations! Let's Add Your Organization"
+        description: "Almost there! To get started and make the most of your experience, let's set up your workspace. Just a quick step to go and you're all set to dive in!"
+        create: "Create"
+      client:
+        title: "Let's create your first client"
+        description: "All your projects have to be connected to a client."
+      tasks:
+        title: "Let's add tasks to your project"
+        description: "Tasks help you organize your work within a project. Add at least one task to get started."
+      project:
+        title: "Let's add a project for your client"
+        description: "Projects are always connected to a client. Add your first project below."
+      finish:
+        title: "All done!"
+        description: "Your workspace is ready to go. You can now start tracking time for your projects and tasks."
+        start_tracking: "Start tracking time"
 
   notice:
     are_you_sure: "Are you sure?"

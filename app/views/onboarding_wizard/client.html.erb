@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-y-4 w-full">
-  <h1 class="text-2xl font-semibold text-gray-600 mb-1">Let's create your first client</h1>
-  <p class="text-base text-gray-600 mb-4">All your projects have to be connected to a client.</p>
+  <h1 class="text-2xl font-semibold text-gray-600 mb-1"><%= t("common.onboarding.client.title") %></h1>
+  <p class="text-base text-gray-600 mb-4"><%= t("common.onboarding.client.description") %></p>
   <%= form_with url: wizard_path, method: :put, scope: @client do |form| %>
     <div class="flex flex-col gap-y-4">
       <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
