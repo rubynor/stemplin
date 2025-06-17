@@ -60,7 +60,7 @@
     <% end %>
 
     <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
-      <%= render ButtonComponent.new(variant: :outline, path: skip_onboarding_wizard_path, method: :get) { t("common.skip_setup") } %>
+      <%= render ButtonComponent.new(variant: :outline, path: skip_onboarding_wizard_path, method: :get, type: :button) { t("common.skip_setup") } %>
       <%= render ButtonComponent.new(type: :submit) { t("common.next") } %>
     <% end %>
   <% end %>
