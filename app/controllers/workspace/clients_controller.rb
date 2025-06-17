@@ -92,7 +92,7 @@ module Workspace
 
       uri = URI.parse(request.referrer)
       query_params = Rack::Utils.parse_query(uri.query)
-      query_params['page']&.to_i
+      query_params["page"]&.to_i
     rescue URI::InvalidURIError
       nil
     end
