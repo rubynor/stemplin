@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_18_134314) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_19_161030) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,7 +60,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_18_134314) do
     t.bigint "access_info_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "invited_by_id"
+    t.string "invitation_token"
+    t.datetime "invited_at"
+    t.datetime "accepted_at"
     t.index ["access_info_id"], name: "index_project_accesses_on_access_info_id"
+    t.index ["invitation_token"], name: "index_project_accesses_on_invitation_token", unique: true
     t.index ["project_id", "access_info_id"], name: "index_project_accesses_on_project_id_and_access_info_id", unique: true
     t.index ["project_id"], name: "index_project_accesses_on_project_id"
   end
@@ -145,6 +150,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_18_134314) do
   add_foreign_key "clients", "organizations"
   add_foreign_key "project_accesses", "access_infos"
   add_foreign_key "project_accesses", "projects"
+  add_foreign_key "project_accesses", "users", column: "invited_by_id"
   add_foreign_key "projects", "clients"
   add_foreign_key "tasks", "organizations"
   add_foreign_key "time_regs", "assigned_tasks"
