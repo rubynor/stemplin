@@ -20,7 +20,7 @@ class AccessInfo < ApplicationRecord
   end
 
   def self.project_restricted_roles
-    self.roles.except(:super_admin, :organization_admin).keys
+    self.roles.except(:super_admin).keys
   end
 
   def project_restricted?

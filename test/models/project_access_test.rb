@@ -12,9 +12,9 @@ class ProjectAccessTest < ActiveSupport::TestCase
     assert @project_access.valid?
   end
 
-  test "should not be valid for admin" do
+  test "should be valid for admin" do
     @project_access.access_info = @admin_access_info
-    assert_not @project_access.valid?
+    assert @project_access.valid?
   end
 
   test "should not allow duplicate project access" do

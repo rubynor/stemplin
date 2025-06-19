@@ -130,7 +130,7 @@ class TimeRegsController < ApplicationController
   end
 
   def set_clients
-    @clients ||= authorized_scope(Project, type: :relation).group_by(&:client).map do |client, projects|
+    @clients ||= authorized_scope(Project, type: :relation, as: :own).group_by(&:client).map do |client, projects|
       OpenStruct.new(name: client.name, items: projects)
     end
   end

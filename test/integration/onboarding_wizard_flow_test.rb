@@ -48,6 +48,26 @@ class OnboardingWizardFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "user gets access to their first project after guided setup" do
+    # Create organization and project through onboarding
+    patch "/onboarding_wizard/organization", params: {
+      organization: { name: "Test Org", currency: "USD" }
+    }
+    patch "/onboarding_wizard/client", params: {
+      client: { name: "Test Client" }
+    }
+    patch "/onboarding_wizard/project", params: {
+      project: { name: "Test Project" }
+    }
+
+    # Verify project access was created
+    @user.reload
+    project = @user.current_organization.projects.first
+    access_info = @user.access_info(@user.current_organization)
+
+    assert ProjectAccess.exists?(project: project, access_info: access_info), "User should have access to their first project"
+  end
+
   test "user can skip onboarding wizard" do
     get skip_onboarding_wizard_path
     assert_redirected_to root_path
