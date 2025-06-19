@@ -1,0 +1,22 @@
+<% content_for :base_layout do %>
+  <%= render "layouts/navbar" if user_signed_in? %>
+  <div class="max-w-7xl mx-auto flex flex-col gap-y-4 py-4 lg:py-6 px-4">
+    <div class="py-3">
+      <span class="text-base lg:text-lg"> <%= t("common.workspace") %></span>
+    </div>
+    <%= render CardComponent.new(class: "!p-0 grid grid-cols-1 lg:grid-cols-4 z-10") do %>
+      <div class="col-span-1 bg-gray-50 p-4">
+        <%= render partial: "workspace/sidenav" %>
+      </div>
+      <div class="col-span-3 shadow-sm p-4 lg:p-6">
+        <%= yield %>
+      </div>
+    <% end %>
+  </div>
+
+  <footer class="print:hidden bottom-0 h-16 items-center flex space-x-2 justify-center fixed w-full text-center z-0">
+    <a href="" class="font-regular text-sm text-gray-400">Stemplin <%= Date.current.year %></a>
+  </footer>
+<% end %>
+
+<%= render template: "layouts/base" %>

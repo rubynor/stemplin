@@ -1,0 +1,99 @@
+<% content_for :title, project.new_record? ? t("common.new_project") : "#{t('common.edit')} #{project.name}" %>
+
+<%= form_with url: project.new_record? ? workspace_projects_path : workspace_project_path(project), method: project.new_record? ? :post : :patch, scope: project do |form| %>
+  <div class="flex flex-col gap-y-4">
+    <div class="flex flex-row pb-3 border-b items-center">
+      <%= link_to_back_or workspace_projects_path, class: "w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex justify-center items-center transition duration-300 ease-in-out" do %>
+        <i class="uc-icon text-2xl">&#xe833;</i>
+      <% end %>
+      <div class="mx-3">
+        <h2 class="font-medium text-gray-600 text-lg"><%= project.new_record? ? t("common.new_project") : "#{t('common.edit')} #{project.name}" %></h2>
+      </div>
+    </div>
+
+    <%= content_tag(:div, class: "flex flex-col gap-y-4 lg:gap-y-8", data: { controller: "custom-disable", custom_disable_initial_status_value: project.billable }) do %>
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.client") } %>
+        <%= render RubyUI::Input.new(type: "text", value: project.client.name, disabled: true, class: "border-gray-200 rounded-md w-full !opacity-100 bg-gray-100") %>
+        <%= form.hidden_field :client_id %>
+      <% end %>
+
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.name") } %>
+        <%= form.text_field :name, class: "border-gray-200 rounded-md w-full", required: true %>
+        <% project.errors.full_messages_for(:name).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <% end %>
+      <% end %>
+
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.description") } %>
+        <%= form.text_area :description, class: "border-gray-200 rounded-md w-full" %>
+        <% project.errors.full_messages_for(:description).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <% end %>
+      <% end %>
+
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.billable_project") } %>
+        <div class="flex flex-row gap-4">
+          <%# TODO: Extract into reusable component %>
+          <%= collection_radio_buttons(nil, :billable, [[true, 'Yes'] ,[false, 'No']], :first, :last) do |radio_button| %>
+            <%= content_tag(:label, class: "relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm w-full") do %>
+              <%= form.radio_button(:billable, radio_button.value, class: "sr-only peer", checked: radio_button.value == project.billable, data: { action: "custom-disable#toggleElement", custom_disable_enable_param: radio_button.value }) %>
+              <div class="absolute bg-primary-50 w-full h-full top-0 left-0 rounded-md border-2 border-primary-600 z-0 opacity-0 peer-checked:opacity-100 transition duration-300 ease-in-out"></div>
+              <span class="flex flex-1 z-10">
+                <span class="flex flex-col">
+                  <span class="block text-sm font-medium text-gray-900"><%= radio_button.value ? t("common.hourly_rate_selection") : t("common.non_billable") %></span>
+                  <span class="mt-1 flex items-center text-sm text-gray-500"><%= radio_button.value ? t("common.bill_hourly_rates_apply") : t("common.not_billed_to_a_client") %></span>
+                </span>
+              </span>
+              <span class=" absolute right-4 z-10 bg-primary-600 h-4 w-4 opacity-0 peer-checked:opacity-100 text-white flex justify-center items-center rounded-full transition duration-300 ease-in-out">
+                <i class="uc-icon text-sm text-white">&#xe8b2;</i>
+              </span>
+              <div class="absolute right-4 z-10 block h-4 w-4 border border-gray-300 shadow rounded-full peer-checked:opacity-0 transition duration-300 ease-in-out"></div>
+            <% end %>
+          <% end %>
+        </div>
+        <% project.errors.full_messages_for(:billable).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <% end %>
+      <% end %>
+
+      <%= content_tag(:div, data: { custom_disable_target: "content" }) do %>
+        <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormFieldLabel.new { "#{t("common.rates_per_hour")} - #{@currency}" } %>
+          <%= render RubyUI::FormFieldHint.new { t("common.track_billable_rates") } %>
+          <%= form.text_field :rate_currency, class: "border-gray-200 rounded-md" %>
+        <% end %>
+      <% end %>
+
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.users") } %>
+        <%= render RubyUI::FormFieldHint.new { t("common.add_users_optional") } %>
+        <%= render SelectMultipleComponent.new form, :user_ids, users, :id, :name_with_role, label: t("common.users") %>
+      <% end %>
+
+      <%= content_tag :div, data: { controller: "dynamic-task-url" } do %>
+        <div class="flex flex-row gap-x-4 w-full justify-between items-center border-b border-gray-100 pb-2">
+          <div class="flex flex-col">
+            <%= render RubyUI::FormFieldLabel.new { t("common.tasks") } %>
+            <%= render RubyUI::FormFieldHint.new { t("common.add_tasks") } %>
+          </div>
+          <%= link_to t("common.add_task"), add_modal_workspace_assigned_tasks_path, data: { turbo_method: :post, dynamic_task_url_target: "link" }, class: "bg-primary-100 text-primary-600 hover:bg-primary-200 text-sm font-medium py-2 px-4 h-12 rounded-md flex justify-center items-center" %>
+        </div>
+        <% project.errors.full_messages_for(:tasks).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <% end %>
+        <div id="project_form_assigned_tasks">
+          <%= render partial: "workspace/projects/form_assigned_task", collection: project.active_assigned_tasks, as: :assigned_task %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
+    <%= render ButtonComponent.new(variant: :outline, path: project.new_record? ? workspace_projects_path : workspace_project_path(project), method: :get) { t("common.cancel") } %>
+    <%= render ButtonComponent.new(type: :submit) { t("common.save") } %>
+  <% end %>
+<% end %>
