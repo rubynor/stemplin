@@ -49,6 +49,8 @@ class OnboardingWizardController < ApplicationController
       @project = Project.new(project_params.merge(client_id: session[:client_id], onboarding: true))
       @project.save!
       session[:project_id] = @project.id
+      access_info = current_user.access_info(@project.organization)
+      ProjectAccess.create!(project: @project, access_info: access_info)
       redirect_to next_wizard_path
     when :tasks
       @task = Task.new(task_params.merge(organization: current_user.current_organization))
