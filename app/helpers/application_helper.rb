@@ -32,7 +32,9 @@ module ApplicationHelper
   def active_timer_head(title_minutes)
     safe_join([
       tag.title(title_minutes + " | Stemplin", data: { refresh_minutes_target: "title" }),
-      favicon_link_tag("rotate-time-glass.gif")
+      # TODO: fix bug where favicon gif is not rotating in tab
+      # favicon_link_tag("rotate-time-glass.gif")
+      favicon_link_tag("stemplin-ico-squared.svg")
     ])
   end
 
