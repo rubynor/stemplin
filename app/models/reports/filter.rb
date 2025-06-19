@@ -54,7 +54,7 @@ module Reports
       res[CLIENTS] = Client.where(id: client_ids).pluck(:name) unless client_ids.blank?
       res[PROJECTS] = Project.where(id: project_ids).pluck(:name) unless project_ids.blank?
       res[TASKS] = Task.where(id: task_ids).pluck(:name) unless task_ids.blank?
-      res[USERS] = User.where(id: user_ids).to_a.map { |user| user.name } unless user_ids.blank?
+      res[USERS] = User.onboarded.where(id: user_ids).to_a.map { |user| user.name } unless user_ids.blank?
       res
     end
 
