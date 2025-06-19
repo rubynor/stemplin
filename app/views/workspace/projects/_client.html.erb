@@ -32,13 +32,10 @@
             <i class="uc-icon text-gray-500 ml-2">&#xe972;</i>
           <% end %>
 
-          <%- has_projects = client.projects.any? %>
           <%- turbo_body = "#{t("common.deletion_of_the_client")} <span class='font-semibold text-primary'>#{client.name}</span>? #{t("common.cannot_be_undone")}" %>
-          <%= render TooltipComponent.new(note: false ? t("common.project_has_recorded_time") : nil, class: "flex", options: { placement: "top" }) do %>
-            <%= render ButtonComponent.new(variant: :ghost, method: :delete, path: workspace_client_path(client), class: "flex w-full", disabled: has_projects, form: { data: { turbo_confirm: turbo_body }, class: "w-full" }) do %>
-              <span><%= t("common.delete") %></span>
-              <i class="uc-icon ml-2">&#xeb97;</i>
-            <% end %>
+          <%= render ButtonComponent.new(variant: :ghost, method: :delete, path: workspace_client_path(client), class: "flex w-full", form: { data: { turbo_confirm: turbo_body }, class: "w-full" }) do %>
+            <span><%= t("common.delete") %></span>
+            <i class="uc-icon ml-2">&#xeb97;</i>
           <% end %>
         <% end %>
       <% end %>
