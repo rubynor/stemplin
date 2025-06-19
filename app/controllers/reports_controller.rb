@@ -61,7 +61,7 @@ class ReportsController < AuthenticatedController
       selectable_clients: authorized_scope(Client, type: :relation).order(:name),
       selectable_projects: authorized_scope(Project, type: :relation).order(:name),
       selectable_tasks: authorized_scope(Task, type: :relation).order(:name),
-      selectable_users: authorized_scope(User, type: :relation).where.not(invitation_accepted_at: nil).order(:last_name)
+      selectable_users: authorized_scope(User.onboarded, type: :relation).order(:last_name),
     )
 
     unless @filter.client_ids.blank?
