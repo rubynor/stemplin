@@ -1,5 +1,7 @@
 DEFAULTS: &DEFAULTS
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  invitation_accepted_at: "2025-06-17"
+
 
 joe:
   email: joe@example.com
