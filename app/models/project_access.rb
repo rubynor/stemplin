@@ -1,7 +1,7 @@
 class ProjectAccess < ApplicationRecord
   belongs_to :project
   belongs_to :access_info
-  belongs_to :invited_by, class_name: 'User', optional: true
+  belongs_to :invited_by, class_name: "User", optional: true
   has_one :organization, through: :access_info
 
   validates :project_id, uniqueness: { scope: :access_info_id }
