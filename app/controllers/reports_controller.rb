@@ -61,7 +61,7 @@ class ReportsController < AuthenticatedController
       selectable_clients: authorized_scope(Client, type: :relation).order(:name),
       selectable_projects: authorized_scope(Project, type: :relation).order(:name),
       selectable_tasks: authorized_scope(Task, type: :relation).order(:name),
-      selectable_users: authorized_scope(User, type: :relation).order(:last_name),
+      selectable_users: authorized_scope(User, type: :relation).onboarded.order(:last_name),
     )
 
     unless @filter.client_ids.blank?
@@ -76,7 +76,7 @@ class ReportsController < AuthenticatedController
                                         .distinct.order(:name)
       @form_data.selectable_users = authorized_scope(User, type: :relation).joins(:projects)
                                         .where(projects: { id: @filter.project_ids })
-                                        .distinct.ordered_by_name
+                                        .distinct.onboarded.ordered_by_name
     end
   end
 end
