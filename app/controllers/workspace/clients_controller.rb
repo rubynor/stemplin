@@ -23,7 +23,7 @@ module Workspace
         turbo_stream.action(:remove_modal, :modal)
       ]
     else
-      render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/clients/form", locals: { client: @client })
+      render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/clients/form_content", locals: { client: @client })
     end
   end
 
