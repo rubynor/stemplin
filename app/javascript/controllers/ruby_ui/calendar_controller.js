@@ -60,11 +60,36 @@ export default class extends Controller {
     this.rubyUiCalendarInputOutlets.forEach((outlet) => {
       const formattedDate = this.formatDate(this.selectedDate());
       outlet.setValue(formattedDate);
+      this.updateBadge(outlet.element);
     });
   }
 
   viewDateValueChanged(value, prevValue) {
     this.updateCalendar();
+  }
+
+  updateBadge(inputElement) {
+    const badgeTarget = inputElement.dataset.badgeTarget;
+    if (!badgeTarget) return;
+
+    const badgeElement = document.querySelector(`[data-date-badge-target="${badgeTarget}"]`);
+    if (!badgeElement) return;
+
+    const inputValue = inputElement.value;
+
+    if (inputValue) {
+      const formattedDate = this.formatDateForBadge(inputValue);
+      badgeElement.textContent = formattedDate;
+    }
+  }
+
+
+  formatDateForBadge(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    const year = date.getFullYear().toString().slice(-2);
+    return `${day} ${month} ${year}`;
   }
 
   adjustMonth(adjustment) {
