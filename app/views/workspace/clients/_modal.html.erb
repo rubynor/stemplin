@@ -3,9 +3,7 @@
     <%= render RubyUI::Button.new { "Open Dialog" } %>
   <% end %>
   <%= render RubyUI::DialogContent.new(class: "bg-white") do %>
-    <%= turbo_frame_tag :modal do %>
-      <%# TODO: cleanup this funny check with form_with(:model) after cleaning up with the other conflicting controller %>
-      <%= render partial: "workspace/clients/form", locals: { client: client } %>
-    <% end %>
+    <%# TODO: cleanup this funny check with form_with(:model) after cleaning up with the other conflicting controller %>
+    <%= render partial: "workspace/clients/form", locals: { client: client } %>
   <% end %>
 <% end %>
