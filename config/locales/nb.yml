@@ -98,7 +98,7 @@ nb:
     projects: "Prosjekter"
     project: "Prosjekt"
     clients_and_projects: "Kunder og Prosjekter"
-    no_projects_yet: "Ingen prosjekter enda"
+    no_projects_created: "Ingen prosjekter opprettet"
 
     notes: "Notater"
     edit_account: "Rediger Bruker"

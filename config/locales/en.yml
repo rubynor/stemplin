@@ -82,7 +82,7 @@ en:
     projects: "Projects"
     project: "Project"
     clients_and_projects: "Clients & Projects"
-    no_projects_yet: "No projects yet"
+    no_projects_created: "No projects created"
     notes: "Notes"
     edit_account: "Edit Account"
     sign_out: "Sign Out"
