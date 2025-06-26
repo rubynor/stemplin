@@ -23,32 +23,18 @@
     <% end %>
   <% end %>
 
-  <%= render RubyUI::TableCell.new(class: "flex justify-end gap-2") do %>
-    <%= render RubyUI::Tooltip.new do %>
-      <%= render RubyUI::TooltipTrigger.new do %>
-        <%= render ButtonComponent.new(path: edit_workspace_project_path(project), method: :get, icon: true, variant: :outline) do %>
-          <i class="uc-icon text-gray-500">&#xe972;</i>
-        <% end %>
-      <% end %>
-      <%= render RubyUI::TooltipContent.new(class: "bg-white") do %>
-        <%= render RubyUI::Text.new do %>
-          <%= t("common.edit") %>
-        <% end %>
+  <%= render RubyUI::TableCell.new(class: "flex align-center justify-end gap-2 h-full") do %>
+    <%= render TooltipComponent.new(note: t("common.update")) do %>
+      <%= render ButtonComponent.new(path: edit_workspace_project_path(project), method: :get, icon: true, variant: :outline) do %>
+        <i class="uc-icon text-gray-500">&#xe972;</i>
       <% end %>
     <% end %>
 
     <%- has_time_regs = project.time_regs.any? %>
-    <%- turbo_body = "#{t("description.proceed_deletion_of_the_task")} <span class='font-semibold text-primary'>#{project.name}</span>? #{t("common.cannot_be_undone")}" %>
-    <%= render RubyUI::Tooltip.new do %>
-      <%= render RubyUI::TooltipTrigger.new do %>
-        <%= render ButtonComponent.new(variant: :outline, method: :delete, icon: true, path: workspace_project_path(project), class: "flex", disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body } }) do %>
-          <i class="uc-icon">&#xeb97;</i>
-        <% end %>
-      <% end %>
-      <%= render RubyUI::TooltipContent.new(class: "bg-white") do %>
-        <%= render RubyUI::Text.new do %>
-          <%= t("common.delete") %>
-        <% end %>
+    <%- turbo_body = has_time_regs ? "The project <span class='font-semibold text-primary'>#{project.name}</span> has time registrations and can not be deleted." : "#{t("notice.deletion_of_he_project")} <span class='font-semibold text-primary'>#{project.name}</span>, #{t("notice.cannot_be_undone")}" %>
+    <%= render TooltipComponent.new(note: has_time_regs ? t("common.project_has_time_regs") : t("common.delete")) do %>
+      <%= render ButtonComponent.new(variant: :outline, method: :delete, icon: true, path: workspace_project_path(project), disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body } }) do %>
+        <i class="uc-icon">&#xeb97;</i>
       <% end %>
     <% end %>
   <% end %>

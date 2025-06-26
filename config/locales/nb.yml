@@ -99,6 +99,12 @@ nb:
     project: "Prosjekt"
     clients_and_projects: "Kunder og Prosjekter"
     no_projects_created: "Ingen prosjekter opprettet"
+    client_has_project: "Klienten har tilkoblede prosjekter, og kan ikke slettes."
+    project_has_time_regs: "Prosjektet har registrerte tidsregistreringer, og kan ikke slettes."
+
+    client_deletion_confirmation: "Ønsker du å fortsette med sletting av klienten"
+    client_has_projects_cannot_delete: "Klienten <span class='font-semibold text-primary'>%{client_name}</span> har prosjekter og kan ikke slettes."
+    client_deletion_warning: "%{deletion_text} <span class='font-semibold text-primary'>%{client_name}</span>? %{cannot_undo_text}"
 
     notes: "Notater"
     edit_account: "Rediger Bruker"
