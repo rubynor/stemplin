@@ -23,7 +23,7 @@
     <% end %>
   <% end %>
 
-  <%= render RubyUI::TableCell.new(class: "flex justify-right gap-4") do %>
+  <%= render RubyUI::TableCell.new(class: "flex justify-end gap-2") do %>
     <%= render RubyUI::Tooltip.new do %>
       <%= render RubyUI::TooltipTrigger.new do %>
         <%= render ButtonComponent.new(path: edit_workspace_project_path(project), method: :get, icon: true, variant: :outline) do %>

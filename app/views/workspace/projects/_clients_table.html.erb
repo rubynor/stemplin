@@ -4,7 +4,7 @@
       <%= render RubyUI::TableRow.new(class: "text-gray-500" ) do %>
         <%= render RubyUI::TableHead.new(class: "w-1/3") { t("common.name") } %>
         <%= render RubyUI::TableHead.new(class: "w-1/3") { t("common.rate") } %>
-        <%= render RubyUI::TableHead.new(class: "w-1/3") { t("common.actions") } %>
+        <%= render RubyUI::TableHead.new(class: "w-1/3 text-end") { t("common.actions") } %>
       <% end %>
     <% end %>
       <%= render partial: "workspace/projects/client", collection: clients %>
