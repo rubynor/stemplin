@@ -30,7 +30,7 @@ nb:
       - "Oktober"
       - "November"
       - "Desember"
-  
+
     day_names:
       - "Søndag"
       - "Mandag"
@@ -98,6 +98,8 @@ nb:
     projects: "Prosjekter"
     project: "Prosjekt"
     clients_and_projects: "Kunder og Prosjekter"
+    no_projects_yet: "Ingen prosjekter enda"
+
     notes: "Notater"
     edit_account: "Rediger Bruker"
     sign_out: "Logg Ut"
@@ -435,7 +437,7 @@ nb:
               too_short: "er for kort (minimum er %{count} tegn)"
               too_long: "er for lang (maksimum er %{count} tegn)"
               taken: "er allerede i bruk"
-        
+
         project:
           attributes:
             name: "navn"
@@ -454,7 +456,7 @@ nb:
               too_short: "er for kort (minimum er %{count} tegn)"
               too_long: "er for lang (maksimum er %{count} tegn)"
               taken: "er allerede i bruk"
-          
+
         task:
           attributes:
             name: "navn"
@@ -475,7 +477,7 @@ nb:
             minutes:
               not_a_number: "er ikke et tall"
               less_than_or_equal_to: "må være mindre eller lik %{count}"
-        
+
         user:
           attributes:
             current_password:
