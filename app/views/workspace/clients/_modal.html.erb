@@ -1,0 +1,9 @@
+<%= render RubyUI::Dialog.new(open: true, data: { controller: "custom-dialog" }) do %>
+  <%= render RubyUI::DialogTrigger.new(class: "hidden", data: { custom_dialog_target: "trigger" }) do %>
+    <%= render RubyUI::Button.new { "Open Dialog" } %>
+  <% end %>
+  <%= render RubyUI::DialogContent.new(class: "bg-white") do %>
+    <%# TODO: cleanup this funny check with form_with(:model) after cleaning up with the other conflicting controller %>
+    <%= render partial: "workspace/clients/form", locals: { client: client } %>
+  <% end %>
+<% end %>

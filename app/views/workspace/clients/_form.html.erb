@@ -1,35 +1,27 @@
-<%= render RubyUI::Dialog.new(open: true, data: { controller: "custom-dialog" }) do %>
-  <%= render RubyUI::DialogTrigger.new(class: "hidden", data: { custom_dialog_target: "trigger" }) do %>
-    <%= render RubyUI::Button.new { "Open Dialog" } %>
-  <% end %>
-  <%= render RubyUI::DialogContent.new(class: "bg-white") do %>
-    <%= turbo_frame_tag :modal do %>
-      <%# TODO: cleanup this funny check with form_with(:model) after cleaning up with the other conflicting controller %>
-      <%= form_with url: client.new_record? ? workspace_clients_path : workspace_client_path, method: client.new_record? ?  :post : :patch, scope: client do |form| %>
-        <div class="flex flex-col gap-y-4">
-          <span class="font-semibold text-gray-600 text-lg"><%= client.new_record? ? t("task.new_client") : "#{t("common.edit")} #{client.name}" %></span>
-          <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
-            <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
-              <%= render RubyUI::FormFieldLabel.new { t("common.name") } %>
-              <%= form.text_field :name, class: "border-gray-200 rounded-md w-full", autofocus: true %>
-              <% client.errors.full_messages_for(:name).each do |message|%>
-                <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
-              <% end %>
-            <% end %>
-            <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
-              <%= render RubyUI::FormFieldLabel.new { t("common.description") } %>
-              <%= form.text_area :description, class: "border-gray-200 rounded-md w-full" %>
-              <% client.errors.full_messages_for(:description).each do |message|%>
-                <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
-              <% end %>
-            <% end %>
+<%= turbo_frame_tag :modal do %>
+  <%= form_with url: client.new_record? ? workspace_clients_path : workspace_client_path, method: client.new_record? ?  :post : :patch, scope: client do |form| %>
+    <div class="flex flex-col gap-y-4">
+      <span class="font-semibold text-gray-600 text-lg"><%= client.new_record? ? t("task.new_client") : "#{t("common.edit")} #{client.name}" %></span>
+      <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormFieldLabel.new { t("common.name") } %>
+          <%= form.text_field :name, class: "border-gray-200 rounded-md w-full", autofocus: true %>
+          <% client.errors.full_messages_for(:name).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
           <% end %>
-        </div>
-        <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
-          <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->ruby-ui--dialog#dismiss' }) { t("common.cancel") } %>
-          <%= render ButtonComponent.new(type: :submit) { t("common.save") } %>
-        <% end %>
       <% end %>
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormFieldLabel.new { t("common.description") } %>
+          <%= form.text_area :description, class: "border-gray-200 rounded-md w-full" %>
+          <% client.errors.full_messages_for(:description).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+          <% end %>
+      <% end %>
+      <% end %>
+    </div>
+    <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
+      <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->ruby-ui--dialog#dismiss' }) { t("common.cancel") } %>
+      <%= render ButtonComponent.new(type: :submit) { t("common.save") } %>
     <% end %>
   <% end %>
 <% end %>
