@@ -11,6 +11,21 @@ class UserMailer < Devise::Mailer
     )
   end
 
+  def project_invitation_email(project_invitation:, inviting_user:, project:)
+    mail(
+      to: project_invitation.invited_email,
+      sendgrid_template: Stemplin.config.emails.templates[:user][:project_invitation][I18n.locale][:template_id],
+      content: {
+        inviting_user_name: inviting_user.name,
+        inviting_organization_name: inviting_user.current_organization.name,
+        project_name: project.name,
+        client_name: project.client.name,
+        accept_url: "", # accept_project_invitation_url(token: project_invitation.invitation_token),
+        reject_url: "" # reject_project_invitation_url(token: project_invitation.invitation_token)
+      }
+    )
+  end
+
   # @Note: This overrides `reset_password_instructions` from Devise::Mailer to send a sendgrid template
   # this implementations sends over a url with the `reset_password_token`
   # I think this is something Sendgrid should be handling well, but if it poses security concerns

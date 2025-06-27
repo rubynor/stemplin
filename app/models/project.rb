@@ -17,6 +17,7 @@ class Project < ApplicationRecord
   has_many :project_accesses, dependent: :destroy
   has_many :access_infos, through: :project_accesses
   has_many :users, through: :access_infos
+  has_many :project_invitations, dependent: :destroy
 
   accepts_nested_attributes_for :assigned_tasks, allow_destroy: true
 
