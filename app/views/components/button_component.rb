@@ -3,6 +3,7 @@
 class ButtonComponent < ApplicationComponent
   module Styles
     BASE = "py-2 !h-12"
+    ICON_BASE = "h-8 w-8"
 
     VARIANTS = {
       primary: "!bg-primary-600 !text-white hover:!bg-primary-700",
@@ -18,9 +19,9 @@ class ButtonComponent < ApplicationComponent
       loading: "opacity-75 !cursor-wait"
     }
 
-    def self.compose(variant, state = nil, custom_class = nil)
+    def self.compose(variant, state = nil, custom_class = nil, icon = false)
       [
-        BASE,
+        icon ? ICON_BASE : BASE,
         VARIANTS[variant] || VARIANTS[:primary],
         state ? STATES[state] : nil,
         custom_class
@@ -71,6 +72,6 @@ class ButtonComponent < ApplicationComponent
     state = :disabled if @attrs[:disabled]
     state = :loading if @attrs[:loading]
 
-    Styles.compose(variant, state, @attrs[:class])
+    Styles.compose(variant, state, @attrs[:class], @attrs[:icon])
   end
 end

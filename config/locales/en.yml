@@ -38,7 +38,7 @@ en:
     name: "English"
     short_name: ENG
     flag: "flag-uk.svg"
-  
+
   date:
     day_names:
       - Sunday
@@ -82,6 +82,13 @@ en:
     projects: "Projects"
     project: "Project"
     clients_and_projects: "Clients & Projects"
+    no_projects_created: "No projects created"
+    client_has_project: "The Client has connected projects, and can not be deleted."
+    project_has_time_regs: "The Project has recorded time registrations, and can not be deleted."
+    client_deletion_confirmation: "Do you want to proceed with the deletion of the client"
+    client_has_projects_cannot_delete: "The client <span class='font-semibold text-primary'>%{client_name}</span> has projects and can not be deleted."
+    client_deletion_warning: "%{deletion_text} <span class='font-semibold text-primary'>%{client_name}</span>? %{cannot_undo_text}"
+
     notes: "Notes"
     edit_account: "Edit Account"
     sign_out: "Sign Out"
@@ -193,7 +200,7 @@ en:
     team: "Team"
     filter: "Filter"
     period: "Period"
-    period_from: "Period - from" 
+    period_from: "Period - from"
     period_to: "Period - to"
     reset: "Reset"
     all: "All"
