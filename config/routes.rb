@@ -66,6 +66,11 @@ Rails.application.routes.draw do
   resources :reports, only: [ :index ]
   get "reports/detailed", to: "reports#detailed", as: :detailed_reports
 
+  # Project invitation routes
+  # get "project_invitations/:token/accept", to: "project_invitations#show", as: :accept_project_invitation
+  # post "project_invitations/:token/accept", to: "project_invitations#accept"
+  # post "project_invitations/:token/reject", to: "project_invitations#reject", as: :reject_project_invitation
+
 
   # PWA routes
 

@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :clients, through: :organizations
   has_many :projects, through: :clients
   has_many :project_accesses, through: :access_infos
+  has_many :sent_project_invitations, class_name: "ProjectInvitation", foreign_key: "invited_by_id"
 
   scope :ordered_by_name, -> { order(:first_name, :last_name) }
   scope :ordered_by_role, -> { joins(:access_infos).select("users.*, access_infos.role").order("access_infos.role ASC") }

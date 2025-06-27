@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_19_161030) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_26_134835) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,14 +60,27 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_19_161030) do
     t.bigint "access_info_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "invited_by_id"
-    t.string "invitation_token"
-    t.datetime "invited_at"
-    t.datetime "accepted_at"
     t.index ["access_info_id"], name: "index_project_accesses_on_access_info_id"
-    t.index ["invitation_token"], name: "index_project_accesses_on_invitation_token", unique: true
     t.index ["project_id", "access_info_id"], name: "index_project_accesses_on_project_id_and_access_info_id", unique: true
     t.index ["project_id"], name: "index_project_accesses_on_project_id"
+  end
+
+  create_table "project_invitations", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.string "invited_email", null: false
+    t.bigint "invited_by_id", null: false
+    t.string "invitation_token", null: false
+    t.datetime "invited_at", null: false
+    t.datetime "accepted_at"
+    t.datetime "rejected_at"
+    t.datetime "expires_at"
+    t.bigint "accepted_as_access_info_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accepted_as_access_info_id"], name: "index_project_invitations_on_accepted_as_access_info_id"
+    t.index ["invitation_token"], name: "index_project_invitations_on_invitation_token", unique: true
+    t.index ["invited_email", "project_id"], name: "index_project_invitations_on_invited_email_and_project_id", unique: true
+    t.index ["project_id"], name: "index_project_invitations_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -150,7 +163,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_19_161030) do
   add_foreign_key "clients", "organizations"
   add_foreign_key "project_accesses", "access_infos"
   add_foreign_key "project_accesses", "projects"
-  add_foreign_key "project_accesses", "users", column: "invited_by_id"
+  add_foreign_key "project_invitations", "access_infos", column: "accepted_as_access_info_id"
+  add_foreign_key "project_invitations", "projects"
+  add_foreign_key "project_invitations", "users", column: "invited_by_id"
   add_foreign_key "projects", "clients"
   add_foreign_key "tasks", "organizations"
   add_foreign_key "time_regs", "assigned_tasks"

@@ -13,3 +13,8 @@ shared:
           template_id: "d-b7fd90a827e34d0b8cd837ed8afaaf60"
         en:
           template_id: "d-b7fd90a827e34d0b8cd837ed8afaaf60"
+      project_invitation:
+        nb:
+          template_id: "d-660209244f7e464e9ac4eed8f670e73d"
+        en:
+          template_id: "d-660209244f7e464e9ac4eed8f670e73d"

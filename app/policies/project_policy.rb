@@ -7,6 +7,10 @@ class ProjectPolicy < ApplicationPolicy
     user.organization_admin? && user.current_organization == record.organization
   end
 
+  def invite_external_user?
+    user.organization_admin? && user.current_organization == record.organization
+  end
+
   scope_for :relation, :own do |relation|
     organization = user.current_organization
     relation = relation.joins(client: :organization).where(organizations: { id: organization.id })
