@@ -77,14 +77,15 @@ module Workspace
     def set_project
       @project = authorized_scope(Project, type: :relation).find(params[:id])
       @pagy_active_assigned_tasks, @active_assigned_tasks = pagy @project.active_assigned_tasks, items: 6
-      @pagy_members, @members = pagy @project.users, items: 6
+
+      @pagy_members, @members = pagy @project.users.onboarded, items: 6
     end
 
     def prepare_form_data
       organization = current_user.current_organization
       @clients = authorized_scope(Client, type: :relation).all
       @tasks = authorized_scope(Task, type: :relation).all
-      users = authorized_scope(User, type: :relation).project_restricted(organization).ordered_by_role.ordered_by_name
+      users = authorized_scope(User, type: :relation).project_restricted(organization).onboarded.ordered_by_role.ordered_by_name
       @users = users.map { |u| OpenStruct.new(
         id: u.id,
         name_with_role: u.name_with_role(organization),

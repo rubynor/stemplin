@@ -5,16 +5,16 @@ shared:
       welcome:
         # Same template (english) for both languages. TODO: fix
         nb:
-          template_id: "d-f78bbd2312eb4e62904e90813cddfde9"
+          template_id: "d-313b9d8d45b642cdb0ab07922c6b6096"
         en:
-          template_id: "d-f78bbd2312eb4e62904e90813cddfde9"
+          template_id: "d-313b9d8d45b642cdb0ab07922c6b6096"
+      password_reset:
+        nb:
+          template_id: "d-b7fd90a827e34d0b8cd837ed8afaaf60"
+        en:
+          template_id: "d-b7fd90a827e34d0b8cd837ed8afaaf60"
       project_invitation:
         nb:
           template_id: "d-660209244f7e464e9ac4eed8f670e73d"
         en:
           template_id: "d-660209244f7e464e9ac4eed8f670e73d"
-      password_reset:
-        nb:
-          template_id: "d-7738fd5757d5497ca4973e572ba4b26e"
-        en:
-          template_id: "d-7738fd5757d5497ca4973e572ba4b26e"
