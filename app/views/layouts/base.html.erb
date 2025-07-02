@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-  <head data-controller="refresh-minutes" data-refresh-minutes-active-value="true" data-refresh-minutes-minutes-value=<%= @active_time_reg.current_minutes %> data-refresh-minutes-format-value="HH:mm" >
+  <head data-controller="refresh-minutes" data-refresh-minutes-active-value="true" data-refresh-minutes-minutes-value=<%= @active_time_reg&.current_minutes %> data-refresh-minutes-format-value="HH:mm" >
     <% if @active_time_reg %>
       <title data-refresh-minutes-target="title minutes">
-        <%= format_duration(@active_time_reg.current_minutes) %> | Stemplin
+        <%= format_duration(@active_time_reg&.current_minutes) %> | Stemplin
       </title>
     <% else %>
       <title>
