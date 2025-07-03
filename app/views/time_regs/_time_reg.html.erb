@@ -32,18 +32,12 @@
             <% end %>
           </div>
         </div>
-        <div class="w-fit ml-7">
+        <div class="w-fit ml-7 flex items-center gap-1">
           <span><%= time_reg.project.name %></span>
-
-          <div class="flex justify-start align-center pl-2 gap-1">
-            <i class="uc-icon text-xl">&#xe847;</i>
-            <div class="flex items-end align-bottom justify-start">
-              <span class="text-sm text-gray-800"><%= time_reg.task.name %></span>
-            </div>
-          </div>
-
+          <i class="uc-icon text-xl">&#xe836;</i>
+          <span class="text-sm text-gray-500"><%= time_reg.task.name %></span>
         </div>
-        <div class="w-full lg:pr-6">
+        <div class="w-full lg:pr-6 mt-2">
           <%= simple_format time_reg.notes, class: "text-xs text-gray-500" %>
         </div>
       </div>
