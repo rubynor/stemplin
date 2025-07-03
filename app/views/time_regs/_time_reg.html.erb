@@ -13,9 +13,13 @@
       <div class="flex flex-col w-full lg:w-auto">
         <div class="flex flex-row gap-x-2 justify-between lg:justify-start">
           <div class="flex flex-col lg:flex-row lg:items-center text-sm lg:text-base text-gray-600 gap-x-2 w-fit">
-            <span><%= time_reg.task.name %></span>
-            <span class="hidden lg:block">-</span>
-            <span class="font-semibold"><%= time_reg.project.name %></span>
+            <div class="flex gap-1 justify-center items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
+                <path d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z"/>
+              </svg>
+              <span class="font-bold text-lg"><%= time_reg.project.client.name %></span>
+            </div>
           </div>
           <div class="flex flex-row-reverse lg:flex-row items-center h-fit gap-2">
             <%= render RubyUI::Badge.new(variant: time_reg.is_zero_minutes? ? :red : :gray, class: "!rounded-full flex gap-x-1") do %>
@@ -31,8 +35,20 @@
             <% end %>
           </div>
         </div>
-        <div class="w-fit">
-          <span class="text-sm text-gray-800"><%= time_reg.project.client.name %></span>
+        <div class="w-fit ml-7">
+          <span><%= time_reg.project.name %></span>
+
+          <div class="flex justify-start align-center pl-2 gap-2">
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5"/>
+              </svg>
+            </span>
+            <div class="flex align-bottom justify-start">
+              <span class="text-sm text-gray-800"><%= time_reg.task.name %></span>
+            </div>
+          </div>
+
         </div>
         <div class="w-full lg:pr-6">
           <%= simple_format time_reg.notes, class: "text-xs text-gray-500" %>
