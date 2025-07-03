@@ -14,7 +14,7 @@
         <div class="flex flex-row gap-x-2 justify-between lg:justify-start">
           <div class="flex flex-col lg:flex-row lg:items-center text-sm lg:text-base text-gray-600 gap-x-2 w-fit">
             <div class="flex gap-1 justify-center items-center">
-              <%= image_tag "building.svg", class: "w-5" %>
+              <i class="uc-icon text-xl">&#xe88a;</i>
               <span class="font-bold text-lg"><%= time_reg.project.client.name %></span>
             </div>
           </div>
@@ -35,9 +35,9 @@
         <div class="w-fit ml-7">
           <span><%= time_reg.project.name %></span>
 
-          <div class="flex justify-start align-center pl-2 gap-2">
-            <%= image_tag "arrow-return-right.svg", class: "w-5" %>
-            <div class="flex align-bottom justify-start">
+          <div class="flex justify-start align-center pl-2 gap-1">
+            <i class="uc-icon text-xl">&#xe847;</i>
+            <div class="flex items-end align-bottom justify-start">
               <span class="text-sm text-gray-800"><%= time_reg.task.name %></span>
             </div>
           </div>
