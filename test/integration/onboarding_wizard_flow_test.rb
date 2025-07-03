@@ -63,7 +63,12 @@ class OnboardingWizardFlowTest < ActionDispatch::IntegrationTest
     # Verify project access was created
     @user.reload
     project = @user.current_organization.projects.first
+    project_owner_membership = project.owner_membership
     access_info = @user.access_info(@user.current_organization)
+
+    assert project, "Project should have beed created"
+    assert project_owner_membership, "Project should have a owner"
+    assert access_info, "AccessInfo should have beed created"
 
     assert ProjectAccess.exists?(project: project, access_info: access_info), "User should have access to their first project"
   end

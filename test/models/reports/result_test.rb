@@ -91,10 +91,15 @@ module Reports
       @task_4 = Task.create!(name: "Task4", organization: @organization)
 
       # Create Projects without validation (because of circular dependency)
-      @project1 = Project.new(name: "Project1", client: @client1, rate: 150, billable: true)
-      @project2 = Project.new(name: "Project2", client: @client1, rate: 200, billable: false)
-      @project3 = Project.new(name: "Project3", client: @client2, rate: 250, billable: true)
-      @project4 = Project.new(name: "Project4", client: @client2, rate: 300, billable: true)
+      @project1 = Project.new(name: "Project1", client: @client1)
+      @project2 = Project.new(name: "Project2", client: @client1)
+      @project3 = Project.new(name: "Project3", client: @client2)
+      @project4 = Project.new(name: "Project4", client: @client2)
+
+      @project_membership_1 = ProjectMembership.new(project: @project1, role: :owner, organization: @organization, rate: 150, billable: true)
+      @project_membership_2 = ProjectMembership.new(project: @project2, role: :owner, organization: @organization, rate: 200, billable: false)
+      @project_membership_3 = ProjectMembership.new(project: @project3, role: :owner, organization: @organization, rate: 250, billable: true)
+      @project_membership_4 = ProjectMembership.new(project: @project4, role: :owner, organization: @organization, rate: 300, billable: true)
 
       # Create AssignedTasks without validation (because of circular dependency)
       @assigned_task1 = AssignedTask.new(task: @task1, project: @project1)

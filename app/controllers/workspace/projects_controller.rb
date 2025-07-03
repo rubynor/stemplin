@@ -8,6 +8,7 @@ module Workspace
     def new
       authorize!
       @project = authorized_scope(Project, type: :relation).new
+      @project.project_memberships.new(role: :owner, organization: current_user.current_organization)
       @project.client = authorized_scope(Client, type: :relation).find_by(id: params[:client_id])
       redirect_back fallback_location: workspace_projects_path, alert: t("alert.client_not_found") unless @project.client
     end
@@ -18,9 +19,10 @@ module Workspace
 
     def create
       @project = authorized_scope(Project, type: :relation).new(project_params)
+      @project_membership = @project.project_memberships.new(project_membership_params.merge(role: :owner, organization: current_user.current_organization))
       authorize! @project
 
-      if @project.save
+      if @project.save && @project_membership.save
         redirect_to workspace_project_path(@project)
       else
         render :new, status: :unprocessable_entity
@@ -64,9 +66,13 @@ module Workspace
     private
 
     def project_params
-      p = params.require(:project).permit(:client_id, :name, :description, :billable, :rate_currency, user_ids: [],
+      p = params.require(:project).permit(:client_id, :name, :description, user_ids: [],
             assigned_tasks_attributes: [ :id, :rate, :_destroy, :task_id, task_attributes: [ :name, :organization_id ] ])
       convert_user_ids_to_access_info_ids(p)
+    end
+
+    def project_membership_params
+      params.require(:project).permit(:billable, :rate_currency)
     end
 
     def convert_user_ids_to_access_info_ids(proj_params)

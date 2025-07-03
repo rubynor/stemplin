@@ -1,0 +1,20 @@
+project_1_owner:
+  project: project_1
+  organization: organization_one
+  role: owner
+  rate: 100
+  billable: true
+
+project_2_owner:
+  project: project_2
+  organization: organization_one
+  role: owner
+  rate: 0
+  billable: false
+
+to_be_deleted_owner:
+  project: to_be_deleted
+  organization: organization_one
+  role: owner
+  rate: 100
+  billable: true
