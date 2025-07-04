@@ -1,0 +1,28 @@
+<div class="flex flex-col gap-y-4 w-full">
+  <h1 class="text-2xl font-semibold text-gray-600 mb-1"><%= t("common.onboarding.client.title") %></h1>
+  <p class="text-base text-gray-600 mb-4"><%= t("common.onboarding.client.description") %></p>
+  <%= form_with url: wizard_path, method: :put, scope: @client do |form| %>
+    <div class="flex flex-col gap-y-4">
+      <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
+        <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormFieldLabel.new { t("common.name") } %>
+          <%= form.text_field :name, class: "border-gray-200 rounded-md w-full", autofocus: true %>
+          <% @client.errors.full_messages_for(:name).each do |message|%>
+            <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+          <% end %>
+        <% end %>
+        <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormFieldLabel.new { t("common.description") } %>
+          <%= form.text_area :description, class: "border-gray-200 rounded-md w-full" %>
+          <% @client.errors.full_messages_for(:description).each do |message|%>
+            <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+    <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
+      <%= render ButtonComponent.new(variant: :outline, path: skip_onboarding_wizard_path, method: :get, type: :button) { t("common.skip_setup") } %>
+      <%= render ButtonComponent.new(type: :submit) { t("common.next") } %>
+    <% end %>
+  <% end %>
+</div>

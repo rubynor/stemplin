@@ -1,0 +1,50 @@
+<% content_for :title, t("common.edit_user") %>
+
+<div class="flex flex-col w-full mt-12">
+  <span class="text-xl font-semibold text-gray-600"><%= t("common.edit_user") %></span>
+  <span class="text-sm text-gray-400"><%= resource.email %></span>
+
+  <div class="flex flex-col mt-4 gap-y-2">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |form| %>
+      <%= render AlertComponent.new(variant: :destructive, title: t("common.unable_to_proceed"), message: resource.errors.full_messages) if resource.errors.any? %>
+      <div class="w-full flex gap-y-4 flex-col mt-4">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <div class="flex flex-col w-full gap-y-4 mb-4">
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+            <%= render RubyUI::FormFieldLabel.new { t("registration.first_name") } %>
+            <%= form.text_field :first_name, id: "first-name", autocomplete: "given-name", required: true, placeholder: t("registration.first_name"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+            <%= render RubyUI::FormFieldLabel.new { t("registration.last_name") } %>
+            <%= form.text_field :last_name, id: "last-name", autocomplete: "family-name", required: true, placeholder: t("registration.last_name"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+            <%= render RubyUI::FormFieldLabel.new { t("registration.email") } %>
+            <%= form.email_field :email, id: "email-address", autocomplete: "email", required: true, placeholder: t("registration.email"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+            <%= render RubyUI::FormFieldLabel.new { t("registration.new_password") } %>
+            <%= form.password_field :password, id: "password", autocomplete: "new-password", placeholder: t("registration.password_blank"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+            <%= render RubyUI::FormFieldLabel.new { t("registration.confirm_password") } %>
+            <%= form.password_field :password_confirmation, id: "password_confirm", autocomplete: "new-password", placeholder: t("registration.confirm_password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col mt-6") do  %>
+            <%= render RubyUI::FormFieldLabel.new { t("registration.confirm_changes") } %>
+            <%= form.password_field :current_password, autocomplete: "current-password", required: true, placeholder: t("registration.current_password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+          <% end %>
+        </div>
+
+        <%= render ButtonComponent.new(type: "submit") { t("registration.update") } %>
+      </div>
+    <% end %>
+    <% if false # TODO: We need to decide how we want to handle user deletion first %>
+      <div class="text-sm w-full mt-3">
+        <%= t('registration.unhappy') %>?
+        <%= link_to t('registration.cancel_account'), registration_path(resource_name), class: "text-red-600 hover:underline", data: { turbo_method: :delete, turbo_confirm: t('notice.are_you_sure') }  %>
+      </div>
+    <% end %>
+    <%= link_to t("common.back"), root_path, class: "mt-3 underline hover:text-primary" %>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+debug:
+  name: Debug
+  organization: organization_one
+
+coding:
+  name: Coding
+  organization: organization_one
+
+no_assigned_tasks:
+  name: Login
+  organization: organization_one
+
+login:
+  name: login
+  organization: organization_two
+
+authentication:
+  name: Authentication
+  organization: organization_one
+
+ux_audit:
+  name: UX Audit
+  organization: organization_one
+
+e2e_testing:
+  name: E2E Testing
+  organization: organization_one

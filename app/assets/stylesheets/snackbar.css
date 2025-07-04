@@ -1,0 +1,57 @@
+.snackbar {
+}
+
+.snackbar__container {
+  z-index: 999;
+  border-radius: 0.5rem;
+  position: fixed;
+  margin-top: 1rem;
+  width: 90%;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.snackbar__action {
+  display: block;
+}
+
+.snackbar-primary {
+  background: #ffffff;
+  color: #4b5563;
+}
+
+.snackbar-primary .snackbar__action {
+  color: #d0bcff;
+}
+
+.snackbar-secondary {
+  background: #322f35;
+  color: #f5eff7;
+}
+
+.snackbar-secondary .snackbar__action {
+  color: #6750a4;
+}
+
+@media screen and (min-width: 640px) {
+  .snackbar__container {
+    margin-left: 0;
+    margin-right: 0;
+    width: 24rem;
+    left: auto;
+    right: 2rem;
+    top: 5rem;
+    bottom: auto;
+    transform: translateX(0px);
+  }
+}
+
+@keyframes notificationCountdown {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
+}

@@ -1,0 +1,34 @@
+<%= render RubyUI::Dialog.new do %>
+  <%= render RubyUI::DialogTrigger.new(class: "block bg-gray-50 px-6 py-2 rounded-md border border-gray-50 hover:text-primary cursor-pointer") do %>
+    <div class="flex gap-x-4">
+      <%= image_tag "stemplin-ico.svg" %>
+      <div class="flex flex-col">
+        <%= image_tag "stemplin-text.svg", class: "w-24" %>
+        <span class="text-sm text-gray-400 font-regular"><%= user.current_organization.name %></span>
+      </div>
+      <div class="flex justify-center items-center ml-4">
+        <i class="uc-icon text-lg text-gray-400">&#xe81d;</i>
+      </div>
+    </div>
+    <%# TODO: let's revamp our logo at the right time  %>
+  <% end %>
+  <%= render RubyUI::DialogContent.new do %>
+    <%= render RubyUI::DialogHeader.new do %>
+      <%= render RubyUI::DialogTitle.new { t("common.organizations") } %>
+    <% end %>
+    <%= render RubyUI::DialogMiddle.new do %>
+      <%= content_tag(:div, class: "flex flex-col overflow-y-auto max-h-[600px]") do %>
+        <% user.organizations.order(name: :asc).each do |organization| %>
+          <div class="relative">
+            <%= button_to set_current_organization_path(organization.id), method: :post, data: { turbo: false }, class: class_names("w-full pointer-events-auto flex flex-col items-center lg:items-start p-2 md:p-4 lg:p-6 transition duration-300 ease-in-out",  "bg-gradient-to-r from-pink-50 lg:from-pink-100": organization == user.current_organization) do %>
+              <%= content_tag(:span, organization.name, class: class_names("text-base md:text-xl lg:text-xl font-regular text-gray-400 transition duration-300 ease-in-out", "text-gray-600 font-semibold": organization == user.current_organization) ) %>
+            <% end %>
+            <% if organization == user.current_organization %>
+              <div class="w-1 h-full bg-primary absolute bottom-0 transition duration-300 ease-in-out"></div>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

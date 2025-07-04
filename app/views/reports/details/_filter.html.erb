@@ -1,0 +1,121 @@
+<div class="bg-gray-100 border-b py-4 border-gray-200 px-4 print:border-0">
+  <%= form_with scope: :filter, url: detailed_reports_path, method: :get, data: { controller: :form }, class: "print:hidden" do |form| %>
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex flex-col gap-y-2">
+        <span class="uppercase text-sm text-gray-600 font-semibold"><%= t('common.filter') %></span>
+        <div class="flex flex-col lg:flex-row justify-between items-end lg:items-start gap-4">
+          <div class="flex flex-row flex-wrap items-center gap-4">
+            <%# TODO: Extract into reusable Filter::Input component %>
+            <%# period(from) start %>
+            <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
+              <%= render DropdownComponentTrigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+                <i class="uc-icon text-sm text-gray-500">&#xe891;</i>
+                <span class="text-gray-500 text-sm"><%= t('common.period_from') %></span>
+                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1", data: { "date-badge-target": "startDateBadge" }) { filter.start_date ? l(filter.start_date, format: "%d %b %y") : t('common.all') } %>                <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+              <% end %>
+              <%= render DropdownComponentContent.new do %>
+                <%= form.hidden_field :start_date, id: "start_date", value: filter.start_date, data: { controller: "ruby-ui--calendar-input", "badge-target": "startDateBadge", action: "change->date-badge#updateBadge" } %>                <%= render RubyUI::Calendar.new(selected_date: filter.start_date, input_id: "#start_date") %>
+              <% end %>
+            <% end %>
+            <%# period(from) end %>
+            <%# period(to) start %>
+            <%= render DropdownComponent.new(options: { close_background_delay: true }) do %>
+              <%= render DropdownComponentTrigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+                <i class="uc-icon text-sm text-gray-500">&#xe891;</i>
+                <span class="text-gray-500 text-sm"><%= t('common.period_to') %></span>
+                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1", data: { "date-badge-target": "endDateBadge" }) { filter.end_date ? filter.end_date.strftime("%d %b %y") : "-" } %>                <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+              <% end %>
+              <%= render DropdownComponentContent.new do %>
+                <%= form.hidden_field :end_date, id: "end_date", value: filter.end_date, data: { controller: "ruby-ui--calendar-input", "badge-target": "endDateBadge", action: "change->date-badge#updateBadge" } %>                <%= render RubyUI::Calendar.new(selected_date: filter.end_date, input_id: "#end_date") %>
+              <% end %>
+            <% end %>
+            <%# period(to) end %>
+            <%# clients start %>
+            <%= render DropdownComponent.new do %>
+              <%= render DropdownComponentTrigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+                <i class="uc-icon text-sm text-gray-500">&#xe88a;</i>
+                <span class="text-gray-500 text-sm"><%= t('common.clients') %></span>
+                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { filter.client_ids.blank? ? form_data.selectable_clients.count : filter.client_ids.count } %>
+                <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+              <% end %>
+              <%= render DropdownComponentContent.new do %>
+                <div class="flex flex-col text-sm w-max" data-controller="checkbox">
+                  <%= single_filter_check_box(form, "all_client_ids", "All", false, { data: { "checkbox-target": "checkboxAll", action: "change->checkbox#toggleAll" }}) %>
+                  <%= form.collection_check_boxes :client_ids, form_data.selectable_clients, :id, :name, include_hidden: false do |cb| %>
+                    <%# TODO: Move these logics & calculations to a presenter %>
+                    <%= filter_check_box(cb, filter.client_ids&.include?(cb.value.to_s) || filter.client_ids.blank?, { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+            <%# clients end %>
+            <%# projects start %>
+            <%= render DropdownComponent.new do %>
+              <%= render DropdownComponentTrigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+                <i class="uc-icon text-sm text-gray-500">&#xe824;</i>
+                <span class="text-gray-500 text-sm"><%= t('common.projects') %></span>
+                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { filter.project_ids.blank? ? form_data.selectable_projects.count : filter.project_ids.count } %>
+                <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+              <% end %>
+              <%= render DropdownComponentContent.new do %>
+                <div class="flex flex-col text-sm w-max" data-controller="checkbox">
+                  <%= single_filter_check_box(form, "all_project_ids", "All", false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
+                  <%= form.collection_check_boxes :project_ids, form_data.selectable_projects, :id, :name, include_hidden: false do |cb| %>
+                    <%= filter_check_box(cb, filter.project_ids&.include?(cb.value.to_s) || filter.project_ids.blank?, { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+            <%# projects end %>
+            <%# tasks start %>
+            <%= render DropdownComponent.new do %>
+              <%= render DropdownComponentTrigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+                <i class="uc-icon text-sm text-gray-500">&#xe8f2;</i>
+                <span class="text-gray-500 text-sm"><%= t('common.tasks') %></span>
+                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { filter.task_ids.blank? ? form_data.selectable_tasks.count : filter.task_ids.count } %>
+                <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+              <% end %>
+              <%= render DropdownComponentContent.new do %>
+                <div class="flex flex-col text-sm w-max" data-controller="checkbox">
+                  <%= single_filter_check_box(form, "all_task_ids", "All", false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
+                  <%= form.collection_check_boxes :task_ids, form_data.selectable_tasks, :id, :name, include_hidden: false do |cb| %>
+                    <%= filter_check_box(cb, filter.task_ids&.include?(cb.value.to_s) || filter.task_ids.blank?, { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+            <%# tasks end %>
+            <%# team start %>
+            <%= render DropdownComponent.new do %>
+              <%= render DropdownComponentTrigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
+                <i class="uc-icon text-sm text-gray-500">&#xebb3;</i>
+                <span class="text-gray-500 text-sm"><%= t('common.team') %></span>
+                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { filter.user_ids.blank? ? form_data.selectable_users.count : filter.user_ids.count } %>
+                <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
+              <% end %>
+              <%= render DropdownComponentContent.new do %>
+                <div class="flex flex-col text-sm w-max" data-controller="checkbox">
+                  <%= single_filter_check_box(form, "all_user_ids", "All", false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
+                  <%= form.collection_check_boxes :user_ids, form_data.selectable_users, :id, :name, include_hidden: false do |cb| %>
+                    <%= filter_check_box(cb, filter.user_ids&.include?(cb.value.to_s) || filter.user_ids.blank?, { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+            <%# team end %>
+          </div>
+          <div class="flex flex-row items-center gap-x-4">
+            <%= link_to detailed_reports_path, class: "text-xs text-gray-400 underline text-nowrap" do %>
+              <span><%= t('common.reset') %></span>
+              <i class="uc-icon">&#xeb8c;</i>
+            <% end %>
+            <%= render ButtonComponent.new(type: "submit") do %>
+              <span class="mr-2"><%= t('common.filter') %></span>
+              <i class="uc-icon text-white text-xl">&#xe9d9;</i>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
