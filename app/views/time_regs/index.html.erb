@@ -1,4 +1,9 @@
 <% content_for :title, t("common.home") %>
 
 <%= render partial: "time_regs/top_nav" %>
+<div class="md:hidden flex mt-2">
+    <%- if @active_time_reg %>
+    <%= render BannerComponent.new(title: "Notice", message: t("time_regs.active_timer_description"), variant: :warning, dismissible: false, action: { url: root_path(date: @active_time_reg.date_worked), method: :get }) %>
+    <% end %>
+</div>
 <%= render partial: "time_regs/main", locals: { chosen_date: @chosen_date } %>

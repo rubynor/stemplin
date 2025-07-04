@@ -5,9 +5,12 @@
   </main>
   <%= content_tag(:footer, class: class_names("print:hidden bottom-0 h-16 items-center flex flex-col gap-y-4 space-x-2 justify-center w-full text-center z-0", "fixed pb-8": user_signed_in?)) do %>
     <%# TODO: Let's configure this the same way `flash_messages` are used in `base.html.erb`, let it be a shareable banner and trigger it with turbo %>
-    <%- if @active_time_reg %>
-      <%= render BannerComponent.new(title: "Notice", message: t("time_regs.active_timer_description"), variant: :warning, dismissible: false, action: { url: root_path(date: @active_time_reg.date_worked), method: :get }) %>
-    <% end %>
+
+    <div class="hidden md:flex">
+      <%- if @active_time_reg %>
+        <%= render BannerComponent.new(title: "Notice", message: t("time_regs.active_timer_description"), variant: :warning, dismissible: false, action: { url: root_path(date: @active_time_reg.date_worked), method: :get }) %>
+      <% end %>
+    </div>
     <%= content_tag(:div, class: class_names("flex flex-row justify-between items-start lg:items-center w-full section-container py-4 gap-y-4": !user_signed_in?)) do %>
       <span class="font-regular text-sm text-gray-600">Stemplin <%= Date.current.year %></span>
       <%= content_tag(:div, class: class_names("flex flex-col lg:flex-row items-start justify-center gap-x-4", "hidden": user_signed_in?)) do %>
