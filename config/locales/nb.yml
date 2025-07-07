@@ -30,7 +30,7 @@ nb:
       - "Oktober"
       - "November"
       - "Desember"
-  
+
     day_names:
       - "Søndag"
       - "Mandag"
@@ -98,6 +98,14 @@ nb:
     projects: "Prosjekter"
     project: "Prosjekt"
     clients_and_projects: "Kunder og Prosjekter"
+    no_projects_created: "Ingen prosjekter opprettet"
+    client_has_project: "Klienten har tilkoblede prosjekter, og kan ikke slettes."
+    project_has_time_regs: "Prosjektet har registrerte tidsregistreringer, og kan ikke slettes."
+
+    client_deletion_confirmation: "Ønsker du å fortsette med sletting av klienten"
+    client_has_projects_cannot_delete: "Klienten <span class='font-semibold text-primary'>%{client_name}</span> har prosjekter og kan ikke slettes."
+    client_deletion_warning: "%{deletion_text} <span class='font-semibold text-primary'>%{client_name}</span>? %{cannot_undo_text}"
+
     notes: "Notater"
     edit_account: "Rediger Bruker"
     sign_out: "Logg Ut"
@@ -435,7 +443,7 @@ nb:
               too_short: "er for kort (minimum er %{count} tegn)"
               too_long: "er for lang (maksimum er %{count} tegn)"
               taken: "er allerede i bruk"
-        
+
         project:
           attributes:
             name: "navn"
@@ -454,7 +462,7 @@ nb:
               too_short: "er for kort (minimum er %{count} tegn)"
               too_long: "er for lang (maksimum er %{count} tegn)"
               taken: "er allerede i bruk"
-          
+
         task:
           attributes:
             name: "navn"
@@ -475,7 +483,7 @@ nb:
             minutes:
               not_a_number: "er ikke et tall"
               less_than_or_equal_to: "må være mindre eller lik %{count}"
-        
+
         user:
           attributes:
             current_password:

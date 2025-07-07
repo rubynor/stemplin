@@ -17,13 +17,17 @@ StreamActions.remove_modal = function() {
   const elementToRemove = document.getElementById(target);
   console.log(elementToRemove)
   if (elementToRemove) {
+    const specificDialog = elementToRemove.closest('div[data-controller="ruby-ui--dialog"]');
+
     elementToRemove.remove();
-    const dismissableDivs = document.querySelectorAll('div[data-controller="ruby-ui--dialog"]');
-    dismissableDivs?.forEach((el) => el?.remove());
+
+    if (specificDialog) {
+      specificDialog.remove();
+    }
+
     document?.body?.classList?.remove("overflow-hidden");
   }
 }
-
 Turbo.setConfirmMethod((message, element) => {
   const dialog = document.getElementById("turbo-confirm-dialog");
 

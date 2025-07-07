@@ -69,7 +69,8 @@ module Workspace
         turbo_stream.replace(:clients_pagination, partial: "shared/pagination", locals: {
           pagy: @pagy,
           path: workspace_projects_path
-        })
+        }),
+        turbo_stream.replace(:clients_count, partial: "workspace/projects/clients_count", locals: { pagy: @pagy })
       ]
     end
 
