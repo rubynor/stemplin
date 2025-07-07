@@ -22,7 +22,8 @@ class OnboardingWizardController < ApplicationController
       @client = Client.new(organization: current_user.current_organization)
     when :project
       @client = Client.find(session[:client_id])
-      @project = Project.new(client_id: session[:client_id], rate: 0)
+      @project = Project.new(client_id: session[:client_id])
+      @project_membership = @project.project_memberships.new(role: :owner, organization: current_user.current_organization)
     when :tasks
       @project = Project.find(session[:project_id])
       @task = Task.new(organization: current_user.current_organization)
@@ -46,12 +47,15 @@ class OnboardingWizardController < ApplicationController
       session[:client_id] = @client.id
       redirect_to next_wizard_path
     when :project
-      @project = Project.new(project_params.merge(client_id: session[:client_id], onboarding: true))
-      @project.save!
-      session[:project_id] = @project.id
-      access_info = current_user.access_info(@project.organization)
-      ProjectAccess.create!(project: @project, access_info: access_info)
-      redirect_to next_wizard_path
+      ActiveRecord::Base.transaction do
+        @project = Project.new(project_params.merge(client_id: session[:client_id], onboarding: true))
+        @project.project_memberships.new(project_membership_params.merge(role: :owner, organization: current_user.current_organization))
+        @project.save!
+        session[:project_id] = @project.id
+        access_info = current_user.access_info(@project.organization)
+        ProjectAccess.create!(project: @project, access_info: access_info)
+        redirect_to next_wizard_path
+      end
     when :tasks
       @task = Task.new(task_params.merge(organization: current_user.current_organization))
       @task.save!
@@ -77,7 +81,11 @@ class OnboardingWizardController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:name, :description, :billable, :rate_currency)
+    params.require(:project).permit(:name, :description)
+  end
+
+  def project_membership_params
+    params.require(:project).permit(:billable, :rate_currency)
   end
 
   def task_params

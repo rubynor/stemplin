@@ -37,7 +37,7 @@ class TimeReg < ApplicationRecord
     where("date(date_worked) BETWEEN ? AND ?", start_date, end_date)
   }
   scope :all_active, -> { where.not(start_time: nil) }
-  scope :billable, -> { joins(:project).where(projects: { billable: true }) }
+  scope :billable, -> { joins(project: :project_memberships).where(project_memberships: { role: :owner, billable: true }) }
 
   scope :by_clients, ->(client_ids) { joins(project: :client).where(clients: { id: client_ids }) }
   scope :by_projects, ->(project_ids) { where(assigned_task: AssignedTask.where(project_id: project_ids)) }

@@ -36,6 +36,8 @@ module Workspace
       end
       new_project = @organization_admin.current_organization.projects.last
       assert_equal "Test Project", new_project.name
+      assert_equal 100 * 100, new_project.rate
+      assert new_project.billable
       assert_redirected_to workspace_project_path(new_project)
     end
 
@@ -67,10 +69,12 @@ module Workspace
 
     test "should update project" do
       user = users(:ron)
-      patch :update, params: { id: @project.id, project: { name: "Updated Project", user_ids: [ user.id ] } }
+      patch :update, params: { id: @project.id, project: { name: "Updated Project", user_ids: [ user.id ], billable: false, rate_currency: 0 } }
 
       assert_redirected_to workspace_project_path(@project)
       assert @project.name, "Updated Project"
+      refute @project.billable, "Updated billable"
+      assert_equal 0, @project.rate, "Updated rate"
     end
 
     test "should destroy project" do

@@ -2,19 +2,13 @@ project_1:
   name: E Corp CRM
   description: Lorem
   client: e_corp
-  billable: true
-  rate: 100
 
 project_2:
   name: Billing system
   description: Lorem
   client: e_corp
-  billable: false
-  rate: 0
 
 to_be_deleted:
   name: Billing Application
   description: Lorem
   client: e_corp
-  billable: true
-  rate: 100
