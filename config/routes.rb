@@ -7,13 +7,7 @@ Rails.application.routes.draw do
     passwords: "users/passwords"
   }
 
-  authenticated :user do
-    root to: "time_regs#index", as: :authenticated_root
-  end
-
-  root "landing_page#index"
-
-  get "privacy-policy", to: "privacy_policy#index", as: :privacy_policy
+  root "time_regs#index"
 
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
