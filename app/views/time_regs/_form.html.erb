@@ -39,11 +39,11 @@
                   <%= render DropdownComponent.new(options: { close_background_delay: true }, class: "") do %>
                     <%= form.label :date_worked, t("common.date_worked"), class: 'block text-gray-700 text-sm font-bold mb-2' %>
                     <%= render DropdownComponentTrigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-2 py-2 flex items-center gap-x-1 justify-between") do %>
-                      <span class="text-gray-600 text-base"><%= t("common.select_date_worked") %> </span>
+                      <span class="text-gray-600 text-base" data-date-badge-target="dateWorkedBadge"><%= t("common.select_date_worked") %> </span>
                       <i class="uc-icon text-2xl text-gray-500">&#xe81d;</i>
                     <% end %>
                     <%= render DropdownComponentContent.new do %>
-                      <%= form.hidden_field :date_worked, id: "date_worked", value: chosen_date, data: { controller: "input" } %>
+                      <%= form.hidden_field :date_worked, id: "date_worked", value: chosen_date, data: { controller: "ruby-ui--calendar-input", badge_target: "dateWorkedBadge" } %>
                       <%= render RubyUI::Calendar.new(selected_date: chosen_date, input_id: "#date_worked") %>
                     <% end %>
                   <% end %>
