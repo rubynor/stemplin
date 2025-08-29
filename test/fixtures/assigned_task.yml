@@ -1,0 +1,21 @@
+task_1:
+  project: project_1
+  task: debug
+
+task_2:
+  project: project_1
+  task: coding
+
+task_2_archived:
+  project: project_1
+  task: coding
+  is_archived: true
+
+task_with_custom_rate_1:
+  project: project_1
+  task: authentication
+  rate: 125
+
+task_4:
+  project: project_2
+  task: ux_audit

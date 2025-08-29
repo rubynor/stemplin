@@ -1,0 +1,67 @@
+<div class="flex flex-col gap-y-4 w-full">
+  <h1 class="text-2xl font-semibold text-gray-600 mb-1"><%= t("common.onboarding.project.title") %></h1>
+  <p class="text-base text-gray-600 mb-4"><%= t("common.onboarding.project.description") %></p>
+  <%= form_with model: @project, url: wizard_path, method: :put do |form| %>
+    <%= content_tag(:div, class: "flex flex-col gap-y-4", data: { controller: "custom-disable", custom_disable_initial_status_value: @project.billable }) do %>
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.client") } %>
+        <%= render RubyUI::Input.new(type: "text", value: @client.name, disabled: true, class: "border-gray-200 rounded-md w-full !opacity-100 bg-gray-100") %>
+        <%= form.hidden_field :client_id, value: @client.id %>
+      <% end %>
+
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.name") } %>
+        <%= form.text_field :name, class: "border-gray-200 rounded-md w-full", required: true %>
+        <% @project.errors.full_messages_for(:name).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <% end %>
+      <% end %>
+
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.description") } %>
+        <%= form.text_area :description, class: "border-gray-200 rounded-md w-full" %>
+        <% @project.errors.full_messages_for(:description).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <% end %>
+      <% end %>
+
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+        <%= render RubyUI::FormFieldLabel.new { t("common.billable_project") } %>
+        <div class="flex flex-row gap-4">
+          <%= collection_radio_buttons(nil, :billable, [[true, 'Yes'] ,[false, 'No']], :first, :last) do |radio_button| %>
+            <%= content_tag(:label, class: "relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm w-full") do %>
+              <%= form.radio_button(:billable, radio_button.value, class: "sr-only peer", checked: radio_button.value == @project.billable, data: { action: "custom-disable#toggleElement", custom_disable_enable_param: radio_button.value }) %>
+              <div class="absolute bg-primary-50 w-full h-full top-0 left-0 rounded-md border-2 border-primary-600 z-0 opacity-0 peer-checked:opacity-100 transition duration-300 ease-in-out"></div>
+              <span class="flex flex-1 z-10">
+                <span class="flex flex-col">
+                  <span class="block text-sm font-medium text-gray-900"><%= radio_button.value ? t("common.hourly_rate_selection") : t("common.non_billable") %></span>
+                  <span class="mt-1 flex items-center text-sm text-gray-500"><%= radio_button.value ? t("common.bill_hourly_rates_apply") : t("common.not_billed_to_a_client") %></span>
+                </span>
+              </span>
+              <span class="absolute right-4 z-10 bg-primary-600 h-4 w-4 opacity-0 peer-checked:opacity-100 text-white flex justify-center items-center rounded-full transition duration-300 ease-in-out">
+                <i class="uc-icon text-sm text-white">&#xe8b2;</i>
+              </span>
+              <div class="absolute right-4 z-10 block h-4 w-4 border border-gray-300 shadow rounded-full peer-checked:opacity-0 transition duration-300 ease-in-out"></div>
+            <% end %>
+          <% end %>
+        </div>
+        <% @project.errors.full_messages_for(:billable).each do |message|%>
+          <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs") { message }  %>
+        <% end %>
+      <% end %>
+
+      <%= content_tag(:div, data: { custom_disable_target: "content" }) do %>
+        <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+          <%= render RubyUI::FormFieldLabel.new { "#{t("common.rates_per_hour")} - #{@project.organization.currency}" } %>
+          <%= render RubyUI::FormFieldHint.new { t("common.track_billable_rates") } %>
+          <%= form.text_field :rate_currency, class: "border-gray-200 rounded-md" %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
+      <%= render ButtonComponent.new(variant: :outline, path: skip_onboarding_wizard_path, method: :get, type: :button) { t("common.skip_setup") } %>
+      <%= render ButtonComponent.new(type: :submit) { t("common.next") } %>
+    <% end %>
+  <% end %>
+</div> 
