@@ -1,4 +1,13 @@
 require "simplecov"
+require "simplecov-lcov"
+
+SimpleCov::Formatter::LcovFormatter.config do |c|
+  c.output_directory = 'coverage'
+  c.lcov_file_name = 'lcov.info'
+end
+
+SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
+
 SimpleCov.start "rails" do
   add_filter "/bin/"
   add_filter "/db/"
@@ -7,7 +16,6 @@ SimpleCov.start "rails" do
   add_filter "/app/javascript/"
   add_filter "/app/views/components/"
 
-  # Groups not covered by default
   add_group "Policies", "app/policies"
   add_group "Presenters", "app/presenters"
   add_group "Services", "app/services"
@@ -24,21 +32,10 @@ require "sidekiq/testing"
 Sidekiq::Testing.fake!
 
 class ActiveSupport::TestCase
-  # Run tests in parallel with specified workers
-
-  # Parallel tests disabled. Can be enables, but requires some configuration with simplecov
-  # parallelize(workers: :number_of_processors)
-
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
-
-  # Add more helper methods to be used by all tests here...
 end
 
-
 class ActionController::TestCase
-  # Parallel tests disabled. Can be enables, but requires some configuration with simplecov
-  # parallelize(workers: :number_of_processors)
   fixtures :all
   include Devise::Test::ControllerHelpers
   include ActionPolicy::TestHelper

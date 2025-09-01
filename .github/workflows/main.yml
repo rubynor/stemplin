@@ -40,13 +40,15 @@ jobs:
         run: bin/rake assets:precompile
       - name: Set up database schema
         run: bin/rails db:schema:load
-      - name: Run tests and Push test coverage to Code Climate
-        uses: paambaati/codeclimate-action@v4.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      - name: Run tests
+        run: bundle exec rake test
+
+      - name: Upload coverage to Qlty
+        uses: qltysh/qlty-action/coverage@v2
         with:
-          coverageCommand: bin/rake test
-          debug: true
+          oidc: true
+          files: coverage/lcov.info
+
 
   lint:
     runs-on: ubuntu-latest
