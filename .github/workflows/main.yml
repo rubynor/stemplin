@@ -47,13 +47,11 @@ jobs:
         run: bin/rails db:schema:load
       - name: Run tests
         run: bundle exec rake test
-
       - name: Upload coverage to Qlty
         uses: qltysh/qlty-action/coverage@v2
         with:
-          oidc: true
-          token: ${{ secrets.QLTY_TOKEN }}
           files: coverage/lcov.info
+          token: ${{ secrets.QLTY_TOKEN }}
 
 
   lint:
