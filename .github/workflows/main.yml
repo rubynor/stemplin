@@ -40,13 +40,16 @@ jobs:
         run: bin/rake assets:precompile
       - name: Set up database schema
         run: bin/rails db:schema:load
-      - name: Run tests and Push test coverage to Code Climate
-        uses: paambaati/codeclimate-action@v6.0.0
+      - name: Download Code Climate Test Reporter
+        run: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 -o ./cc-test-reporter && chmod +x ./cc-test-reporter
+      - name: Run tests and push coverage
+        run: |
+          ./cc-test-reporter before-build
+          bin/rake test
+          ./cc-test-reporter after-build --exit-code $?
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: bin/rake test
-          debug: true
+
 
   lint:
     runs-on: ubuntu-latest
