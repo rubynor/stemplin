@@ -51,7 +51,7 @@ jobs:
       - name: Upload coverage to Qlty
         uses: qltysh/qlty-action/coverage@v2
         with:
-          oidc: true
+          token: ${{ secrets.QLTY_TOKEN }}
           files: coverage/lcov.info
 
 
