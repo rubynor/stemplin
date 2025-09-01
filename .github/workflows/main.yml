@@ -1,10 +1,6 @@
 name: "Ruby on Rails CI"
 on: [push]
 
-permissions:
-  contents: read
-  id-token: write
-
 jobs:
   test:
     runs-on: ubuntu-latest
