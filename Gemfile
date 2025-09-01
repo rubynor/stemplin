@@ -91,7 +91,9 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
   gem "rails-controller-testing"
-  gem "simplecov"
+
+  gem 'simplecov', require: false
+  gem 'simplecov-lcov', require: false
 end
 
 gem "sentry-ruby"
