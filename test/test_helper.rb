@@ -2,8 +2,8 @@ require "simplecov"
 require "simplecov-lcov"
 
 SimpleCov::Formatter::LcovFormatter.config do |c|
-  c.output_directory = 'coverage'
-  c.lcov_file_name = 'lcov.info'
+  c.output_directory = "coverage"
+  c.lcov_file_name = "lcov.info"
 end
 
 SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
