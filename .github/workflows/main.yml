@@ -1,5 +1,10 @@
 name: "Ruby on Rails CI"
 on: [push]
+
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -40,13 +45,14 @@ jobs:
         run: bin/rake assets:precompile
       - name: Set up database schema
         run: bin/rails db:schema:load
-      - name: Run tests and Push test coverage to Code Climate
-        uses: paambaati/codeclimate-action@v6.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      - name: Run tests
+        run: bundle exec rake test
+      - name: Upload coverage to Qlty
+        uses: qltysh/qlty-action/coverage@v2
         with:
-          coverageCommand: bin/rake test
-          debug: true
+          files: coverage/lcov.info
+          token: ${{ secrets.QLTY_TOKEN }}
+
 
   lint:
     runs-on: ubuntu-latest
