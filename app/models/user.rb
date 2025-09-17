@@ -74,4 +74,35 @@ class User < ApplicationRecord
     return true if Rails.env.development? # We do not yet have a `super_admin` functionality so let's at least have this in development for now
     access_info.super_admin?
   end
+
+  def score(weeks_back: 4)
+    end_date = Date.current
+    start_date = weeks_back.weeks.ago.to_date.beginning_of_week
+
+    time_entries = time_regs
+      .between_dates(start_date, end_date)
+
+    working_days = (start_date..end_date).select { |d| (1..5).include?(d.wday) }
+
+    return 1.0 if working_days.empty?
+
+    daily_scores = []
+    consecutive_missing = 0
+
+    working_days.reverse_each do |day|
+      reg = time_entries.find_by(date_worked: day)
+      if reg
+        if reg.date_worked == reg.created_at
+          daily_scores << 0.8
+          if reg.notes.present?
+            daily_scores << 0.2
+          end
+        else
+          daily_scores << 0.5
+        end
+      end
+    end
+
+    daily_scores.sum / working_days.count
+  end
 end
