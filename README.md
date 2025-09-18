@@ -17,10 +17,8 @@ https://github.com/rubynor/stemplin/blob/main/CONTRIBUTING.md
 Install the project's dependencies by running:
 
 ```shell
-bundle install
-rails assets:precompile
-rails db:create
-rails db:migrate
+cp .env.sample .env
+bin/setup
 yarn install
 ```
 
