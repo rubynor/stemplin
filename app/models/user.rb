@@ -92,7 +92,7 @@ class User < ApplicationRecord
     working_days.reverse_each do |day|
       reg = time_entries.find_by(date_worked: day)
       if reg
-        if reg.date_worked == reg.created_at
+        if true #reg.date_worked == reg.created_at
           daily_scores << 0.8
           if reg.notes.present?
             daily_scores << 0.2
