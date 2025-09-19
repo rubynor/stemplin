@@ -1,0 +1,11 @@
+<% score = current_user.score(weeks_back: 1) %>
+
+<% if score.between?(0.8, 1.0) %>
+  <%= video_tag(asset_path("baby_sloth/happy.mp4"), loop: true, muted: true, autoplay: true)  %>
+<% elsif score.between?(0.4, 0.8) %>
+  <%= video_tag(asset_path("baby_sloth/bored.mp4"), loop: true, muted: true, autoplay: true)  %>
+<% elsif score.between?(0.4, 0.2) %>
+  <%= video_tag(asset_path("baby_sloth/sad.mp4"), loop: true, muted: true, autoplay: true)  %>
+<% elsif score.between?(0.0, 0.2) %>
+  <%= video_tag(asset_path("baby_sloth/crying.mp4"), loop: true, muted: true, autoplay: true)  %>
+<% end %>

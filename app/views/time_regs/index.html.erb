@@ -2,15 +2,3 @@
 
 <%= render partial: "time_regs/top_nav" %>
 <%= render partial: "time_regs/main", locals: { chosen_date: @chosen_date } %>
-
-<% score = current_user.score(weeks_back: 1) %>
-
-<% if score.between?(0.8, 1.0) %>
-  <%= video_tag(asset_path("sloth_happy.mp4"), loop: true, muted: true, autoplay: true)  %>
-<% elsif score.between?(0.4, 0.8) %>
-  <%= video_tag(asset_path("sloth_mad.mp4"), loop: true, muted: true, autoplay: true)  %>
-<% elsif score.between?(0.0, 0.4) %>
-  <%= video_tag(asset_path("sloth_sad.mp4"), loop: true, muted: true, autoplay: true)  %>
-<% end %>
-
-

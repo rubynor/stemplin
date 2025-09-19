@@ -37,6 +37,8 @@ Rails.application.routes.draw do
     put :edit_modal, on: :member
   end
 
+  get :pet, to: "pet#index"
+
   namespace :workspace do
     resources :projects do
       post :import_modal, on: :collection
