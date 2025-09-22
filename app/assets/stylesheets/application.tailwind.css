@@ -2,7 +2,6 @@
 @import "./snackbar.css";
 @import "./file_upload.css";
 @import "./flatpickr.css";
-@import "./landing_page.css";
 
 @tailwind base;
 @tailwind components;

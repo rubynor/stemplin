@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     root to: "time_regs#index", as: :authenticated_root
   end
 
-  root "landing_page#index"
+  root to: redirect("users/sign_in")
 
   get "privacy-policy", to: "privacy_policy#index", as: :privacy_policy
 

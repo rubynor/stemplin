@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def stemplin_landing_url
+    "https://stemplin.com/"
+  end
+
   def format_duration(total_minutes)
     hours = total_minutes / 60
     minutes = total_minutes % 60
