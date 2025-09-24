@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   end
 
   get :pet, to: "pet#index"
+  post :feed_pet, to: "pet#feed_pet"
 
   namespace :workspace do
     resources :projects do
