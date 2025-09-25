@@ -16,7 +16,20 @@ class PetController < ApplicationController
         @pet.hp = [@pet.hp + 10, 100].min
         @pet.save!
       end
-      render partial: "pet"
+      hp = @pet.hp
+      if hp.between?(80, 100)
+        paths = [view_context.asset_path("baby_sloth/eating.mp4"), view_context.asset_path("baby_sloth/happy.mp4")]
+        render turbo_stream: turbo_stream.change_video("video", paths: paths )
+      elsif hp.between?(40, 80)
+        paths = [view_context.asset_path("baby_sloth/eating.mp4"), view_context.asset_path("baby_sloth/bored.mp4")]
+        render turbo_stream: turbo_stream.change_video("video", paths: paths )
+      elsif hp.between?(20, 40)
+        paths = [view_context.asset_path("baby_sloth/eating.mp4"), view_context.asset_path("baby_sloth/sad.mp4")]
+        render turbo_stream: turbo_stream.change_video("video", paths: paths )
+      elsif hp.between?(0, 20)
+        paths = [view_context.asset_path("baby_sloth/eating.mp4"), view_context.asset_path("baby_sloth/crying.mp4")]
+        render turbo_stream: turbo_stream.change_video("video", paths: paths )
+      end
     end
   end
 

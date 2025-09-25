@@ -2,13 +2,13 @@
   <% hp = @pet.hp %>
 
   <% if hp.between?(80, 100) %>
-    <%= video_tag(asset_path("baby_sloth/happy.mp4"), loop: true, muted: true, autoplay: true)  %>
+    <%= video_tag(asset_path("baby_sloth/happy.mp4"), id: "video", loop: true, muted: true, autoplay: true)  %>
   <% elsif hp.between?(40, 80) %>
-    <%= video_tag(asset_path("baby_sloth/bored.mp4"), loop: true, muted: true, autoplay: true)  %>
+    <%= video_tag(asset_path("baby_sloth/bored.mp4"), id: "video", loop: true, muted: true, autoplay: true)  %>
   <% elsif hp.between?(20, 40) %>
-    <%= video_tag(asset_path("baby_sloth/sad.mp4"), loop: true, muted: true, autoplay: true)  %>
+    <%= video_tag(asset_path("baby_sloth/sad.mp4"), id: "video", loop: true, muted: true, autoplay: true)  %>
   <% elsif hp.between?(0, 20) %>
-    <%= video_tag(asset_path("baby_sloth/crying.mp4"), loop: true, muted: true, autoplay: true)  %>
+    <%= video_tag(asset_path("baby_sloth/crying.mp4"), id: "video", loop: true, muted: true, autoplay: true)  %>
   <% end %>
 
   Stock: <%= @pet.food_stock %>

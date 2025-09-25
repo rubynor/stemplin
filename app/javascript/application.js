@@ -28,6 +28,39 @@ StreamActions.remove_modal = function() {
     document?.body?.classList?.remove("overflow-hidden");
   }
 }
+
+StreamActions.change_video = function() {
+  const target = this.getAttribute("target");
+  let paths = this.getAttribute("paths");
+  const videoElement = document.getElementById(target);
+
+  paths = JSON.parse(paths)
+  let currentIndex = 0;
+
+  const playNext = () => {
+    if (currentIndex <= (paths.length - 1)) {
+      videoElement.src = paths[currentIndex]
+    } else {
+      videoElement.removeEventListener("timeupdate", timeUpdate);
+    }
+    currentIndex = Math.min(currentIndex + 1, paths.length)
+  }
+
+  let oldTime = 0;
+  const timeUpdate = (event) => {
+    console.log("timeupdate")
+    if (videoElement.currentTime < oldTime) {
+      playNext();
+      console.log("currentIndex", currentIndex)
+    }
+    oldTime = videoElement.currentTime;
+  }
+
+  videoElement.addEventListener("timeupdate", timeUpdate)
+  playNext();
+}
+
+
 Turbo.setConfirmMethod((message, element) => {
   const dialog = document.getElementById("turbo-confirm-dialog");
 
