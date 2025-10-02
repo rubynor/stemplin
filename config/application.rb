@@ -39,12 +39,12 @@ module Stemplin
       Devise::PasswordsController.layout "devise"
     end
 
-    config.http_host = if Rails.env.production?
+    config.http_host = if Rails.env.production? || Rails.env.staging?
       ENV.fetch("HTTP_HOST")
     else
       ENV.fetch("HTTP_HOST", "localhost:3000")
     end
-    config.http_protocol = Rails.env.production? ? "https" : "http"
+    config.http_protocol = (Rails.env.production? || Rails.env.staging?) ? "https" : "http"
     config.http_url = "#{config.http_protocol}://#{config.http_host}".freeze
 
     config.emails = config_for(:emails)

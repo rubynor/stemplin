@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     root to: "time_regs#index", as: :authenticated_root
   end
 
-  root "landing_page#index"
+  root to: redirect("users/sign_in")
 
   get "privacy-policy", to: "privacy_policy#index", as: :privacy_policy
 
@@ -78,6 +78,8 @@ Rails.application.routes.draw do
     get :manifest, format: :json
     get :service_worker, path: "service_worker.js"
   end
+
+  get "robots.txt", to: "robots#index"
 
   authenticate :user, ->(u) { u.is_super_admin? } do
     mount Sidekiq::Web, at: "sidekiq"

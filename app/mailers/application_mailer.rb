@@ -26,7 +26,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def handle_sendgrid_template(headers)
-    return true unless Rails.env.production?
+    return true unless Rails.env.production? || Rails.env.staging?
 
     mail = build_mail(headers)
     sg = SendGrid::API.new(api_key: ENV["SENDGRID_API_KEY"])
