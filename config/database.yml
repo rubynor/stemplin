@@ -88,3 +88,9 @@ production:
   database: reap_production
   username: reap
   password: <%= ENV["REAP_DATABASE_PASSWORD"] %>
+
+staging:
+  <<: *default
+  database: reap_staging
+  username: reap
+  password: <%= ENV["REAP_DATABASE_PASSWORD"] %>
