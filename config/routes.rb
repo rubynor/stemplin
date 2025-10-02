@@ -79,6 +79,8 @@ Rails.application.routes.draw do
     get :service_worker, path: "service_worker.js"
   end
 
+  get "robots.txt", to: "robots#index"
+
   authenticate :user, ->(u) { u.is_super_admin? } do
     mount Sidekiq::Web, at: "sidekiq"
   end
