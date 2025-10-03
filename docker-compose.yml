@@ -38,6 +38,20 @@ services:
     stdin_open: true
     tty: true
 
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/stemplin_development
+      REDIS_URL: redis://redis:6379/0
+
 volumes:
   postgres_data:
   redis_data:
