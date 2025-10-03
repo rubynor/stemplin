@@ -21,7 +21,7 @@ services:
       - redis_data:/data
 
   web:
-    build: .
+    image: kaosper/stemplin:latest
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0"
     volumes:
       - .:/app
@@ -39,7 +39,7 @@ services:
     tty: true
 
   sidekiq:
-    build: .
+    image: kaosper/stemplin:latest
     command: bundle exec sidekiq
     volumes:
       - .:/app
