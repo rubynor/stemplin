@@ -35,4 +35,4 @@ RUN bundle exec rails assets:precompile
 EXPOSE 3000
 
 # Start Rails server
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-e", "production"]

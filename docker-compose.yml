@@ -22,7 +22,7 @@ services:
 
   web:
     image: kaosper/stemplin:latest
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails db:prepare && bundle exec rails assets:precompile && bundle exec rails server -b 0.0.0.0"
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails db:prepare && bundle exec rails assets:precompile && bundle exec rails server -b 0.0.0.0 -e production"
     volumes:
       - .:/app
     ports:
@@ -33,8 +33,10 @@ services:
       redis:
         condition: service_started
     environment:
+      RAILS_ENV: production
       DATABASE_URL: postgres://postgres:postgres@db:5432/stemplin_development
       REDIS_URL: redis://redis:6379/0
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-change_this_to_a_secure_secret_key}
     stdin_open: true
     tty: true
 
@@ -49,8 +51,10 @@ services:
       redis:
         condition: service_started
     environment:
+      RAILS_ENV: production
       DATABASE_URL: postgres://postgres:postgres@db:5432/stemplin_development
       REDIS_URL: redis://redis:6379/0
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-change_this_to_a_secure_secret_key}
 
 volumes:
   postgres_data:

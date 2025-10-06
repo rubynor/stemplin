@@ -19,7 +19,7 @@ git clone https://github.com/rubynor/stemplin.git
 cd stemplin
 ```
 
-### 2. Configure Environment (Optional)
+### 2. Configure Environment
 
 Copy the sample environment file:
 
@@ -27,7 +27,16 @@ Copy the sample environment file:
 cp .env.sample .env
 ```
 
-The default configuration works out of the box. Optionally configure:
+**Environment configuration:**
+- `SECRET_KEY_BASE` - Generate a secure secret key:
+  ```bash
+  docker run --rm kaosper/stemplin:latest bundle exec rails secret
+  ```
+  Add the generated key to your `.env` file:
+  ```
+  SECRET_KEY_BASE=your_generated_key_here
+  ```
+
 - `SENTRY_KEY` - For error tracking (optional)
 - `HTTP_HOST` - Your domain
 - `RAILS_LOG_LEVEL` - Options: debug info warn error fatal unknown (default: info)
