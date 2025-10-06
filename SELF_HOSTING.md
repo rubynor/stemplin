@@ -42,15 +42,26 @@ cp .env.sample .env
 - `RAILS_LOG_LEVEL` - Options: debug info warn error fatal unknown (default: info)
 - `SENDGRID_API_KEY` - For email delivery. Sendgrid is currently required for the app to work properly.
 
-At this point you have to create your own dynamic email templates in Sendgrid for the mailer to work :(
-These are the required parameters for each email template:
+At this time the only way to send emails are via dynamic email templates in Sendgrid :(
 
-- `WELCOME_EN_TEMPLATE_ID`: `organization_name`, `user_name`, `url`
-- `WELCOME_NB_TEMPLATE_ID`: `organization_name`, `user_name`, `url`
-- `PASSWORD_RESET_EN_TEMPLATE_ID`: `user_name`, `user_email`, `url`
-- `PASSWORD_RESET_NB_TEMPLATE_ID`: `user_name`, `user_email`, `url`
-- `PROJECT_INVITATION_EN_TEMPLATE_ID`: `organization_name`, `user_name`, `url`
-- `PROJECT_INVITATION_NB_TEMPLATE_ID`: `organization_name`, `user_name`, `url`
+You can create your own templates in Sendgrid.
+
+These are the required parameters for each email template:
+```
+WELCOME_EN_TEMPLATE_ID: organization_name, user_name, url
+WELCOME_NB_TEMPLATE_ID: organization_name, user_name, url
+PASSWORD_RESET_EN_TEMPLATE_ID: user_name, user_email, url
+PASSWORD_RESET_NB_TEMPLATE_ID: user_name, user_email, url
+PROJECT_INVITATION_EN_TEMPLATE_ID: organization_name, user_name, url
+PROJECT_INVITATION_NB_TEMPLATE_ID: organization_name, user_name, url
+```
+
+When you have created the templates with the required parameters, you can insert the template ids in the `.env` file:
+```
+###
+WELCOME_EN_TEMPLATE_ID=X-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+###
+```
 
 ### 3. Start the Services
 
