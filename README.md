@@ -6,6 +6,10 @@ Stemplin is a time tracking application written in Ruby on Rails.
 
 ![image](https://github.com/user-attachments/assets/7c7bd7a2-4f99-4e1f-b62a-815cc61093c4)
 
+# Self hosting
+See the self hosing guide here:
+https://github.com/rubynor/stemplin/blob/main/SELF_HOSTING.md
+
 # Contributing
 See the contribution guidelines in:
 
