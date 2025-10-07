@@ -40,6 +40,9 @@ cp .env.sample .env
 - `SENTRY_KEY` - For error tracking (optional)
 - `HTTP_HOST` - Your domain
 - `RAILS_LOG_LEVEL` - Options: debug info warn error fatal unknown (default: info)
+- `WEB_PORT` - Port for the web application (default: 3000)
+- `REDIS_PORT` - External port for Redis (default: 6379)
+- `POSTGRES_PORT` - External port for PostgreSQL (default: 5432)
 - `SENDGRID_API_KEY` - For email delivery. Sendgrid is currently required for the app to work properly.
 
 At this time the only way to send emails are via dynamic email templates in Sendgrid :(
