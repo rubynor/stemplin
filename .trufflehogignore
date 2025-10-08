@@ -1,0 +1,5 @@
+# TruffleHog ignore patterns
+# These are development-only Docker Compose credentials, not production secrets
+
+# Docker Compose PostgreSQL development credentials
+docker-compose.yml:postgres://postgres:postgres@db:5432
