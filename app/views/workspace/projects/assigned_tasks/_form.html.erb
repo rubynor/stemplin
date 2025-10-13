@@ -19,7 +19,7 @@
                 <%= task_form.text_field :name, class: "border-gray-200 rounded-md w-full", autofocus: true, autocomplete: "off", list: "unassigned-tasks-list" %>
                 <datalist id="unassigned-tasks-list">
                   <% unassigned_tasks.each do |task| %>
-                    <option value="<%= task.name %>">
+                    <option value="<%= task.name %>"></option>
                   <% end %>
                 </datalist>
               <% end %>
