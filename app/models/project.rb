@@ -3,7 +3,7 @@ class Project < ApplicationRecord
   include Deletable
 
   validates :name, presence: true, length: { minimum: 2, maximum: 60 }, uniqueness: { scope: :client, conditions: -> { where(discarded_at: nil) } }
-  validates :description, length: { maximum: 100 }
+  # validates :description, length: { maximum: 100 }
   validates :rate, numericality: { only_integer: true }
   validate :must_have_at_least_one_active_assigned_task, unless: :onboarding?
 
