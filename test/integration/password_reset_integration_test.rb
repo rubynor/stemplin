@@ -32,4 +32,19 @@ class PasswordResetIntegrationTest < ActionDispatch::IntegrationTest
     assert_nil user.reset_password_token
     assert_nil user.reset_password_sent_at
   end
+
+  test "should resend invitation to user with pending invitation" do
+    user = users(:pending_invitation_user)
+    assert user.pending_invitation?
+    assert_nil user.reset_password_token
+
+    assert_enqueued_emails 1 do
+      post user_password_path, params: { user: { email: user.email } }
+    end
+
+    user.reload
+    assert_nil user.reset_password_token  # No password reset token
+    assert_redirected_to new_user_session_path
+    assert_equal I18n.t("devise.passwords.send_paranoid_instructions_check_spam"), flash[:notice]
+  end
 end

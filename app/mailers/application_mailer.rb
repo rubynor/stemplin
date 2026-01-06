@@ -18,7 +18,7 @@ class ApplicationMailer < ActionMailer::Base
   # when they are specified in the headers.
 
   def mail(headers = nil, &block)
-    if headers[:sendgrid_template].present?
+    if headers&.key?(:sendgrid_template)
       handle_sendgrid_template(headers)
     else
       super(headers, &block)
