@@ -30,6 +30,7 @@ nb:
       no_token: "Du kan ikke aksessere denne siden uten å bli videresendt fra en epost med intrukssjoner for å tilbakestille passord. Hvis dette er tilfelle, vennligst sørg for at du brukte hele lenken inneholdt i eposten."
       send_instructions: "Du vil innen få minutter motta en epost med instruksjoner for å nullstille passordet ditt."
       send_paranoid_instructions: "Hvis epostadressen din finnes i vår database vil du innen få minutter motta en epost med instruksjoner for å nullstille passordet ditt."
+      send_paranoid_instructions_check_spam: "Hvis e-postadressen din finnes i databasen vår, vil du motta en e-post om noen minutter. Vennligst også sjekk søppelpostmappen din."
       updated: "Ditt passord er endret og du er nå innlogget."
       updated_not_active: "Ditt passord er endret."
     registrations:
