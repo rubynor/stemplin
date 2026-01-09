@@ -400,6 +400,7 @@ en:
   time_regs:
     active_timer_description: "Kindly note that you have an active timer running."
     zero_minutes: "Zero minutes!"
+    copy_to_today_tooltip: "Copy this time entry to today"
     delete_confirmation: "Do you want to proceed with the deletion of the time registration for the project <span class='text-primary-600 font-semibold'>%{project_name}</span> with a task <span class='text-primary-600 font-semibold'>%{task_name}</span> and <span class='text-primary-600 font-semibold'>%{logged_time}</span> logged. This action cannot be undone."
   organizations:
     reports_filter:

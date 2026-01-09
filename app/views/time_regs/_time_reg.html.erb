@@ -51,9 +51,11 @@
   </div>
   <div class="flex gap-x-4 justify-end">
     <% if time_reg.date_worked != Date.today && !time_reg.active? %>
-      <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: Date.today, assigned_task_id: time_reg.assigned_task_id, notes: time_reg.notes), method: :post, class: "gap-x-2", variant: :outline) do %>
-        <i class="uc-icon text-base">&#xe9c7;</i>
-        <span class="hidden md:block"><%= t("common.copy_to_today") %></span>
+      <%= render TooltipComponent.new(note: t("time_regs.copy_to_today_tooltip")) do %>
+        <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: Date.today, assigned_task_id: time_reg.assigned_task_id, notes: time_reg.notes), method: :post, class: "gap-x-2", variant: :outline) do %>
+          <i class="uc-icon text-base">&#xe9c7;</i>
+          <span class="hidden md:block"><%= t("common.copy_to_today") %></span>
+        <% end %>
       <% end %>
     <% else %>
       <%= render ButtonComponent.new(path: time_reg_toggle_active_path(time_reg), method: :patch, class: "gap-x-2", variant: time_reg.active? ? :secondary : :outline) do %>
