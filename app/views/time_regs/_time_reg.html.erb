@@ -1,7 +1,7 @@
 <%= turbo_stream_from time_reg %>
 <%= content_tag(:div, id: dom_id(time_reg), data: { controller: "refresh-minutes", refresh_minutes_active_value: time_reg.active?, refresh_minutes_minutes_value: time_reg.current_minutes, refresh_minutes_format_value: "H:mm" }, class: "shadow-sm rounded-md p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-y-4") do %>
   <div class="flex flex-row gap-x-4">
-    <div class="bg-gray-50 border border-gray-100 rounded flex justify-center items-center w-12 h-12 relative">
+    <div class="bg-gray-50 border border-gray-100 rounded justify-center items-center w-12 h-12 relative hidden md:flex">
       <i class="uc-icon text-lg text-gray-400">&#xe8bb;</i>
       <% if time_reg.active? %>
         <div class="absolute -bottom-2 -right-2 bg-yellow-500 rounded-full w-4 h-4 flex justify-center items-center">
@@ -18,7 +18,7 @@
               <span class="font-bold text-lg"><%= time_reg.project.client.name %></span>
             </div>
           </div>
-          <div class="flex flex-row-reverse lg:flex-row items-center h-fit gap-2">
+          <div class="hidden md:flex flex-row-reverse lg:flex-row items-center h-fit gap-2">
             <%= render RubyUI::Badge.new(variant: time_reg.is_zero_minutes? ? :red : :gray, class: "!rounded-full flex gap-x-1") do %>
               <i class="uc-icon text-sm">&#xe8bb;</i>
               <span data-refresh-minutes-target="minutes">
@@ -50,6 +50,15 @@
     </div>
   </div>
   <div class="flex gap-x-4 justify-end">
+    <div class="flex md:hidden flex-row-reverse lg:flex-row items-center h-fit gap-2">
+      <%= render RubyUI::Badge.new(variant: time_reg.is_zero_minutes? ? :red : :gray, class: "!rounded-full flex gap-x-1") do %>
+        <i class="uc-icon text-sm">&#xe8bb;</i>
+        <span data-refresh-minutes-target="minutes">
+          <%= convert_time_int(time_reg.current_minutes) %>
+        </span>
+      <% end %>
+    </div>
+
     <% if time_reg.date_worked != Date.today && !time_reg.active? %>
       <%= render TooltipComponent.new(note: t("time_regs.copy_to_today_tooltip")) do %>
         <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: Date.today, assigned_task_id: time_reg.assigned_task_id, notes: time_reg.notes), method: :post, class: "gap-x-2", variant: :outline) do %>
