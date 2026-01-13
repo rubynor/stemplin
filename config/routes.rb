@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   resources :time_regs do
     patch :toggle_active
+    resources :copies, only: [ :create ], controller: "time_reg/copies"
     collection do
       get "export"
       post "import"

@@ -156,6 +156,8 @@ nb:
     delete_the_project_permanently: "Slett prosjektet permanent"
     please_enter: "Vennligst skriv inn"
     delete: "Slett"
+    disabled: "Deaktivert"
+    enabled: "Aktivert"
     to_confirm: "for bekreftelse"
     delete_the_client_permanently: "Slett kunden permanent"
     cannot_delete_client_with_active_projects: "Kan ikke slette kunde med aktive prosjekter"
@@ -258,6 +260,9 @@ nb:
     select_from_existing_tasks: "Velg blant eksisterende oppgaver"
     week: "Uke"
     copy_to_today: "Kopier til i dag"
+    copy_to_next_day: "Kopier til <b>neste dag</b>"
+    copy_to_week: "Kopier til hele <b>uken</b>"
+    copy_to_next_week: "Kopier til hele <b>neste uke</b>"
     unable_to_proceed: "Kan ikke fortsette"
     organization_name: "Organisasjonsnavn"
     organization_settings: "Organisasjonsinnstillinger"
@@ -534,6 +539,7 @@ nb:
     copy_to_today_tooltip: "Kopier denne tidsregistreringen til i dag"
     delete_confirmation: "Ønsker du å gå videre med sletting av timeregistreringen for prosjektet <span class='text-primary-600 font-semibold'>%{project_name}</span> med oppgaven <span class='text-primary-600 font-semibold'>%{task_name}</span> og <span class='text-primary-600 font-semibold'>%{logged_time}</span> logget. Denne handlingen kan ikke bli tatt tilbake."
   organizations:
+    advanced_time_copying: "Avansert tidskopiering"
     reports_filter:
       tabs:
         clients: Kunder

@@ -27,7 +27,7 @@ module Workspace
     end
 
     def organization_params
-      params.require(:organization).permit(:currency)
+      params.require(:organization).permit(:currency, :advanced_time_copying)
     end
 
     def implicit_authorization_target
