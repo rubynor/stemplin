@@ -13,6 +13,12 @@
             <%= form.select :currency, for_select(@available_currencies), { required: true }, class: "border-gray-200 rounded-md" %>
           <% end %>
         <% end %>
+        <%= render RubyUI::TableRow.new do %>
+          <%= render RubyUI::TableCell.new(class: "py-4 font-medium") { t("organizations.advanced_time_copying") } %>
+          <%= render RubyUI::TableCell.new(class: "py-4") do %>
+            <%= form.check_box :advanced_time_copying, class: "h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-600" %>
+          <% end %>
+        <% end %>
       <% end %>
     <% end %>
     <div class="mt-4 pt-4 border-t border-gray-100 flex justify-end gap-x-4">

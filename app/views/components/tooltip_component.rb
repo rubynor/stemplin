@@ -20,7 +20,7 @@ class TooltipComponent < ApplicationComponent
   def render_tooltip(content)
     # Ref: https://github.com/PhlexUI/phlex_ui_stimulus/blob/main/controllers/popover_controller.js#L2
     # It is built on top of tippy.js https://github.com/atomiks/tippyjs
-    render RubyUI::Tooltip.new(options: @options) do
+    render RubyUI::Popover.new(options: @options) do
       render RubyUI::TooltipTrigger.new(**@trigger_attributes) do
         content.call
       end

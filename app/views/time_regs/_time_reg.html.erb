@@ -51,10 +51,26 @@
   </div>
   <div class="flex gap-x-4 justify-end">
     <% if time_reg.date_worked != Date.today && !time_reg.active? %>
-      <%= render TooltipComponent.new(note: t("time_regs.copy_to_today_tooltip")) do %>
-        <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: Date.today, assigned_task_id: time_reg.assigned_task_id, notes: time_reg.notes), method: :post, class: "gap-x-2", variant: :outline) do %>
-          <i class="uc-icon text-base">&#xe9c7;</i>
-          <span class="hidden md:block"><%= t("common.copy_to_today") %></span>
+      <%= render TooltipComponent.new(note: t("time_regs.copy_to_today_tooltip"), options: { placement: "top", delay: 500 }) do %>
+        <% if current_user.current_organization.advanced_time_copying? %>
+          <%= render SplitButtonComponent.new(
+            path: new_modal_time_regs_path(date: Date.today, assigned_task_id: time_reg.assigned_task_id, notes: time_reg.notes),
+            method: :post,
+            class: "gap-x-2",
+            dropdown_items: [
+              { label: t("common.copy_to_next_day"), path: time_reg_copies_path(time_reg, date: time_reg.date_worked + 1.day), method: :post },
+              { label: t("common.copy_to_week"), path: time_reg_copies_path(time_reg, dates: weekdays_of_week(time_reg.date_worked, exclude: time_reg.date_worked)), method: :post },
+              { label: t("common.copy_to_next_week"), path: time_reg_copies_path(time_reg, dates: weekdays_of_week(time_reg.date_worked + 1.week)), method: :post }
+            ]
+          ) do %>
+            <i class="uc-icon text-base">&#xe9c7;</i>
+            <span class="hidden md:block"><%= t("common.copy_to_today") %></span>
+          <% end %>
+        <% else %>
+          <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: Date.today, assigned_task_id: time_reg.assigned_task_id, notes: time_reg.notes), method: :post, class: "gap-x-2", variant: :outline) do %>
+            <i class="uc-icon text-base">&#xe9c7;</i>
+            <span class="hidden md:block"><%= t("common.copy_to_today") %></span>
+          <% end %>
         <% end %>
       <% end %>
     <% else %>

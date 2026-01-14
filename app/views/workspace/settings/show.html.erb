@@ -19,6 +19,10 @@
           <%= render RubyUI::TableCell.new(class: "py-4 font-medium") { t("common.currency") } %>
           <%= render RubyUI::TableCell.new(class: "py-4") { currency_title_and_code @organization.currency } %>
         <% end %>
+        <%= render RubyUI::TableRow.new do %>
+          <%= render RubyUI::TableCell.new(class: "py-4 font-medium") { t("organizations.advanced_time_copying") } %>
+          <%= render RubyUI::TableCell.new(class: "py-4") { @organization.advanced_time_copying ? t("common.enabled") : t("common.disabled") } %>
+        <% end %>
       <% end %>
     <% end %>
   </div>

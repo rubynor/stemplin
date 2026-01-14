@@ -11,6 +11,11 @@ module TimeRegsHelper
     "#{hours}:0#{minutes}"
   end
 
+  def weekdays_of_week(date, exclude: nil)
+    start_of_week = date.beginning_of_week
+    (0..4).map { |i| start_of_week + i.days }.reject { |d| d == exclude }
+  end
+
   def minutes_by_day_of_week(date, user)
     start_of_week = date.beginning_of_week
     end_of_week = date.end_of_week

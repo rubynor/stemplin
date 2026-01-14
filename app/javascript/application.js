@@ -28,7 +28,9 @@ StreamActions.remove_modal = function() {
     document?.body?.classList?.remove("overflow-hidden");
   }
 }
-Turbo.setConfirmMethod((message, element) => {
+Turbo.config.forms.confirm
+
+Turbo.config.forms.confirm = (message, element) => {
   const dialog = document.getElementById("turbo-confirm-dialog");
 
   dialog.querySelector("p").innerHTML = message;
@@ -41,4 +43,4 @@ Turbo.setConfirmMethod((message, element) => {
       resolve(dialog.returnValue === "confirm");
     }, { once: true })
   });
-});
+};
