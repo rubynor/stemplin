@@ -14,6 +14,7 @@ class ApplicationComponent < Phlex::HTML
   include Phlex::Rails::Helpers::HiddenField
   include Phlex::Rails::Helpers::HiddenFieldTag
   include Phlex::Rails::Helpers::FieldsFor
+  include Phlex::Rails::Helpers::FormTag
 
   TAILWIND_MERGER = ::TailwindMerge::Merger.new.freeze unless defined?(TAILWIND_MERGER)
 
