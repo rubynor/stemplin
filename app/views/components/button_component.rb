@@ -29,20 +29,27 @@ class ButtonComponent < ApplicationComponent
     end
   end
 
-  def initialize(path: nil, method: nil, **attrs)
+  def initialize(path: nil, method: nil, form: {}, **attrs)
     @attrs = attrs
     @path = path
     @method = method
+    @form_options = form
   end
 
   def view_template(&content)
     if @path.present?
-      if @method == :get
+      if @method == :get || @method.nil?
         link_to(@path, **@attrs) { render_button(&content) }
       else
-        button_to(@path, method: @method, **@attrs) { render_button(&content) }
+        render_form_with_button(&content)
       end
     else
+      render_button(&content)
+    end
+  end
+
+  def render_form_with_button(&content)
+    form_tag(@path, method: @method, **form_attrs) do
       render_button(&content)
     end
   end
@@ -51,6 +58,10 @@ class ButtonComponent < ApplicationComponent
 
   def render_button(&content)
     render RubyUI::Button.new(**default_attrs) { content.call }
+  end
+
+  def form_attrs
+    { class: "inline" }.merge(@form_options)
   end
 
   def default_type
