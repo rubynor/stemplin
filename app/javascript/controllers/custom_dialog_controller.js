@@ -9,8 +9,8 @@ export default class extends Controller {
   }
 
   showPhlexModal() {
-    // let's get all divs that have data-controller="dismissable" and remove them from the DOM
-    const dismissableDivs = document.querySelectorAll('div[data-controller="dismissable"]');
+    // Remove any existing open dialogs from the DOM before opening a new one
+    const dismissableDivs = document.querySelectorAll('body > div[data-controller="ruby-ui--dialog"]');
     dismissableDivs?.forEach((el) => el?.remove());
 
     this.triggerTarget.click();
