@@ -28,6 +28,12 @@ bin/rubocop       # Run linter
 bin/rubocop -a    # Auto-fix linting issues
 ```
 
+**Test Patterns:**
+- Fixtures loaded with `fixtures :all`
+- ActionPolicy test helpers: `assert_authorized_to`, `assert_have_authorized_scope`
+- System tests use Capybara/Selenium
+- Parallel test execution enabled
+
 ## Architecture Overview
 
 **Tech Stack:** Ruby on Rails 7.1, PostgreSQL, Hotwire (Turbo + Stimulus), Tailwind CSS, Phlex components, Sidekiq with Redis
@@ -63,17 +69,58 @@ end
 
 ## Key Components
 
-**Frontend:** 
+**Frontend:**
 - Phlex components in `/app/components/` with RubyUI component library
-- Stimulus controllers in `/app/javascript/controllers/`
-- Tailwind CSS with custom configuration
+- Stimulus controllers in `/app/javascript/controllers/` (30+ controllers)
+  - Key controllers: `refresh_minutes_controller` (timer), `combobox_controller`, `modal_controller`, `flatpickr_controller` (date picker)
+- Tailwind CSS with @tailwindcss/forms and @tailwindcss/typography
+- Build: esbuild for JS bundling
+- PostHog analytics integration
 
 **Background Jobs:** Sidekiq with Redis (required for Hotwire functionality)
 
 **Invitation System:** devise_invitable for user invitations with external project access
 
-## Current Context
+**Onboarding:** Multi-step wizard using Wicked gem (`OnboardingWizardController`)
 
-**Active Branch:** `feature/invite-to-project/external-user-invitation`
-**Purpose:** Extending project access for external user invitations
-**Main Branch:** `main`
+## Model Concerns
+
+**Deletable (Soft Delete):**
+- Uses `discard` gem with `default_scope -> { kept }`
+- Applied to: Project, Client, Task, TimeReg
+- Use `discard` instead of `destroy`, `kept` scope for active records
+
+**RateConvertible:**
+- Converts between currency format and hundredths (100 = 1.00)
+- Applied to: Project, AssignedTask
+- Use `rate_currency` reader/writer for formatted values
+
+**Paper Trail:**
+- Audit trail enabled on TimeReg model
+- Query history with `time_reg.versions`
+
+## Services
+
+Business logic lives in `/app/services/`:
+- `ProjectInvitationService` - Creates and processes project invitations
+- `InviteUsersService` - Handles user invitation workflow
+- `ConvertCurrencyHundredths` - Currency conversion utility
+
+## Localization
+
+- Supported locales: `en` (English), `nb` (Norwegian Bokmål)
+- Locale files in `/config/locales/`
+- User locale preference stored in User model
+
+## Email Integration
+
+- SendGrid for transactional emails
+- Template IDs configured per locale in `/config/emails.yml`
+- Templates: welcome, password reset, project invitations
+
+## Configuration Files
+
+- `/config/emails.yml` - SendGrid template IDs by locale
+- `/config/currencies.yml` - Supported currencies (21K+)
+- `/config/sidekiq_scheduler.yml` - Scheduled job definitions
+- `.env.sample` - Required environment variables template
