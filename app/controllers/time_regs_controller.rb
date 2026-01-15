@@ -22,15 +22,24 @@ class TimeRegsController < ApplicationController
   end
 
   def new_modal
-    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(params.permit(:assigned_task_id, :notes))
+    @time_reg = authorized_scope(TimeReg, type: :relation, as: :own).new(params.permit(:assigned_task_id, :notes, :minutes))
     @time_reg.date_worked = @chosen_date
     authorize! @time_reg
+
+    # Fetch recent entries for quick-select buttons
+    @recent_entries = fetch_recent_entries unless provide_user?
 
     # Autofill with previous task if available
     unless @time_reg.assigned_task_id
       previous_time_reg = authorized_scope(TimeReg, type: :relation, as: :own).order(:created_at).last
       @time_reg.assigned_task_id = previous_time_reg&.assigned_task_id
     end
+
+    # Load the assigned_task association (with project) so time_reg.project works in the view
+    if @time_reg.assigned_task_id
+      @time_reg.assigned_task = AssignedTask.includes(:project).find_by(id: @time_reg.assigned_task_id)
+    end
+
     set_assigned_tasks
 
     if current_user.current_organization.projects.empty?
@@ -150,5 +159,17 @@ class TimeRegsController < ApplicationController
 
   def selected_user
     provide_user? ? User.find(time_reg_params[:user_id]) : current_user
+  end
+
+  def fetch_recent_entries
+    authorized_scope(TimeReg, type: :relation, as: :own)
+      .where("time_regs.created_at >= ?", 2.weeks.ago)
+      .where("time_regs.minutes > 0")
+      .includes(assigned_task: [ :task, { project: :client } ])
+      .order(created_at: :desc)
+      .group_by(&:assigned_task_id)
+      .values
+      .map(&:first)
+      .first(3)
   end
 end

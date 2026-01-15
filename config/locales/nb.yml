@@ -534,6 +534,7 @@ nb:
       decline: "Avslå"
       accept: "Fortsett"
   time_regs:
+    recent_entries: "Nylige registreringer"
     active_timer_description: "Vær oppmerksom på at du har en stoppeklokke som går."
     zero_minutes: "Null minutter!"
     copy_to_today_tooltip: "Kopier denne tidsregistreringen til i dag"
