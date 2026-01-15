@@ -403,6 +403,7 @@ en:
       decline: "Decline"
       accept: "Accept"
   time_regs:
+    recent_entries: "Recent entries"
     active_timer_description: "Kindly note that you have an active timer running."
     zero_minutes: "Zero minutes!"
     copy_to_today_tooltip: "Copy this time entry to today"

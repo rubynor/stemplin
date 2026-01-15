@@ -39,4 +39,21 @@ module TimeRegsHelper
     return t("common.update_time_reg") if !time_reg.new_record?
     time_reg.date_worked == Date.today ? t("common.start_timer") : t("common.create_time_reg")
   end
+
+  MINUTE = 60
+  HOUR = 60 * MINUTE
+  DAY = 24 * HOUR
+  WEEK = 7 * DAY
+
+  def time_ago_short(time)
+    seconds = (Time.current - time).to_i
+
+    case seconds
+    when 0...MINUTE then "now"
+    when MINUTE...HOUR then "#{seconds / MINUTE}m"
+    when HOUR...DAY then "#{seconds / HOUR}h"
+    when DAY...WEEK then "#{seconds / DAY}d"
+    else "#{seconds / WEEK}w"
+    end
+  end
 end

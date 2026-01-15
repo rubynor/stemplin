@@ -1,11 +1,42 @@
 <%- is_admin_adding_new_record = defined?(team_members) && team_members.present? %>
+<%= turbo_frame_tag :time_reg_modal do %>
 <%= render RubyUI::Dialog.new(open: true, data: { controller: "custom-dialog" }) do %>
   <%= render RubyUI::DialogTrigger.new(class: "hidden", data: { custom_dialog_target: "trigger" }) do %>
     <%= render RubyUI::Button.new { "Open Dialog" } %>
   <% end %>
   <%= render RubyUI::DialogContent.new(class: "bg-white") do %>
     <%= content = capture do %>
+      <%= render RubyUI::DialogHeader.new do %>
+        <%= render RubyUI::DialogTitle.new { title } %>
+        <%= render RubyUI::DialogDescription.new { format_date(chosen_date) } unless is_admin_adding_new_record %>
+      <% end %>
 
+      <%# Recent entries quick-select section - OUTSIDE the form to avoid nested forms %>
+      <% unless is_admin_adding_new_record %>
+        <% if defined?(recent_entries) && recent_entries.present? %>
+          <div class="px-1 py-3 border-b border-gray-100">
+            <span class="text-xs text-gray-500 font-medium mb-2 block"><%= t('time_regs.recent_entries') %></span>
+            <div class="flex flex-wrap gap-2">
+              <% recent_entries.each do |entry| %>
+                <%= render ButtonComponent.new(
+                  path: new_modal_time_regs_path(date: chosen_date, assigned_task_id: entry.assigned_task_id, notes: entry.notes, minutes: entry.minutes),
+                  method: :post,
+                  variant: :outline,
+                  class: "!h-auto !py-2 !px-3 flex-col items-start text-left max-w-[200px]"
+                ) do %>
+                  <div class="flex items-center gap-1 w-full">
+                    <span class="text-xs font-semibold text-gray-700 truncate"><%= entry.client.name %></span>
+                    <span class="text-xs text-gray-400">&middot;</span>
+                    <span class="text-xs text-gray-500"><%= convert_time_int(entry.minutes) %></span>
+                  </div>
+                  <span class="text-sm text-gray-600 truncate w-full"><%= entry.project.name %></span>
+                  <span class="text-xs text-gray-400 truncate w-full"><%= entry.task.name %></span>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
 
       <%= form_with(model: time_reg, id: dom_id(time_reg), method: time_reg.new_record? ? :post : :put, data: {
         controller: "custom-input custom-disable",
@@ -13,10 +44,6 @@
         "custom-input-active_text_value": active_text(time_reg),
         "custom-input-inactive_text_value": inactive_text(time_reg)
       }) do |form| %>
-        <%= render RubyUI::DialogHeader.new do %>
-          <%= render RubyUI::DialogTitle.new { title } %>
-          <%= render RubyUI::DialogDescription.new { format_date(chosen_date) } unless is_admin_adding_new_record %>
-        <% end %>
         <%= render RubyUI::DialogMiddle.new do %>
           <%= content_tag(:div, class: "w-full flex flex-col") do %>
             <div class="block" data-controller="time-tasks">
@@ -52,7 +79,7 @@
               <div class="mb-4" data-time-tasks-target="project">
                 <%= form.label :project_id, t('common.project'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
                 <%= form.grouped_collection_select :project_id, clients, :items, :name, :id, :name, {
-                  selected: time_reg.project&.id || "",
+                  selected: time_reg.assigned_task&.project_id || time_reg.project&.id || "",
                   prompt: t('common.select_project'),
                 }, {
                   class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white',
@@ -63,7 +90,7 @@
               <div class="mb-4" data-time-tasks-target="task">
                 <%= form.label :assigned_task_id, t('task.assign_task'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
                 <%= form.collection_select :assigned_task_id, (assigned_tasks || [] ), :id, :name, {
-                  selected: time_reg.assigned_task&.id, include_blank: !@time_reg.project }, {
+                  selected: time_reg.assigned_task&.id, include_blank: !time_reg.assigned_task }, {
                                               class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
                                             } %>
                 <% time_reg.errors.full_messages_for(:assigned_task).each do |message| %>
@@ -85,7 +112,7 @@
                 <%= form.text_field :minutes_string, placeholder: "0:00", pattern: /^\d+([:,]\d+)?(\.\d+)?$/, autofocus: true, data: {
                   action: "custom-input#updatehiddenInput change->custom-input#updateFormat",
                   "custom-input-target": "input"
-                }, value: (convert_time_int(time_reg.minutes) unless time_reg.new_record?),
+                }, value: (convert_time_int(time_reg.minutes) if time_reg.minutes.to_i > 0),
                         class: 'text-end w-full rounded-md p-2 border invalid:border-red-700 border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white text-black placeholder:text-gray-300'
                 %>
                 <% unless is_admin_adding_new_record %>
@@ -105,4 +132,5 @@
       <% end %>
     <% end %>
   <% end %>
+<% end %>
 <% end %>
