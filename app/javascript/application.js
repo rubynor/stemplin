@@ -15,7 +15,6 @@ StreamActions.remove_modal = function() {
   const target = this.getAttribute("target");
 
   const elementToRemove = document.getElementById(target);
-  console.log(elementToRemove)
   if (elementToRemove) {
     const specificDialog = elementToRemove.closest('div[data-controller="ruby-ui--dialog"]');
 
