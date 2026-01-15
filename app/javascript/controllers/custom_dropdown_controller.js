@@ -43,12 +43,13 @@ export default class extends Controller {
   }
 
   closeWithKeyboard(event) {
-    if (event.code === 'Escape' && this.isOpen()) {
+    if (event?.code === 'Escape' && this.isOpen()) {
       this.toggleContent(false);
     }
   }
 
   closeBackground(event) {
+    if (!event?.target) return;
     if (!this.element.contains(event.target) && this.isOpen()) {
       setTimeout(() => this.toggleContent(false), this.closeBackgroundDelayValue ? 300 : 0);
     }
