@@ -33,6 +33,7 @@ export default class extends Controller {
 
   onClickOutside(event) {
     if (!this.openValue) return;
+    if (!event?.target) return;
     if (this.element.contains(event.target)) return;
 
     event.preventDefault();
