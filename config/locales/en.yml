@@ -244,7 +244,7 @@ en:
     week: "Week"
     copy_to_today: "Copy to today"
     copy_to_next_day: "Copy to <b>next day</b>"
-    copy_to_week: "Copy to all of <b>week</b>"
+    copy_to_week: "Copy through rest of <b>week</b>"
     copy_to_next_week: "Copy to all of <b>next week</b>"
     unable_to_proceed: "Unable to proceed"
     organization_name: "Organization name"

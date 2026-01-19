@@ -59,7 +59,7 @@
             class: "gap-x-2",
             dropdown_items: [
               { label: t("common.copy_to_next_day"), path: time_reg_copies_path(time_reg, date: time_reg.date_worked + 1.day), method: :post },
-              { label: t("common.copy_to_week"), path: time_reg_copies_path(time_reg, dates: weekdays_of_week(time_reg.date_worked, exclude: time_reg.date_worked)), method: :post },
+              { label: t("common.copy_to_week"), path: time_reg_copies_path(time_reg, dates: rest_of_weekdays(time_reg.date_worked)), method: :post },
               { label: t("common.copy_to_next_week"), path: time_reg_copies_path(time_reg, dates: weekdays_of_week(time_reg.date_worked + 1.week)), method: :post }
             ]
           ) do %>
