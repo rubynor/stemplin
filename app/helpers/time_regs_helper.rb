@@ -16,6 +16,13 @@ module TimeRegsHelper
     (0..4).map { |i| start_of_week + i.days }.reject { |d| d == exclude }
   end
 
+  def rest_of_weekdays(date)
+    end_of_work_week = date.beginning_of_week + 4.days # Friday
+    return [] if date > end_of_work_week # If after Friday, no remaining days
+
+    ((date + 1.day)..end_of_work_week).to_a
+  end
+
   def minutes_by_day_of_week(date, user)
     start_of_week = date.beginning_of_week
     end_of_week = date.end_of_week

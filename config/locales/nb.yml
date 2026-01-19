@@ -261,7 +261,7 @@ nb:
     week: "Uke"
     copy_to_today: "Kopier til i dag"
     copy_to_next_day: "Kopier til <b>neste dag</b>"
-    copy_to_week: "Kopier til hele <b>uken</b>"
+    copy_to_week: "Kopier til resten av <b>uken</b>"
     copy_to_next_week: "Kopier til hele <b>neste uke</b>"
     unable_to_proceed: "Kan ikke fortsette"
     organization_name: "Organisasjonsnavn"
