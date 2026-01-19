@@ -1,0 +1,61 @@
+<% content_for :title, t("common.holidays") %>
+
+<div class="flex flex-col gap-y-8">
+  <!-- Header -->
+  <div class="flex flex-row justify-between items-center border-b border-gray-100 py-3">
+    <div class="flex flex-row items-center gap-x-2">
+      <span class="font-medium text-gray-600 text-lg"><%= t("common.holidays") %></span>
+    </div>
+  </div>
+
+  <!-- Country Selection Form -->
+  <%= form_with model: @organization, url: workspace_holidays_path, method: :patch do |form| %>
+    <div class="flex flex-row gap-4 items-end">
+      <div class="flex-1 max-w-md">
+        <%= render RubyUI::FormField.new do %>
+          <%= render RubyUI::FormFieldLabel.new { t("holidays.select_country") } %>
+          <%= form.select :holiday_country_code,
+              for_select_countries(@available_countries),
+              { prompt: t("holidays.select_country_prompt") },
+              class: "border-gray-200 rounded-md w-full" %>
+        <% end %>
+      </div>
+      <div>
+        <%= render ButtonComponent.new(type: :submit) do %>
+          <span><%= t("holidays.show_holidays") %></span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Holidays Table -->
+  <% if @selected_country.present? %>
+    <div>
+      <% holidays = holidays_for_country(@selected_country) %>
+      <% if holidays.any? %>
+        <%= render RubyUI::Table.new do %>
+          <%= render RubyUI::TableHeader.new do %>
+            <%= render RubyUI::TableRow.new do %>
+              <%= render RubyUI::TableHead.new { t("holidays.holiday_name") } %>
+              <%= render RubyUI::TableHead.new { t("holidays.date") } %>
+            <% end %>
+          <% end %>
+          <%= render RubyUI::TableBody.new(class: "text-base") do %>
+            <% holidays.each do |holiday| %>
+              <%= render RubyUI::TableRow.new do %>
+                <%= render RubyUI::TableCell.new(class: "py-4 font-medium") { holiday[:name] } %>
+                <%= render RubyUI::TableCell.new(class: "py-4") { format_holiday_date(holiday[:date]) } %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <p class="text-gray-500 text-center py-8"><%= t("holidays.no_holidays_found") %></p>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+      <p class="text-blue-800"><%= t("holidays.please_select_country") %></p>
+    </div>
+  <% end %>
+</div>

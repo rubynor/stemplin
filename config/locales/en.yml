@@ -70,6 +70,16 @@ en:
       messages:
         timer_running: "Another timer is already running"
 
+  holidays:
+    select_country: "Country"
+    select_country_prompt: "Select a country"
+    show_holidays: "Show Holidays"
+    holiday_name: "Holiday Name"
+    date: "Date"
+    no_holidays_found: "No holidays found for the selected country"
+    please_select_country: "Please select a country to view holidays"
+    country_updated: "Holiday country preference updated successfully"
+
   common:
     client: "Client"
     clients: "Clients"
@@ -250,6 +260,7 @@ en:
     organization_name: "Organization name"
     organization_settings: "Organization settings"
     settings: "Settings"
+    holidays: "Holidays"
     currency: "Currency"
     empty:
       title: "Oops, Nothing Here Yet!"

@@ -138,6 +138,7 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    holidays (8.8.0)
     hotwire-livereload (2.0.0)
       actioncable (>= 7.0.0)
       listen (>= 3.0.0)
@@ -398,6 +399,7 @@ DEPENDENCIES
   devise_invitable (~> 2.0.9)
   discard
   dotenv-rails (~> 2.1, >= 2.1.1)
+  holidays
   hotwire-livereload
   invisible_captcha
   jbuilder

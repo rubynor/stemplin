@@ -62,6 +62,8 @@ Rails.application.routes.draw do
     end
 
     resource :settings, only: [ :show, :edit, :update ]
+
+    resource :holidays, only: [ :show, :update ]
   end
 
   resources :reports, only: [ :index ]

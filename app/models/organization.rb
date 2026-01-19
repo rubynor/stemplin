@@ -8,6 +8,7 @@ class Organization < ApplicationRecord
   has_many :time_regs, through: :users
 
   validates :name, presence: true, uniqueness: true
+  validates :holiday_country_code, inclusion: { in: proc { Holidays.available_regions.map(&:to_s) }, allow_nil: true }
   validate :currency_exists
 
   def currency_exists

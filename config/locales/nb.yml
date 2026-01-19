@@ -86,6 +86,16 @@ nb:
       messages:
         timer_running: "En annen stoppeklokke går fortsatt"
 
+  holidays:
+    select_country: "Land"
+    select_country_prompt: "Velg et land"
+    show_holidays: "Vis Helligdager"
+    holiday_name: "Helligdag"
+    date: "Dato"
+    no_holidays_found: "Ingen helligdager funnet for det valgte landet"
+    please_select_country: "Vennligst velg et land for å se helligdager"
+    country_updated: "Helligdag landpreferanse oppdatert"
+
   common:
     client: "Kunde"
     clients: "Kunder"
@@ -267,6 +277,7 @@ nb:
     organization_name: "Organisasjonsnavn"
     organization_settings: "Organisasjonsinnstillinger"
     settings: "Innstillinger"
+    holidays: "Helligdager"
     currency: "Valuta"
     empty:
       title: "Oops, ingenting her ennå!"

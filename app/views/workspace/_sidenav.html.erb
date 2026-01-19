@@ -18,5 +18,11 @@
         <span><%= t("common.settings") %></span>
       <% end %>
     </li>
+    <li>
+      <%= link_to workspace_holidays_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_holidays_path]) ? "bg-gray-100 text-primary-600": "hover:text-primary-700 text-gray-700") do %>
+        <i class="uc-icon text-xl">&#xe8df;</i>
+        <span><%= t("common.holidays") %></span>
+      <% end %>
+    </li>
   </ul>
 </div>

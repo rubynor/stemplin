@@ -116,6 +116,8 @@ gem "sidekiq-scheduler"
 
 gem "paper_trail"
 
+gem "holidays"
+
 gem "phlex-rails", "~> 2.0"
 
 gem "tailwind_merge", "~> 1.2"

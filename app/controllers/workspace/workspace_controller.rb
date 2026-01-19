@@ -1,5 +1,7 @@
 module Workspace
   class WorkspaceController < ApplicationController
+    before_action :authenticate_user!
+
     layout -> do
       "workspace"
     end

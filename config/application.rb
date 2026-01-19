@@ -49,6 +49,7 @@ module Stemplin
 
     config.emails = config_for(:emails)
     config.currencies = config_for(:currencies)
+    config.countries = config_for(:countries)
   end
 
   def self.config
