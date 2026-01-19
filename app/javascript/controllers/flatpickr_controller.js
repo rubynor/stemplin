@@ -29,6 +29,23 @@ export default class extends Flatpickr {
   connect() {
     super.connect();
     this.updateWidth();
+
+    // Handle Turbo Morph by reinitializing flatpickr
+    document.addEventListener('turbo:morph', this.handleTurboMorph);
+  }
+
+  disconnect() {
+    super.disconnect();
+    document.removeEventListener('turbo:morph', this.handleTurboMorph);
+  }
+
+  handleTurboMorph = () => {
+    // Reinitialize flatpickr after Turbo Morph
+    if (this.fp) {
+      this.fp.destroy();
+    }
+    super.connect();
+    this.updateWidth();
   }
 
   change(selectedDates, dateStr, instance) {

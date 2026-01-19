@@ -1,5 +1,5 @@
 <%= form_with url: root_path, method: :get, class: "flex items-stretch" do |form| %>
-  <%= form.text_field :date, value: @chosen_date, class: "flex text-sm md:text-base px-1 md:px-2 cursor-pointer border-none text-center hover:text-primary-600 z-10 focus:ring-0 font-medium",
+  <%= form.text_field :date, id: "date_picker_input", value: @chosen_date.iso8601, class: "flex text-sm md:text-base px-1 md:px-2 cursor-pointer border-none text-center hover:text-primary-600 z-10 focus:ring-0 font-medium",
     data: {
       controller: "flatpickr",
       flatpickr_auto_submit_value: true,

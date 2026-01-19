@@ -54,7 +54,7 @@ class TimeRegsController < ApplicationController
     authorize! @time_reg
 
     if @time_reg.save
-      redirect_back(fallback_location: time_regs_path, date: @time_reg.date_worked)
+      redirect_to time_regs_path(date: @time_reg.date_worked)
     else
       set_assigned_tasks
       render :new_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
@@ -64,7 +64,7 @@ class TimeRegsController < ApplicationController
   def update
     authorize! @time_reg
     if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
-      redirect_back(fallback_location: time_regs_path, date: @time_reg.date_worked)
+      redirect_to time_regs_path(date: @time_reg.date_worked)
     else
       set_assigned_tasks
       render :edit_modal, status: :unprocessable_entity, formats: [ :html, :turbo_stream ]
@@ -74,7 +74,7 @@ class TimeRegsController < ApplicationController
   def destroy
     authorize! @time_reg
     @time_reg.discard!
-    redirect_back(fallback_location: time_regs_path, date: @time_reg.date_worked)
+    redirect_to time_regs_path(date: @time_reg.date_worked)
 
   rescue ActiveRecord::RecordNotDestroyed
     flash[:alert] = "Unable to delete time registration"
