@@ -1,4 +1,12 @@
 class TaskPolicy < ApplicationPolicy
+  def index?
+    true
+  end
+
+  def show?
+    record.organization == user.current_organization
+  end
+
   scope_for :relation, :own do |relation|
     users_projects = authorized_scope(Project.all, type: :relation).all
     relation.joins(:projects).where(projects: users_projects).distinct

@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_secure_token :api_token
+
   self.ignored_columns += [ "is_verified" ]
 
   has_many :time_regs
