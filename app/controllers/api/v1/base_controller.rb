@@ -15,7 +15,7 @@ module Api
       private
 
       def authenticate_api_user!
-        token = request.headers["Authorization"]&.remove("Bearer ")
+        token = request.headers["Authorization"]&.delete_prefix("Bearer ")
         @current_user = User.find_by(api_token: token) if token.present?
 
         render json: { error: "Unauthorized" }, status: :unauthorized unless @current_user
@@ -30,16 +30,13 @@ module Api
       end
 
       def unprocessable_entity(exception)
-        render json: { error: exception.record.errors.full_messages }, status: :unprocessable_entity
+        render json: { errors: exception.record.errors.full_messages }, status: :unprocessable_entity
       end
 
       def forbidden
         render json: { error: "Forbidden" }, status: :forbidden
       end
 
-      def pagy_metadata(pagy)
-        { current_page: pagy.page, total_pages: pagy.pages, total_count: pagy.count }
-      end
     end
   end
 end
