@@ -25,12 +25,12 @@ Rails.application.routes.draw do
       resources :projects, only: %i[index show create update destroy]
       resources :tasks, only: %i[index show]
       resources :time_regs, only: %i[index show create update destroy] do
-        patch :toggle_active, on: :member
+        resource :timer, only: :update
       end
       resources :users, only: %i[index show] do
         get :me, on: :collection
-        post :regenerate_token, on: :collection
       end
+      resource :api_token, only: :update
       resources :reports, only: %i[index]
     end
   end

@@ -22,11 +22,4 @@ class Api::V1::UsersControllerTest < Api::V1::BaseTest
     assert_kind_of Array, json_response
   end
 
-  test "regenerate_token returns new token" do
-    old_token = @user.api_token || @user.regenerate_api_token
-    post regenerate_token_api_v1_users_path, headers: api_headers(@user)
-    assert_response :success
-    assert json_response.key?("api_token")
-    assert_not_equal old_token, json_response["api_token"]
-  end
 end

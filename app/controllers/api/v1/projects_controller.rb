@@ -10,18 +10,21 @@ module Api
 
       def show
         authorize! @project
+        load_assigned_tasks
       end
 
       def create
         @project = Project.new(project_params)
         authorize! @project
         @project.save!
+        load_assigned_tasks
         render :show, status: :created
       end
 
       def update
         authorize! @project
         @project.update!(project_params)
+        load_assigned_tasks
         render :show
       end
 
@@ -35,6 +38,10 @@ module Api
 
       def set_project
         @project = authorized_scope(Project, type: :relation).find(params[:id])
+      end
+
+      def load_assigned_tasks
+        @assigned_tasks = @project.active_assigned_tasks.includes(:task)
       end
 
       def project_params

@@ -56,13 +56,6 @@ class Api::V1::TimeRegsControllerTest < Api::V1::BaseTest
     assert_raises(ActiveRecord::RecordNotFound) { TimeReg.find(@time_reg.id) }
   end
 
-  test "toggle active starts timer" do
-    assert_not @time_reg.active?
-    patch toggle_active_api_v1_time_reg_path(@time_reg), headers: api_headers(@user)
-    assert_response :success
-    assert json_response["active"]
-  end
-
   test "cannot access another user time reg" do
     other_user_time_reg = time_regs(:time_reg_2)
     get api_v1_time_reg_path(other_user_time_reg), headers: api_headers(@user)

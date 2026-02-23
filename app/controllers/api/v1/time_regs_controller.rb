@@ -1,7 +1,7 @@
 module Api
   module V1
     class TimeRegsController < BaseController
-      before_action :set_time_reg, only: %i[show update destroy toggle_active]
+      before_action :set_time_reg, only: %i[show update destroy]
 
       def index
         authorize!
@@ -37,12 +37,6 @@ module Api
         authorize! @time_reg
         @time_reg.discard!
         head :no_content
-      end
-
-      def toggle_active
-        authorize! @time_reg
-        @time_reg.toggle_active
-        render :show
       end
 
       private

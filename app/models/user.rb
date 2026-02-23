@@ -4,8 +4,6 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_secure_token :api_token
-
   self.ignored_columns += [ "is_verified" ]
 
   has_many :time_regs
@@ -75,5 +73,13 @@ class User < ApplicationRecord
   def is_super_admin?
     return true if Rails.env.development? # We do not yet have a `super_admin` functionality so let's at least have this in development for now
     access_info.super_admin?
+  end
+
+  def regenerate_api_token
+    update!(api_token: SecureRandom.base58(24))
+  end
+
+  def ensure_api_token!
+    regenerate_api_token unless api_token?
   end
 end

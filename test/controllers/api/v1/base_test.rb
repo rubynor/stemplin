@@ -5,9 +5,11 @@ class Api::V1::BaseTest < ActionDispatch::IntegrationTest
 
   private
 
-  def api_headers(user)
-    user.regenerate_api_token unless user.api_token
-    { "Authorization" => "Bearer #{user.api_token}" }
+  def api_headers(user, organization: nil)
+    user.ensure_api_token!
+    headers = { "Authorization" => "Bearer #{user.api_token}" }
+    headers["X-Organization-Id"] = organization.id.to_s if organization
+    headers
   end
 
   def json_response

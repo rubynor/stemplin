@@ -16,11 +16,6 @@ module Api
         authorize! @user
       end
 
-      def regenerate_token
-        current_user.regenerate_api_token
-        render json: { api_token: current_user.api_token }
-      end
-
       private
 
       def set_user

@@ -1,6 +1,6 @@
 json.partial! "api/v1/projects/project", project: @project
 
-json.assigned_tasks @project.active_assigned_tasks.includes(:task) do |assigned_task|
+json.assigned_tasks @assigned_tasks do |assigned_task|
   json.id assigned_task.id
   json.task_id assigned_task.task_id
   json.task_name assigned_task.task.name
