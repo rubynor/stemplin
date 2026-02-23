@@ -21,5 +21,4 @@ class Api::V1::UsersControllerTest < Api::V1::BaseTest
     assert_response :success
     assert_kind_of Array, json_response
   end
-
 end
