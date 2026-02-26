@@ -18,6 +18,23 @@ Rails.application.routes.draw do
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
 
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :organizations, only: %i[index show]
+      resources :clients, only: %i[index show create update destroy]
+      resources :projects, only: %i[index show create update destroy]
+      resources :tasks, only: %i[index show]
+      resources :time_regs, only: %i[index show create update destroy] do
+        resource :timer, only: :update
+      end
+      resources :users, only: %i[index show] do
+        get :me, on: :collection
+      end
+      resource :api_token, only: :update
+      resources :reports, only: %i[index]
+    end
+  end
+
   resources :onboarding, only: [ :new, :create ]
 
   post "/set_current_organization/:id" => "organizations#set_current_organization", as: :set_current_organization

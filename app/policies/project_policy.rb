@@ -1,4 +1,8 @@
 class ProjectPolicy < ApplicationPolicy
+  def index?
+    user.organization_admin?
+  end
+
   %i[ show new edit update destroy import ].each do |action|
     define_method("#{action}?") { user.organization_admin? && user.current_organization == record.organization }
   end
@@ -14,14 +18,18 @@ class ProjectPolicy < ApplicationPolicy
   scope_for :relation, :own do |relation|
     organization = user.current_organization
     relation = relation.joins(client: :organization).where(organizations: { id: organization.id })
-    relation = relation.joins(:project_accesses).where(project_accesses: user.project_accesses) if user.project_restricted?(organization)
+    unless user.organization_admin?
+      relation = relation.joins(:project_accesses).where(project_accesses: user.project_accesses) if user.project_restricted?(organization)
+    end
     relation.distinct
   end
 
   scope_for :relation do |relation|
     organization = user.current_organization
     relation = relation.joins(client: :organization).where(organizations: { id: organization.id })
-    relation = relation.joins(:project_accesses).where(project_accesses: user.project_accesses) if user.project_restricted?(organization)
+    unless user.organization_admin?
+      relation = relation.joins(:project_accesses).where(project_accesses: user.project_accesses) if user.project_restricted?(organization)
+    end
     relation.distinct
   end
 end
