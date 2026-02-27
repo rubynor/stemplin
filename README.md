@@ -10,6 +10,56 @@ Stemplin is a time tracking application written in Ruby on Rails.
 See the self hosing guide here:
 https://github.com/rubynor/stemplin/blob/main/SELF_HOSTING.md
 
+## REST API
+
+Stemplin provides a REST API under `/api/v1/` with Bearer token authentication.
+
+### Authentication
+
+Generate an API token via the Rails console:
+
+```ruby
+user = User.find_by(email: "you@example.com")
+token = user.regenerate_api_token!
+puts token # save this — it's only shown once
+```
+
+Use the token in requests:
+
+```bash
+curl -H "Authorization: Bearer <token>" \
+     -H "X-Organization-Id: <org_id>" \
+     https://your-host/api/v1/users/me
+```
+
+The `X-Organization-Id` header is optional — if omitted, the user's default organization is used.
+
+### Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v1/users/me` | Current user info |
+| GET | `/api/v1/users` | List organization users |
+| PATCH | `/api/v1/api_token` | Regenerate API token (returns new token) |
+| GET | `/api/v1/organizations` | List organizations |
+| GET | `/api/v1/organizations/:id` | Show organization |
+| GET/POST | `/api/v1/clients` | List / create clients |
+| GET/PATCH/DELETE | `/api/v1/clients/:id` | Show / update / delete client |
+| GET/POST | `/api/v1/projects` | List / create projects |
+| GET/PATCH/DELETE | `/api/v1/projects/:id` | Show / update / delete project |
+| GET | `/api/v1/tasks` | List tasks |
+| GET | `/api/v1/tasks/:id` | Show task |
+| GET/POST | `/api/v1/time_regs` | List / create time registrations |
+| GET/PATCH/DELETE | `/api/v1/time_regs/:id` | Show / update / delete time registration |
+| PATCH | `/api/v1/time_regs/:id/timer` | Toggle timer |
+| GET | `/api/v1/reports` | Aggregated time data |
+
+Time registrations support filtering with `?date=`, `?start_date=&end_date=`, and `?project_id=` query params, plus pagination with `?page=&per_page=`.
+
+### Token security
+
+API tokens are hashed with SHA-256 before storage. The plaintext token is only returned once at creation/regeneration time. Treat it like a password.
+
 # Contributing
 See the contribution guidelines in:
 

@@ -86,6 +86,28 @@ Stop and remove all data (database and Redis):
 docker-compose down -v
 ```
 
+## API Access
+
+To use the REST API, generate a token for a user:
+
+```bash
+docker-compose exec web rails runner 'token = User.find_by(email: "you@example.com").regenerate_api_token!; puts token'
+```
+
+Save the token — it is hashed before storage and cannot be retrieved again. Test it with:
+
+```bash
+curl -H "Authorization: Bearer <token>" http://localhost:3000/api/v1/users/me
+```
+
+To regenerate a lost token:
+
+```bash
+curl -X PATCH -H "Authorization: Bearer <current-token>" http://localhost:3000/api/v1/api_token
+```
+
+See the [API documentation in README.md](README.md#rest-api) for the full endpoint list.
+
 ## Troubleshooting
 
 ### View Logs
