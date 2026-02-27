@@ -12,7 +12,7 @@ class Api::V1::UsersControllerTest < Api::V1::BaseTest
     assert_response :success
     assert_equal @user.email, json_response["email"]
     assert_equal @user.name, json_response["name"]
-    assert json_response.key?("api_token")
+    assert json_response.key?("has_api_token")
     assert json_response.key?("current_organization")
   end
 

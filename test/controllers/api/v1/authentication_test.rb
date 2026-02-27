@@ -31,6 +31,12 @@ class Api::V1::AuthenticationTest < Api::V1::BaseTest
     assert_not_includes client_names, "E Corp"
   end
 
+  test "falls back to default organization when X-Organization-Id is not set" do
+    user = users(:joe)
+    get api_v1_clients_path, headers: api_headers(user)
+    assert_response :success
+  end
+
   test "X-Organization-Id returns 404 for non-member organization" do
     user = users(:joe)
     other_org = organizations(:organization_two)
