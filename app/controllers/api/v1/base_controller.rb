@@ -24,9 +24,17 @@ module Api
 
       def resolve_organization
         org_id = request.headers["X-Organization-Id"]
-        return unless org_id.present?
 
-        resolved_access_info = current_user.access_infos.find_by!(organization_id: org_id)
+        resolved_access_info = if org_id.present?
+          current_user.access_infos.find_by!(organization_id: org_id)
+        else
+          current_user.access_infos.find_by(active: true) || current_user.access_infos.first
+        end
+
+        unless resolved_access_info
+          render json: { errors: [ "No organization. Set X-Organization-Id header." ] }, status: :unprocessable_entity
+          return
+        end
 
         current_user.define_singleton_method(:access_info) do |organization = nil|
           return access_infos.find_by(organization: organization) if organization
