@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  self.ignored_columns += [ "is_verified" ]
+  self.ignored_columns += [ "is_verified", "api_token" ]
 
   has_many :time_regs
   has_many :access_infos
@@ -75,11 +75,19 @@ class User < ApplicationRecord
     access_info.super_admin?
   end
 
-  def regenerate_api_token
-    update!(api_token: SecureRandom.base58(24))
+  def regenerate_api_token!
+    token = SecureRandom.base58(24)
+    update!(api_token_digest: Digest::SHA256.hexdigest(token))
+    token
   end
 
   def ensure_api_token!
-    regenerate_api_token unless api_token?
+    regenerate_api_token! unless api_token_digest?
+  end
+
+  def self.find_by_api_token(token)
+    return nil if token.blank?
+
+    find_by(api_token_digest: Digest::SHA256.hexdigest(token))
   end
 end
