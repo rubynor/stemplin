@@ -17,7 +17,7 @@ module Api
 
       def authenticate_api_user!
         token = request.headers["Authorization"]&.delete_prefix("Bearer ")
-        @current_user = User.find_by_api_token(token) if token.present?
+        @current_user = User.find_by_api_token(token)
 
         render json: { errors: [ "Unauthorized" ] }, status: :unauthorized unless @current_user
       end
@@ -25,15 +25,16 @@ module Api
       def resolve_organization
         org_id = request.headers["X-Organization-Id"]
 
-        resolved_access_info = if org_id.present?
-          current_user.access_infos.find_by!(organization_id: org_id)
+        if org_id.present?
+          organization = Organization.find(org_id)
+          resolved_access_info = current_user.access_info(organization)
+          raise ActiveRecord::RecordNotFound unless resolved_access_info
         else
-          current_user.access_infos.find_by(active: true) || current_user.access_infos.first
-        end
-
-        unless resolved_access_info
-          render json: { errors: [ "No organization. Set X-Organization-Id header." ] }, status: :unprocessable_entity
-          return
+          resolved_access_info = current_user.access_info
+          unless resolved_access_info
+            render json: { errors: [ "No organization. Set X-Organization-Id header." ] }, status: :unprocessable_entity
+            return
+          end
         end
 
         current_user.define_singleton_method(:access_info) do |organization = nil|
