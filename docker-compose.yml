@@ -34,11 +34,15 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+    env_file:
+      - path: .env
+        required: false
     environment:
       RAILS_ENV: production
       DATABASE_URL: postgres://postgres:postgres@db:5432/stemplin_development
       REDIS_URL: redis://redis:6379/0
       SECRET_KEY_BASE: ${SECRET_KEY_BASE:-change_this_to_a_secure_secret_key}
+      HTTP_HOST: ${HTTP_HOST:-localhost:3000}
     stdin_open: true
     tty: true
 
@@ -52,11 +56,15 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+    env_file:
+      - path: .env
+        required: false
     environment:
       RAILS_ENV: production
       DATABASE_URL: postgres://postgres:postgres@db:5432/stemplin_development
       REDIS_URL: redis://redis:6379/0
       SECRET_KEY_BASE: ${SECRET_KEY_BASE:-change_this_to_a_secure_secret_key}
+      HTTP_HOST: ${HTTP_HOST:-localhost:3000}
 
 volumes:
   postgres_data:

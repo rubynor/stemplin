@@ -31,7 +31,9 @@ Rails.application.routes.draw do
         get :me, on: :collection
       end
       resource :api_token, only: :update
-      resources :reports, only: %i[index]
+      resources :reports, only: %i[index] do
+        get :detailed, on: :collection
+      end
     end
   end
 
