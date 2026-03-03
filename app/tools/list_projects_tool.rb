@@ -7,7 +7,7 @@ class ListProjectsTool < ApplicationTool
 
   def call(organization_id: nil)
     resolve_organization(organization_id)
-    authorize! current_user.access_info.organization, with: ProjectPolicy, to: :index?
+    authorize! with: ProjectPolicy, to: :index?
 
     projects = authorized_scope(Project, type: :relation, with: ProjectPolicy).includes(:client).order(:name)
     JSON.generate(projects.map { |project|

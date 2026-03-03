@@ -7,6 +7,7 @@ class ListTasksTool < ApplicationTool
 
   def call(organization_id: nil)
     resolve_organization(organization_id)
+    authorize! with: TaskPolicy, to: :index?
 
     tasks = authorized_scope(Task, type: :relation, with: TaskPolicy).order(:name)
     JSON.generate(tasks.map { |task|

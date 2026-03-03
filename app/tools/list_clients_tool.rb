@@ -7,6 +7,7 @@ class ListClientsTool < ApplicationTool
 
   def call(organization_id: nil)
     resolve_organization(organization_id)
+    authorize! with: ClientPolicy, to: :index?
 
     clients = authorized_scope(Client, type: :relation, with: ClientPolicy).order(:name)
     JSON.generate(clients.map { |client|
