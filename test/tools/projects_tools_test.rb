@@ -29,12 +29,7 @@ class ListProjectsToolTest < ToolTestCase
     joe = users(:joe)
     result = call_tool(ListProjectsTool, user: joe, organization: @org)
     parsed = parse_result(result)
-    # joe is not an admin, so ProjectPolicy#index? returns false
-    # However, authorized_scope still works - it just scopes by access
-    # The index? check is only in the controller via authorize!
-    # In our tool, we only use authorized_scope, so joe should get results
-    # based on his project access (which may be empty)
-    assert_kind_of Array, parsed
+    assert parsed.key?("error")
   end
 
   test "returns error without auth" do
