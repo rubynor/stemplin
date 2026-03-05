@@ -1,4 +1,5 @@
 require "fast_mcp"
+require_relative "../../app/middleware/mcp_oauth_middleware"
 
 FastMcp.mount_in_rails(
   Rails.application,
@@ -11,3 +12,5 @@ FastMcp.mount_in_rails(
     server.register_tools(*ApplicationTool.descendants)
   end
 end
+
+Rails.application.config.middleware.insert_before FastMcp::Transports::RackTransport, McpOauthMiddleware

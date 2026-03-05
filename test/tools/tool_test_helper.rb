@@ -8,8 +8,9 @@ class ToolTestCase < ActiveSupport::TestCase
   def call_tool(tool_class, user: nil, organization: nil, **args)
     headers = {}
     if user
-      token = user.ensure_api_token!
-      headers["Authorization"] = "Bearer #{token}"
+      headers["x-mcp-oauth-user-id"] = McpOauthMiddleware.message_verifier.generate(
+        user.id, purpose: "mcp_oauth_user_id"
+      )
     end
     args[:organization_id] = organization.id if organization
 

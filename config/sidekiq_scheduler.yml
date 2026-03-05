@@ -1,1 +1,9 @@
-# Let's have our schedules here, once the first is added. Remove this comment
+cleanup_stale_oauth_applications:
+  every: "6h"
+  class: CleanupStaleOauthApplicationsJob
+  description: "Remove dynamically registered OAuth applications with no tokens after 24 hours"
+
+cleanup_expired_oauth_tokens:
+  cron: "30 3 * * *"
+  class: CleanupExpiredOauthTokensJob
+  description: "Remove expired and revoked OAuth tokens older than 30 days"

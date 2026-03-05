@@ -7,8 +7,14 @@ class ApplicationTool < ActionTool::Base
 
   def current_user
     @current_user ||= begin
-      token = (headers&.dig("Authorization") || headers&.dig("authorization"))&.delete_prefix("Bearer ")
-      User.find_by_api_token(token)
+      signed_user_id = headers&.dig("x-mcp-oauth-user-id")
+      if signed_user_id.present?
+        user_id = McpOauthMiddleware.message_verifier.verified(signed_user_id, purpose: "mcp_oauth_user_id")
+        User.find_by(id: user_id) if user_id
+      else
+        token = (headers&.dig("Authorization") || headers&.dig("authorization"))&.delete_prefix("Bearer ")
+        User.find_by_api_token(token)
+      end
     end
   end
 
