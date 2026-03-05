@@ -7,7 +7,7 @@ class ApplicationTool < ActionTool::Base
 
   def current_user
     @current_user ||= begin
-      token = headers&.dig("Authorization")&.delete_prefix("Bearer ")
+      token = (headers&.dig("Authorization") || headers&.dig("authorization"))&.delete_prefix("Bearer ")
       User.find_by_api_token(token)
     end
   end
