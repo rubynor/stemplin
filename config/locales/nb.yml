@@ -1,0 +1,684 @@
+nb:
+  number:
+    currency:
+      format:
+        unit: ""
+        delimiter: " "
+        separator: ","
+        precision: 2
+        format: "%n%u"
+
+  language:
+    en: "EN"
+    nb: "NO"
+    name: "Norsk"
+    short_name: NOR
+    flag: "flag-norway.svg"
+
+  date:
+    month_names:
+      - null
+      - "Januar"
+      - "Februar"
+      - "Mars"
+      - "April"
+      - "Mai"
+      - "Juni"
+      - "Juli"
+      - "August"
+      - "September"
+      - "Oktober"
+      - "November"
+      - "Desember"
+
+    day_names:
+      - "Søndag"
+      - "Mandag"
+      - "Tirsdag"
+      - "Onsdag"
+      - "Torsdag"
+      - "Fredag"
+      - "Lørdag"
+
+
+    abbr_month_names:
+      - null
+      - Jan
+      - Feb
+      - Mar
+      - Apr
+      - Mai
+      - Jun
+      - Jul
+      - Aug
+      - Sep
+      - Okt
+      - Nov
+      - Des
+
+    abbr_day_names:
+      - Søn
+      - Man
+      - Tir
+      - Ons
+      - Tor
+      - Fre
+      - Lør
+
+  time:
+    week: "Hele uken"
+    track: "Tell tiden"
+    today: "I dag"
+    go_to_today: "Reis til i dag"
+    date_range: "Datointervall"
+    new_time_entry: "Ny tidsregistrering"
+
+  task:
+    your_projects: "Dine prosjekter"
+    new_project: "Nytt Prosjekt"
+    new_client: "Ny Kunde"
+    detailed_report: "Se detaljert rapport"
+    no_data_in_this_period: "Ingen data i denne perioden"
+    assign_task: "Tildel oppgave"
+
+  time_reg:
+    errors:
+      messages:
+        timer_running: "En annen stoppeklokke går fortsatt"
+
+  common:
+    client: "Kunde"
+    clients: "Kunder"
+    tasks: "Oppgaver"
+    members: "Medlemmer"
+    time: "Tid"
+    reports: "Rapporter"
+    report: "Rapport"
+    organization_reports: "Organisasjonsrapporter"
+    projects: "Prosjekter"
+    project: "Prosjekt"
+    clients_and_projects: "Kunder og Prosjekter"
+    no_projects_created: "Ingen prosjekter opprettet"
+    client_has_project: "Klienten har tilkoblede prosjekter, og kan ikke slettes."
+    project_has_time_regs: "Prosjektet har registrerte tidsregistreringer, og kan ikke slettes."
+
+    client_deletion_confirmation: "Ønsker du å fortsette med sletting av klienten"
+    client_has_projects_cannot_delete: "Klienten <span class='font-semibold text-primary'>%{client_name}</span> har prosjekter og kan ikke slettes."
+    client_deletion_warning: "%{deletion_text} <span class='font-semibold text-primary'>%{client_name}</span>? %{cannot_undo_text}"
+
+    notes: "Notater"
+    edit_account: "Rediger Bruker"
+    sign_out: "Logg Ut"
+    cancel: "Avbryt"
+    start_timer: "Start klokken"
+    create_time_reg: "Opprett tidsregistrering"
+    update_time_reg: "Oppdater tidsregistrering"
+    edit: "Rediger"
+    stop: "Stopp"
+    start: "Start"
+    delete_project: "Slett prosjekt"
+    back_to_project: "Tilbake til prosjekt"
+    name: "Navn"
+    description: "Beskrivelse"
+    billable_project: "Fakturerbart prosjekt"
+    billable_rates: "Fakturerbare priser"
+    bill_hourly_rates_apply: "Regning hver time, priser gjelder"
+    not_billed_to_a_client: "Ikke fakturert til en kunde"
+    track_billable_rates: "Vi trenger fakturerbare priser for å spore prosjektets fakturerbare beløp"
+    project_billable_rate: "Prosjektfakturerbar timepris"
+    billable_amount: "Fakturerbart beløp"
+    per_hour: "hver time"
+    your_projects: "Dine prosjekter"
+    new_project: "Nytt prosjekt"
+    project_tasks: "Prosjektoppgaver"
+    add_task: "Legg til oppgave"
+    assign_task: "Tildel oppgave"
+    edit_task_on_project: "Vil du endre oppgaven i prosjektet? Trykk"
+    here: "her"
+    create_new_task: "Lag ny oppgave"
+    name_of_task: "Skriv navnet på oppgaven her"
+    save_task: "Lagre oppgaven"
+    project_members: "Prosjekt medlemer"
+    add_member: "Legg til medlem"
+    edit_member: "Rediger medlem"
+    email: "E-post"
+    remove: "Slett"
+    update_project: "Oppdater Prosjekt"
+    task: "Oppgave"
+    create_client: "Lag Kunde"
+    edit_user: "Rediger Bruker"
+    back: "Tilbake"
+    provide_a_csv: "Oppgi en CSV-fil med disse kolonnene"
+    careful_this_action_will: "FORSIKTIG! denne handlingen vil:"
+    remove_all_time_entries: "Slett alle tidsregistreringer for hvert medlem permanent"
+    remove_every_member_from_the_project: "Fjern hvert medlem fra prosjektet"
+    remove_every_task_from_the_project: "Fjern hver oppgave fra prosjektet"
+    delete_the_project_permanently: "Slett prosjektet permanent"
+    please_enter: "Vennligst skriv inn"
+    delete: "Slett"
+    disabled: "Deaktivert"
+    enabled: "Aktivert"
+    to_confirm: "for bekreftelse"
+    delete_the_client_permanently: "Slett kunden permanent"
+    cannot_delete_client_with_active_projects: "Kan ikke slette kunde med aktive prosjekter"
+    new_task: "Ny oppgave"
+    person: "Person"
+    hours: "Timer"
+    total: "Totalt"
+    total_billable_hours: "Totalt fakturerbare timer"
+    total_hours: "Totalt antall timer"
+    billable_hours: "Fakturerbare timer"
+    home: "Hjem"
+    workspace: "Arbeidsområde"
+    go_to_today: "Gå til i dag"
+    no_time_registrations_on_this_day: "Ingen tidsregistrering denne dagen"
+    there_were_no_time_registrations_recorded: "Det er ingen tidsregistreringer lagt til denne dagen, hvis du ønsker å legge til en tidsregistrering, klikk på knappen nedenfor"
+    log_time: "Logg tiden"
+    day_total: "Dagens total"
+    today_total: "Dagens total"
+    week_total: "Ukens total"
+    from: "Fra"
+    team_members: "Gruppemedlemmer"
+    add_new: "Lag Ny"
+    invite_members: "Inviter Medlemmer"
+    invite_members_to_organization: "Inviter medlemmer til organisasjonen"
+    invite_members_helper: "Legg til én e-post eller en liste med e-poster i feltet nedenfor. Spesifiser deretter hva slags tilgang hver person skal ha."
+    add_to_invitation_list: "Legg til i liste"
+    pending_invitation: "Invitasjon venter"
+    import: "Importer"
+    rate: "Timepris"
+    actions: "Handlinger"
+    created_on: "Opprettet"
+    added_on: "Lagt til"
+    select_client: "Velg kunde"
+    hourly_rate_selection: "Timepris"
+    non_billable: "Ikke fakturerbar"
+    rates_per_hour: "Fakturerbare priser (hver time)"
+    add_tasks: "Legg til oppgaver (minst én)"
+    select_task: "Velg oppgave"
+    save: "Lagre"
+    role: "Rolle"
+    select_organization_user: "Vennligst velg organisasjonsbruker, hvis alt denne brukeren vil gjøre er å registrere tidsregistreringer. En observatør kan kun se tidsregistreringer."
+    select_role: "Velg rolle"
+    share_temporary_password_with_user: "Vennligst del dette midlertidige passordet med brukeren for å logge på første gang. De kan endre det senere."
+    deletion_of_the_client: "Ønsker du å fortsette med å slette kunden"
+    cannot_be_undone: "Denne handlingen er permanent"
+    billable: "Fakturerbar"
+    information: "Informasjon"
+    billing_status: "Faktureringsstatus"
+    created: "Opprettet"
+    need_to_add_more_tasks: "Trenger du å legge til flere oppgaver?"
+    add_more: "Legg til"
+    organizations: "Organisasjoner"
+    no_time_registrations: "Ingen tidsregistreringer"
+    No_registrations_were_found: "Ingen tidsregistreringer ble funnet som samsvarer med gjeldende utvalg. Du kan prøve igjen med en annen filter inngang."
+    reset_filter: "Tilbakestill filter"
+    print: "Skriv ut"
+    detailed_report: "detaljert rapport"
+    add_time_registration: "Legg til tidsregistrering"
+    team: "Gruppe"
+    filter: "Filter"
+    period: "Periode"
+    period_from: "Periode - fra"
+    period_to: "Periode - til"
+    reset: "Nullstill"
+    all: "Alle"
+    drag_and_drop_message: "Dra og slipp filen din her eller"
+    all_time: "Alle timer"
+    edit_time_entry: "Rediger tidsregistrering"
+    import_project: "Importer prosjektet"
+    supported_formats: "Støtter formatene: XLS, XLSX"
+    sample_format: "Eksempel format"
+    feel_free_to_grab_sample_file: "Ta gjerne tak i eksempelfilen nedenfor for å hjelpe deg med å lage din egen."
+    download: "Last Ned"
+    browse_a_file_from_your_computer: "bla gjennom en fil fra datamaskinen din"
+    language: "Språk"
+    accept: "Fortsett"
+    time_registrations: "Tidsregistreringer"
+    summary: "oppsummert"
+    project_has_recorded_time: "Prosjektet har blitt brukt til timeføring, og kan ikke slettes"
+    task_is_already_assigned: "Oppgaven er allerede tildelt prosjekter, og kan ikke slettes."
+    the_client_has_associated_projects: "Kunden har tilknyttede prosjekter, og kan ikke slettes."
+    add_task_to: "Legg oppgave til"
+    optional_project: "Dette er valgfritt, ellers vil prosjektets timepris bli brukt"
+    add: "Legg til"
+    looking_for: "Kan du ikke finne hva du leter etter?"
+    update: "Oppdater"
+    project_rate: "Prosjekttimepris"
+    custom_rate: "Egendefinert timepris"
+    new_client: "Ny kunde"
+    select_project: "Velg et prosjekt:"
+    select: "Velg"
+    select_projects: "Velg prosjekter"
+    add_projects_optional: "Velg prosjektene denne brukeren skal ha tilgang til."
+    add_users_optional: "Velg hvilke brukere som skal ha tilgang til dette prosjektet."
+    users_project_access: "Her er brukerne som har tilgang til dette prosjektet."
+    users: "Brukere"
+    remember_to_fill_out: "Husk å fylle ut!"
+    archived_task_can_not_be_updated: "Denne oppgaven er arkivert og kan ikke oppdateres."
+    or: "eller"
+    select_from_existing_tasks: "Velg blant eksisterende oppgaver"
+    week: "Uke"
+    copy_to_today: "Kopier til i dag"
+    copy_to_next_day: "Kopier til <b>neste dag</b>"
+    copy_to_week: "Kopier til resten av <b>uken</b>"
+    copy_to_next_week: "Kopier til hele <b>neste uke</b>"
+    unable_to_proceed: "Kan ikke fortsette"
+    organization_name: "Organisasjonsnavn"
+    organization_settings: "Organisasjonsinnstillinger"
+    settings: "Innstillinger"
+    currency: "Valuta"
+    empty:
+      title: "Oops, ingenting her ennå!"
+      subtext: "Det er foreløpig ingenting å se her ennå."
+    member: "Medlem"
+    select_member: "Velg medlem"
+    date_worked: "Dato jobbet"
+    select_date_worked: "Velg dato arbeidet"
+    skip_setup: "Hopp over oppsett"
+    next: "Neste"
+    onboarding:
+      setup_choice:
+        title: "Velg hvordan du vil sette opp"
+        guided_setup:
+          title: "Guidet oppsett"
+          description: "La oss hjelpe deg med å sette opp din første kunde, prosjekt og oppgaver"
+        or: "eller"
+        skip_to_workspace:
+          title: "Hopp til arbeidsområde"
+          description: "Start med et rent arbeidsområde og sett opp senere"
+      organization:
+        title: "Gratulerer! La oss legge til din organisasjon"
+        description: "Nesten der! For å komme i gang og få mest ut av din opplevelse, la oss sette opp arbeidsområdet ditt. Bare et raskt steg igjen, så er du klar til å komme i gang!"
+        create: "Opprett"
+      client:
+        title: "La oss opprette din første kunde"
+        description: "Alle dine prosjekter må være knyttet til en kunde."
+      project:
+        title: "La oss legge til et prosjekt for din kunde"
+        description: "Prosjekter er alltid knyttet til en kunde. Legg til ditt første prosjekt nedenfor."
+      tasks:
+        title: "La oss legge til oppgaver til prosjektet ditt"
+        description: "Oppgaver hjelper deg med å organisere arbeidet ditt innenfor et prosjekt. Legg til minst én oppgave for å komme i gang."
+      finish:
+        title: "Alt klart!"
+        description: "Arbeidsområdet ditt er klart til bruk. Du kan nå begynne å registrere tid for dine prosjekter og oppgaver."
+        start_tracking: "Start tidsregistrering"
+
+  notice:
+    are_you_sure: "Er du sikker?"
+    project_has_been_updated: "Prosjekt har blitt oppdatert"
+    was_added_to_the_project: "ble lagt til prosjektet"
+    has_been_removed_from_the_project: "er fjernet fra prosjektet"
+    project_deleted: "Prosjekt slettet"
+    time_entries_imported_successfully: "tidsoppføringer ble importert."
+    task_successfully_added_to_project: "Oppgaven ble lagt til prosjektet"
+    client_has_been_updated: "kunden har blitt oppdatert"
+    client_deleted: "Kunde slettet"
+    task_has_been_updated: "Oppgaven har blitt oppdatert"
+    task_was_successfully_deleted: "Oppgaven ble slettet."
+    time_entry_has_been_updated: "Tidsregistrering er oppdatert"
+    task_succesfully_removed_from_project: "Oppgaven ble fjernet fra prosjektet"
+    do_you_want_to_proceed_with_deletion: "Ønsker du å gå videre med sletting av timeregistreringen for prosjektet"
+    with_a_task: "med oppgaven"
+    logged_action_cannot_be_undone: "logget. Denne handlingen kan ikke bli tatt tilbake."
+    registration_was_successfully: "Tidsregistreringen ble velykket slettet."
+    _on: "på"
+    _off: "av"
+    unable_to_delete_time_registration: "Kan ikke slette tidsregistrering"
+    unable_to_toggle_time_entry: "Kan ikke bytte tidsregistrering"
+    project_was_successfully_created: "Prosjektet ble opprettet."
+    project_was_successfully_deleted: "Prosjektet ble slettet."
+    project_was_successfully_updated: "Prosjektet ble oppdatert."
+    client_was_successfully_created: "Kunden ble opprettet."
+    client_was_successfully_deleted: "Kunden ble slettet."
+    client_was_successfully_updated: "Kunden ble oppdatert."
+    tasks_was_successfully_created: "Oppgaven ble opprettet."
+    tasks_was_successfully_deleted: "Oppgaven ble slettet."
+    tasks_was_successfully_updated: "Oppgaven ble oppdatert."
+    members_invited: "Invitasjonene ble sendt"
+    user_updated: "Bruker ble oppdatert."
+    time_entry_has_been_logged: "Tidsregistrering er loggført."
+    edits_to_the_task_name: "Vær oppmerksom på at redigeringer av oppgavenavnet vil bli brukt på alle prosjektene. Endringer i den fakturerbare prisen vil kun brukes på dette prosjektet og vil bli tatt i bruk ved nye tidsregistreringer."
+    recorded_time_registrations: "Oppgaven har registrerte tidsregistreringer, kan ikke fjernes fra dette prosjektet."
+    removal_of_the_task: "Vil du fortsette med fjerningen av oppgaven"
+    cannot_be_undone: "fra dette prosjektet, denne handlingen kan ikke angres."
+    deletion_of_he_project: "Vil du fortsette med slettingen av prosjektet"
+
+
+  alert:
+    does_not_exist: "eksisterer ikke"
+    is_already_a_member_of_the_project: "er allerede medlem av prosjektet"
+    cannot_remove_last_member_of_the_project: "kan ikke fjerne siste medlem av prosjektet"
+    member_has_time_entries_in_this_project: "Medlem har tidsregistreringer i dette prosjektet"
+    cannot_update_project: "kan ikke oppdatere prosjektet"
+    could_not_delete_project: "Kunne ikke slette prosjektet"
+    invalid_confirmation: "Ugyldig bekreftelse"
+    please_select_a_file_to_import: "Velg en fil som skal importeres."
+    no_time_entries_found_in_the_file: "Ingen gyldige tidsoppføringer funnet i filen."
+    douple_check_email: "Ugyldig epost. Vennligst dobbeltsjekk e-postkolonnen for hver rad."
+    task_could_not_be_added_to_the_project: "Oppgaven kunne ikke legges til prosjektet"
+    cannot_remove_task_with_registered_time: "Kan ikke fjerne oppgave med registrert tid"
+    could_not_change_the_grouping: "Kunne ikke endre grupperingen"
+    invalid_group: "Ugyldig gruppe"
+    could_not_delete_task: "Kunne ikke slette oppgaven."
+    task_is_being_used_in_one_or_more_projects: "Oppgaven brukes i ett eller flere prosjekter."
+    please_select_a_task: "Vennligst velg en oppgave"
+    project_not_found: "Finner ikke prosjektet, velg et gyldig prosjekt."
+    wish_to_proceed: "Ønsker du å fortsette?"
+    warning: "Advarsel!"
+    unable_to_proceed: "Kan ikke fortsette"
+    something_went_wrong: "Noe gikk galt"
+    invalid_email: "Ugyldig e-postadresse"
+    invalid_email_list: "Ugyldig e-postliste. Tillatte separatortegn er komma, semikolon og mellomrom."
+    create_project_before_registering_time: "Opprett et prosjekt i 'Arbeidsområde'-siden før du registrerer tid. Husk å legg til oppgaver i prosjektet."
+
+  description:
+    blank: "kan ikke være blank"
+    too_short: "er for kort (minimum er %{count} tegn)"
+    too_long: "er for lang (maksimum er %{count} tegn)"
+    the_task: "Denne oppgaven"
+    assigned_to_project: "er allerede tildelt et prosjekt. Fjern tilknyttede prosjekter hvis du ønsker å slette denne oppgaven."
+    proceed_deletion_of_the_task: "Vil du fortsette med slettingen av oppgaven"
+    cannot_be_undone: "Denne handlingen kan ikke bli tatt tilbake."
+
+
+  registration:
+    first_name: "Fornavn"
+    last_name: "Etternavn"
+    email: "E-postadresse"
+    password_blank: "Passord (la stå tomt for å beholde gammelt passord)"
+    confirm_password: "Bekreft passord (la stå tomt for å beholde gammelt passord)"
+    current_password: "Nåværende passord"
+    confirm_changes: "Vi trenger ditt nåværende passord for å bekrefte endringene"
+    update: "Oppdater"
+    unhappy: "Ikke fornøyd"
+    cancel_account: "Avslutt kontoen min"
+    sign_in: "Logg inn"
+    sign_up: "Registrer deg"
+    password: "Passord"
+    new_password: "Nytt passord"
+    remember_me: "Husk meg"
+    confirm_password: "Bekreft passord"
+
+  users:
+    sessions:
+      new:
+        log_in: "Logg inn"
+        email: "E-post"
+        password: "Passord"
+        remember_me: "Husk meg"
+        forgot_password: "Glemt passord?"
+
+  activerecord:
+    attributes:
+      client:
+        name: "Navn"
+        description: "Beskrivelse"
+      project:
+        name: "Navn"
+        description: "Beskrivelse"
+        client: "Kunde"
+        tasks: "Oppgaver"
+      task:
+        name: "Navn"
+        description: "Beskrivelse"
+        client: "Kunde"
+      time_reg:
+        minutes: "Minutter"
+      user:
+        email: "E-post"
+        password: "Passord"
+        password_confirmation: "Bekreft passord"
+        current_password: "Nåværende passord"
+
+
+    errors:
+      models:
+        client:
+          attributes:
+            description:
+              must_exist: "må finnes"
+              blank: "kan ikke være tom"
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+              taken: "er allerede i bruk"
+            name:
+              blank: "kan ikke være tom"
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+              taken: "er allerede i bruk"
+
+        project:
+          attributes:
+            name: "navn"
+            description: "beskrivelse"
+
+            client:
+              required: "må må være valgt"
+
+            description:
+              blank: "kan ikke være tom"
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+              taken: "er allerede i bruk"
+            name:
+              blank: "kan ikke være tom"
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+              taken: "er allerede i bruk"
+
+        task:
+          attributes:
+            name: "navn"
+
+            description:
+              blank: "kan ikke være tom"
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+              taken: "er allerede i bruk"
+            name:
+              blank: "kan ikke være tom"
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+              taken: "er allerede i bruk"
+
+        time_reg:
+          attributes:
+            minutes:
+              not_a_number: "er ikke et tall"
+              less_than_or_equal_to: "må være mindre eller lik %{count}"
+
+        user:
+          attributes:
+            current_password:
+              invalid: "er feil"
+            email:
+              taken: "har allerede blitt tatt"
+            password:
+              too_short: "er for kort (minimum er %{count} tegn)"
+              too_long: "er for lang (maksimum er %{count} tegn)"
+            password_confirmation:
+              confirmation: "samsvarer ikke med passordet"
+        access_info:
+          attributes:
+            user_id:
+              taken: "har allerede fått tilgang til denne organisasjonen."
+            organization:
+              must_have_at_least_one_admin: "må ha minst en administrator."
+      messages:
+        record_invalid: "Validering mislyktes: %{errors}"
+        required: "må være valgt"
+        blank: "kan ikke være tom"
+
+  activemodel:
+    errors:
+      messages:
+        blank: "kan ikke være tom"
+        taken: "har allerede blitt tatt"
+        invalid: "er ugyldig"
+        must_exist: "må finnes"
+    attributes:
+      invite_user_form:
+        email: "E-post"
+        role: "Rolle"
+
+  helpers:
+    alert:
+      info: "Merk"
+      warning: "Advarsel"
+      error: "Feil"
+      success: "Suksess"
+    actions:
+      title: "Handlinger"
+      decline: "Avslå"
+      accept: "Fortsett"
+  time_regs:
+    recent_entries: "Nylige registreringer"
+    active_timer_description: "Vær oppmerksom på at du har en stoppeklokke som går."
+    zero_minutes: "Null minutter!"
+    copy_to_today_tooltip: "Kopier denne tidsregistreringen til i dag"
+    delete_confirmation: "Ønsker du å gå videre med sletting av timeregistreringen for prosjektet <span class='text-primary-600 font-semibold'>%{project_name}</span> med oppgaven <span class='text-primary-600 font-semibold'>%{task_name}</span> og <span class='text-primary-600 font-semibold'>%{logged_time}</span> logget. Denne handlingen kan ikke bli tatt tilbake."
+  organizations:
+    advanced_time_copying: "Avansert tidskopiering"
+    reports_filter:
+      tabs:
+        clients: Kunder
+        client: Kunde
+        projects: Prosjekter
+        project: Prosjekt
+        tasks: Oppgaver
+        task: Oppgave
+        users: Teammedlemmer
+        user: Teammedlem
+      time_frames:
+        week: "Uke"
+        month: "Måned"
+        year: "År"
+        custom: "Egendefinert"
+
+  access_info:
+    role:
+      organization_user: "Organisasjonsbruker"
+      organization_spectator: "Organisasjonsobservatør"
+      organization_admin: "Organisasjonsadministrator"
+      super_admin: "Superadministrator"
+      organization_user_short: "Bruker"
+      organization_spectator_short: "Observatør"
+      organization_admin_short: "Administrator"
+
+  login_page:
+    sign_in_to_your_account: "Logg inn på kontoen din"
+    sign_in_with: "Logg inn med"
+    or_continue_with: "Eller fortsett med"
+    email: "E-post"
+    email_address: "E-postadresse"
+    password: "Passord"
+    remember_me: "Husk meg"
+    forgot_password: "Glemt passord?"
+    sign_in: "Logg inn"
+    dont_have_an_account: "Har du ikke en konto?"
+    already_have_an_account: "Har du allerede en konto?"
+    sign_up: "Registrer deg"
+    streamline_your_workflow: "Strømlinjeform Arbeidsflyten Din"
+    app_summary: "Øk samarbeidet og forenkle din prosjektering. Tildel oppgaver, loggfør tid og få innsiktsfulle rapporter – alt på ett sted. Gi teamet ditt muligheten til å oppnå mer med en effektivisert arbeidsflyt."
+
+  password_reset:
+    new:
+      forgot_your_password: "Glemt passord?"
+      send_instructions: "Send instruksjoner"
+      cant_find_what_you_re_looking_for: "Finner du ikke det du leter etter?"
+      continue_to_login: "Fortsett innlogging"
+    edit:
+      reset_password: "Tilbakestill passord"
+      change_my_password: "Endre passord"
+      minimum_password_length: "Minimum %{count} tegn"
+
+  error_page:
+    not_found:
+      title: "Siden Ble Ikke Funnet"
+      message: "Siden du leter etter eksisterer ikke."
+      sub_message: "Du kan ha skrevet feil adresse, eller siden kan ha blitt flyttet."
+    internal_server_error:
+      title: "Intern Serverfeil"
+      message: "Vi beklager, men noe gikk galt."
+      sub_message: "Vennligst prøv igjen senere."
+
+  privacy_policy:
+    title: "Personvernerklæringen"
+    content:
+      - "Denne personvernerklæringen gjelder for behandling av personopplysninger tilknyttet nettsiden <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. Behandlingsansvarlig er Rubynor AS – org.nr. 997444345. For øvrige nettsider og produkter som kontrolleres av behandlingsansvarlig gjelder andre personvernerklæringer. Ta kontakt for ytterligere informasjon om vilkår som gjelder for øvrige produkter og tjenester."
+      - "Behandlingsansvarlig bestemmer formålet med behandling av personopplysninger og hvilke hjelpemidler som skal brukes. Behandling av personopplysninger er enhver bruk av personopplysninger, som for eksempel registrering, sammenstilling, lagring og utlevering."
+    sections:
+      - title: "Hvilke personopplysninger behandles"
+        content:
+          - "Avhengig av hvilken informasjon du gir oss, hvordan du bruker våre tjenester, og hvilke tillatelser du gir oss, har vi disse opplysningene om deg:"
+          - "Navn, e-post, opplysninger om organisasjonen du er en del av (i Stemplin), opplysninger om prosjektene i din organisasjon, opplysninger om arbeidsoppgavene i din organisasjon, samt opplysninger om timer du har loggført for din organisasjon."
+      - title: "Hva personopplysningene brukes til"
+        content:
+          - "Personopplysningene brukes til:"
+        list_items:
+          - "Å sikre teknisk funksjonalitet i Stemplin. For eksempel knyttes personopplysninger til din bruker for å sikre at timeregistreringer tilordnes riktig bruker."
+          - "Kommunikasjon med våre brukere. Kommunikasjonen kan for eksempel inkludere invitasjonslinker til nye organisasjoner, tilbakestilling av passord, eller oppdateringer i brukervilkår."
+        additional_content:
+          - "Stemplin er avhengig av å ha de nevnte personopplysningene om en bruker, for å være i stand til å tilby vår tjeneste. Dersom det ikke er ønskelig å dele de nevnte personopplysningene med Stemplin, vil det derfor ikke være mulig å opprette en bruker."
+      - title: "Hvordan vi samler inn data"
+        items:
+          - title: "Statistikk og brukermønstre"
+            content:
+              - "Stemplin samler inn avidentifiserte opplysninger om besøkende på <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. Formålet med dette er å utarbeide statistikk og forstå brukermønstre, som videre brukes til å forbedre og videreutvikle nettstedet. Eksempler på hva statistikken gir svar på, er type nettleser som brukes, hvorvidt besøket skjer fra mobil eller pc, og tid brukt på nettstedet."
+          - title: "Skjemaer på nettsiden"
+            content:
+              - "Nettsiden bruker ulike skjemaer som registrerer forskjellige opplysninger om brukeren. Det er brukeren selv som styrer hva slags informasjon som oppgis i disse skjemaene. Eksempler på slike skjemaer er opprettelse av en ny bruker og timeregistrering."
+          - title: "Informasjonskapsler"
+            content:
+              - "Informasjonskapsler (cookies) er små tekstfiler som plasseres på din datamaskin når du laster ned en nettside. Stemplin bruker informasjonskapsler for å lagre data om din bruker. Dette brukes til automatisk innlogging, så du slipper å logge inn på nytt hver gang du besøker <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. I tillegg brukes informasjonskapsler til å innhente statistikk og brukermønstre, gjennom Microsoft Clarity. "
+      - title: "Hvor lenge lagrer vi personopplysninger"
+        content:
+          - "Vi lagrer opplysninger om deg, kun så lenge det er nødvendig for å oppnå formålet de ble innhentet for, eller så lenge vi er pålagt å lagre opplysningene. Opplysningene vil slettes eller anonymiseres når de ikke lengre er nødvendige for å oppnå formålet."
+          - "Informasjon kan slettes på oppfordring ved skriftlig henvendelse til Rubynor AS."
+      - title: "Hvem deler vi personopplysninger med"
+        content:
+          - "Vi deler personopplysninger med databehandlere som leverer tekniske tjenester, nødvendig for Stemplin sin funksjonalitet. Dette inkluderer Hetzner Online GmbH."
+      - title: "Dine rettigheter"
+        content:
+          - "Alle som spør har rett på grunnleggende informasjon om behandlinger av personopplysninger i en virksomhet etter personopplysningslovens § 18, 1. ledd. Stemplin har gitt grunnleggende informasjonen om behandling av personopplysninger ii denne erklæringen, og henvise til denne erklæringen ved eventuelle forespørsler. Du har rett til å be oss om å:"
+        list_items:
+          - "Gi deg ytterligere informasjon om hvordan vi behandler dine personopplysninger."
+          - "Gi deg en kopi av personopplysninger om deg."
+          - "Oppdatere dine personopplysninger."
+          - "Slette opplysninger som vi ikke lengre har grunnlag til å oppbevare."
+          - "Begrense eller stoppe behandling av dine opplysninger."
+          - "Gi deg opplysninger du har gitt til oss i et strukturert, alminnelig anvendt og maskinlesbart format eller, der det er teknisk mulig, be oss om å overføre disse til en annen virksomhet."
+          - "Trekke tilbake eventuelle samtykker du har gitt oss."
+        additional_content:
+          - "Hvis du mener at vi behandler personopplysninger i strid med personopplysningsloven, har du rett til å klage til Datatilsynet. Før du eventuelt gjør dette, vil vi gjerne at du kontakter Stemplin slik at vi kan besvare dine spørsmål, eller oppklare eventuelle misforståelser. "
+      - title: "Endringer i personvernerklæringen"
+        content:
+          - "Vi vil kunne oppdatere personvernerklæringen fra tid til annen. Du vil få beskjed om endringer av betydning. Du vil alltid finne siste versjon av vår personvernerklæring på nettsiden."
+      - title: "Kontaktinformasjon"
+        details:
+          - label: "Postadresse"
+            value: "Bedriftsveien 64, 3735 Skien, Norge"
+          - label: "Epost"
+            value: "contact@stemplin.com"
+  contact_us:
+    title: "kontakt oss"
+
+  open_graph:
+    title: "Stemplin"
+    description: "Timeføring gjort enkelt"
+    image_alt: "Stemplin logo"
+    site_name: "Stemplin"
+    url: "https://stemplin.com/"
+
+  components:
+    combobox:
+      empty:
+        note: "No results found."
+      search_input:
+        add_btn: "Add to list"
+
+  cookie_consent:
+    title: "Vår nettside bruker informasjonskapsler"
+    sub_text: "Vi bruker viktige informasjonskapsler for å sikre kjernefunksjonalitet og analysere bruken av nettstedet."

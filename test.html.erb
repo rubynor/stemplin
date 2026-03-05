@@ -1,0 +1,58 @@
+<div class="flex flex-col items-center p-4">
+  <div class="max-w-md">
+    <div class="p-4 my-4" data-controller="time-tasks">
+      <h1 class="font-bold text-2xl mb-4">New Time Entry:</h1>
+      <%= form_with(model: @time_reg) do |form| %>
+        <div class="mb-4">
+          <%= form.label :project_id, class: 'block text-gray-700 text-sm font-bold mb-2' %>       
+          <%= form.collection_select :project_id, @projects, :id, :name, { include_blank: "Select a project:" }, { class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' } %>
+          <% @time_reg.errors.full_messages_for(:project_id).each do |message| %>
+            <div class="text-red-600 text-xs italic mt-1"><%= message %></div>
+          <% end %>
+        </div>
+
+        <div class="mb-4">
+          <%= form.label :assigned_task_id, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+          <%= form.collection_select :assigned_task_id, {}, :id, :name, {}, { class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' } %>
+          <% @time_reg.errors.full_messages_for(:assigned_task_id).each do |message| %>
+            <div class="text-red-600 text-xs italic mt-1"><%= message %></div>
+          <% end %>
+        </div>
+
+        <div class="mb-4">
+          <%= form.label :notes, class: 'block text-gray-700 text-sm font-bold mb-2' %>       
+          <% @time_reg.errors.full_messages_for(:notes).each do |message| %>
+            <div class="text-red-600 text-xs italic mt-1"><%= message %></div>
+          <% end %>
+          <br>
+          <%= form.text_area :notes, class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
+        </div>
+
+        <div class="mb-4">
+          <%= form.label :minutes, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+          <% @time_reg.errors.full_messages_for(:minutes).each do |message| %>
+            <div class="text-gray-600 text-sm italic mt-1"><%= message %></div>
+          <% end %>
+          <br>  
+          <%= form.number_field :minutes, value: 0, class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white' %>
+        </div>
+
+        <div class="mb-4">
+          <%= form.label :date_worked, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+          <br>
+          <div class="flex justify-between">
+            <%= form.date_select :date_worked, {}, class: "w-32 rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white" %>
+          </div>
+        </div>
+
+        <div class="flex justify-center">
+          <%= form.submit class: 'bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600' %>
+          <div data-action="click->modal#toggle" class="cursor-pointer bg-red-500 text-white px-4 py-2 rounded-md ml-4 hover:bg-red-600">
+            Cancel
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

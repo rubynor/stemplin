@@ -1,0 +1,44 @@
+<%= render RubyUI::Dialog.new(open: true, data: { controller: "custom-dialog" }) do %>
+  <%= render RubyUI::DialogTrigger.new(class: "hidden", data: { custom_dialog_target: "trigger" }) do %>
+    <%= render RubyUI::Button.new { "Open Dialog" } %>
+  <% end %>
+  <%= render RubyUI::DialogContent.new(class: "bg-white") do %>
+    <%= turbo_frame_tag :modal do %>
+      <%= form_with url: add_workspace_assigned_tasks_path, method: :post, scope: assigned_task do |form| %>
+        <div class="flex flex-col gap-y-4">
+          <span class="font-semibold text-gray-600 text-lg"><%= t("common.add_task") %></span>
+          <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
+            <% assigned_task.errors.full_messages_for(:base).each do |message| %>
+              <div class="text-red-600 text-xs italic mt-1"><%= message %></div>
+            <% end %>
+            <%= form.fields_for :task do |task_form|%>
+              <%= task_form.hidden_field :unassigned_task_ids, value: unassigned_tasks.ids.to_json %>
+
+              <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+                <%= render RubyUI::FormFieldLabel.new { t("common.name") } %>
+                <%= task_form.text_field :name, class: "border-gray-200 rounded-md w-full", autofocus: true, autocomplete: "off", list: "unassigned-tasks-list" %>
+                <datalist id="unassigned-tasks-list">
+                  <% unassigned_tasks.each do |task| %>
+                    <option value="<%= task.name %>"></option>
+                  <% end %>
+                </datalist>
+              <% end %>
+              <% task_form.object.errors.full_messages_for(:name).each do |message|%>
+                <%= render RubyUI::FormFieldError.new(class: "w-full text-red-600 italic text-xs leading-3 !my-0") { message }  %>
+              <% end %>
+            <% end %>
+
+            <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
+              <%= render RubyUI::FormFieldLabel.new { "#{t("common.rates_per_hour")} - #{@currency}" } %>
+              <%= render RubyUI::FormFieldHint.new { t("common.optional_project") } %>
+              <%= form.number_field :rate_currency, class: "border-gray-200 rounded-md", step: 0.01 %>
+            <% end %>
+          <% end %>
+          <div class="mt-4 w-full">
+            <%= render ButtonComponent.new(type: :submit, class: "w-full") { t("common.add") } %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

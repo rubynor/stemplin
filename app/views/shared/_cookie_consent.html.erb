@@ -1,0 +1,15 @@
+<%= content_tag(:div, class: "fixed bottom-0 w-full p-4", data: { controller: "cookie-consent" }) do %>
+  <%= content_tag(:div, class: "relative bg-white ring-1 ring-gray-100 p-4 shadow-xl rounded-md hidden z-50 max-w-2xl mx-auto grid grid-cols-1 lg:grid-cols-6 gap-4 lg:gap-2", data: { cookie_consent_target: "banner" }) do %>
+    <div class="col-span-4 flex flex-col lg:flex-row items-center gap-4">
+      <%= image_tag("cookie.svg", class: "w-16 h-16") %>
+      <div class="w-full text-center lg:text-left">
+        <span class="font-semibold text-primary-text"><%= t("cookie_consent.title") %></span>
+        <p class="font-regular text-sm text-secondary-text"><%= t("cookie_consent.sub_text") %></p>
+      </div>
+    </div>
+    <div class="col-span-2 flex flex-row justify-center items-center gap-x-2">
+      <%= render ButtonComponent.new(variant: :outline, type: "button", data: { action: "click->cookie-consent#decline" }) { t("helpers.actions.decline") } %>
+      <%= render ButtonComponent.new(variant: :primary, type: "button", data: { action: "click->cookie-consent#accept" }) { t("helpers.actions.accept") } %>
+    </div>
+  <% end %>
+<% end %>
