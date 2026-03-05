@@ -121,3 +121,5 @@ gem "phlex-rails", "~> 2.0"
 gem "tailwind_merge", "~> 1.2"
 
 gem "wicked", "~> 2.0"
+
+gem "fast-mcp"
