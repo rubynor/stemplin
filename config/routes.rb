@@ -1,6 +1,14 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
+  use_doorkeeper do
+    skip_controllers :applications, :authorized_applications
+  end
+
+  post "/oauth/register", to: "oauth/dynamic_registration#create"
+  get "/.well-known/oauth-protected-resource", to: "oauth/protected_resource_metadata#show"
+  get "/.well-known/oauth-authorization-server", to: "oauth/authorization_server_metadata#show"
+
   devise_for :users, controllers: {
     invitations: "users/invitations",
     registrations: "users/registrations",

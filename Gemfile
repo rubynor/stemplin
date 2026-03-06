@@ -123,3 +123,7 @@ gem "tailwind_merge", "~> 1.2"
 gem "wicked", "~> 2.0"
 
 gem "fast-mcp"
+
+gem "doorkeeper"
+
+gem "rack-attack", "~> 6.8"
