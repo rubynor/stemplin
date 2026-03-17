@@ -273,7 +273,6 @@ nb:
     shared_project: "Delt prosjekt"
     disconnect: "Koble fra"
     owned_by: "Eid av %{org_name}"
-    project_rate: "Prosjekttimepris"
     task_rates: "Oppgavepriser"
     update_rates: "Oppdater priser"
     no_shared_organizations: "Dette prosjektet er ikke delt med noen organisasjoner."

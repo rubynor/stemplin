@@ -7,7 +7,7 @@ module Workspace
       authorize! ProjectShare
       @project_shares = authorized_scope(ProjectShare, type: :relation)
         .where(project: @project)
-      render json: @project_shares
+        .includes(:organization)
     end
 
     def update_rates

@@ -256,7 +256,6 @@ en:
     shared_project: "Shared project"
     disconnect: "Disconnect"
     owned_by: "Owned by %{org_name}"
-    project_rate: "Project Rate"
     task_rates: "Task Rates"
     update_rates: "Update Rates"
     no_shared_organizations: "This project is not shared with any organizations."
