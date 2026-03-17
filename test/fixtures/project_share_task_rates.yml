@@ -1,0 +1,4 @@
+task_rate_one:
+  project_share: project_one_shared_with_org_two
+  assigned_task: task_1
+  rate: 300

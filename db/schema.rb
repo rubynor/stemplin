@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_03_17_133328) do
+ActiveRecord::Schema[7.1].define(version: 2026_03_17_134303) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -83,6 +83,17 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_17_133328) do
     t.index ["invitation_token"], name: "index_project_invitations_on_invitation_token", unique: true
     t.index ["invited_email", "project_id"], name: "index_project_invitations_on_invited_email_and_project_id", unique: true
     t.index ["project_id"], name: "index_project_invitations_on_project_id"
+  end
+
+  create_table "project_share_task_rates", force: :cascade do |t|
+    t.bigint "project_share_id", null: false
+    t.bigint "assigned_task_id", null: false
+    t.integer "rate", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assigned_task_id"], name: "index_project_share_task_rates_on_assigned_task_id"
+    t.index ["project_share_id", "assigned_task_id"], name: "idx_project_share_task_rates_unique", unique: true
+    t.index ["project_share_id"], name: "index_project_share_task_rates_on_project_share_id"
   end
 
   create_table "project_shares", force: :cascade do |t|
@@ -183,6 +194,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_17_133328) do
   add_foreign_key "project_invitations", "access_infos", column: "accepted_as_access_info_id"
   add_foreign_key "project_invitations", "projects"
   add_foreign_key "project_invitations", "users", column: "invited_by_id"
+  add_foreign_key "project_share_task_rates", "assigned_tasks"
+  add_foreign_key "project_share_task_rates", "project_shares"
   add_foreign_key "project_shares", "organizations"
   add_foreign_key "project_shares", "projects"
   add_foreign_key "projects", "clients"
