@@ -6,6 +6,8 @@ class Organization < ApplicationRecord
   has_many :assigned_tasks, through: :tasks
   has_many :projects, through: :clients
   has_many :time_regs, through: :users
+  has_many :project_shares, dependent: :destroy
+  has_many :shared_projects, through: :project_shares, source: :project
 
   validates :name, presence: true, uniqueness: true
   validate :currency_exists

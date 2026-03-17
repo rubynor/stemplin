@@ -1,0 +1,4 @@
+project_one_shared_with_org_two:
+  project: project_1
+  organization: organization_two
+  rate: 0
