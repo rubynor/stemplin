@@ -49,7 +49,16 @@ class TimeRegPolicy < ApplicationPolicy
 
   scope_for :relation, :own do |relation|
     organization = user.current_organization
-    relation.joins(:organization, :user).where(organizations: { id: organization.id }, users: { id: user.id }).distinct
+    shared_project_ids = ProjectShare.where(organization_id: organization.id).select(:project_id)
+
+    own_ids = relation.joins(:organization, :user)
+                      .where(organizations: { id: organization.id }, users: { id: user.id })
+                      .select(:id)
+    shared_ids = relation.joins(assigned_task: :project)
+                         .where(projects: { id: shared_project_ids }, time_regs: { user_id: user.id })
+                         .select(:id)
+
+    relation.where(id: own_ids).or(relation.where(id: shared_ids)).distinct
   end
 
   private
