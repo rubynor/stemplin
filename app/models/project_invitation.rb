@@ -68,6 +68,9 @@ class ProjectInvitation < ApplicationRecord
         access_info: access_info
       )
 
+      # Create project share for cross-org access
+      ProjectShare.find_or_create_by!(project: project, organization: organization) if organization != project.organization
+
       # Mark invitation as accepted
       update!(
         accepted_at: Time.current,
