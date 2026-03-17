@@ -29,6 +29,13 @@ module Workspace
 
     def show
       authorize! @project
+
+      @shared_project = @project.project_shares.exists?(organization: current_user.current_organization)
+      @project_share = @project.project_shares.find_by(organization: current_user.current_organization)
+
+      unless @shared_project
+        @guest_organizations = @project.project_shares.includes(:organization)
+      end
     end
 
     def update

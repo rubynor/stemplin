@@ -90,5 +90,69 @@ module Workspace
       end
       assert_redirected_to workspace_project_path(@project)
     end
+
+    # --- Shared project tests (guest org admin) ---
+
+    # Helper to switch a user's active context to a given organization
+    def switch_org_context!(user, organization)
+      user.access_infos.update_all(active: false)
+      user.access_infos.find_by(organization: organization).update!(active: true)
+    end
+
+    test "org_two admin can access show for a shared project" do
+      shared_project = projects(:project_1)
+      switch_org_context!(@organization_admin, organizations(:organization_two))
+      sign_in @organization_admin
+
+      get :show, params: { id: shared_project.id }
+      assert_response :success
+      assert assigns(:shared_project), "Expected @shared_project to be set for guest org admin"
+      assert_not_nil assigns(:project_share), "Expected @project_share to be set for guest org admin"
+    end
+
+    test "org_one admin sees guest_organizations for owned shared project" do
+      get :show, params: { id: @project.id }
+      assert_response :success
+      assert_not assigns(:shared_project), "Expected @shared_project to be false for owning org admin"
+      assert_not_nil assigns(:guest_organizations), "Expected @guest_organizations to be set for owning org admin"
+    end
+
+    test "org_two admin sees shared projects in index" do
+      switch_org_context!(@organization_admin, organizations(:organization_two))
+      sign_in @organization_admin
+
+      get :index
+      assert_response :success
+    end
+
+    test "org_two admin cannot access edit for shared project" do
+      shared_project = projects(:project_1)
+      switch_org_context!(@organization_admin, organizations(:organization_two))
+      sign_in @organization_admin
+
+      get :edit, params: { id: shared_project.id }
+      assert_redirected_to root_path
+    end
+
+    test "org_two admin cannot access update for shared project" do
+      shared_project = projects(:project_1)
+      switch_org_context!(@organization_admin, organizations(:organization_two))
+      sign_in @organization_admin
+
+      patch :update, params: { id: shared_project.id, project: { name: "Hacked Name" } }
+      assert_redirected_to root_path
+      assert_equal "E Corp CRM", shared_project.reload.name
+    end
+
+    test "org_two admin cannot access destroy for shared project" do
+      shared_project = projects(:project_1)
+      switch_org_context!(@organization_admin, organizations(:organization_two))
+      sign_in @organization_admin
+
+      assert_no_difference("Project.count") do
+        delete :destroy, params: { id: shared_project.id }
+      end
+      assert_redirected_to root_path
+    end
   end
 end
