@@ -188,25 +188,115 @@ end
 
 Org_two admins see shared projects automatically via `ProjectShare` (no individual `ProjectAccess` needed). Org_two non-admin users still require individual `ProjectAccess`.
 
-**TimeRegPolicy scope — extended for shared project visibility:**
+**TimeRegPolicy — action methods and scopes:**
+
+The existing action methods check `record.organization == user.current_organization`, which resolves through the project's owning org. For shared projects, this check fails for guest org users. Introduce a helper:
 
 ```ruby
-# For admins: own org's time_regs + time_regs on projects shared with this org
-scope_for :relation, :own do |relation|
-  own = relation.joins(:organization).where(organizations: { id: organization.id })
+class TimeRegPolicy < ApplicationPolicy
+  private
 
-  shared_project_ids = ProjectShare.where(organization_id: organization.id).select(:project_id)
-  on_shared = relation.joins(assigned_task: :project)
-                      .where(projects: { id: shared_project_ids })
+  def on_shared_project?
+    ProjectShare.exists?(project: record.project, organization: user.current_organization)
+  end
 
-  if user.organization_admin?
-    own.or(on_shared).distinct
-  else
-    # Non-admin: own time_regs only (on both owned and shared projects)
-    relation.where(user: user)
+  def admin_of_shared_project?
+    user.organization_admin? && on_shared_project?
+  end
+
+  public
+
+  # show/edit/update/destroy — user can manage their own, or owning-org admin,
+  # or guest-org admin can READ (show only, not edit/update/destroy)
+  def show?
+    user == record.user || is_admin_allowed || admin_of_shared_project?
+  end
+
+  %i[edit update destroy toggle_active].each do |action|
+    define_method("#{action}?") do
+      is_admin_allowed = user.organization_admin? && record.organization == user.current_organization
+      user == record.user || is_admin_allowed
+    end
+  end
+
+  def create?
+    return false if user.access_info.organization_spectator?
+
+    same_organization = user.current_organization == record.organization
+    no_organization = record.organization.nil?
+    shared_project = on_shared_project?
+
+    if user.organization_admin?
+      same_organization
+    else
+      # Allow if same org, no org (new record), or on a shared project (own entries only)
+      ((same_organization || no_organization || shared_project) && record.user == user)
+    end
+  end
+
+  # Scope: admins see own org + shared project time_regs
+  # Members see only their own time_regs
+  scope_for :relation do |relation|
+    organization = user.current_organization
+    shared_project_ids = ProjectShare.where(organization_id: organization.id).select(:project_id)
+
+    if user.organization_admin?
+      own = relation.joins(:organization).where(organizations: { id: organization.id })
+      on_shared = relation.joins(assigned_task: :project).where(projects: { id: shared_project_ids })
+      own.or(on_shared).distinct
+    elsif user.access_info.organization_spectator?
+      projects = authorized_scope(Project.all, type: :relation).all
+      relation.joins(:project).where(projects: projects).distinct
+    else
+      # Non-admin members: own time_regs only (covers both owned and shared projects)
+      relation.where(user: user).distinct
+    end
   end
 end
 ```
+
+Key changes:
+- `show?` allows guest org admins to **read** any time_reg on shared projects
+- `edit?`/`update?`/`destroy?` unchanged — only own entries or owning-org admin
+- `create?` allows guest org members to create their own time_regs on shared projects
+- Default scope includes shared project time_regs for guest org admins
+- Non-admin members use `user: user` scope which naturally includes their entries on shared projects
+
+**Export restrictions:** The `export` action must exclude email addresses for cross-org time_regs. When exporting time_regs from a shared project, only include `first_name` and `last_name` for users from other organizations — not their email.
+
+**TaskPolicy scope — extended for shared projects:**
+
+The existing scope filters tasks to the current organization. For shared projects, org_two users need to see org_one's tasks (which are assigned to the project). The scope is extended:
+
+```ruby
+scope_for :relation do |relation|
+  if user.organization_admin?
+    # Own org tasks + tasks assigned to shared projects
+    own = relation.where(organization: user.current_organization)
+    shared_project_ids = ProjectShare.where(organization_id: user.current_organization.id).select(:project_id)
+    on_shared = relation.joins(:assigned_tasks).where(assigned_tasks: { project_id: shared_project_ids })
+    own.or(on_shared).distinct
+  elsif user.access_info.organization_spectator?
+    projects = authorized_scope(Project.all, type: :relation).all
+    relation.joins(:projects).where(projects: projects).distinct
+  else
+    # Non-admin: own org tasks + tasks on shared projects they have access to
+    own = relation.joins(:users).where(organization: user.current_organization, users: { id: user.id })
+    user_shared_project_ids = ProjectAccess.joins(:access_info)
+                                           .where(access_infos: { user_id: user.id, organization_id: user.current_organization.id })
+                                           .joins(:project)
+                                           .merge(Project.joins(:project_shares).where(project_shares: { organization_id: user.current_organization.id }))
+                                           .select(:project_id)
+    on_shared = relation.joins(:assigned_tasks).where(assigned_tasks: { project_id: user_shared_project_ids })
+    own.or(on_shared).distinct
+  end
+end
+```
+
+Key changes:
+- Admin scope: includes tasks assigned to any project shared with their org
+- Member scope: includes tasks assigned to shared projects they have `ProjectAccess` to
+- Spectator scope: unchanged (derives from authorized project scope)
 
 **Workspace::ProjectPolicy — extended for guest admin read access:**
 
@@ -228,9 +318,7 @@ The workspace project policy must allow guest org admins to view (but not edit) 
 - `manage_share?` — org_one admin only (view shared orgs, disconnect guest org)
 - `disconnect_share?` — org_two admin (disconnect own org)
 
-### Task & Client Scope Adjustments
-
-**TaskPolicy scope:** Extended to include org_one's tasks when the user is on a shared project. When building task lists for time_reg forms on shared projects, include tasks from the project's owning org (via `assigned_tasks` on the project).
+### Client Scope
 
 **ClientPolicy scope:** Not extended — guest orgs do not browse org_one's client list. Shared projects appear directly in the project list. Report filters for guest orgs show the shared project directly without the client hierarchy.
 
@@ -273,6 +361,8 @@ end
 
 Reports and billing call `used_rate_for(current_organization)` instead of `used_rate`. The existing `used_rate` continues to work for contexts where only the owning org's rate matters.
 
+**Reports refactoring:** `Reports::Summary#total_billable_amount` and `Reports::Result` both call `billed_amount` which uses `used_rate` without org context. These must be updated to accept an organization parameter and use `used_rate_for(organization)`. The `billed_amount` method should gain a `billed_amount_for(organization)` variant following the same pattern.
+
 ### AssignedTask Rate-Change Archiving
 
 When `AssignedTask#handle_rate_change` archives an old record and creates a new one, `ProjectShareTaskRate` records referencing the old `assigned_task_id` must be migrated:
@@ -302,11 +392,11 @@ This is separate from the project edit page (which org_two cannot access).
 
 **`Workspace::ProjectSharesController`** — manages the org-to-org relationship:
 - `index` — list guest orgs for a project (org_one admin) or list shared projects (org_two admin)
-- `update` — org_two admin updates their rates on the `ProjectShare`
+- `update_rates` — org_two admin bulk-updates their project rate + task rates on the `ProjectShare`
 - `destroy` — either side disconnects
 
-**`Workspace::ProjectShareTaskRatesController`** — manages per-task rates for guest orgs:
-- `create` / `update` — org_two admin sets task rates
+**`Workspace::ProjectShareTaskRatesController`** — manages individual per-task rates for guest orgs:
+- `create` / `update` — org_two admin sets individual task rates (used by the `update_rates` form)
 - Nested under project_share routes
 
 ### Existing Controller Changes
