@@ -251,6 +251,15 @@ en:
     organization_settings: "Organization settings"
     settings: "Settings"
     currency: "Currency"
+    shared_by: "Shared by %{org_name}"
+    shared_with: "Shared with"
+    shared_project: "Shared project"
+    disconnect: "Disconnect"
+    owned_by: "Owned by %{org_name}"
+    project_rate: "Project Rate"
+    task_rates: "Task Rates"
+    update_rates: "Update Rates"
+    no_shared_organizations: "This project is not shared with any organizations."
     empty:
       title: "Oops, Nothing Here Yet!"
       subtext: "There's currently nothing to see here yet."
@@ -327,6 +336,8 @@ en:
     removal_of_the_task: "Do you want to proceed with the removal of the task"
     cannot_be_undone: "from this project, This action cannot be undone."
     deletion_of_he_project: "Do you want to proceed with the deletion of the project"
+    project_share_disconnected: "Project share has been disconnected."
+    project_share_rates_updated: "Project share rates have been updated."
 
   alert:
     does_not_exist: "does not exist"

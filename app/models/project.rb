@@ -29,6 +29,18 @@ class Project < ApplicationRecord
     @onboarding
   end
 
+  def shared_with?(organization)
+    if project_shares.loaded?
+      project_shares.any? { |ps| ps.organization_id == organization.id }
+    else
+      project_shares.exists?(organization: organization)
+    end
+  end
+
+  def owning_organization
+    organization
+  end
+
   def must_have_at_least_one_active_assigned_task
     errors.add(:tasks, :blank) if assigned_tasks.to_a.reject { |assigned_task| assigned_task.marked_for_destruction? || assigned_task.is_archived }.empty?
   end
