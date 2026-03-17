@@ -68,6 +68,27 @@ module Reports
       end
     end
 
+    def generate_expected_data_with_org(attribute:, organization:, attribute_name_method: :name)
+      singular_attribute = attribute.singularize.to_sym
+      grouped_time_regs = @time_regs.group_by(&singular_attribute)
+      grouped_time_regs.map do |group, time_regs|
+        billable_time_regs = time_regs.select { |time_reg| time_reg.project.billable }
+        total_minutes = time_regs.sum(&:minutes)
+        total_billable_minutes = billable_time_regs.sum(&:minutes)
+        total_billable_amount = ConvertCurrencyHundredths.out(billable_time_regs.sum { |tr| tr.billed_amount_for(organization) })
+        total_billable_minutes_percentage = (total_billable_minutes / total_minutes.to_f * 100).truncate(2)
+
+        {
+          attribute_name: group.send(attribute_name_method),
+          total_minutes: total_minutes,
+          total_billable_minutes: total_billable_minutes,
+          total_billable_amount: total_billable_amount,
+          total_billable_minutes_percentage: total_billable_minutes_percentage,
+          group_link: { "#{singular_attribute}_ids": [ group.id ], category: nil }
+        }
+      end
+    end
+
     def generate_dummy_data
       # Organization
       @organization = Organization.create!(name: "My report test organization", currency: "DKK")
@@ -147,6 +168,66 @@ module Reports
       @time_reg14 = TimeReg.create!(user: @user2, assigned_task: @assigned_task6, minutes: 360, date_worked: Date.today - 6)
       @time_reg15 = TimeReg.create!(user: @user2, assigned_task: @assigned_task7, minutes: 420, date_worked: Date.today - 7)
       @time_reg16 = TimeReg.create!(user: @user2, assigned_task: @assigned_task1, minutes: 480, date_worked: Date.today - 8)
+    end
+  end
+
+  class ResultWithOrganizationTest < ActiveSupport::TestCase
+    def setup
+      @owner_org = Organization.create!(name: "Result Owner Org", currency: "USD")
+      @guest_org = Organization.create!(name: "Result Guest Org", currency: "USD")
+
+      @user = User.create!(first_name: "Result", last_name: "User", email: "result_org_test@example.com", password: "password")
+      AccessInfo.create!(user: @user, organization: @owner_org, role: 1)
+
+      @client = Client.create!(name: "Result Org Client", organization: @owner_org)
+
+      @task = Task.create!(name: "Result Org Task", organization: @owner_org)
+
+      @project = Project.new(name: "Result Org Project", client: @client, rate: 10000, billable: true)
+      @assigned_task = AssignedTask.new(task: @task, project: @project, rate: 0)
+      @project.save!(validate: false)
+      @assigned_task.save!(validate: false)
+
+      # Share project with guest org at a different rate
+      @project_share = ProjectShare.create!(project: @project, organization: @guest_org, rate: 5000)
+
+      @time_reg = TimeReg.create!(user: @user, assigned_task: @assigned_task, minutes: 120, date_worked: Date.today)
+      @time_regs = [ @time_reg ]
+
+      @filter_class = Reports::Filter
+    end
+
+    test "grouped without organization uses default billed_amount" do
+      filter = @filter_class.new(category: @filter_class::CLIENTS)
+      result = Reports::Result.new(time_regs: @time_regs, filter: filter)
+
+      grouped = result.grouped
+      # 120 min = 2 hours, rate 10000 => billed_amount = 20000
+      expected_amount = ConvertCurrencyHundredths.out(@time_regs.select { |tr| tr.project.billable }.sum(&:billed_amount))
+      assert_equal expected_amount, grouped.first[:total_billable_amount]
+    end
+
+    test "grouped with organization uses billed_amount_for" do
+      filter = @filter_class.new(category: @filter_class::CLIENTS)
+      result = Reports::Result.new(time_regs: @time_regs, filter: filter, organization: @guest_org)
+
+      grouped = result.grouped
+      # Guest org share rate = 5000, 2 hours * 5000 = 10000
+      expected_amount = ConvertCurrencyHundredths.out(@time_regs.select { |tr| tr.project.billable }.sum { |tr| tr.billed_amount_for(@guest_org) })
+      assert_equal expected_amount, grouped.first[:total_billable_amount]
+
+      # Verify it differs from default
+      default_amount = ConvertCurrencyHundredths.out(@time_regs.select { |tr| tr.project.billable }.sum(&:billed_amount))
+      assert_not_equal default_amount, grouped.first[:total_billable_amount]
+    end
+
+    test "grouped by projects with organization uses org-context rates" do
+      filter = @filter_class.new(category: @filter_class::PROJECTS)
+      result = Reports::Result.new(time_regs: @time_regs, filter: filter, organization: @guest_org)
+
+      grouped = result.grouped
+      expected_amount = ConvertCurrencyHundredths.out(@time_regs.select { |tr| tr.project.billable }.sum { |tr| tr.billed_amount_for(@guest_org) })
+      assert_equal expected_amount, grouped.first[:total_billable_amount]
     end
   end
 end
