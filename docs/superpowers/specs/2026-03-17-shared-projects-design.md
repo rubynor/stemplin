@@ -100,8 +100,8 @@ The existing `ProjectInvitationService` and `ProjectInvitation#accept!` flow is 
 
 1. Org_one admin invites an external user by email (existing flow)
 2. User accepts invitation (existing: creates `AccessInfo` + `ProjectAccess`)
-3. **New:** If the user's organization differs from the project's organization, `find_or_create` a `ProjectShare` between the project and the user's organization
-4. The `ProjectShare` is created with `rate: 0` (guest org admin sets rates later)
+3. **New:** The `ProjectShare` is created for the organization passed to `accept!(organization)` — this is the org the user chose to accept into, not an implicit "user's default org." A user who belongs to multiple orgs selects which org context to accept under.
+4. `ProjectShare.find_or_create_by!(project: project, organization: organization)` with `rate: 0`
 
 Subsequent invitations to users from the same org reuse the existing `ProjectShare`.
 
@@ -110,12 +110,28 @@ Subsequent invitations to users from the same org reuse the existing `ProjectSha
 **Org_one disconnects org_two:**
 1. Destroy the `ProjectShare` (cascades to `ProjectShareTaskRate` records)
 2. Destroy all `ProjectAccess` records for org_two users on this project
-3. Cancel pending `ProjectInvitation` records for org_two users
+3. Cancel pending `ProjectInvitation` records where `invited_email` matches existing org_two users (by email lookup against org_two's `access_infos → users`). Invitations to not-yet-registered users cannot be reliably matched — they remain pending and will fail validation if accepted after disconnection (since `ProjectAccess` creation would succeed but the `ProjectShare` would be absent).
 4. Time_regs are preserved (they reference `assigned_task`, not `project_access`)
 
 **Org_two disconnects from project:**
 - Same as above — destroys their `ProjectShare` and their users' `ProjectAccess` records
 - Time_regs preserved
+
+### Post-Disconnection Time_Reg Visibility
+
+After disconnection, time_regs from org_two users remain in the database linked to `assigned_task → project → client → org_one`. These time_regs are:
+- **Visible to org_one admins**: They own the project and see all time_regs on it (existing behavior via `TimeRegPolicy` scoping through project organization).
+- **Invisible to org_two**: The `ProjectShare` no longer exists, so org_two admins lose read access. Org_two members lose `ProjectAccess`, so they also lose visibility. This is intentional — disconnection severs the relationship.
+- **Org_two users' own time_regs**: For personal history purposes, org_two users can still see their own time_regs via the `user_id` scope (the existing `TimeRegPolicy` allows users to see their own entries regardless of project ownership).
+
+### Soft Delete Interaction
+
+When org_one soft-deletes (discards) a shared project:
+- The project's `default_scope -> { kept }` hides it from all queries
+- `ProjectShare` records remain in the database but are effectively orphaned
+- No automatic disconnection is triggered — the shares are inert while the project is discarded
+- If the project is later restored (undiscarded), the shares resume functioning
+- If the project is permanently destroyed, `dependent: :destroy` on `has_many :project_shares` cascades the deletion
 
 ## Authorization & Scoping
 
@@ -124,6 +140,7 @@ Subsequent invitations to users from the same org reuse the existing `ProjectSha
 When a `ProjectShare` exists between a project and org_two, org_two admins can:
 - View the project (name, description, tasks)
 - View ALL time_regs on the project (from any org)
+- View org_one user names on time_regs (first_name, last_name only — no email or other details)
 - Manage their own org's rates (`ProjectShare` rate + `ProjectShareTaskRate` rates)
 - Disconnect their org from the project
 
@@ -141,25 +158,29 @@ Org_two members with `ProjectAccess`:
 - Cannot see rates
 - Cannot see other users' time_regs (unless they are admin)
 
+### Guest Org Spectator Permissions
+
+Org_two spectators follow the same rules as regular spectators: read-only access to projects they can see. If a spectator has `ProjectAccess` to a shared project, they can view the project and time_regs on it (scoped the same as today's spectator behavior). They cannot log time.
+
 ### Policy Changes
 
-**ProjectPolicy scope (`:own`):**
+**ProjectPolicy scope (`:own`) — uses subquery approach to avoid JOIN incompatibility:**
 
 ```ruby
 scope_for :relation, :own do |relation|
-  # Org's own projects
-  own = relation.joins(client: :organization)
-                .where(organizations: { id: organization.id })
+  own_ids = relation.joins(client: :organization)
+                    .where(organizations: { id: organization.id })
+                    .select(:id)
 
-  # Shared projects via ProjectShare
-  shared = relation.joins(:project_shares)
-                   .where(project_shares: { organization_id: organization.id })
+  shared_ids = relation.joins(:project_shares)
+                       .where(project_shares: { organization_id: organization.id })
+                       .select(:id)
 
-  combined = own.or(shared)
+  combined = relation.where(id: own_ids).or(relation.where(id: shared_ids))
 
   unless user.organization_admin?
-    combined = combined.joins(:project_accesses)
-                       .where(project_accesses: user.project_accesses)
+    combined = combined.where(id: ProjectAccess.where(access_info: user.access_info(organization))
+                                               .select(:project_id))
   end
   combined.distinct
 end
@@ -167,14 +188,51 @@ end
 
 Org_two admins see shared projects automatically via `ProjectShare` (no individual `ProjectAccess` needed). Org_two non-admin users still require individual `ProjectAccess`.
 
-**TimeRegPolicy:**
+**TimeRegPolicy scope — extended for shared project visibility:**
 
-Extended so org_two admins can read (not write) all time_regs on shared projects. Org_two members can only read/write their own time_regs.
+```ruby
+# For admins: own org's time_regs + time_regs on projects shared with this org
+scope_for :relation, :own do |relation|
+  own = relation.joins(:organization).where(organizations: { id: organization.id })
 
-**New policy actions:**
-- `project#manage_share?` — org_one admin only (disconnect guest org, manage sharing)
-- `project#disconnect_share?` — org_two admin (disconnect own org)
-- `project#view_shared?` — org_two admin read access
+  shared_project_ids = ProjectShare.where(organization_id: organization.id).select(:project_id)
+  on_shared = relation.joins(assigned_task: :project)
+                      .where(projects: { id: shared_project_ids })
+
+  if user.organization_admin?
+    own.or(on_shared).distinct
+  else
+    # Non-admin: own time_regs only (on both owned and shared projects)
+    relation.where(user: user)
+  end
+end
+```
+
+**Workspace::ProjectPolicy — extended for guest admin read access:**
+
+The workspace project policy must allow guest org admins to view (but not edit) shared projects. Add a `show?` override that permits access when a `ProjectShare` exists for the user's current organization. `edit?`, `update?`, `destroy?` remain restricted to the owning org's admins.
+
+**New policies:**
+
+`ProjectSharePolicy`:
+- `show?` — org_one admin or org_two admin (either side can view the share)
+- `update?` — org_two admin only (manage their rates)
+- `destroy?` — org_one admin or org_two admin (either side can disconnect)
+- Scope: projects shared with the current organization
+
+`ProjectShareTaskRatePolicy`:
+- `create?`, `update?`, `destroy?` — org_two admin only (manage their task rates)
+- Scope: task rates belonging to the current org's project shares
+
+**New policy actions on ProjectPolicy:**
+- `manage_share?` — org_one admin only (view shared orgs, disconnect guest org)
+- `disconnect_share?` — org_two admin (disconnect own org)
+
+### Task & Client Scope Adjustments
+
+**TaskPolicy scope:** Extended to include org_one's tasks when the user is on a shared project. When building task lists for time_reg forms on shared projects, include tasks from the project's owning org (via `assigned_tasks` on the project).
+
+**ClientPolicy scope:** Not extended — guest orgs do not browse org_one's client list. Shared projects appear directly in the project list. Report filters for guest orgs show the shared project directly without the client hierarchy.
 
 ## Rate Management
 
@@ -185,16 +243,50 @@ Extended so org_two admins can read (not write) all time_regs on shared projects
 | Org_one (owner) | `project.rate` | `assigned_task.rate` |
 | Org_two (guest) | `project_share.rate` | `project_share_task_rate.rate` |
 
-### Rate Resolution for Reports
+### Rate Resolution
 
-1. Determine which org is viewing the report
-2. If the org owns the project: use `assigned_task.rate` falling back to `project.rate` (existing behavior)
-3. If the org is a guest: use `project_share_task_rate.rate` falling back to `project_share.rate`
-4. If the guest org hasn't set rates (rate = 0): show as unset/zero
+Rate resolution is context-dependent — it requires knowing which organization is viewing.
+
+**`TimeReg#used_rate` refactoring:**
+
+The existing `used_rate` method returns the owning org's rate. For shared projects, introduce a context-aware method:
+
+```ruby
+# New method that accepts an organization for rate context
+def used_rate_for(organization)
+  project_share = project.project_shares.find_by(organization: organization)
+  if project_share
+    task_rate = project_share.project_share_task_rates.find_by(assigned_task: assigned_task)
+    rate = task_rate&.rate || 0
+    rate.positive? ? rate : project_share.rate
+  else
+    # Owning org — existing behavior
+    assigned_task.rate.positive? ? assigned_task.rate : project.rate
+  end
+end
+
+# Keep existing method for backward compatibility
+def used_rate
+  assigned_task.rate.positive? ? assigned_task.rate : project.rate
+end
+```
+
+Reports and billing call `used_rate_for(current_organization)` instead of `used_rate`. The existing `used_rate` continues to work for contexts where only the owning org's rate matters.
+
+### AssignedTask Rate-Change Archiving
+
+When `AssignedTask#handle_rate_change` archives an old record and creates a new one, `ProjectShareTaskRate` records referencing the old `assigned_task_id` must be migrated:
+
+```ruby
+# In handle_rate_change, after creating new_assigned_task:
+ProjectShareTaskRate.where(assigned_task: self).update_all(assigned_task_id: new_assigned_task.id)
+```
+
+This preserves guest org task rates across rate changes.
 
 ### Currency
 
-Each org has its own currency. Rates on `ProjectShare` and `ProjectShareTaskRate` are in the guest org's currency. No cross-currency conversion — each org sees their own rates in their own currency.
+Each org has its own currency. Rates on `ProjectShare` and `ProjectShareTaskRate` are in the guest org's currency (inferred from `project_share.organization.currency`). No cross-currency conversion — each org sees their own rates in their own currency.
 
 ### Rate Management UI
 
@@ -204,11 +296,54 @@ Org_two admins see a "Rates" section when viewing a shared project, where they c
 
 This is separate from the project edit page (which org_two cannot access).
 
+## Controller Structure
+
+### New Controllers
+
+**`Workspace::ProjectSharesController`** — manages the org-to-org relationship:
+- `index` — list guest orgs for a project (org_one admin) or list shared projects (org_two admin)
+- `update` — org_two admin updates their rates on the `ProjectShare`
+- `destroy` — either side disconnects
+
+**`Workspace::ProjectShareTaskRatesController`** — manages per-task rates for guest orgs:
+- `create` / `update` — org_two admin sets task rates
+- Nested under project_share routes
+
+### Existing Controller Changes
+
+**`Workspace::ProjectsController`:**
+- `show` — detect if project is shared (guest org context), render read-only view
+- Time_reg listing extended to show all entries on shared projects for guest admins
+
+### Routes
+
+```ruby
+namespace :workspace do
+  resources :projects do
+    resources :project_shares, only: [:index, :destroy] do
+      resources :project_share_task_rates, only: [:create, :update]
+      member do
+        patch :update_rates  # Bulk update project + task rates
+      end
+    end
+  end
+end
+```
+
+## API Considerations
+
+The API layer (`Api::V1::*`) uses the same policies, so policy scope changes automatically apply. However:
+- `Api::V1::ReportsController` does SQL-level aggregation — rate resolution must happen at the query level or post-processing, not just in Ruby
+- API responses for shared projects should include a `shared: true` flag and `owner_organization` info
+- API rate endpoints need to respect the same org-context rules
+
+These are implementation details to address during the API phase, not blockers for the initial implementation.
+
 ## UI & Navigation
 
 ### Org_one Admin (Project Owner)
 
-- Project show page gains a "Shared with" section listing guest organizations with a "Disconnect" action per org
+- Project show page gains a "Shared with" section listing guest organizations (name only) with a "Disconnect" action per org
 - Existing "Invite external user" flow unchanged (email-based)
 - Time_regs view unchanged
 
@@ -216,6 +351,7 @@ This is separate from the project edit page (which org_two cannot access).
 
 - Shared projects appear in the project list, visually distinguished with a badge/tag showing the owning org name
 - Project show page is **read-only**: project details, task list, all time_regs
+- Time_regs show user names (first_name, last_name) for all orgs
 - A "Rates" tab/section for managing their org's rates
 - A "Disconnect" action to leave the shared project
 
@@ -229,3 +365,14 @@ This is separate from the project edit page (which org_two cannot access).
 ### Navigation
 
 No new top-level navigation. Shared projects are mixed into the existing projects list with a visual indicator of ownership.
+
+## Edge Cases
+
+### Multi-org users
+A user belonging to both org_one and org_two sees the project in both org contexts. When switching organizations, their permissions change accordingly (admin in org_one = full control, member in org_two = member-level access on the shared project). The `current_organization` determines which context applies.
+
+### User promoted to admin in guest org
+If an org_two member with `ProjectAccess` is promoted to admin, they gain full guest-admin read access to the shared project. Their existing `ProjectAccess` record becomes redundant (admins see shared projects via `ProjectShare`) but is harmless to keep.
+
+### All guest org users removed but ProjectShare remains
+If all org_two users' `ProjectAccess` records are individually removed (without disconnecting the org), the `ProjectShare` remains. Org_two admins still see the project. This is acceptable — the org-level share persists until explicitly disconnected.
