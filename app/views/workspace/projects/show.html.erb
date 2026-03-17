@@ -8,6 +8,11 @@
           <div class="font-medium text-gray-600 text-lg flex items-center gap-x-2">
             <span><%= @project.name %></span>
             <%= render RubyUI::Badge.new(variant: :purple, class: "!rounded-full flex gap-x-1") { t("common.project") } %>
+            <% if @shared_project %>
+              <%= render RubyUI::Badge.new(variant: :purple, class: "!rounded-full flex gap-x-1") do %>
+                <span><%= t("common.shared_by", org_name: @project.owning_organization.name) %></span>
+              <% end %>
+            <% end %>
           </div>
           <span class="text-gray-500 text-sm font-regular pr-2"><%= @project.description %></span>
         </div>
@@ -22,11 +27,13 @@
 
             <%= render RubyUI::Breadcrumb::BreadcrumbSeparator.new %>
 
-            <%= render RubyUI::Breadcrumb::BreadcrumbItem.new do %>
-              <%= render RubyUI::Breadcrumb::BreadcrumbLink.new(href: workspace_client_path(@project.client)) { @project.client.name } %>
-            <% end %>
+            <% unless @shared_project %>
+              <%= render RubyUI::Breadcrumb::BreadcrumbItem.new do %>
+                <%= render RubyUI::Breadcrumb::BreadcrumbLink.new(href: workspace_client_path(@project.client)) { @project.client.name } %>
+              <% end %>
 
-            <%= render RubyUI::Breadcrumb::BreadcrumbSeparator.new %>
+              <%= render RubyUI::Breadcrumb::BreadcrumbSeparator.new %>
+            <% end %>
 
             <%= render RubyUI::Breadcrumb::BreadcrumbItem.new do %>
               <%= render RubyUI::Breadcrumb::BreadcrumbPage.new { @project.name } %>
@@ -37,17 +44,29 @@
     </div>
 
     <div class="flex flex-row gap-2">
-      <%= render ButtonComponent.new(path: edit_workspace_project_path(@project), method: :get, variant: :outline) do %>
-        <span class="hidden lg:block mr-2"><%= t("common.edit")%></span>
-        <i class="uc-icon">&#xe972;</i>
-      <% end %>
-
-      <%- has_time_regs = @project.time_regs.any? %>
-      <%- turbo_body = has_time_regs ? "The project <span class='font-semibold text-primary'>#{@project.name}</span> has time registrations and can not be deleted." : "#{t("notice.deletion_of_he_project")} <span class='font-semibold text-primary'>#{@project.name}</span>, #{t("notice.cannot_be_undone")}" %>
-      <%= render TooltipComponent.new(note: has_time_regs ? "The Project has recorded time registrations, can not be deleted." : nil) do %>
-        <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_project_path(@project), disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body } }) do %>
-          <span class="hidden lg:block mr-2"><%= t("common.delete")%></span>
+      <% if @shared_project %>
+        <%= render ButtonComponent.new(
+          path: workspace_project_project_share_path(@project, @project_share),
+          method: :delete,
+          variant: :destructive,
+          form: { data: { turbo_confirm: "#{t("notice.are_you_sure")} #{t("common.cannot_be_undone")}" } }
+        ) do %>
+          <span class="hidden lg:block mr-2"><%= t("common.disconnect") %></span>
           <i class="uc-icon">&#xeb97;</i>
+        <% end %>
+      <% else %>
+        <%= render ButtonComponent.new(path: edit_workspace_project_path(@project), method: :get, variant: :outline) do %>
+          <span class="hidden lg:block mr-2"><%= t("common.edit")%></span>
+          <i class="uc-icon">&#xe972;</i>
+        <% end %>
+
+        <%- has_time_regs = @project.time_regs.any? %>
+        <%- turbo_body = has_time_regs ? "The project <span class='font-semibold text-primary'>#{@project.name}</span> has time registrations and can not be deleted." : "#{t("notice.deletion_of_he_project")} <span class='font-semibold text-primary'>#{@project.name}</span>, #{t("notice.cannot_be_undone")}" %>
+        <%= render TooltipComponent.new(note: has_time_regs ? "The Project has recorded time registrations, can not be deleted." : nil) do %>
+          <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_project_path(@project), disabled: has_time_regs, form: { data: { turbo_confirm: turbo_body } }) do %>
+            <span class="hidden lg:block mr-2"><%= t("common.delete")%></span>
+            <i class="uc-icon">&#xeb97;</i>
+          <% end %>
         <% end %>
       <% end %>
 
@@ -62,13 +81,19 @@
       <div>
         <span class="text-base text-gray-600 font-medium uppercase"><%= t("common.information")%></span>
       </div>
-      <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
-        <span class="font-regular"><%= t("common.client")%></span>
-        <%= link_to @project.client.name, workspace_client_path(@project.client), class: "font-semibold underline text-primary" %>
-      </div>
+      <% unless @shared_project %>
+        <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
+          <span class="font-regular"><%= t("common.client")%></span>
+          <%= link_to @project.client.name, workspace_client_path(@project.client), class: "font-semibold underline text-primary" %>
+        </div>
+      <% end %>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
         <span class="font-regular"><%= t("common.rate")%></span>
-        <span class="font-semibold"><%= @currency %> <%= @project.rate_currency %></span>
+        <% if @shared_project && @project_share %>
+          <span class="font-semibold"><%= @currency %> <%= @project_share.rate_currency %></span>
+        <% else %>
+          <span class="font-semibold"><%= @currency %> <%= @project.rate_currency %></span>
+        <% end %>
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
         <span class="font-regular"><%= t("common.billing_status")%></span>
@@ -81,6 +106,12 @@
         <span class="font-semibold"><%= l(@project.created_at, format: "%A, %d %B %Y") %></span>
       </div>
     </div>
+    <% if @guest_organizations.present? %>
+      <%= render partial: "workspace/projects/shared_organizations" %>
+    <% end %>
+    <% if @shared_project && current_user.organization_admin? %>
+      <%= render partial: "workspace/project_shares/rates_form" %>
+    <% end %>
     <%= render RubyUI::Tabs.new(default: params[:tab] || "tasks") do %>
       <%= render RubyUI::TabsList.new(class: "border-b h-fit w-full !p-0 rounded-none !justify-start") do %>
         <%= render RubyUI::TabsTrigger.new(value: "tasks", class!: "h-full py-4 transition duration-300 ease-in-out px-4 data-[state=active]:text-primary-600  data-[state=active]:font-medium border-b-2 border-transparent data-[state=active]:border-primary-600") do %>
@@ -91,13 +122,15 @@
             </div>
           </div>
         <% end %>
-        <%= render RubyUI::TabsTrigger.new(value: "members", class!: "h-full py-4 transition duration-300 ease-in-out px-4 data-[state=active]:text-primary-600  data-[state=active]:font-medium border-b-2 border-transparent data-[state=active]:border-primary-600") do %>
-          <div class="flex flex-row items-center gap-x-2 pb-2">
-            <span class="font-regular text-base"><%= t("common.members")%></span>
-            <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
-              <span class="text-gray-700 text-xs font-semibold"><%= @pagy_members.count %></span>
+        <% unless @shared_project %>
+          <%= render RubyUI::TabsTrigger.new(value: "members", class!: "h-full py-4 transition duration-300 ease-in-out px-4 data-[state=active]:text-primary-600  data-[state=active]:font-medium border-b-2 border-transparent data-[state=active]:border-primary-600") do %>
+            <div class="flex flex-row items-center gap-x-2 pb-2">
+              <span class="font-regular text-base"><%= t("common.members")%></span>
+              <div class="bg-gray-100 border border-gray-200 w-6 h-6 flex justify-center items-center rounded-md">
+                <span class="text-gray-700 text-xs font-semibold"><%= @pagy_members.count %></span>
+              </div>
             </div>
-          </div>
+          <% end %>
         <% end %>
       <% end %>
       <%= render RubyUI::TabsContent.new(value: "tasks") do %>
@@ -107,15 +140,17 @@
         <%= render PaginationComponent.new(pagy: @pagy_active_assigned_tasks, path: workspace_project_path(@project), params: { tab: "tasks" }) if @pagy_active_assigned_tasks.pages > 1 %>
       <% end %>
 
-      <%= render RubyUI::TabsContent.new(value: "members") do %>
-        <p class="mt-6"><%= raw t("common.users_project_access") %></p>
-        <%= content_tag(:div, id: "#{dom_id(@project)}_members", class: "divide-y divide-gray-100") do %>
-          <%= render partial: "workspace/projects/member", collection: @members %>
-          <% if @members.empty? %>
-            <%= render partial: "shared/empty_illustration", locals: { call_to_action: { text: t("common.add_member"), path: edit_workspace_project_path(@project), method: :get } } %>
+      <% unless @shared_project %>
+        <%= render RubyUI::TabsContent.new(value: "members") do %>
+          <p class="mt-6"><%= raw t("common.users_project_access") %></p>
+          <%= content_tag(:div, id: "#{dom_id(@project)}_members", class: "divide-y divide-gray-100") do %>
+            <%= render partial: "workspace/projects/member", collection: @members %>
+            <% if @members.empty? %>
+              <%= render partial: "shared/empty_illustration", locals: { call_to_action: { text: t("common.add_member"), path: edit_workspace_project_path(@project), method: :get } } %>
+            <% end %>
           <% end %>
+          <%= render PaginationComponent.new(pagy: @pagy_members, path: workspace_project_path(@project), params: { tab: "members" }) if @pagy_members.pages > 1 %>
         <% end %>
-        <%= render PaginationComponent.new(pagy: @pagy_members, path: workspace_project_path(@project), params: { tab: "members" }) if @pagy_members.pages > 1 %>
       <% end %>
     <% end %>
   </div>

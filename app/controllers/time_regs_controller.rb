@@ -42,7 +42,7 @@ class TimeRegsController < ApplicationController
 
     set_assigned_tasks
 
-    if current_user.current_organization.projects.empty?
+    unless current_user.current_organization.has_accessible_projects?
       flash[:alert] = I18n.t("alert.create_project_before_registering_time")
       redirect_back fallback_location: time_regs_path
     end
@@ -93,8 +93,10 @@ class TimeRegsController < ApplicationController
 
   # exports the time_regs in a project to a .CSV
   def export
+    authorize!
     project = authorized_scope(Project, type: :relation).find(params[:project_id])
     client = project.client
+    current_org = current_user.current_organization
     time_regs = project.time_regs.includes(
       :task,
       :user,
@@ -106,8 +108,10 @@ class TimeRegsController < ApplicationController
       csv << [ "date", "client", "project", "task", "notes", "minutes", "first name", "last name", "email" ]
       # Add CSV data rows for each time_reg
       time_regs.each do |time_reg|
+        # Strip email for users not in the current organization
+        email = time_reg.user.access_infos.exists?(organization: current_org) ? time_reg.user.email : ""
         csv << [ time_reg.date_worked, client.name, project.name, time_reg.assigned_task.task.name,
-                time_reg.notes, time_reg.minutes, time_reg.user.first_name, time_reg.user.last_name, time_reg.user.email ]
+                time_reg.notes, time_reg.minutes, time_reg.user.first_name, time_reg.user.last_name, email ]
       end
     end
     send_data csv_data, filename: "#{Time.now.to_i}_time_regs_for_#{project.name}.csv"

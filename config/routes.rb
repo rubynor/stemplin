@@ -60,6 +60,9 @@ Rails.application.routes.draw do
   namespace :workspace do
     resources :projects do
       post :import_modal, on: :collection
+      resources :project_shares, only: [ :index, :update, :destroy ] do
+        resources :project_share_task_rates, only: [ :create, :update ]
+      end
     end
 
     scope module: :projects do

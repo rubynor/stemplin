@@ -1,11 +1,16 @@
 module Reports
   class Summary
-    def initialize(time_regs:)
+    def initialize(time_regs:, organization: nil)
       @time_regs = time_regs
+      @organization = organization
     end
 
     def total_billable_amount
-      @total_billable_amount ||= @time_regs.billable.sum(&:billed_amount)
+      @total_billable_amount ||= if @organization
+        @time_regs.billable.sum { |tr| tr.billed_amount_for(@organization) }
+      else
+        @time_regs.billable.sum(&:billed_amount)
+      end
     end
 
     def total_billable_amount_currency

@@ -1,0 +1,24 @@
+<div class="divide-y divide-gray-100 flex flex-col">
+  <div>
+    <span class="text-base text-gray-600 font-medium uppercase"><%= t("common.shared_with") %></span>
+  </div>
+  <% if @guest_organizations.any? %>
+    <% @guest_organizations.each do |project_share| %>
+      <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
+        <span class="font-semibold"><%= project_share.organization.name %></span>
+        <%= render ButtonComponent.new(
+          path: workspace_project_project_share_path(@project, project_share),
+          method: :delete,
+          variant: :destructive,
+          form: { data: { turbo_confirm: "#{t("notice.are_you_sure")} #{t("common.cannot_be_undone")}" } }
+        ) do %>
+          <span><%= t("common.disconnect") %></span>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="text-sm text-gray-500 py-4">
+      <span><%= t("common.no_shared_organizations") %></span>
+    </div>
+  <% end %>
+</div>

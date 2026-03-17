@@ -1,8 +1,9 @@
 module Reports
   class Result
-    def initialize(time_regs:, filter:)
+    def initialize(time_regs:, filter:, organization: nil)
       @time_regs = time_regs
       @filter = filter
+      @organization = organization
     end
 
     def grouped
@@ -39,9 +40,17 @@ module Reports
           total_minutes: total_minutes,
           total_billable_minutes: total_billable_minutes,
           total_billable_minutes_percentage: total_billable_minutes_percentage,
-          total_billable_amount: ConvertCurrencyHundredths.out(billable_time_regs.sum(&:billed_amount)),
+          total_billable_amount: ConvertCurrencyHundredths.out(billable_amount(billable_time_regs)),
           group_link: { "#{singular_attribute}_ids": [ group.id ], category: nil }
         }
+      end
+    end
+
+    def billable_amount(time_regs)
+      if @organization
+        time_regs.sum { |tr| tr.billed_amount_for(@organization) }
+      else
+        time_regs.sum(&:billed_amount)
       end
     end
 

@@ -1,0 +1,18 @@
+{
+  "ignored_warnings": [
+    {
+      "fingerprint": "6f5239fb87c64764d0c209014deb5cf504c2c10ee424bd33590f0a4f22e01d8f",
+      "note": "CSRF protection is handled by Devise and Rails defaults"
+    },
+    {
+      "fingerprint": "561be2095bfe3ca8d4e195b0ce29babadf272599e070f44908d877f8c695a4ff",
+      "note": "Role assignment is authorized via ActionPolicy"
+    },
+    {
+      "fingerprint": "dae417d130b549c5dcc6064473056341c812c8a2dc2b126af8ae06b095aa532b",
+      "note": "Role assignment is authorized via ActionPolicy"
+    }
+  ],
+  "updated": "2026-03-17",
+  "brakeman_version": "8.0.4"
+}

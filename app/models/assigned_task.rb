@@ -41,7 +41,8 @@ class AssignedTask < ApplicationRecord
 
   def handle_rate_change
     if rate_changed?
-      self.class.create!(project: project, task: task, rate: rate)
+      new_task = self.class.create!(project: project, task: task, rate: rate)
+      ProjectShareTaskRate.where(assigned_task: self).update_all(assigned_task_id: new_task.id)
       self.is_archived = true
       self.rate = rate_was
     end

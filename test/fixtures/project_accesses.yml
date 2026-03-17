@@ -7,3 +7,7 @@ ron_project_1:
 spectator_project_1:
   access_info: access_info_org1_spectator
   project: project_1
+
+ron_org2_shared_project_1:
+  access_info: access_info_2
+  project: project_1

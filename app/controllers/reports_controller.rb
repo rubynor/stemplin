@@ -7,8 +7,9 @@ class ReportsController < AuthenticatedController
   def index
     @summary = Reports::Summary.new(
       time_regs: @time_regs,
+      organization: current_user.current_organization,
     )
-    @results = Reports::Result.new(time_regs: @time_regs, filter: @filter)
+    @results = Reports::Result.new(time_regs: @time_regs, filter: @filter, organization: current_user.current_organization)
     authorize!
   end
 

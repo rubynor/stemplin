@@ -41,10 +41,47 @@ class ProjectInvitationServiceTest < ActiveSupport::TestCase
     assert_equal @external_org, invitation.accepted_as_access_info.organization
 
     # Test 4: Invited user has access to the project
+    invited_user = User.find_by(email: @external_email)
     project_access = ProjectAccess.joins(:access_info)
-                                  .where(project: @project, access_infos: { organization: @external_org })
+                                  .where(project: @project, access_infos: { organization: @external_org, user: invited_user })
                                   .first
     assert project_access, "ProjectAccess should be created"
     assert_equal @external_email, project_access.user.email
+  end
+
+  test "accepting invitation creates ProjectShare when user org differs from project org" do
+    # Use a different project to avoid fixture collision
+    project = projects(:project_2)
+    invitation = ProjectInvitation.create!(
+      project: project,
+      invited_email: @external_email,
+      invited_by: @admin_user,
+      invited_at: Time.current
+    )
+
+    assert_difference "ProjectShare.count", 1 do
+      ProjectInvitationService.accept_invitation(invitation.invitation_token, @external_org)
+    end
+
+    project_share = ProjectShare.find_by(project: project, organization: @external_org)
+    assert project_share, "ProjectShare should be created"
+    assert_equal 0, project_share.rate
+  end
+
+  test "accepting invitation reuses existing ProjectShare if one already exists" do
+    # project_1 already has a ProjectShare with organization_two via fixtures
+    invitation = ProjectInvitation.create!(
+      project: @project,
+      invited_email: @external_email,
+      invited_by: @admin_user,
+      invited_at: Time.current
+    )
+
+    assert_no_difference "ProjectShare.count" do
+      ProjectInvitationService.accept_invitation(invitation.invitation_token, @external_org)
+    end
+
+    project_share = ProjectShare.find_by(project: @project, organization: @external_org)
+    assert project_share, "Existing ProjectShare should still exist"
   end
 end

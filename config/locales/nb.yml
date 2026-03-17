@@ -268,6 +268,14 @@ nb:
     organization_settings: "Organisasjonsinnstillinger"
     settings: "Innstillinger"
     currency: "Valuta"
+    shared_by: "Delt av %{org_name}"
+    shared_with: "Delt med"
+    shared_project: "Delt prosjekt"
+    disconnect: "Koble fra"
+    owned_by: "Eid av %{org_name}"
+    task_rates: "Oppgavepriser"
+    update_rates: "Oppdater priser"
+    no_shared_organizations: "Dette prosjektet er ikke delt med noen organisasjoner."
     empty:
       title: "Oops, ingenting her ennå!"
       subtext: "Det er foreløpig ingenting å se her ennå."
@@ -344,6 +352,8 @@ nb:
     removal_of_the_task: "Vil du fortsette med fjerningen av oppgaven"
     cannot_be_undone: "fra dette prosjektet, denne handlingen kan ikke angres."
     deletion_of_he_project: "Vil du fortsette med slettingen av prosjektet"
+    project_share_disconnected: "Prosjektdelingen har blitt frakoblet."
+    project_share_rates_updated: "Prosjektdelingspriser har blitt oppdatert."
 
 
   alert:

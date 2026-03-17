@@ -8,7 +8,7 @@ module ComboboxComponent
       super
     end
 
-    def view_template(&)
+    def view_template(&block)
       div(**@attrs) do
         div(
           data: {
@@ -16,7 +16,7 @@ module ComboboxComponent
             wrapper_id: @wrapper_id,
             action: "keydown.up->combobox-content#handleKeyUp keydown.down->combobox-content#handleKeyDown keydown.enter->combobox-content#handleKeyEnter keydown.esc->combobox-content#handleKeyEsc"
           },
-          class: "flex h-full w-full flex-col overflow-hidden rounded-md rounded-lg border shadow-md bg-white", &
+          class: "flex h-full w-full flex-col overflow-hidden rounded-md rounded-lg border shadow-md bg-white", &block
         )
       end
     end
