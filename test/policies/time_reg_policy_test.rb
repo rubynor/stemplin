@@ -46,7 +46,7 @@ class TimeRegPolicyTest < ActiveSupport::TestCase
     assert policy_for(ron, new_time_reg).apply(:create?)
   end
 
-  test "create? org_two admin CANNOT create time_regs on shared project (admin path checks same_organization)" do
+  test "create? org_two admin CAN create their own time_reg on shared project" do
     admin = users(:organization_admin)
     switch_org_context!(admin, @org_two)
     assert_equal @org_two, admin.current_organization
@@ -58,7 +58,21 @@ class TimeRegPolicyTest < ActiveSupport::TestCase
       minutes: 60
     )
 
-    # Admin path checks same_organization which fails because project belongs to org_one
+    assert policy_for(admin, new_time_reg).apply(:create?)
+  end
+
+  test "create? org_two admin CANNOT create time_regs on behalf of another user on shared project" do
+    admin = users(:organization_admin)
+    ron = users(:ron)
+    switch_org_context!(admin, @org_two)
+
+    new_time_reg = TimeReg.new(
+      user: ron,
+      assigned_task: assigned_task(:task_1),
+      date_worked: Date.today,
+      minutes: 60
+    )
+
     assert_not policy_for(admin, new_time_reg).apply(:create?)
   end
 

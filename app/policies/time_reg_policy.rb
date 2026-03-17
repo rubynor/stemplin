@@ -25,7 +25,7 @@ class TimeRegPolicy < ApplicationPolicy
     shared_project = on_shared_project?
 
     if user.organization_admin?
-      same_organization
+      same_organization || (shared_project && record.user == user)
     else
       (same_organization || no_organization || shared_project) && record.user == user
     end

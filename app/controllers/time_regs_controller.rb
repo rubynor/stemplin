@@ -42,7 +42,7 @@ class TimeRegsController < ApplicationController
 
     set_assigned_tasks
 
-    if current_user.current_organization.projects.empty?
+    if current_user.current_organization.projects.empty? && current_user.current_organization.shared_projects.empty?
       flash[:alert] = I18n.t("alert.create_project_before_registering_time")
       redirect_back fallback_location: time_regs_path
     end
