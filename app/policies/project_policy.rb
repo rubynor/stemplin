@@ -17,19 +17,43 @@ class ProjectPolicy < ApplicationPolicy
 
   scope_for :relation, :own do |relation|
     organization = user.current_organization
-    relation = relation.joins(client: :organization).where(organizations: { id: organization.id })
+
+    own_ids = relation.joins(client: :organization)
+                      .where(organizations: { id: organization.id })
+                      .select(:id)
+    shared_ids = relation.joins(:project_shares)
+                         .where(project_shares: { organization_id: organization.id })
+                         .select(:id)
+    combined = relation.where(id: own_ids).or(relation.where(id: shared_ids))
+
     unless user.organization_admin?
-      relation = relation.joins(:project_accesses).where(project_accesses: user.project_accesses) if user.project_restricted?(organization)
+      combined = combined.where(
+        id: ProjectAccess.where(access_info: user.access_info(organization))
+                         .select(:project_id)
+      ) if user.project_restricted?(organization)
     end
-    relation.distinct
+
+    combined.distinct
   end
 
   scope_for :relation do |relation|
     organization = user.current_organization
-    relation = relation.joins(client: :organization).where(organizations: { id: organization.id })
+
+    own_ids = relation.joins(client: :organization)
+                      .where(organizations: { id: organization.id })
+                      .select(:id)
+    shared_ids = relation.joins(:project_shares)
+                         .where(project_shares: { organization_id: organization.id })
+                         .select(:id)
+    combined = relation.where(id: own_ids).or(relation.where(id: shared_ids))
+
     unless user.organization_admin?
-      relation = relation.joins(:project_accesses).where(project_accesses: user.project_accesses) if user.project_restricted?(organization)
+      combined = combined.where(
+        id: ProjectAccess.where(access_info: user.access_info(organization))
+                         .select(:project_id)
+      ) if user.project_restricted?(organization)
     end
-    relation.distinct
+
+    combined.distinct
   end
 end
