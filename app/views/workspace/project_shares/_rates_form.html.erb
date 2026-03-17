@@ -1,0 +1,51 @@
+<div id="project_share_rates" class="divide-y divide-gray-100 flex flex-col">
+  <div>
+    <span class="text-base text-gray-600 font-medium uppercase"><%= t("common.rates_per_hour") %></span>
+  </div>
+  <%= form_with(
+    url: update_rates_workspace_project_project_share_path(@project, @project_share),
+    method: :patch,
+    scope: :project_share,
+    class: "flex flex-col gap-y-4 py-4"
+  ) do |form| %>
+    <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
+      <%= render RubyUI::FormFieldLabel.new { t("common.project_rate") } %>
+      <div class="flex items-center gap-x-2">
+        <span class="text-gray-400 text-sm"><%= @currency %></span>
+        <%= form.text_field :rate_currency,
+          value: @project_share.rate_currency,
+          class: "border-gray-200 rounded-md w-full",
+          placeholder: @project.rate_currency %>
+      </div>
+      <%= render RubyUI::FormFieldHint.new do %>
+        <%= t("common.optional_project", default: "Leave blank to use the project's default rate") %>
+      <% end %>
+    <% end %>
+
+    <% if @project_share.project_share_task_rates.any? %>
+      <div class="mt-2">
+        <span class="text-sm text-gray-600 font-medium"><%= t("common.task_rates") %></span>
+      </div>
+      <% @project_share.project_share_task_rates.each_with_index do |task_rate, index| %>
+        <%= form.fields_for :project_share_task_rates_attributes, task_rate, index: index do |task_rate_form| %>
+          <%= task_rate_form.hidden_field :id, value: task_rate.id %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
+            <%= render RubyUI::FormFieldLabel.new { task_rate.assigned_task.task.name } %>
+            <div class="flex items-center gap-x-2">
+              <span class="text-gray-400 text-sm"><%= @currency %></span>
+              <%= task_rate_form.text_field :rate_currency,
+                value: task_rate.rate_currency,
+                class: "border-gray-200 rounded-md w-full" %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <div class="flex justify-end mt-4">
+      <%= render ButtonComponent.new(variant: :primary) do %>
+        <span><%= t("common.update_rates") %></span>
+      <% end %>
+    </div>
+  <% end %>
+</div>
