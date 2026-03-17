@@ -5,6 +5,7 @@ class ProjectShare < ApplicationRecord
   belongs_to :organization
 
   has_many :project_share_task_rates, dependent: :destroy
+  accepts_nested_attributes_for :project_share_task_rates
 
   validates :organization_id, uniqueness: { scope: :project_id }
   validate :organization_is_not_project_owner
