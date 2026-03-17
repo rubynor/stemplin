@@ -62,7 +62,7 @@ module Workspace
     test "spectator should not show project" do
       sign_in users(:organization_spectator)
       get :show, params: { id: @project.id }
-      assert_redirected_to root_path
+      assert_redirected_to reports_path
     end
 
     test "should update project" do

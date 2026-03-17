@@ -41,8 +41,9 @@ class ProjectInvitationServiceTest < ActiveSupport::TestCase
     assert_equal @external_org, invitation.accepted_as_access_info.organization
 
     # Test 4: Invited user has access to the project
+    invited_user = User.find_by(email: @external_email)
     project_access = ProjectAccess.joins(:access_info)
-                                  .where(project: @project, access_infos: { organization: @external_org })
+                                  .where(project: @project, access_infos: { organization: @external_org, user: invited_user })
                                   .first
     assert project_access, "ProjectAccess should be created"
     assert_equal @external_email, project_access.user.email

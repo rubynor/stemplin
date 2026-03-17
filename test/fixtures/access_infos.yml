@@ -46,6 +46,12 @@ access_info_org1_user:
   active: true
   role: 0
 
+access_info_org2_user:
+  user: organization_user
+  organization: organization_two
+  active: false
+  role: 0
+
 access_info_org1_spectator:
   user: organization_spectator
   organization: organization_one
