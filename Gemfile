@@ -91,6 +91,9 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
   gem "rails-controller-testing"
+  gem "simplecov"
+  gem "simplecov-lcov"
+  gem "undercover"
 end
 
 gem "sentry-ruby"
@@ -123,3 +126,5 @@ gem "tailwind_merge", "~> 1.2"
 gem "wicked", "~> 2.0"
 
 gem "fast-mcp"
+
+gem "brakeman", "~> 8.0"
