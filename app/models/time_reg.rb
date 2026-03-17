@@ -77,6 +77,17 @@ class TimeReg < ApplicationRecord
     assigned_task.rate.positive? ? assigned_task.rate : project.rate
   end
 
+  def used_rate_for(organization)
+    project_share = project.project_shares.find_by(organization: organization)
+    if project_share
+      task_rate = project_share.project_share_task_rates.find_by(assigned_task: assigned_task)
+      rate = task_rate&.rate || 0
+      rate.positive? ? rate : project_share.rate
+    else
+      used_rate
+    end
+  end
+
   def total_hours
     minutes.to_f / 60
     # TODO: ensure the hours used in calculations is the same as hours displayed check `minutes_to_float`
@@ -84,6 +95,11 @@ class TimeReg < ApplicationRecord
 
   def billed_amount
     total_hours * used_rate
+  end
+
+  def billed_amount_for(organization)
+    hours = minutes / 60.0
+    hours * used_rate_for(organization)
   end
 
   protected
