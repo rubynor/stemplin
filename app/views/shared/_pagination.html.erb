@@ -1,0 +1,3 @@
+<div id="clients_pagination">
+    <%= render PaginationComponent.new(pagy: @pagy, path: workspace_projects_path) if @pagy.pages > 1 %>
+</div>

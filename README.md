@@ -1,0 +1,215 @@
+![Frame 1000003871(1)](https://github.com/user-attachments/assets/0e60c1df-c3e7-44da-99d7-f16b1ab01551)
+
+
+# Stemplin time tracking
+Stemplin is a time tracking application written in Ruby on Rails.
+
+![image](https://github.com/user-attachments/assets/7c7bd7a2-4f99-4e1f-b62a-815cc61093c4)
+
+# Self hosting
+See the self hosing guide here:
+https://github.com/rubynor/stemplin/blob/main/SELF_HOSTING.md
+
+## REST API
+
+Stemplin provides a REST API under `/api/v1/` with Bearer token authentication.
+
+### Authentication
+
+Generate an API token via the Rails console:
+
+```ruby
+user = User.find_by(email: "you@example.com")
+token = user.regenerate_api_token!
+puts token # save this — it's only shown once
+```
+
+Use the token in requests:
+
+```bash
+curl -H "Authorization: Bearer <token>" \
+     -H "X-Organization-Id: <org_id>" \
+     https://your-host/api/v1/users/me
+```
+
+The `X-Organization-Id` header is optional — if omitted, the user's default organization is used.
+
+### Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v1/users/me` | Current user info |
+| GET | `/api/v1/users` | List organization users |
+| PATCH | `/api/v1/api_token` | Regenerate API token (returns new token) |
+| GET | `/api/v1/organizations` | List organizations |
+| GET | `/api/v1/organizations/:id` | Show organization |
+| GET/POST | `/api/v1/clients` | List / create clients |
+| GET/PATCH/DELETE | `/api/v1/clients/:id` | Show / update / delete client |
+| GET/POST | `/api/v1/projects` | List / create projects |
+| GET/PATCH/DELETE | `/api/v1/projects/:id` | Show / update / delete project |
+| GET | `/api/v1/tasks` | List tasks |
+| GET | `/api/v1/tasks/:id` | Show task |
+| GET/POST | `/api/v1/time_regs` | List / create time registrations |
+| GET/PATCH/DELETE | `/api/v1/time_regs/:id` | Show / update / delete time registration |
+| PATCH | `/api/v1/time_regs/:id/timer` | Toggle timer |
+| GET | `/api/v1/reports` | Aggregated time data |
+
+Time registrations support filtering with `?date=`, `?start_date=&end_date=`, and `?project_id=` query params, plus pagination with `?page=&per_page=`.
+
+### Token security
+
+API tokens are hashed with SHA-256 before storage. The plaintext token is only returned once at creation/regeneration time. Treat it like a password.
+
+# Contributing
+See the contribution guidelines in:
+
+https://github.com/rubynor/stemplin/blob/main/CONTRIBUTING.md
+
+## Setting Up Locally
+### Installing the project
+
+Install the project's dependencies by running:
+
+```shell
+cp .env.sample .env
+bin/setup
+yarn install
+```
+
+Populate the database from fixtures:
+
+```shell
+rails db:fixtures:load
+```
+
+### Redis
+Hotwire will not work without Redis. If it is not running, start it with:
+
+```shell
+redis-server --daemonize yes
+```
+
+### Run the project
+Finally, you can run your project locally with:
+
+```shell
+bin/dev
+```
+
+Open your browser and visit <http://localhost:3000>, your project should be running!
+
+
+## Lint
+
+Run linter with:
+
+```shell
+bin/rubocop
+```
+Or run autocorrection with:
+
+```shell
+bin/rubocop -a
+```
+
+## Authorization
+This project uses [ActionPolicy](https://github.com/palkan/action_policy) for authorization.
+
+### Rules
+1. ALWAYS use `authorized_scope` when querying the database, to prevent data leakage.
+
+2. Use `authorize!` in EVERY SINGLE controller action, and create a policy for EVERY SINGLE controller action.
+
+### Action Policy concepts
+#### Policies
+Policies are used to limit a `current_user`'s access to controller methods.
+Policies are defined like so:
+
+- `user` holds the value of `current_user`
+
+- `record` holds the value of whatever is passed in to the `authorize!` method.
+If nothing is passed, `record` will hold the model class, that is based on the controller name.
+In this case that class is `Client`
+```ruby
+# app/policies/time_reg_policy.rb
+
+class TimeRegPolicy < ApplicationPolicy
+  def index?
+    # Allows all users to access the index action
+    true
+  end
+end
+```
+```ruby
+# app/policies/client_policy.rb
+
+class ClientPolicy < ApplicationPolicy
+  def index?
+    # As the index action fetches an entire collection, `record` is not relevant
+    # This allows organization_admins to access the action
+    user.organization_admin?
+  end
+
+  def create?
+    # Allows organization_admins in the Client's organization access to the action
+    user.organization_admin? && user.current_organization == record.oragnization
+  end
+end
+```
+#### Scopes
+Scopes are used to scope out records that the `current_user` can access in a collection.
+Define a scope like so:
+```ruby
+# app/policies/time_reg_policy.rb
+
+class TimeRegPolicy < ApplicationPolicy
+  scope_for :relation, :own do |relation|
+    # Scopes out the user's own TimeRegs
+    relation.joins(:organization, :user).where(organizations: user.current_organization, user: user).distinct
+  end
+end
+```
+```ruby
+# app/policies/client_policy.rb
+
+class ClientPolicy < ApplicationPolicy
+  scope_for :relation do |relation|
+    # Scopes out Clients accessible for organization_admin
+    if user.organization_admin?
+      relation.joins(:organization).where(organizations: user.current_organization).distinct
+    else
+      relation.none
+    end
+  end
+end
+```
+#### Example usage of policies and scopes
+
+```ruby
+# app/controllers/clients_controller.rb
+
+class ClientsController < ApplicationController
+  def index
+    # Where the controller fetches an entire collection, 
+    # use the `authorize!` method without passing in a record (implicitly)
+    authorize!
+    @clients = authorized_scope(Client, type: :relation).all
+  end
+
+  def show
+    @client = authorized_scope(Client, type: :relation).find(params[:id])
+    # Where the controller fetches a single record,
+    # use the `authorize!` method passing in a record (explicitly)
+    authorize! @client
+  end
+
+  def create
+    # Use `authorized_scope` when initializing a record
+    @client = authorized_scope(Client, type: :relation).new(client_params)
+    # Use `authorize!` before saving a record
+    authorize! @clinet
+
+    @client.save!
+  end
+end
+```

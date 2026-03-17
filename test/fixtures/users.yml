@@ -1,0 +1,59 @@
+DEFAULTS: &DEFAULTS
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  invitation_accepted_at: "2025-06-17"
+
+
+joe:
+  email: joe@example.com
+  first_name: Joe
+  last_name: Doe
+  <<: *DEFAULTS
+
+ron:
+  email: ron@example.com
+  first_name: Ron
+  last_name: Done
+  <<: *DEFAULTS
+
+organization_admin:
+  email: organization_admin@example.com
+  first_name: organization
+  last_name: admin
+  <<: *DEFAULTS
+
+organization_user:
+  email: organization_user@example.com
+  first_name: organization
+  last_name: user
+  <<: *DEFAULTS
+
+organization_spectator:
+  email: organization_spectator@example.com
+  first_name: organization
+  last_name: spectator
+  <<: *DEFAULTS
+
+org_admin_without_org:
+  email: org_admin_without_org@example.com
+  first_name: org_admin_without_org
+  last_name: admin
+  <<: *DEFAULTS
+
+user_wo_access_info:
+  email: user_wo_access_info@example.com
+  first_name: user
+  last_name: without access info
+  <<: *DEFAULTS
+
+one:
+  email: one@example.com
+  first_name: One
+  last_name: User
+  <<: *DEFAULTS
+
+pending_invitation_user:
+  email: pending_invitation@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  invitation_token: pending_test_token
+  invitation_created_at: <%= 1.day.ago %>
+  invitation_sent_at: <%= 1.day.ago %>

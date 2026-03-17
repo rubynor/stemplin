@@ -1,0 +1,22 @@
+class Organization < ApplicationRecord
+  has_many :clients
+  has_many :tasks
+  has_many :access_infos
+  has_many :users, through: :access_infos
+  has_many :assigned_tasks, through: :tasks
+  has_many :projects, through: :clients
+  has_many :time_regs, through: :users
+  has_many :project_shares, dependent: :destroy
+  has_many :shared_projects, through: :project_shares, source: :project
+
+  validates :name, presence: true, uniqueness: true
+  validate :currency_exists
+
+  def has_accessible_projects?
+    projects.any? || shared_projects.any?
+  end
+
+  def currency_exists
+    errors.add(:currency, "is not a valid currency") unless Stemplin.config.currencies.keys.include?(self.currency&.to_sym)
+  end
+end

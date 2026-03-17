@@ -1,0 +1,29 @@
+<% content_for :title, t("common.organization_settings") %>
+
+<div class="flex flex-col gap-y-8">
+  <div class="flex flex-row justify-between items-center border-b border-gray-100 py-3">
+    <div class="flex flex-row items-center gap-x-2">
+      <span class="font-medium text-gray-600 text-lg"><%= t("common.organization_settings") %></span>
+    </div>
+    <div class="flex flex-row gap-2">
+      <%= render ButtonComponent.new(path: edit_workspace_settings_path, method: :get) do %>
+        <span class="hidden lg:block mr-2"><%= t("common.edit") %></span>
+        <i class="uc-icon text-xl">&#xe972;</i>
+      <% end %>
+    </div>
+  </div>
+  <div>
+    <%= render RubyUI::Table.new do %>
+      <%= render RubyUI::TableBody.new(id: :organization_users, class: "text-base") do %>
+        <%= render RubyUI::TableRow.new do %>
+          <%= render RubyUI::TableCell.new(class: "py-4 font-medium") { t("common.currency") } %>
+          <%= render RubyUI::TableCell.new(class: "py-4") { currency_title_and_code @organization.currency } %>
+        <% end %>
+        <%= render RubyUI::TableRow.new do %>
+          <%= render RubyUI::TableCell.new(class: "py-4 font-medium") { t("organizations.advanced_time_copying") } %>
+          <%= render RubyUI::TableCell.new(class: "py-4") { @organization.advanced_time_copying ? t("common.enabled") : t("common.disabled") } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
