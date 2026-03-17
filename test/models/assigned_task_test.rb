@@ -45,4 +45,23 @@ class AssignedTaskTest < ActiveSupport::TestCase
     assert_equal last_assigned_task.project, @project
     assert_equal last_assigned_task.task, @task
   end
+
+  test "should migrate ProjectShareTaskRate records to new assigned task when rate changes" do
+    assigned_task = assigned_task(:task_1)
+    project_share_task_rate = project_share_task_rates(:task_rate_one)
+
+    assert_equal assigned_task, project_share_task_rate.assigned_task
+
+    # update rate to trigger archiving
+    assert_difference("AssignedTask.count") do
+      assigned_task.update!(rate: 500)
+    end
+
+    new_assigned_task = AssignedTask.where(project: assigned_task.project, task: assigned_task.task).active_task.first
+
+    # ProjectShareTaskRate should now point to the new assigned task
+    project_share_task_rate.reload
+    assert_equal new_assigned_task, project_share_task_rate.assigned_task
+    assert_not_equal assigned_task, project_share_task_rate.assigned_task
+  end
 end
