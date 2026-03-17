@@ -30,10 +30,13 @@ module Workspace
     def show
       authorize! @project
 
-      @shared_project = @project.project_shares.exists?(organization: current_user.current_organization)
-      @project_share = @project.project_shares
-        .includes(project_share_task_rates: { assigned_task: :task })
-        .find_by(organization: current_user.current_organization)
+      @shared_project = @project.shared_with?(current_user.current_organization)
+      @project_share = @project.project_share_for(current_user.current_organization)
+
+      if @shared_project && @project_share
+        @project_share = ProjectShare.includes(project_share_task_rates: { assigned_task: :task })
+                                     .find(@project_share.id)
+      end
 
       unless @shared_project
         @guest_organizations = @project.project_shares.includes(:organization)

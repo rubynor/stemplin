@@ -93,12 +93,6 @@ module Workspace
 
     # --- Shared project tests (guest org admin) ---
 
-    # Helper to switch a user's active context to a given organization
-    def switch_org_context!(user, organization)
-      user.access_infos.update_all(active: false)
-      user.access_infos.find_by(organization: organization).update!(active: true)
-    end
-
     test "org_two admin can access show for a shared project" do
       shared_project = projects(:project_1)
       switch_org_context!(@organization_admin, organizations(:organization_two))

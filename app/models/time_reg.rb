@@ -78,14 +78,8 @@ class TimeReg < ApplicationRecord
   end
 
   def used_rate_for(organization)
-    project_share = project.project_shares.find_by(organization: organization)
-    if project_share
-      task_rate = project_share.project_share_task_rates.find_by(assigned_task: assigned_task)
-      rate = task_rate&.rate || 0
-      rate.positive? ? rate : project_share.rate
-    else
-      used_rate
-    end
+    project_share = project.project_share_for(organization)
+    project_share ? project_share.rate_for_task(assigned_task) : used_rate
   end
 
   def total_hours

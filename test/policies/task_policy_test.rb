@@ -24,12 +24,6 @@ class TaskPolicyTest < ActiveSupport::TestCase
     policy.apply_scope(Task.all, type: :relation)
   end
 
-  # Helper to switch a user's active context to a given organization
-  def switch_org_context!(user, organization)
-    user.access_infos.update_all(active: false)
-    user.access_infos.find_by(organization: organization).update!(active: true)
-  end
-
   # --- Scope: org_two admin sees tasks assigned to shared projects ---
 
   test "scope: org_two admin sees tasks assigned to shared projects (org_one's tasks)" do

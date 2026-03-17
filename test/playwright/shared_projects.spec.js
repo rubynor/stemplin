@@ -242,7 +242,7 @@ test.describe("Rate management (User 2 - guest org admin)", () => {
         params.append("authenticity_token", token);
 
         const res = await fetch(
-          "/workspace/projects/1/project_shares/1/update_rates",
+          "/workspace/projects/1/project_shares/1",
           {
             method: "POST",
             headers: {

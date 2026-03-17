@@ -15,12 +15,6 @@ module Workspace
       @org_two = organizations(:organization_two)
     end
 
-    # Helper to switch a user's active context to a given organization
-    def switch_org_context!(user, organization)
-      user.access_infos.update_all(active: false)
-      user.access_infos.find_by(organization: organization).update!(active: true)
-    end
-
     # --- create ---
 
     test "create as org_two admin creates a task rate on the project share" do

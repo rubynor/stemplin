@@ -10,6 +10,12 @@ class ProjectShare < ApplicationRecord
   validates :organization_id, uniqueness: { scope: :project_id }
   validate :organization_is_not_project_owner
 
+  def rate_for_task(assigned_task)
+    task_rate = project_share_task_rates.find_by(assigned_task: assigned_task)
+    rate = task_rate&.rate || 0
+    rate.positive? ? rate : self.rate
+  end
+
   private
 
   def organization_is_not_project_owner

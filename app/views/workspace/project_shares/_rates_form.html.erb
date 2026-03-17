@@ -3,7 +3,7 @@
     <span class="text-base text-gray-600 font-medium uppercase"><%= t("common.rates_per_hour") %></span>
   </div>
   <%= form_with(
-    url: update_rates_workspace_project_project_share_path(@project, @project_share),
+    url: workspace_project_project_share_path(@project, @project_share),
     method: :patch,
     scope: :project_share,
     class: "flex flex-col gap-y-4 py-4"

@@ -12,7 +12,7 @@ module Workspace
 
     def show?
       return true if user.organization_admin? && record.organization == user.current_organization
-      return true if user.organization_admin? && record.project_shares.exists?(organization: user.current_organization)
+      return true if user.organization_admin? && record.shared_with?(user.current_organization)
       false
     end
 

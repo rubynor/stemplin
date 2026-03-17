@@ -15,12 +15,6 @@ class Workspace::ProjectShareTaskRatePolicyTest < ActiveSupport::TestCase
     Workspace::ProjectShareTaskRatePolicy.new(record, user: user)
   end
 
-  # Helper to switch a user's active context to a given organization
-  def switch_org_context!(user, organization)
-    user.access_infos.update_all(active: false)
-    user.access_infos.find_by(organization: organization).update!(active: true)
-  end
-
   # --- create? ---
 
   test "create? allowed for org_two admin (guest org)" do

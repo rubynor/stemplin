@@ -9,7 +9,7 @@ module Workspace
       authorize! @task_rate
 
       if @task_rate.save
-        redirect_to workspace_project_path(@project), notice: t("notice.rates_updated")
+        redirect_to workspace_project_path(@project), notice: t("notice.project_share_rates_updated")
       else
         redirect_to workspace_project_path(@project), alert: t("alert.unable_to_proceed")
       end
@@ -19,7 +19,7 @@ module Workspace
       authorize! @task_rate
 
       if @task_rate.update(task_rate_params)
-        redirect_to workspace_project_path(@project), notice: t("notice.rates_updated")
+        redirect_to workspace_project_path(@project), notice: t("notice.project_share_rates_updated")
       else
         redirect_to workspace_project_path(@project), alert: t("alert.unable_to_proceed")
       end

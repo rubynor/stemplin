@@ -89,7 +89,11 @@
       <% end %>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
         <span class="font-regular"><%= t("common.rate")%></span>
-        <span class="font-semibold"><%= @currency %> <%= @project.rate_currency %></span>
+        <% if @shared_project && @project_share %>
+          <span class="font-semibold"><%= @currency %> <%= @project_share.rate_currency %></span>
+        <% else %>
+          <span class="font-semibold"><%= @currency %> <%= @project.rate_currency %></span>
+        <% end %>
       </div>
       <div class="text-sm text-gray-600 flex justify-between items-center w-full py-4">
         <span class="font-regular"><%= t("common.billing_status")%></span>

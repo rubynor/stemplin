@@ -14,12 +14,6 @@ module Workspace
       @org_two = organizations(:organization_two)
     end
 
-    # Helper to switch a user's active context to a given organization
-    def switch_org_context!(user, organization)
-      user.access_infos.update_all(active: false)
-      user.access_infos.find_by(organization: organization).update!(active: true)
-    end
-
     # --- index ---
 
     test "index as org_one admin lists guest orgs for the project" do
@@ -39,14 +33,14 @@ module Workspace
       end
     end
 
-    # --- update_rates ---
+    # --- update ---
 
-    test "update_rates as org_two admin updates project_share rate and task rates" do
+    test "update as org_two admin updates project_share rate and task rates" do
       switch_org_context!(@organization_admin, @org_two)
       sign_in @organization_admin
       task_rate = project_share_task_rates(:task_rate_one)
 
-      patch :update_rates, params: {
+      patch :update, params: {
         project_id: @project.id,
         id: @project_share.id,
         project_share: {
@@ -62,8 +56,8 @@ module Workspace
       assert_equal 300, task_rate.reload.rate
     end
 
-    test "update_rates as org_one admin denied" do
-      patch :update_rates, params: {
+    test "update as org_one admin denied" do
+      patch :update, params: {
         project_id: @project.id,
         id: @project_share.id,
         project_share: { rate_currency: "5.00" }
@@ -73,10 +67,10 @@ module Workspace
       assert_redirected_to root_path
     end
 
-    test "update_rates calls authorize!" do
+    test "update calls authorize!" do
       switch_org_context!(@organization_admin, @org_two)
       assert_authorized_to(:update?, @project_share, with: Workspace::ProjectSharePolicy) do
-        patch :update_rates, params: {
+        patch :update, params: {
           project_id: @project.id,
           id: @project_share.id,
           project_share: { rate_currency: "5.00" }

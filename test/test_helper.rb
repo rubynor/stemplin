@@ -31,7 +31,11 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
-  # Add more helper methods to be used by all tests here...
+  # Switch a user's active organization context for cross-org testing
+  def switch_org_context!(user, organization)
+    user.access_infos.update_all(active: false)
+    user.access_infos.find_by(organization: organization).update!(active: true)
+  end
 end
 
 

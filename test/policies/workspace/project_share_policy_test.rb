@@ -14,12 +14,6 @@ class Workspace::ProjectSharePolicyTest < ActiveSupport::TestCase
     Workspace::ProjectSharePolicy.new(record, user: user)
   end
 
-  # Helper to switch a user's active context to a given organization
-  def switch_org_context!(user, organization)
-    user.access_infos.update_all(active: false)
-    user.access_infos.find_by(organization: organization).update!(active: true)
-  end
-
   # --- show? ---
 
   test "show? allowed for org_one admin (project owner)" do

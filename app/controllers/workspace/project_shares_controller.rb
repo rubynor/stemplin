@@ -1,7 +1,7 @@
 module Workspace
   class ProjectSharesController < WorkspaceController
     before_action :set_project
-    before_action :set_project_share, only: %i[update_rates destroy]
+    before_action :set_project_share, only: %i[update destroy]
 
     def index
       authorize! ProjectShare
@@ -10,8 +10,8 @@ module Workspace
         .includes(:organization)
     end
 
-    def update_rates
-      authorize! @project_share, to: :update?
+    def update
+      authorize! @project_share
       if @project_share.update(project_share_params)
         redirect_to workspace_project_path(@project), notice: t("notice.project_share_rates_updated")
       else
@@ -48,7 +48,7 @@ module Workspace
     end
 
     def owner_org?
-      @project.organization == current_user.current_organization
+      @project.owning_organization == current_user.current_organization
     end
   end
 end

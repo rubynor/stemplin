@@ -21,12 +21,6 @@ class Workspace::ProjectPolicyTest < ActiveSupport::TestCase
     policy.apply_scope(Project.all, type: :relation)
   end
 
-  # Helper to switch a user's active context to a given organization
-  def switch_org_context!(user, organization)
-    user.access_infos.update_all(active: false)
-    user.access_infos.find_by(organization: organization).update!(active: true)
-  end
-
   # --- Scope tests ---
 
   test "scope: org_one admin sees all org_one projects" do

@@ -206,12 +206,6 @@ class TimeRegsControllerTest < ActionController::TestCase
       assert_includes project_names, @shared_project.name
     end
 
-    private
-
-    def switch_org_context!(user, organization)
-      user.access_infos.update_all(active: false)
-      user.access_infos.find_by(organization: organization).update!(active: true)
-    end
   end
 
   class SharedProjectAdmin < TimeRegsControllerTest
@@ -253,11 +247,5 @@ class TimeRegsControllerTest < ActionController::TestCase
       end
     end
 
-    private
-
-    def switch_org_context!(user, organization)
-      user.access_infos.update_all(active: false)
-      user.access_infos.find_by(organization: organization).update!(active: true)
-    end
   end
 end

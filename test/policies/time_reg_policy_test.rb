@@ -22,12 +22,6 @@ class TimeRegPolicyTest < ActiveSupport::TestCase
     policy.apply_scope(TimeReg.all, type: :relation)
   end
 
-  # Helper to switch a user's active context to a given organization
-  def switch_org_context!(user, organization)
-    user.access_infos.update_all(active: false)
-    user.access_infos.find_by(organization: organization).update!(active: true)
-  end
-
   # --- create? ---
 
   test "create? org_two member can create their own time_reg on shared project" do

@@ -12,6 +12,10 @@ class Organization < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validate :currency_exists
 
+  def has_accessible_projects?
+    projects.any? || shared_projects.any?
+  end
+
   def currency_exists
     errors.add(:currency, "is not a valid currency") unless Stemplin.config.currencies.keys.include?(self.currency&.to_sym)
   end
