@@ -5,7 +5,7 @@ class CreateTimeRegTool < ApplicationTool
     required(:assigned_task_id).filled(:integer).description("Assigned task ID")
     required(:minutes).filled(:integer).description("Minutes worked (0-1440)")
     required(:date_worked).filled(:string).description("Date worked (YYYY-MM-DD)")
-    optional(:notes).filled(:string).description("Notes about the work done (max 255 characters)")
+    optional(:notes).filled(:string).description("Notes about the work done (max 10000 characters)")
     optional(:organization_id).filled(:integer).description("Organization ID (uses default if not provided)")
   end
 

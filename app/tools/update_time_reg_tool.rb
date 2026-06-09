@@ -4,7 +4,7 @@ class UpdateTimeRegTool < ApplicationTool
   arguments do
     required(:id).filled(:integer).description("Time registration ID")
     optional(:minutes).filled(:integer).description("Minutes worked (0-1440)")
-    optional(:notes).filled(:string).description("Notes about the work done (max 255 characters)")
+    optional(:notes).filled(:string).description("Notes about the work done (max 10000 characters)")
     optional(:date_worked).filled(:string).description("Date worked (YYYY-MM-DD)")
     optional(:assigned_task_id).filled(:integer).description("Assigned task ID")
     optional(:organization_id).filled(:integer).description("Organization ID (uses default if not provided)")

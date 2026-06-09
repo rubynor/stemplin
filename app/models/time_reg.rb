@@ -15,7 +15,7 @@ class TimeReg < ApplicationRecord
 
   before_validation :start, if: -> { minutes.zero? && date_worked == Date.today }, on: :create
 
-  validates :notes, length: { maximum: 255 }
+  validates :notes, length: { maximum: 10000 }
   validates :minutes, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1440 }
   validates :date_worked, presence: true
 
