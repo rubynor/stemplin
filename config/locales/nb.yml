@@ -383,6 +383,16 @@ nb:
     cannot_be_undone: "Denne handlingen kan ikke bli tatt tilbake."
 
 
+  api_token:
+    title: "API-token"
+    usage_hint: "Bruk tokenet som «Authorization: Bearer <token>» mot API-et på /api/v1/."
+    status_present: "Det finnes et API-token for kontoen din."
+    status_absent: "Det er ikke generert noe API-token ennå."
+    generate: "Generer API-token"
+    regenerate: "Generer nytt API-token"
+    regenerate_confirm: "Er du sikker? Det gamle API-tokenet slutter å virke umiddelbart."
+    one_time_notice: "Lagre dette tokenet nå — det vises ikke igjen."
+
   registration:
     first_name: "Fornavn"
     last_name: "Etternavn"
