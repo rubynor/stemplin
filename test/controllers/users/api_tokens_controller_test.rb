@@ -17,7 +17,8 @@ class Users::ApiTokensControllerTest < ActionController::TestCase
 
     post :create
 
-    assert_response :unprocessable_entity
+    assert_response :ok
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
     token = assigns(:api_token)
     assert token.present?
     assert_equal 1, response.body.scan(token).count
