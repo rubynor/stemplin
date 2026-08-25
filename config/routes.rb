@@ -11,6 +11,10 @@ Rails.application.routes.draw do
     root to: "time_regs#index", as: :authenticated_root
   end
 
+  namespace :users do
+    resource :api_token, only: :create
+  end
+
   root to: redirect("users/sign_in")
 
   get "privacy-policy", to: "privacy_policy#index", as: :privacy_policy
