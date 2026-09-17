@@ -35,11 +35,11 @@
               <%= render DropdownComponentTrigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
                 <i class="uc-icon text-sm text-gray-500">&#xe88a;</i>
                 <span class="text-gray-500 text-sm"><%= t('common.clients') %></span>
-                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { filter.client_ids.blank? ? form_data.selectable_clients.count : filter.client_ids.count } %>
+                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1", data: { "checkbox-badge": "client_ids" }) { filter.client_ids.blank? ? form_data.selectable_clients.count : filter.client_ids.count } %>
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
               <%= render DropdownComponentContent.new do %>
-                <div class="flex flex-col text-sm w-max" data-controller="checkbox">
+                <div class="flex flex-col text-sm w-max" data-controller="checkbox" data-checkbox-badge-value="client_ids">
                   <%= single_filter_check_box(form, "all_client_ids", "All", false, { data: { "checkbox-target": "checkboxAll", action: "change->checkbox#toggleAll" }}) %>
                   <%= form.collection_check_boxes :client_ids, form_data.selectable_clients, :id, :name, include_hidden: false do |cb| %>
                     <%# TODO: Move these logics & calculations to a presenter %>
@@ -54,11 +54,11 @@
               <%= render DropdownComponentTrigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
                 <i class="uc-icon text-sm text-gray-500">&#xe824;</i>
                 <span class="text-gray-500 text-sm"><%= t('common.projects') %></span>
-                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { filter.project_ids.blank? ? form_data.selectable_projects.count : filter.project_ids.count } %>
+                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1", data: { "checkbox-badge": "project_ids" }) { filter.project_ids.blank? ? form_data.selectable_projects.count : filter.project_ids.count } %>
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
               <%= render DropdownComponentContent.new do %>
-                <div class="flex flex-col text-sm w-max" data-controller="checkbox">
+                <div class="flex flex-col text-sm w-max" data-controller="checkbox" data-checkbox-badge-value="project_ids">
                   <%= single_filter_check_box(form, "all_project_ids", "All", false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
                   <%= form.collection_check_boxes :project_ids, form_data.selectable_projects, :id, :name, include_hidden: false do |cb| %>
                     <%= filter_check_box(cb, filter.project_ids&.include?(cb.value.to_s) || filter.project_ids.blank?, { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
@@ -72,11 +72,11 @@
               <%= render DropdownComponentTrigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
                 <i class="uc-icon text-sm text-gray-500">&#xe8f2;</i>
                 <span class="text-gray-500 text-sm"><%= t('common.tasks') %></span>
-                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { filter.task_ids.blank? ? form_data.selectable_tasks.count : filter.task_ids.count } %>
+                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1", data: { "checkbox-badge": "task_ids" }) { filter.task_ids.blank? ? form_data.selectable_tasks.count : filter.task_ids.count } %>
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
               <%= render DropdownComponentContent.new do %>
-                <div class="flex flex-col text-sm w-max" data-controller="checkbox">
+                <div class="flex flex-col text-sm w-max" data-controller="checkbox" data-checkbox-badge-value="task_ids">
                   <%= single_filter_check_box(form, "all_task_ids", "All", false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
                   <%= form.collection_check_boxes :task_ids, form_data.selectable_tasks, :id, :name, include_hidden: false do |cb| %>
                     <%= filter_check_box(cb, filter.task_ids&.include?(cb.value.to_s) || filter.task_ids.blank?, { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
@@ -90,11 +90,11 @@
               <%= render DropdownComponentTrigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-4 py-2 flex items-center gap-x-1") do %>
                 <i class="uc-icon text-sm text-gray-500">&#xebb3;</i>
                 <span class="text-gray-500 text-sm"><%= t('common.team') %></span>
-                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1") { filter.user_ids.blank? ? form_data.selectable_users.count : filter.user_ids.count } %>
+                <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full flex gap-x-1", data: { "checkbox-badge": "user_ids" }) { filter.user_ids.blank? ? form_data.selectable_users.count : filter.user_ids.count } %>
                 <i class="uc-icon text-lg text-gray-600 ml-2">&#xe81d;</i>
               <% end %>
               <%= render DropdownComponentContent.new do %>
-                <div class="flex flex-col text-sm w-max" data-controller="checkbox">
+                <div class="flex flex-col text-sm w-max" data-controller="checkbox" data-checkbox-badge-value="user_ids">
                   <%= single_filter_check_box(form, "all_user_ids", "All", false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
                   <%= form.collection_check_boxes :user_ids, form_data.selectable_users, :id, :name, include_hidden: false do |cb| %>
                     <%= filter_check_box(cb, filter.user_ids&.include?(cb.value.to_s) || filter.user_ids.blank?, { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
