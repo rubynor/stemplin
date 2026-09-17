@@ -7,6 +7,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   driven_by :selenium, using: ENV["HEADFUL"].present? ? :chrome : :headless_chrome, screen_size: [ 1400, 1400 ]
 
+  # CI runners are slower than a laptop; the default 2 seconds makes
+  # Turbo navigations look like failures.
+  Capybara.default_max_wait_time = 5
+
   # Linux distributions ship Chromium rather than Chrome. Selenium looks for
   # Chrome by default, so point it at whatever browser is actually installed.
   if (browser = ENV["CHROME_BIN"] || %w[/usr/bin/chromium /usr/bin/chromium-browser].find { |path| File.executable?(path) })
