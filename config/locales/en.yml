@@ -365,6 +365,16 @@ en:
     cannot_be_undone: "This action cannot be undone."
 
 
+  api_token:
+    title: "API token"
+    usage_hint: "Use the token as \"Authorization: Bearer <token>\" against the API at /api/v1/."
+    status_present: "An API token exists for your account."
+    status_absent: "No API token has been generated yet."
+    generate: "Generate API token"
+    regenerate: "Regenerate API token"
+    regenerate_confirm: "Are you sure? Your old API token will stop working immediately."
+    one_time_notice: "Save this token now — it will not be shown again."
+
   registration:
     first_name: "First name"
     last_name: "Last name"

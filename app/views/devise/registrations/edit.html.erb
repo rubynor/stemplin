@@ -45,6 +45,9 @@
         <%= link_to t('registration.cancel_account'), registration_path(resource_name), class: "text-red-600 hover:underline", data: { turbo_method: :delete, turbo_confirm: t('notice.are_you_sure') }  %>
       </div>
     <% end %>
+
+    <%= render "users/api_tokens/section", user: resource, api_token: @api_token %>
+
     <%= link_to t("common.back"), root_path, class: "mt-3 underline hover:text-primary" %>
   </div>
 </div>
