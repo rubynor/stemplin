@@ -1,4 +1,4 @@
-FROM ruby:3.2.2
+FROM ruby:4.0.7
 
 # Install Node.js 21.5.0
 ENV NODE_VERSION=21.5.0

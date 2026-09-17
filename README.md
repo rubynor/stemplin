@@ -66,6 +66,18 @@ See the contribution guidelines in:
 https://github.com/rubynor/stemplin/blob/main/CONTRIBUTING.md
 
 ## Setting Up Locally
+### Ruby, Node and Yarn versions
+
+The versions this project expects are pinned in `.tool-versions` (Ruby 4.0.7, Node 21.5.0,
+Yarn 1.22.19). With [mise](https://mise.jdx.dev) installed, get all three with:
+
+```shell
+mise install
+```
+
+`asdf` reads the same file if you prefer it. Ruby 4.0 is unlikely to be your system Ruby, so
+using a version manager is recommended.
+
 ### Installing the project
 
 Install the project's dependencies by running:
