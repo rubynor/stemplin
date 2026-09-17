@@ -42,6 +42,67 @@ jobs:
         run: bin/rails db:schema:load
       - name: Run tests
         run: bin/rails test
+      # Boots the app the way production does: eager loading every file with the
+      # production initializers. Catches load errors that the test environment,
+      # which is configured differently, never sees.
+      - name: Boot check in production mode
+        env:
+          RAILS_ENV: production
+          SECRET_KEY_BASE: ci_dummy_secret
+          HTTP_HOST: example.com
+        run: bin/rails zeitwerk:check
+
+  system_test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11-alpine
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: rails_test
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: password
+      redis:
+        image: redis
+        ports:
+          - "6379:6379"
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+      REDIS_URL: "redis://localhost:6379/0"
+    strategy:
+      matrix:
+        node: ['21.5.x']
+        ruby: ['4.0.7']
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Precompile assets
+        run: bin/rake assets:precompile
+      - name: Set up database schema
+        run: bin/rails db:schema:load
+      # `bin/rails test` skips test/system, so the browser tests need their own
+      # run. Chrome ships with the runner image and Selenium Manager fetches the
+      # matching driver.
+      - name: Run system tests
+        run: bin/rails test:system
+      - name: Upload failure screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system-test-screenshots
+          path: tmp/screenshots
+          if-no-files-found: ignore
 
   lint:
     runs-on: ubuntu-latest

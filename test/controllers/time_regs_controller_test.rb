@@ -164,4 +164,48 @@ class TimeRegsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  class Export < TimeRegsControllerTest
+    setup do
+      @admin = users(:organization_admin)
+      @project = @admin.current_organization.projects.first
+      sign_in @admin
+    end
+
+    test "should export the project's time regs as csv" do
+      time_reg = @project.time_regs.first
+      assert_not_nil time_reg, "fixture project is expected to have time registrations"
+
+      get :export, params: { project_id: @project.id }
+
+      assert_response :success
+      assert_match(/\.csv"?$/, response.headers["Content-Disposition"].to_s.split("filename=").last.to_s.delete('"'))
+
+      rows = CSV.parse(response.body)
+      assert_equal [ "date", "client", "project", "task", "notes", "minutes", "first name", "last name", "email" ], rows.first
+      assert_equal @project.time_regs.count, rows.size - 1
+
+      exported = rows[1..].find { |row| row[4] == time_reg.notes }
+      assert_not_nil exported, "expected the time registration to be part of the export"
+      assert_equal @project.client.name, exported[1]
+      assert_equal @project.name, exported[2]
+      assert_equal time_reg.user.email, exported[8]
+    end
+
+    test "should not export a project belonging to another organization" do
+      sign_in users(:ron) # active in organization_two, the project is in organization_one
+
+      assert_raises(ActiveRecord::RecordNotFound) do
+        get :export, params: { project_id: @project.id }
+      end
+    end
+
+    test "spectators are not allowed to export" do
+      sign_in users(:organization_spectator)
+
+      get :export, params: { project_id: @project.id }
+
+      assert_redirected_to reports_path
+    end
+  end
 end
