@@ -1,12 +1,12 @@
 class TimeRegPolicy < ApplicationPolicy
-  %i[ show edit update destroy toggle_active export ].each do |action|
+  %i[ show edit update destroy toggle_active ].each do |action|
     define_method("#{action}?") do
       is_admin_allowed = user.organization_admin? && record.organization == user.current_organization
       user == record.user || is_admin_allowed
     end
   end
 
-  %i[ index new_modal edit_modal update_tasks_select ].each do |action|
+  %i[ index new_modal edit_modal update_tasks_select export ].each do |action|
     define_method("#{action}?") do
       !user.access_info.organization_spectator?
     end

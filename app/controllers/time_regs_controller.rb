@@ -93,6 +93,7 @@ class TimeRegsController < ApplicationController
 
   # exports the time_regs in a project to a .CSV
   def export
+    authorize!
     project = authorized_scope(Project, type: :relation).find(params[:project_id])
     client = project.client
     time_regs = project.time_regs.includes(
