@@ -3,9 +3,8 @@ require_relative "../config/environment"
 require "rails/test_help"
 require "rails-controller-testing"
 require "action_policy/test_helper"
-require "sidekiq/testing"
 
-Sidekiq::Testing.fake!
+Sidekiq.testing!(:fake)
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers

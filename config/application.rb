@@ -13,7 +13,7 @@ module Stemplin
     config.autoload_paths << "#{root}/app/views/layouts"
     config.autoload_paths << "#{root}/app/views/components"
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
     config.i18n.available_locales = [ :en, :nb ]
     config.active_job.queue_adapter = :sidekiq
 

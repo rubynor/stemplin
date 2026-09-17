@@ -36,7 +36,7 @@ bin/rubocop -a    # Auto-fix linting issues
 
 ## Architecture Overview
 
-**Tech Stack:** Ruby on Rails 7.1, PostgreSQL, Hotwire (Turbo + Stimulus), Tailwind CSS, Phlex components, Sidekiq with Redis
+**Tech Stack:** Ruby 4.0 on Rails 8.1, PostgreSQL, Hotwire (Turbo + Stimulus), Tailwind CSS, Phlex components, Sidekiq with Redis
 
 **Multi-tenant Architecture:** Organization-based data isolation with role-based access control (admin, member, spectator)
 

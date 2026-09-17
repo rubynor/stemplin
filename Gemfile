@@ -1,14 +1,14 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby ">= 3.2.2"
+ruby ">= 4.0.0"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.1", ">= 7.0.4.2"
+gem "rails", "~> 8.1", ">= 8.1.3.1"
 
 # User authentication
 # In production, :host should be set to the actual host of your application. !!
-gem "devise"
+gem "devise", "~> 5.0"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -35,9 +35,13 @@ gem "cssbundling-rails"
 gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-gem "redis", "~> 4.0"
+gem "redis", "~> 5.4"
 
 gem "activerecord-import"
+
+# CSV and OStruct were removed from the Ruby standard library in Ruby 4.0
+gem "csv"
+gem "ostruct"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -89,7 +93,6 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
-  gem "webdrivers"
   gem "rails-controller-testing"
 end
 
@@ -100,7 +103,7 @@ gem "dotenv-rails", "~> 2.1", ">= 2.1.1"
 
 gem "strong_migrations"
 
-gem "pagy"
+gem "pagy", "~> 8.4"
 
 gem "discard"
 
@@ -108,9 +111,9 @@ gem "sendgrid-ruby"
 
 gem "invisible_captcha"
 
-gem "devise_invitable", "~> 2.0.9"
+gem "devise_invitable", "~> 2.0", ">= 2.0.12"
 
-gem "sidekiq", "~> 7.3"
+gem "sidekiq", "~> 8.1"
 
 gem "sidekiq-scheduler"
 

@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         node: ['21.5.x']
-        ruby: ['3.2.2']
+        ruby: ['4.0.7']
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: ['3.2.2']
+        ruby: ['4.0.7']
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
