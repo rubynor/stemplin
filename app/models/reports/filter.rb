@@ -32,8 +32,6 @@ module Reports
       user_ids: :by_users
     }
 
-    DEFAULT_DATE = Date.today
-
     attribute :start_date, :date
     attribute :end_date, :date
     attribute :category, :string
@@ -76,9 +74,9 @@ module Reports
       when WEEK
         default_week?
       when MONTH
-        start_date == DEFAULT_DATE.beginning_of_month && end_date == DEFAULT_DATE.end_of_month
+        start_date == default_date.beginning_of_month && end_date == default_date.end_of_month
       when YEAR
-        start_date == DEFAULT_DATE.beginning_of_year && end_date == DEFAULT_DATE.end_of_year
+        start_date == default_date.beginning_of_year && end_date == default_date.end_of_year
       else
         default_week?
       end
@@ -152,22 +150,28 @@ module Reports
     def set_default_dates
       case time_frame
       when WEEK
-        self.start_date = DEFAULT_DATE.beginning_of_week
-        self.end_date = DEFAULT_DATE.end_of_week
+        self.start_date = default_date.beginning_of_week
+        self.end_date = default_date.end_of_week
       when MONTH
-        self.start_date = DEFAULT_DATE.beginning_of_month
-        self.end_date = DEFAULT_DATE.end_of_month
+        self.start_date = default_date.beginning_of_month
+        self.end_date = default_date.end_of_month
       when YEAR
-        self.start_date = DEFAULT_DATE.beginning_of_year
-        self.end_date = DEFAULT_DATE.end_of_year
+        self.start_date = default_date.beginning_of_year
+        self.end_date = default_date.end_of_year
       else
-        self.start_date = DEFAULT_DATE.beginning_of_week
-        self.end_date = DEFAULT_DATE.end_of_week
+        self.start_date = default_date.beginning_of_week
+        self.end_date = default_date.end_of_week
       end
     end
 
+    # @Note: Must be a method, not a constant, so it is re-evaluated on every
+    # request instead of being frozen to the time the class was loaded.
+    def default_date
+      Date.today
+    end
+
     def default_week?
-      start_date == DEFAULT_DATE.beginning_of_week && end_date == DEFAULT_DATE.end_of_week
+      start_date == default_date.beginning_of_week && end_date == default_date.end_of_week
     end
 
     def update_period_by(multiplier)
