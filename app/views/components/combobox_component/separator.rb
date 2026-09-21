@@ -9,7 +9,7 @@ module ComboboxComponent
     private
 
     def default_attrs
-      { class: "-mx-1 h-px bg-gray-200" }
+      { class: "-mx-1 h-px bg-secondary" }
     end
   end
 end

@@ -9,14 +9,14 @@ module RubyUI
     }
 
     COLORS = {
-      primary: "text-primary bg-primary/5 ring-primary/20",
+      primary: "text-primary-700 bg-primary-50 ring-primary-200",
       secondary: "text-secondary bg-secondary/10 ring-secondary/20",
       outline: "text-foreground bg-background ring-border",
       destructive: "text-destructive bg-destructive/10 ring-destructive/20",
       success: "text-success bg-success/10 ring-success/20",
       warning: "text-warning bg-warning/10 ring-warning/20",
       slate: "text-slate-500 bg-slate-500/10 ring-slate-500/20",
-      gray: "text-gray-500 bg-gray-500/10 ring-gray-500/20",
+      gray: "text-secondary-text bg-secondary ring-border",
       zinc: "text-zinc-500 bg-zinc-500/10 ring-zinc-500/20",
       neutral: "text-neutral-500 bg-neutral-500/10 ring-neutral-500/20",
       stone: "text-stone-500 bg-stone-500/10 ring-stone-500/20",
@@ -53,7 +53,7 @@ module RubyUI
 
     def default_attrs
       {
-        class: [ "!inline-flex items-center rounded-md font-medium ring-1 ring-inset", SIZES[@size], COLORS[@variant] ]
+        class: [ "!inline-flex items-center gap-x-1 rounded-md font-medium ring-1 ring-inset whitespace-nowrap", SIZES[@size], COLORS[@variant] ]
       }
     end
   end

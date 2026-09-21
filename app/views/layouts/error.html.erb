@@ -14,21 +14,21 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 
     <%= favicon_link_tag "logo.svg" %>
 
     <%= render partial: "layouts/pwa_meta_tags" %>
     <%= clarity_tracker if Rails.env.production? %>
   </head>
-  <body class="font-montserrat">
+  <body class="font-sans">
     <%= highlight_missing_translations if Rails.env.development? %>
     <div class="flex flex-col min-h-screen">
       <header>
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <div class="flex items-center">
             <%= show_svg("logo.svg") %>
-            <h1 class="ml-4 text-xl text-gray-900 font-semibold">Stemplin</h1>
+            <h1 class="ml-4 text-xl text-primary-text font-semibold">Stemplin</h1>
           </div>
           <div>
             <%= render partial: "shared/language_picker" %>
@@ -36,15 +36,15 @@
         </div>
       </header>
       <main class="flex-grow auth-illustration-wrapper flex justify-center items-center">
-        <div class="bg-white p-6 rounded-lg shadow-lg text-gray-800 max-w-md">
+        <div class="bg-background border border-border p-8 rounded-2xl shadow-pop text-primary-text max-w-md">
           <%= yield %>
           <div class="flex justify-center">
             <%= link_to "Home", root_path, class: "mt-4 inline-block bg-primary text-white py-2 px-4 rounded-full hover:bg-purple-600 transition-colors" %>
           </div>
         </div>
       </main>
-      <footer class="print:hidden bg-white bottom-0 h-16 items-center flex space-x-2 justify-center fixed w-full text-center z-0">
-        <a href="" class="font-regular text-sm text-gray-400">Stemplin <%= Date.current.year %></a>
+      <footer class="print:hidden bottom-0 h-16 items-center flex space-x-2 justify-center fixed w-full text-center z-0">
+        <a href="" class="font-regular text-sm text-muted-foreground">Stemplin <%= Date.current.year %></a>
       </footer>
     </div>
   </body>

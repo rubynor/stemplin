@@ -1,10 +1,10 @@
 <%= content_tag :div, class: "user-fields flex flex-wrap my-12 sm:my-2 items-center justify-between", data: { controller: "show-on-value", show_on_value_accepted_value: project_restricted_roles } do %>
   <%= f.fields_for index do |user_form| %>
     <%= content_tag :div, class: "w-full sm:w-4/12" do %>
-      <%= user_form.email_field :email, placeholder: t("common.email"), required: true, value: user_params.email, class: "border-gray-200 rounded-md w-full email-input invalid:border-red-600 placeholder:text-gray-400" %>
+      <%= user_form.email_field :email, placeholder: t("common.email"), required: true, value: user_params.email, class: "border-border rounded-md w-full email-input invalid:border-red-600 placeholder:text-muted-foreground" %>
     <% end %>      
     <%= content_tag :div, class: "w-full sm:w-4/12 sm:px-2" do %>
-      <%= user_form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { selected: user_params.role, required: true }, class: "border-gray-200 rounded-md w-full", data: { show_on_value_target: "input" } %>
+      <%= user_form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { selected: user_params.role, required: true }, class: "form-input", data: { show_on_value_target: "input" } %>
     <% end %>
     <%= content_tag :div, class: "w-full sm:w-3/12" do %>
       <%= content_tag :div, data: { show_on_value_target: "toggle" } do %>
@@ -17,7 +17,7 @@
   <% end %>
   <div class="w-full">
     <% user_params.errors.full_messages.each do |message| %>
-      <div class="text-red-600 text-xs italic mt-1"><%= message %></div>
+      <div class="form-error"><%= message %></div>
     <% end %>
   </div>
 <% end %>

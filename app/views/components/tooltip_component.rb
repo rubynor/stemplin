@@ -24,7 +24,7 @@ class TooltipComponent < ApplicationComponent
       render RubyUI::TooltipTrigger.new(**@trigger_attributes) do
         content.call
       end
-      render RubyUI::TooltipContent.new(class: "bg-gray-700/90 text-white shadow-none") do
+      render RubyUI::TooltipContent.new(class: "bg-zinc-900 text-white") do
         render RubyUI::Text.new { @note }
       end
     end

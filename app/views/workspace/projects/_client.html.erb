@@ -1,49 +1,58 @@
-<%= render RubyUI::TableBody.new(id: dom_id(client), class: "border-b") do %>
-  <%= render RubyUI::TableRow.new do %>
-    <%= render RubyUI::TableCell.new do %>
-      <%= link_to workspace_client_path(client), class: "text-primary-600 underline" do %>
-        <div class="flex flex-row items-center gap-x-1">
-          <span class="font-medium text-md"><%= client.name %></span>
-        </div>
-      <% end %>
-    <% end %>
+<%
+  projects = client.projects
+  has_projects = projects.any?
+  initials = client.name.to_s.split.first(2).map { |word| word[0] }.join.upcase
+%>
+<%= content_tag :section, id: dom_id(client), class: "rounded-xl border border-border overflow-hidden bg-background" do %>
+  <header class="flex flex-wrap items-center gap-3 px-4 py-3 bg-surface-muted border-b border-border">
+    <span class="h-9 w-9 shrink-0 rounded-lg bg-primary-50 text-primary-700 text-xs font-bold flex items-center justify-center">
+      <%= initials %>
+    </span>
 
-    <%= render RubyUI::TableCell.new(class: "") %>
-      <%= render RubyUI::TableCell.new(class: "flex justify-end gap-2") do %>
-        <%= render TooltipComponent.new(note: t("common.new_project")) do %>
-          <%= render ButtonComponent.new(path: new_workspace_project_path(client_id: client.id), method: :get, variant: :outline, icon: true, class: "flex") do %>
-            <i class="uc-icon">&#xead3;</i>
-          <% end %>
-        <% end %>
+    <div class="min-w-0 flex-1 flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
+      <%= link_to client.name, workspace_client_path(client),
+            class: "font-semibold text-primary-text truncate hover:text-primary hover:underline underline-offset-4" %>
+      <span class="text-xs text-muted-foreground whitespace-nowrap">
+        <%= projects.size %> <%= t("common.projects").downcase %>
+      </span>
+    </div>
 
-        <%= render TooltipComponent.new(note: t("common.update")) do %>
-          <%= render ButtonComponent.new(path: edit_modal_workspace_client_path(client), method: :post, variant: :outline, icon: true, class: "flex") do %>
-            <i class="uc-icon text-gray-500">&#xe972;</i>
-          <% end %>
-        <% end %>
-
-        <%- has_projects = client.projects.any? %>
-        <%- turbo_body = has_projects ?
-              t("common.client_has_projects_cannot_delete", client_name: client.name) :
-              t("common.client_deletion_warning",
-                deletion_text: t("common.deletion_of_the_client"),
-                client_name: client.name,
-                cannot_undo_text: t("common.cannot_be_undone")) %>
-        <%= render TooltipComponent.new(note: has_projects ? t("common.client_has_project") : t("common.delete"), class: "z-10") do %>
-          <%= render ButtonComponent.new(variant: :outline, method: :delete, icon: true, path: workspace_client_path(client), class: "flex", disabled: has_projects, form: { data: { turbo_confirm: turbo_body } }) do %>
-            <i class="uc-icon">&#xeb97;</i>
-          <% end %>
+    <div class="flex items-center gap-2 w-full justify-end sm:w-auto sm:ml-auto">
+      <%= render TooltipComponent.new(note: t("common.new_project")) do %>
+        <%= render ButtonComponent.new(path: new_workspace_project_path(client_id: client.id), method: :get, variant: :outline, icon: true, aria: { label: t("common.new_project") }) do %>
+          <i class="uc-icon">&#xead3;</i>
         <% end %>
       <% end %>
-    <% end %>
 
-  <% if client.projects.any? %>
-    <%= render partial: "workspace/projects/project", collection: client.projects %>
+      <%= render TooltipComponent.new(note: t("common.update")) do %>
+        <%= render ButtonComponent.new(path: edit_modal_workspace_client_path(client), method: :post, variant: :ghost, icon: true, aria: { label: t("common.update") }) do %>
+          <i class="uc-icon">&#xe972;</i>
+        <% end %>
+      <% end %>
+
+      <%- turbo_body = has_projects ?
+            t("common.client_has_projects_cannot_delete", client_name: client.name) :
+            t("common.client_deletion_warning",
+              deletion_text: t("common.deletion_of_the_client"),
+              client_name: client.name,
+              cannot_undo_text: t("common.cannot_be_undone")) %>
+      <%= render TooltipComponent.new(note: has_projects ? t("common.client_has_project") : t("common.delete")) do %>
+        <%= render ButtonComponent.new(variant: :destructive, method: :delete, icon: true, path: workspace_client_path(client), disabled: has_projects, aria: { label: t("common.delete") }, form: { data: { turbo_confirm: turbo_body } }) do %>
+          <i class="uc-icon">&#xeb97;</i>
+        <% end %>
+      <% end %>
+    </div>
+  </header>
+
+  <% if has_projects %>
+    <ul class="divide-y divide-border">
+      <%= render partial: "workspace/projects/project", collection: projects %>
+    </ul>
   <% else %>
-    <%= render RubyUI::TableRow.new do %>
-      <%= render RubyUI::TableCell.new(colspan: 3, class: "text-left text-gray-500 py-4") do %>
-        <span class="pl-2"><%= t("common.no_projects_created") %></span>
-      <% end %>
-    <% end %>
+    <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-5">
+      <span class="text-sm text-muted-foreground"><%= t("common.no_projects_created") %></span>
+      <%= link_to t("common.new_project"), new_workspace_project_path(client_id: client.id),
+            class: "text-sm font-medium text-primary hover:underline underline-offset-4" %>
+    </div>
   <% end %>
 <% end %>
