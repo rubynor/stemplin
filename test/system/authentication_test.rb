@@ -24,7 +24,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     user = users(:joe)
     sign_in_as user
 
-    find("span", text: user.email).click
+    find("span", text: user.name, exact_text: true).click
     click_on I18n.t("common.sign_out")
 
     assert_current_path new_user_session_path
