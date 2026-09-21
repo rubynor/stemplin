@@ -44,13 +44,15 @@
         <%= render partial: "reports/summary", locals:{ selected_elements_names: @filter.selected_elements_names } %>
       </div>
 
-      <div class="flex flex-row items-center border-b border-border w-full overflow-x-auto px-5 lg:px-6">
-        <% @filter.tabs.each do |tab| %>
-          <%= link_to tab[:label], reports_path(filter: @filter.to_h(category: tab[:value])), class: class_names(
-                "whitespace-nowrap -mb-px border-b-2 px-3 py-3.5 text-sm transition-colors",
-                @filter.active_tab === tab[:value] ? "border-primary text-primary font-semibold" : "border-transparent text-secondary-text hover:text-foreground print:hidden"
-              ) %>
-        <% end %>
+      <div class="border-b border-border w-full px-5 lg:px-6">
+        <div class="flex flex-row items-center -mb-px overflow-x-auto no-scrollbar">
+          <% @filter.tabs.each do |tab| %>
+            <%= link_to tab[:label], reports_path(filter: @filter.to_h(category: tab[:value])), class: class_names(
+                  "whitespace-nowrap border-b-2 px-3 py-3.5 text-sm transition-colors",
+                  @filter.active_tab === tab[:value] ? "border-primary text-primary font-semibold" : "border-transparent text-secondary-text hover:text-foreground print:hidden"
+                ) %>
+          <% end %>
+        </div>
       </div>
 
       <div class="px-2 lg:px-3 py-1">
