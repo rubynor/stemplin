@@ -1,4 +1,6 @@
 class OrganizationsController < ApplicationController
+  before_action :authenticate_user!
+
   def set_current_organization
     @organization = Organization.find(params[:id])
     authorize! @organization

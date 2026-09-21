@@ -4,7 +4,8 @@ class ProjectAccessTest < ActiveSupport::TestCase
   def setup
     @normal_user_access_info = access_infos(:access_info_org1_user)
     @admin_access_info = access_infos(:access_info_org1_admin)
-    @project = projects(:project_1)
+    # project_1 is already granted to this access_info by fixture; use another project
+    @project = projects(:project_2)
     @project_access = ProjectAccess.new(project: @project, access_info: @normal_user_access_info)
   end
 

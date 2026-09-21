@@ -1,6 +1,7 @@
 module Workspace
   class SettingsController < WorkspaceController
     before_action :set_organization
+    before_action :set_available_currencies, only: %i[edit update]
 
     def show
       authorize! @organization
@@ -8,7 +9,6 @@ module Workspace
 
     def edit
       authorize! @organization
-      @available_currencies = Stemplin.config.currencies.keys
     end
 
     def update
@@ -24,6 +24,10 @@ module Workspace
 
     def set_organization
       @organization = current_user.current_organization
+    end
+
+    def set_available_currencies
+      @available_currencies = Stemplin.config.currencies.keys
     end
 
     def organization_params

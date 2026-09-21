@@ -96,7 +96,7 @@ class TimeRegsController < ApplicationController
     authorize!
     project = authorized_scope(Project, type: :relation).find(params[:project_id])
     client = project.client
-    time_regs = project.time_regs.includes(
+    time_regs = authorized_scope(TimeReg, type: :relation).joins(:project).where(projects: { id: project.id }).includes(
       :task,
       :user,
       assigned_task: %i[project task],
