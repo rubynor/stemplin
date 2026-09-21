@@ -1,162 +1,57 @@
 require "test_helper"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  # System tests drive a real browser, so running one per core mostly buys
-  # flakiness. Keep them serial.
+  # Browser tests share a session and run serially.
   parallelize(workers: 1)
 
   driven_by :selenium, using: ENV["HEADFUL"].present? ? :chrome : :headless_chrome, screen_size: [ 1400, 1400 ] do |options|
-    # Keep the browser console so a failure can be diagnosed from CI artifacts.
     options.add_option("goog:loggingPrefs", { browser: "ALL" })
-    # Google Chrome on CI runners takes part in Google's field trials, so it
-    # can behave differently from the Chromium on a developer machine. Turn
-    # them off so both run the same browser.
-    options.add_argument("--disable-field-trial-config")
-    # Chrome offers to save the password after every sign-in. The bubble is
-    # browser UI outside the page, and while it is up, pointer and key events
-    # sent to the page were seen to vanish on CI. Turn the password manager,
-    # notifications and other first-run UI off.
-    options.add_argument("--disable-save-password-bubble")
+    # Disable optional browser prompts during automated sign-in.
     options.add_argument("--disable-notifications")
-    options.add_argument("--disable-infobars")
-    options.add_argument("--no-first-run")
-    options.add_argument("--no-default-browser-check")
     options.add_preference(:credentials_enable_service, false)
     options.add_preference("profile.password_manager_enabled", false)
     options.add_preference("profile.password_manager_leak_detection", false)
   end
 
-  # CI runners are slower than a laptop; the default 2 seconds makes
-  # Turbo navigations look like failures.
   Capybara.default_max_wait_time = 5
+  Capybara.enable_aria_label = true
 
-  # Linux distributions ship Chromium rather than Chrome. Selenium looks for
-  # Chrome by default, so point it at whatever browser is actually installed.
+  # Linux distributions often ship Chromium rather than Google Chrome.
   if (browser = ENV["CHROME_BIN"] || %w[/usr/bin/chromium /usr/bin/chromium-browser].find { |path| File.executable?(path) })
     Selenium::WebDriver::Chrome.path = browser
   end
 
-  # Signs in through the form, the way a user does, so the session cookie and
-  # Warden are exercised rather than stubbed.
-  # `keep_flash: true` leaves the "Signed in successfully" snackbar on screen.
-  # It is dismissed by default because it floats over the top-right buttons and
-  # swallows clicks meant for them.
-  # Next to the failure screenshot, write what the browser knew: its console,
-  # whether Turbo and Stimulus initialised, and the URL it was actually on.
-  def after_teardown
-    dump_browser_state if failed? && page.driver.respond_to?(:browser)
-  ensure
-    super
-  end
-
-  def dump_browser_state
-    dir = Rails.root.join("tmp/screenshots")
-    FileUtils.mkdir_p(dir)
-    state = page.evaluate_script(<<~JS)
-      ({
-        url: location.href,
-        readyState: document.readyState,
-        turbo: typeof window.Turbo,
-        stimulus: typeof window.Stimulus,
-        stimulusControllers: window.Stimulus ? window.Stimulus.router.modulesByIdentifier.size : null,
-        hasFocus: document.hasFocus(),
-        visibility: document.visibilityState,
-        serviceWorkerController: navigator.serviceWorker && navigator.serviceWorker.controller ? navigator.serviceWorker.controller.state : null,
-        navigations: performance.getEntriesByType("navigation").map(n => ({ type: n.type, start: n.startTime, domContentLoaded: n.domContentLoadedEventEnd, load: n.loadEventEnd })),
-        now: performance.now(),
-        trace: window.__trace || null,
-        activeElement: document.activeElement && `${document.activeElement.tagName}#${document.activeElement.id}`,
-        autofocusElements: Array.from(document.querySelectorAll("[autofocus]")).map(e => `${e.tagName}#${e.id}`),
-        iframes: Array.from(document.querySelectorAll("iframe")).map(f => ({ src: f.src, rect: f.getBoundingClientRect().toJSON() })),
-        openDialogs: Array.from(document.querySelectorAll("dialog[open], [inert], [popover]:popover-open")).map(e => `${e.tagName}#${e.id}`),
-        viewport: { innerWidth: innerWidth, innerHeight: innerHeight, dpr: devicePixelRatio, scale: visualViewport.scale, scrollY: scrollY },
-        firstButton: (() => { const b = Array.from(document.querySelectorAll("button")).find(el => el.getBoundingClientRect().width > 0); if (!b) return null; const r = b.getBoundingClientRect(); const hit = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2); return { text: b.textContent.trim().slice(0, 30), rect: r.toJSON(), hit: hit && `${hit.tagName}.${hit.className}`.slice(0, 80), hitIsInside: !!(hit && b.contains(hit)) }; })(),
-        scripts: Array.from(document.scripts).map(s => s.src || "(inline)")
-      })
-    JS
-    state["windowHandles"] = page.driver.browser.window_handles.size
-    console = page.driver.browser.logs.get(:browser).map { |e| "#{e.level} #{e.message}" }
-    File.write(dir.join("#{method_name}.browser.txt"), [ JSON.pretty_generate(state), *console ].join("\n"))
-  rescue => e
-    warn "Could not dump browser state: #{e.class}: #{e.message}"
-  end
-
+  # Exercise the real sign-in form and dismiss the notice that covers the menu.
+  # Keep the document returned by Turbo so setup cannot race another navigation.
   def sign_in_as(user, password: "password", keep_flash: false)
     visit new_user_session_path
     fill_in "user[email]", with: user.email
     fill_in "user[password]", with: password
     click_button I18n.t("login_page.sign_in")
-    assert_no_current_path new_user_session_path, wait: 5
-    # Turbo pushes the new URL before it has rendered the response. Navigating
-    # again at that point races the in-flight visit: the browser can hand the
-    # test the old document, and everything typed or clicked there is lost when
-    # the new one lands. Let Turbo settle first.
-    wait_for_turbo
-    reload_page unless keep_flash
+
+    assert_no_current_path new_user_session_path
+    assert_text I18n.t("devise.sessions.signed_in")
+    return if keep_flash
+
+    find("#flash [data-action='snackbar#close']").click
+    assert_no_selector "#flash [data-controller='snackbar']", visible: :all
   end
 
-  # Navigating to the URL the browser is already on is a reload, and Selenium
-  # returns from it before the new document has finished loading. Anything the
-  # test types or clicks in the meantime is lost: Chrome restores the old
-  # document's (empty) form state at the end of parsing, and the deferred
-  # application script has not attached Turbo or Stimulus yet. Mark the current
-  # document, reload, and wait until the new document is complete.
-  def reload_page
-    3.times do |attempt|
-      execute_script("document.documentElement.setAttribute('data-stale-document', '')")
-      visit current_path
-      assert_no_selector "html[data-stale-document]", wait: 10
-      page.document.synchronize(10) do
-        unless evaluate_script("document.readyState === 'complete' && typeof window.Turbo === 'object'")
-          raise Capybara::ElementNotFound, "the reloaded page has not finished loading"
-        end
-      end
-      start_browser_trace
-      return if input_reaches_page?
-
-      warn "reload_page: browser dropped input after reload (attempt #{attempt + 1}), reloading again"
-    end
-    flunk "the browser kept dropping input after reloading the page"
+  def after_teardown
+    dump_browser_console if failed?
+  ensure
+    super
   end
 
-  # On CI, Chrome was seen to silently discard every WebDriver pointer and key
-  # event sent to a freshly reloaded document: no error, no event in the page.
-  # Move the mouse over the page and check that the document saw it.
-  def input_reaches_page?
-    10.times do
-      page.driver.browser.action.move_to_location(5, 5).move_to_location(10, 10).perform
-      return true if evaluate_script("(window.__trace || []).some(entry => entry[1] === 'mousemove')")
+  private
 
-      sleep 0.2
-    end
-    false
-  end
-
-  # Records what happens in the page after the test takes over: focus moves,
-  # input, form resets, Turbo lifecycle events and body-level DOM replacement.
-  # Dumped with the browser state on failure.
-  def start_browser_trace
-    execute_script(<<~JS)
-      window.__trace = [];
-      const log = (kind, detail) => window.__trace.push([Math.round(performance.now()), kind, detail]);
-      const describe = (el) => el && el.tagName ? `${el.tagName}#${el.id}[name=${el.getAttribute && el.getAttribute("name")}]` : String(el);
-      ["focusin", "focusout", "input", "change", "reset", "submit", "click", "pointerdown", "mousedown", "mousemove", "keydown"].forEach(type =>
-        window.addEventListener(type, e => log(type, describe(e.target) + (type === "input" ? ` value=${JSON.stringify(e.target.value)}` : "") + (e.clientX !== undefined ? ` @${e.clientX},${e.clientY}` : "")), true));
-      log("active", describe(document.activeElement));
-      ["turbo:visit", "turbo:before-render", "turbo:render", "turbo:load", "turbo:before-cache", "turbo:before-fetch-request", "turbo:frame-render", "turbo:morph", "popstate", "pageshow", "pagehide", "visibilitychange"].forEach(type =>
-        (type.startsWith("turbo") || type === "popstate" ? document : window).addEventListener(type, e => log(type, e.detail && e.detail.url ? String(e.detail.url) : "")));
-      new MutationObserver(records => records.forEach(r => {
-        if (r.target === document.documentElement || r.target === document.body || r.target.tagName === "FORM") {
-          log("mutation", `${describe(r.target)} +${[...r.addedNodes].map(describe)} -${[...r.removedNodes].map(describe)}`);
-        }
-      })).observe(document.documentElement, { childList: true, subtree: true });
-      log("trace-start", location.href);
-    JS
-  end
-
-  # Turbo marks <html> (visits) and the submitted <form> (submissions) with
-  # aria-busy for as long as it is fetching and rendering.
-  def wait_for_turbo
-    assert_no_selector "html[aria-busy], form[aria-busy]", wait: 5
+  # Keep diagnostics on failures without instrumenting every page interaction.
+  def dump_browser_console
+    dir = Rails.root.join("tmp/screenshots")
+    FileUtils.mkdir_p(dir)
+    console = page.driver.browser.logs.get(:browser).map { |entry| "#{entry.level} #{entry.message}" }
+    File.write(dir.join("#{method_name}.browser.txt"), [ "URL: #{page.current_url}", *console ].join("\n"))
+  rescue => error
+    warn "Could not dump browser console: #{error.class}: #{error.message}"
   end
 end

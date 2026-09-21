@@ -36,12 +36,12 @@ class TimeRegistrationsTest < ApplicationSystemTestCase
     row = "##{ActionView::RecordIdentifier.dom_id(time_reg)}"
 
     within(row) { click_on I18n.t("common.start") }
-    assert_timer_state time_reg, active: true
     within(row) { assert_text I18n.t("common.stop") }
+    assert time_reg.reload.active?
 
     within(row) { click_on I18n.t("common.stop") }
-    assert_timer_state time_reg, active: false
     within(row) { assert_text I18n.t("common.start") }
+    assert_not time_reg.reload.active?
   end
 
   test "user edits an existing entry through the modal" do
@@ -57,21 +57,5 @@ class TimeRegistrationsTest < ApplicationSystemTestCase
 
     assert_text "Rewrote the weekly summary"
     assert_equal "Rewrote the weekly summary", time_reg.reload.notes
-  end
-
-  private
-
-  # The toggle is a full form round trip (PATCH, redirect, re-render), and
-  # the first request against a cold Puma in CI can take longer than
-  # Capybara's default wait. Poll the database so a slow response is not
-  # mistaken for a broken timer, and so a failure says whether the request
-  # ever reached the server.
-  def assert_timer_state(time_reg, active:, timeout: 15)
-    deadline = Time.current + timeout
-    until time_reg.reload.active? == active || Time.current > deadline
-      sleep 0.1
-    end
-    assert_equal active, time_reg.active?,
-      "expected timer for time_reg #{time_reg.id} to be #{active ? "running" : "stopped"} within #{timeout}s"
   end
 end
