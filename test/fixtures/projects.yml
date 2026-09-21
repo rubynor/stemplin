@@ -18,3 +18,11 @@ to_be_deleted:
   client: e_corp
   billable: true
   rate: 100
+
+# Belongs to organization_two, so scopes can be checked for leaks across organizations.
+org_two_project:
+  name: Flat Earth Intranet
+  description: Lorem
+  client: f_corp
+  billable: true
+  rate: 80

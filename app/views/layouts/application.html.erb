@@ -1,5 +1,6 @@
 <% content_for :base_layout do %>
-  <%= render "layouts/navbar" if user_signed_in? %>
+  <%# The navbar needs an organization; users still in onboarding have none. %>
+  <%= render "layouts/navbar" if user_signed_in? && current_user.current_organization %>
 
   <%- if @active_time_reg %>
     <%= render BannerComponent.new(title: "Notice", message: t("time_regs.active_timer_description"), variant: :warning, dismissible: false, action: { url: root_path(date: @active_time_reg.date_worked), method: :get }) %>
@@ -12,7 +13,7 @@
   <footer class="print:hidden border-t border-border mt-10">
     <div class="page-shell py-6 flex flex-col gap-y-3 lg:flex-row lg:items-center lg:justify-between">
       <span class="text-sm text-muted-foreground">Stemplin <%= Date.current.year %></span>
-      <%= content_tag(:div, class: class_names("flex flex-col lg:flex-row items-start gap-x-6 gap-y-2", "hidden": user_signed_in?)) do %>
+      <%= content_tag(:div, class: "flex flex-col lg:flex-row items-start gap-x-6 gap-y-2") do %>
         <%= link_to t("privacy_policy.title"), privacy_policy_path, class: "text-sm text-muted-foreground hover:text-foreground transition-colors" %>
         <%= link_to t("contact_us.title"), "mailto:contact@stemplin.com", class: "text-sm text-muted-foreground hover:text-foreground transition-colors" %>
       <% end %>

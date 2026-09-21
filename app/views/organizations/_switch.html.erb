@@ -1,5 +1,6 @@
 <div class="flex items-center gap-x-3">
-  <%= link_to time_regs_path, class: "flex items-center gap-x-2 shrink-0" do %>
+  <%# Spectators have no time page; sending them there only bounces to reports. %>
+  <%= link_to (user.access_info.organization_spectator? ? reports_path : time_regs_path), class: "flex items-center gap-x-2 shrink-0" do %>
     <%= image_tag "stemplin-ico.svg", class: "h-7 w-auto" %>
     <%= image_tag "stemplin-text.svg", class: "h-4 w-auto hidden sm:block" %>
   <% end %>

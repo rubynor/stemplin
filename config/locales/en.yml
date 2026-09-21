@@ -528,17 +528,17 @@ en:
               - "The website uses various forms that register different information about the user. The user controls what type of information is provided in these forms. Examples of such forms include creating a new user account and time registration."
           - title: "Cookies"
             content:
-              - "Cookies are small text files that are placed on your computer when you download a website. Stemplin uses cookies to store data about your user account. This is used for automatic login so that you do not have to log in again every time you visit <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. Additionally, cookies are used to gather statistics and usage patterns through Microsoft Clarity."
+              - "Cookies are small text files that are placed on your computer when you download a website. Stemplin uses cookies to store data about your user account. This is used for automatic login so that you do not have to log in again every time you visit <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. Additionally, cookies are used to gather statistics and usage patterns through Microsoft Clarity and PostHog."
       - title: "How Long We Store Personal Data"
         content:
           - "We only store information about you as long as it is necessary to achieve the purpose for which it was collected or as long as we are required by law to store the information. The information will be deleted or anonymized when it is no longer necessary to achieve the purpose."
           - "Information can be deleted upon request by written inquiry to Rubynor AS."
       - title: "Who We Share Personal Data With"
         content:
-          - "We share personal data with data processors who provide technical services necessary for Stemplin’s functionality. This includes Hetzner Online GmbH."
+          - "We share personal data with data processors who provide technical services necessary for Stemplin’s functionality. This includes Hetzner Online GmbH (hosting), Twilio SendGrid (sending of e-mail such as invitations and password resets), Microsoft Clarity and PostHog (usage statistics), and Sentry (error reporting)."
       - title: "Your Rights"
         content:
-          - "Anyone who requests it has the right to basic information about the processing of personal data in a company according to Section 18, 1st paragraph of the Personal Data Act. Stemplin has provided the basic information about the processing of personal data in this statement and refers to this declaration for any inquiries. You have the right to request that we:"
+          - "Anyone who requests it has the right to basic information about the processing of personal data in a company according to the Norwegian Personal Data Act and the General Data Protection Regulation (GDPR), Articles 13–15. Stemplin has provided the basic information about the processing of personal data in this statement and refers to this declaration for any inquiries. You have the right to request that we:"
         list_items:
           - "Provide you with further information on how we process your personal data."
           - "Provide you with a copy of the personal data we have about you."
@@ -555,7 +555,7 @@ en:
       - title: "Contact Information"
         details:
           - label: "Postal address"
-            value: "Bedriftsveien 64, 3735 Skien, Norway"
+            value: "Bedriftsvegen 64, 3735 Skien, Norway"
           - label: "Email"
             value: "contact@stemplin.com"
 

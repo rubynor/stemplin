@@ -1,6 +1,9 @@
 module Workspace
   module Projects
     class AssignedTasksController < ApplicationController
+      # Must come before SetCurrency, whose before_action needs a signed-in user.
+      before_action :authenticate_user!
+
       include SetCurrency
       skip_verify_authorized
 

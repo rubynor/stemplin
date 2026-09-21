@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
   end
 
   def should_redirect_to_onboarding?
-    allowed_controllers = %w[onboarding_wizard invitations service_worker sessions]
+    allowed_controllers = %w[onboarding_wizard invitations service_worker sessions privacy_policy]
     current_user&.organizations&.empty? && !allowed_controllers.include?(controller_name)
   end
 end

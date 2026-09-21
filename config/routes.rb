@@ -45,7 +45,7 @@ Rails.application.routes.draw do
 
   post "/set_current_organization/:id" => "organizations#set_current_organization", as: :set_current_organization
 
-  get "/locale", to: "locale#set_locale", as: "locale"
+  get "/locale", to: "locale#update", as: "locale"
 
   resources :clients
 

@@ -18,6 +18,37 @@ class OrganizationsControllerTest < ActionController::TestCase
     assert_equal @organization_one, @user.current_organization
   end
 
+  test "user is sent back to the page they came from" do
+    @request.env["HTTP_REFERER"] = "/reports"
+    post :set_current_organization, params: { id: @organization_one.id }
+    assert_redirected_to "/reports"
+  end
+
+  test "spectator cannot switch to an organization they are not part of" do
+    spectator = users(:organization_spectator)
+    sign_in spectator
+
+    post :set_current_organization, params: { id: @organization_two.id }
+
+    assert_redirected_to reports_path
+    assert_equal @organization_one, spectator.reload.current_organization
+  end
+
+  test "admin switches organization and the role of the new organization applies" do
+    admin = users(:organization_admin)
+    sign_in admin
+    assert admin.organization_admin?
+
+    post :set_current_organization, params: { id: @organization_two.id }
+    assert_equal @organization_two, admin.reload.current_organization
+
+    ron_in_org_two = users(:ron)
+    sign_in ron_in_org_two
+    post :set_current_organization, params: { id: @organization_one.id }
+    assert_equal @organization_one, ron_in_org_two.reload.current_organization
+    assert_not ron_in_org_two.organization_admin?, "ron is a plain member of organization_one"
+  end
+
   test "user should not change to unrelated organization" do
     assert_equal @organization_two, @user.current_organization
 

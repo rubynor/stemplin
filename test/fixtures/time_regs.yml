@@ -55,3 +55,11 @@ time_reg_1_organization_user_1:
   date_worked: <%= Date.today %>
   user: organization_user
   <<: *DEFAULTS
+
+time_reg_org_two:
+  assigned_task: org_two_task
+  date_worked: <%= Date.today %>
+  user: ron
+  notes: "Work in the second organization"
+  minutes: 30
+  start_time: nil
