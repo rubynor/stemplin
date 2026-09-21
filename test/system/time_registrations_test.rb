@@ -49,7 +49,8 @@ class TimeRegistrationsTest < ApplicationSystemTestCase
     time_reg = time_regs(:time_reg_1)
 
     within "##{ActionView::RecordIdentifier.dom_id(time_reg)}" do
-      click_on I18n.t("common.edit")
+      # The row actions are icon-only buttons labelled for screen readers.
+      find("button[aria-label='#{I18n.t("common.edit")}']").click
     end
 
     fill_in "time_reg_notes", with: "Rewrote the weekly summary"
