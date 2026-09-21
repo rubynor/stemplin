@@ -1,5 +1,7 @@
 module Workspace
   class ClientsController < WorkspaceController
+    include SetCurrency
+
     before_action :set_client, only: %i[edit_modal update destroy]
 
     def show

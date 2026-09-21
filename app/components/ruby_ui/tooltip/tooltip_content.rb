@@ -19,7 +19,7 @@ module RubyUI
         data: {
           ruby_ui__popover_target: "content"
         },
-        class: "invisible peer-hover:visible peer-focus:visible w-max absolute top-0 left-0 z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md peer-focus:zoom-in-95 animate-out fade-out-0 zoom-out-95 peer-hover:animate-in peer-focus:animate-in peer-hover:fade-in-0 peer-focus:fade-in-0 peer-hover:zoom-in-95 group-data-[ruby-ui--tooltip-placement-value=bottom]:slide-in-from-top-2 group-data-[ruby-ui--tooltip-placement-value=left]:slide-in-from-right-2 group-data-[ruby-ui--tooltip-placement-value=right]:slide-in-from-left-2 group-data-[ruby-ui--tooltip-placement-value=top]:slide-in-from-bottom-2 delay-500"
+        class: "hidden md:block invisible peer-hover:visible peer-focus:visible w-max max-w-[16rem] absolute top-0 left-0 z-50 overflow-hidden rounded-lg border-0 bg-zinc-900 px-2.5 py-1.5 text-xs font-medium text-white shadow-pop peer-focus:zoom-in-95 animate-out fade-out-0 zoom-out-95 peer-hover:animate-in peer-focus:animate-in peer-hover:fade-in-0 peer-focus:fade-in-0 peer-hover:zoom-in-95 group-data-[ruby-ui--tooltip-placement-value=bottom]:slide-in-from-top-2 group-data-[ruby-ui--tooltip-placement-value=left]:slide-in-from-right-2 group-data-[ruby-ui--tooltip-placement-value=right]:slide-in-from-left-2 group-data-[ruby-ui--tooltip-placement-value=top]:slide-in-from-bottom-2 delay-500"
       }
     end
   end

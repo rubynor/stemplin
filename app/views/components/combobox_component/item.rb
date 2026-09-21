@@ -37,7 +37,7 @@ module ComboboxComponent
     def default_attrs
       {
         class:
-          "relative flex cursor-pointer select-none items-center gap-x-2 rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-gray-100 aria-selected:bg-gray-100 aria-selected:text-primary-600 text-gray-600 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 cursor-pointer",
+          "relative flex cursor-pointer select-none items-center gap-x-2 rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent aria-selected:bg-gray-100 aria-selected:text-primary-600 text-secondary-text data-[disabled]:pointer-events-none data-[disabled]:opacity-50 cursor-pointer",
         data: {
           value: @value,
           selected: false,

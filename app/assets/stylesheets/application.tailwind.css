@@ -15,80 +15,58 @@
 }
 
 @layer base {
+  /* Colors are stored as raw RGB channels so every Tailwind utility can take an
+     opacity modifier (bg-primary/10, ring-ring/40, ...). Use rgb(var(--x)) in
+     hand-written CSS. */
   :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
+    /* ---- surfaces ---------------------------------------------------- */
+    --canvas: 247 247 248;          /* page background                     */
+    --background: 255 255 255;      /* cards, popovers, inputs             */
+    --surface-muted: 250 250 250;   /* toolbars, table headers, footers    */
+
+    /* ---- text -------------------------------------------------------- */
+    --foreground: 24 24 27;
+    --primary-text: 24 24 27;
+    --secondary-text: 82 82 91;
+    --muted-foreground: 113 113 122;
+
+    /* ---- lines ------------------------------------------------------- */
+    --border: 232 232 236;
+    --input: 220 220 227;
+    --ring: 79 70 229;
+
+    /* ---- brand ------------------------------------------------------- */
+    --brand: 40 38 97;              /* wordmark / deepest brand navy       */
+    --primary: 79 70 229;
+    --primary-foreground: 255 255 255;
+    --primary-50: 244 244 255;
+    --primary-100: 238 240 255;
+    --primary-200: 220 223 254;
+    --primary-300: 192 196 251;
+    --primary-400: 155 160 247;
+    --primary-500: 124 123 240;
+    --primary-600: 79 70 229;
+    --primary-700: 67 56 202;
+    --primary-800: 55 48 163;
+    --primary-900: 40 38 97;
+
+    --secondary: 244 244 245;
+    --secondary-foreground: 24 24 27;
+    --accent: 244 244 245;
+    --accent-foreground: 24 24 27;
+    --muted: 244 244 245;
+    --brown: 239 126 86;
+
+    /* ---- status: soft surface + strong foreground -------------------- */
+    --destructive: 254 242 242;
+    --destructive-foreground: 220 38 38;
+    --warning: 255 251 235;
+    --warning-foreground: 180 83 9;
+    --success: 240 253 244;
+    --success-foreground: 21 128 61;
+
+    /* ---- shape ------------------------------------------------------- */
     --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
-
-    /* ruby_ui specific */
-    --warning: hsl(38 92% 50%);
-    --warning-foreground: hsl(0 0% 100%);
-    --success: hsl(87 100% 37%);
-    --success-foreground: hsl(0 0% 100%);
-
-    --background: #ffffff;
-    --foreground: #4b5563;
-    --primary: #282661;
-    --primary-foreground: #ffffff;
-    --primary-50: #f1f3fd;
-    --primary-100: #dfe4fa;
-    --primary-200: #c6cff7;
-    --primary-300: #9fb0f1;
-    --primary-400: #7288e8;
-    --primary-500: #5161e0;
-    --primary-600: #3c44d4;
-    --primary-700: #3433c2;
-    --primary-800: #322f9e;
-    --primary-900: #2c2b7d;
-    --secondary: #ffffff;
-    --secondary-foreground: #282661;
-    --brown: #ef7e56;
-    --primary-text: #212121;
-    --secondary-text: #757575;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: #ffffff;
-    --accent-foreground: #475569;
-    --destructive: #fef2f2;
-    --destructive-foreground: #dc2626;
-    --warning: #fefce8;
-    --warning-foreground: #ca8a04;
-    --success: #f0fdf4;
-    --success-foreground: #16a34a;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --radius: 0.5rem;
   }
 
   .dark {
@@ -153,31 +131,173 @@
   }
 
   * {
-    /* @apply border-border; */
+    border-color: rgb(var(--border));
   }
   body {
-    /* @apply bg-background text-foreground; */
-    background: var(--background);
-    color: var(--foreground);
-    font-feature-settings: 'rlig' 1, 'calt' 1;
+    background: rgb(var(--canvas));
+    color: rgb(var(--foreground));
+    font-feature-settings: 'rlig' 1, 'calt' 1, 'cv11' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4 {
+    letter-spacing: -0.02em;
+  }
+  :focus-visible {
+    outline: none;
+  }
+}
+
+@layer utilities {
+  /* Durations, totals and money never jitter while a timer ticks. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
   }
 }
 
 @layer components {
   /* TODO: Remove unised calsses, maybe? */
   .dialog-backdrop {
-    @apply z-50 overflow-y-auto overflow-x-hidden fixed bg-black inset-0 bg-opacity-70 flex flex-col justify-items-center items-center;
+    @apply z-50 overflow-y-auto overflow-x-hidden fixed bg-zinc-900/50 backdrop-blur-[2px] inset-0 flex flex-col justify-items-center items-center;
   }
   .dialog-content-base {
     @apply relative pb-8 w-full max-w-md h-auto mx-auto my-auto rounded-2xl bg-white;
   }
+
+  /* Page scaffolding shared by every signed-in screen. */
+  .page-shell {
+    @apply max-w-7xl mx-auto px-4 sm:px-6;
+  }
+  .page-head {
+    @apply page-shell flex flex-col gap-y-4 pt-6 pb-5 lg:flex-row lg:items-end lg:justify-between;
+  }
+  .page-title {
+    @apply text-xl lg:text-2xl font-semibold text-primary-text;
+  }
+  .page-subtitle {
+    @apply text-sm text-muted-foreground mt-1;
+  }
+  .surface-card {
+    @apply bg-background border border-border rounded-xl shadow-card;
+  }
+  .toolbar-segment {
+    @apply inline-flex items-stretch bg-background border border-border rounded-lg shadow-xs overflow-hidden divide-x divide-border;
+  }
+  .toolbar-segment > * {
+    @apply flex items-center px-2.5 text-sm text-secondary-text hover:bg-accent transition-colors;
+  }
+  .stat-chip {
+    @apply inline-flex items-center gap-x-2 rounded-full border border-border bg-background px-3 py-1.5 text-sm text-muted-foreground;
+  }
+  .stat-chip b {
+    @apply text-primary-text font-semibold tnum;
+  }
+
+  /* Section header shared by the workspace screens. */
+  .section-head {
+    @apply flex flex-row flex-wrap justify-between items-center gap-3 border-b border-border pb-4;
+  }
+  .section-title {
+    @apply text-base font-semibold text-primary-text;
+  }
+  .count-chip {
+    @apply inline-flex items-center justify-center h-6 min-w-[1.5rem] px-1.5 rounded-md bg-secondary border border-border text-xs font-semibold text-secondary-text tnum;
+  }
+
+  /* Form primitives — one place for every text input, select and textarea. */
+  .form-label {
+    @apply block text-sm font-medium text-secondary-text mb-1.5;
+  }
+  .form-input {
+    @apply w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-xs transition-colors
+           placeholder:text-muted-foreground
+           focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/25
+           disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .form-checkbox {
+    @apply h-4 w-4 rounded border-input text-primary-600 focus:ring-2 focus:ring-ring/25 focus:ring-offset-0;
+  }
+  .form-error {
+    @apply text-xs text-destructive-foreground mt-1.5;
+  }
+
+  /* Data tables collapse into stacked cards below md — a 4+ column table is
+     unreadable on a phone, and horizontal scroll hides the action column.
+     Each <td> carries data-label, which becomes the row's key. */
+  .table-stack {
+    @apply w-full;
+  }
+  @media (max-width: 767px) {
+    .table-stack,
+    .table-stack thead,
+    .table-stack tbody,
+    .table-stack tfoot,
+    .table-stack tr,
+    .table-stack td,
+    .table-stack th {
+      display: block;
+      width: 100%;
+    }
+    .table-stack thead {
+      display: none;
+    }
+    .table-stack tbody > tr {
+      @apply border-b border-border py-2;
+    }
+    .table-stack tbody > tr:last-child {
+      @apply border-b-0;
+    }
+    .table-stack td {
+      @apply flex items-center justify-between gap-x-4 px-3 py-1.5 border-0 text-sm;
+    }
+    .table-stack td::before {
+      content: attr(data-label);
+      @apply text-xs font-semibold uppercase tracking-wide text-muted-foreground shrink-0;
+    }
+    .table-stack td[data-label=""]::before,
+    .table-stack td:not([data-label])::before {
+      content: none;
+    }
+    /* Layout-only cells (column spacers) disappear on the stacked card. */
+    .table-stack td[data-role="spacer"] {
+      display: none;
+    }
+    /* A cell that holds the row's actions gets the full width to itself. */
+    .table-stack td[data-role="actions"] {
+      @apply justify-end pt-2;
+    }
+    /* A cell that is the card's heading spans the row and loses its label. */
+    .table-stack td[data-role="title"] {
+      @apply pt-2 pb-0.5;
+    }
+  }
+
+  /* Horizontally scrollable wrapper for genuinely wide tables (md and up). */
+  .table-scroll {
+    @apply w-full overflow-x-auto;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer components {
   .dialog-action-holder {
     @apply flex items-center justify-center flex-wrap gap-4;
   }
 }
 
 .auth-illustration-wrapper {
-  background: url("pattern-wavy.svg") no-repeat center/cover var(--primary);
+  background:
+    url("pattern-wavy.svg") no-repeat center/cover,
+    linear-gradient(150deg, rgb(var(--primary-700)) 0%, rgb(var(--brand)) 100%);
 }
 
 .hide-table-overflow > div {

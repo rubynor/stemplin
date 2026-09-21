@@ -22,26 +22,26 @@
       <% end %>
     <% end %>
     <div class="flex flex-row gap-x-2 items-center">
-      <div class="bg-gray-50 rounded-full w-10 h-10 flex justify-center items-center">
+      <div class="bg-surface-muted rounded-full w-10 h-10 flex justify-center items-center">
         <i class="uc-icon text-lg">&#xe8f2;</i>
       </div>
       <div class="flex flex-col gap-y-1">
         <div class="flex flex-row gap-x-2">
-          <span class="text-sm text-gray-500 font-medium"><%= assigned_task.task.name %></span>
+          <span class="text-sm text-muted-foreground font-medium"><%= assigned_task.task.name %></span>
           <%= render RubyUI::Badge.new(variant: assigned_task.rate.zero? ? :gray : :purple, class: "!rounded-full flex gap-x-1 w-fit") do %>
             <span><%= assigned_task.rate.zero? ? t("common.project_rate") : t("common.custom_rate") %></span>
           <% end %>
         </div>
         <% unless assigned_task.rate.zero? %>
           <div class="text-sm">
-            <span class="text-gray-400"><%= @currency %></span>
+            <span class="text-muted-foreground"><%= @currency %></span>
             <span class="font-medium"><%= assigned_task.rate_currency %></span>
           </div>
         <% end %>
       </div>
     </div>
     <div class="flex flex-row gap-x-2">
-      <%= link_to remove_workspace_assigned_tasks_path(domid: domid, assigned_task_id: id), data: { turbo_method: :delete }, class: "px-4 !h-12 border !border-gray-100 rounded flex items-center justify-center" do %>
+      <%= link_to remove_workspace_assigned_tasks_path(domid: domid, assigned_task_id: id), data: { turbo_method: :delete }, class: "px-4 !h-12 border !border-border rounded flex items-center justify-center" do %>
         <i class="uc-icon">&#xeb97;</i>
       <% end %>
     </div>

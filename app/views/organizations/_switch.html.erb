@@ -1,34 +1,48 @@
-<%= render RubyUI::Dialog.new do %>
-  <%= render RubyUI::DialogTrigger.new(class: "block bg-gray-50 px-6 py-2 rounded-md border border-gray-50 hover:text-primary cursor-pointer") do %>
-    <div class="flex gap-x-4">
-      <%= image_tag "stemplin-ico.svg" %>
-      <div class="flex flex-col">
-        <%= image_tag "stemplin-text.svg", class: "w-24" %>
-        <span class="text-sm text-gray-400 font-regular"><%= user.current_organization.name %></span>
-      </div>
-      <div class="flex justify-center items-center ml-4">
-        <i class="uc-icon text-lg text-gray-400">&#xe81d;</i>
-      </div>
-    </div>
-    <%# TODO: let's revamp our logo at the right time  %>
+<div class="flex items-center gap-x-3">
+  <%= link_to time_regs_path, class: "flex items-center gap-x-2 shrink-0" do %>
+    <%= image_tag "stemplin-ico.svg", class: "h-7 w-auto" %>
+    <%= image_tag "stemplin-text.svg", class: "h-4 w-auto hidden sm:block" %>
   <% end %>
-  <%= render RubyUI::DialogContent.new do %>
-    <%= render RubyUI::DialogHeader.new do %>
-      <%= render RubyUI::DialogTitle.new { t("common.organizations") } %>
+
+  <%= render RubyUI::Dialog.new do %>
+    <%= render RubyUI::DialogTrigger.new(class: "cursor-pointer") do %>
+      <div class="flex items-center gap-x-2 h-9 pl-2 pr-2.5 rounded-lg border border-border bg-surface-muted hover:bg-accent transition-colors">
+        <span class="h-5 w-5 rounded-md bg-primary-100 text-primary-700 text-[10px] font-bold flex items-center justify-center">
+          <%= user.current_organization.name.to_s.split.first(2).map { |word| word[0] }.join.upcase %>
+        </span>
+        <span class="text-sm font-medium text-secondary-text max-w-[9rem] truncate">
+          <%= user.current_organization.name %>
+        </span>
+        <i class="uc-icon text-sm text-muted-foreground">&#xe81d;</i>
+      </div>
     <% end %>
-    <%= render RubyUI::DialogMiddle.new do %>
-      <%= content_tag(:div, class: "flex flex-col overflow-y-auto max-h-[600px]") do %>
-        <% user.organizations.order(name: :asc).each do |organization| %>
-          <div class="relative">
-            <%= button_to set_current_organization_path(organization.id), method: :post, data: { turbo: false }, class: class_names("w-full pointer-events-auto flex flex-col items-center lg:items-start p-2 md:p-4 lg:p-6 transition duration-300 ease-in-out",  "bg-gradient-to-r from-pink-50 lg:from-pink-100": organization == user.current_organization) do %>
-              <%= content_tag(:span, organization.name, class: class_names("text-base md:text-xl lg:text-xl font-regular text-gray-400 transition duration-300 ease-in-out", "text-gray-600 font-semibold": organization == user.current_organization) ) %>
+
+    <%= render RubyUI::DialogContent.new do %>
+      <%= render RubyUI::DialogHeader.new do %>
+        <%= render RubyUI::DialogTitle.new { t("common.organizations") } %>
+      <% end %>
+      <%= render RubyUI::DialogMiddle.new do %>
+        <div class="flex flex-col gap-y-1 overflow-y-auto max-h-[60vh] -mx-1 px-1">
+          <% user.organizations.order(name: :asc).each do |organization| %>
+            <% current = organization == user.current_organization %>
+            <%= button_to set_current_organization_path(organization.id), method: :post, data: { turbo: false },
+                  class: class_names(
+                    "w-full text-left rounded-lg px-3 py-3 transition-colors flex items-center gap-x-3",
+                    current ? "bg-primary-50 ring-1 ring-primary-200" : "hover:bg-accent"
+                  ) do %>
+              <span class="h-8 w-8 rounded-lg bg-background border border-border text-xs font-bold text-secondary-text flex items-center justify-center shrink-0">
+                <%= organization.name.to_s.split.first(2).map { |word| word[0] }.join.upcase %>
+              </span>
+              <span class="<%= current ? "text-primary-700 font-semibold" : "text-secondary-text font-medium" %> text-sm">
+                <%= organization.name %>
+              </span>
+              <% if current %>
+                <i class="uc-icon text-base text-primary-600 ml-auto">&#xe8b2;</i>
+              <% end %>
             <% end %>
-            <% if organization == user.current_organization %>
-              <div class="w-1 h-full bg-primary absolute bottom-0 transition duration-300 ease-in-out"></div>
-            <% end %>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       <% end %>
     <% end %>
   <% end %>
-<% end %>
+</div>

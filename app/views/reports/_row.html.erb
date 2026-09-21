@@ -1,22 +1,18 @@
-<%= render RubyUI::TableRow.new(class: "!py-4") do %>
-  <%= render RubyUI::TableCell.new do %>
+<%= render RubyUI::TableRow.new do %>
+  <%= render RubyUI::TableCell.new(data: { role: "title" }) do %>
     <%# TODO: Refactor this and find a way to persist old unchanged query params %>
     <%- disable_link = @filter.visible_tabs.length <= 1 -%>
-    <%= link_to disable_link ? "#" : reports_path(filter: @filter.to_h(**result[:group_link])), class: class_names("flex flex-col", disable_link ? "cursor-default" : "underline text-blue-600") do %>
-      <div class="flex flex-row items-center gap-x-1">
-        <span class="font-medium text-sm"><%= result[:attribute_name] %></span>
-      </div>
+    <%= link_to disable_link ? "#" : reports_path(filter: @filter.to_h(**result[:group_link])), class: class_names("flex flex-col", disable_link ? "cursor-default" : "text-primary hover:underline underline-offset-4") do %>
+      <span class="font-medium text-sm"><%= result[:attribute_name] %></span>
     <% end %>
   <% end %>
-  <%= render RubyUI::TableCell.new { minutes_to_float result[:total_minutes] } %>
-  <%= render RubyUI::TableCell.new do %>
-    <div>
-      <span><%= minutes_to_float result[:total_billable_minutes] %></span>
-      <span>(<%= result[:total_billable_minutes_percentage] %>%)</span>
-    </div>
+  <%= render RubyUI::TableCell.new(class: "text-right tnum text-secondary-text", data: { label: t("common.hours") }) { minutes_to_float result[:total_minutes] } %>
+  <%= render RubyUI::TableCell.new(class: "text-right", data: { label: t("common.billable_hours") }) do %>
+    <span class="tnum text-secondary-text"><%= minutes_to_float result[:total_billable_minutes] %></span>
+    <span class="text-xs text-muted-foreground tnum">(<%= result[:total_billable_minutes_percentage] %>%)</span>
   <% end %>
-  <%= render RubyUI::TableCell.new do %>
-    <span><%= result[:total_billable_amount] %></span>
-    <span class="text-xs text-gray-400"><%= @currency %></span>
+  <%= render RubyUI::TableCell.new(class: "text-right", data: { label: t("common.billable_amount") }) do %>
+    <span class="tnum text-secondary-text"><%= result[:total_billable_amount] %></span>
+    <span class="text-xs text-muted-foreground"><%= @currency %></span>
   <% end %>
 <% end %>
