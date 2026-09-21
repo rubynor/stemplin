@@ -48,6 +48,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
         serviceWorkerController: navigator.serviceWorker && navigator.serviceWorker.controller ? navigator.serviceWorker.controller.state : null,
         navigations: performance.getEntriesByType("navigation").map(n => ({ type: n.type, start: n.startTime, domContentLoaded: n.domContentLoadedEventEnd, load: n.loadEventEnd })),
         now: performance.now(),
+        trace: window.__trace || null,
         scripts: Array.from(document.scripts).map(s => s.src || "(inline)")
       })
     JS
@@ -86,6 +87,28 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
         raise Capybara::ElementNotFound, "the reloaded page has not finished loading"
       end
     end
+    start_browser_trace
+  end
+
+  # Records what happens in the page after the test takes over: focus moves,
+  # input, form resets, Turbo lifecycle events and body-level DOM replacement.
+  # Dumped with the browser state on failure.
+  def start_browser_trace
+    execute_script(<<~JS)
+      window.__trace = [];
+      const log = (kind, detail) => window.__trace.push([Math.round(performance.now()), kind, detail]);
+      const describe = (el) => el && el.tagName ? `${el.tagName}#${el.id}[name=${el.getAttribute && el.getAttribute("name")}]` : String(el);
+      ["focusin", "focusout", "input", "change", "reset", "submit", "click"].forEach(type =>
+        document.addEventListener(type, e => log(type, describe(e.target) + (type === "input" ? ` value=${JSON.stringify(e.target.value)}` : "")), true));
+      ["turbo:visit", "turbo:before-render", "turbo:render", "turbo:load", "turbo:before-cache", "turbo:before-fetch-request", "turbo:frame-render", "turbo:morph", "popstate", "pageshow", "pagehide", "visibilitychange"].forEach(type =>
+        (type.startsWith("turbo") || type === "popstate" ? document : window).addEventListener(type, e => log(type, e.detail && e.detail.url ? e.detail.url : "")));
+      new MutationObserver(records => records.forEach(r => {
+        if (r.target === document.documentElement || r.target === document.body || r.target.tagName === "FORM") {
+          log("mutation", `${describe(r.target)} +${[...r.addedNodes].map(describe)} -${[...r.removedNodes].map(describe)}`);
+        }
+      })).observe(document.documentElement, { childList: true, subtree: true });
+      log("trace-start", location.href);
+    JS
   end
 
   # Turbo marks <html> (visits) and the submitted <form> (submissions) with
