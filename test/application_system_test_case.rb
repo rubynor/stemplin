@@ -43,6 +43,11 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
         turbo: typeof window.Turbo,
         stimulus: typeof window.Stimulus,
         stimulusControllers: window.Stimulus ? window.Stimulus.router.modulesByIdentifier.size : null,
+        hasFocus: document.hasFocus(),
+        visibility: document.visibilityState,
+        serviceWorkerController: navigator.serviceWorker && navigator.serviceWorker.controller ? navigator.serviceWorker.controller.state : null,
+        navigations: performance.getEntriesByType("navigation").map(n => ({ type: n.type, start: n.startTime, domContentLoaded: n.domContentLoadedEventEnd, load: n.loadEventEnd })),
+        now: performance.now(),
         scripts: Array.from(document.scripts).map(s => s.src || "(inline)")
       })
     JS
