@@ -24,8 +24,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     user = users(:joe)
     sign_in_as user
 
-    # The header shows the user's name; the email moved inside the menu.
-    find("span", text: user.name).click
+    find("span", text: user.name, exact_text: true).click
     click_on I18n.t("common.sign_out")
 
     assert_current_path new_user_session_path
