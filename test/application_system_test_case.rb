@@ -89,18 +89,34 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   # application script has not attached Turbo or Stimulus yet. Mark the current
   # document, reload, and wait until the new document is complete.
   def reload_page
-    execute_script("document.documentElement.setAttribute('data-stale-document', '')")
-    visit current_path
-    assert_no_selector "html[data-stale-document]", wait: 10
-    page.document.synchronize(10) do
-      unless evaluate_script("document.readyState === 'complete' && typeof window.Turbo === 'object'")
-        raise Capybara::ElementNotFound, "the reloaded page has not finished loading"
+    3.times do |attempt|
+      execute_script("document.documentElement.setAttribute('data-stale-document', '')")
+      visit current_path
+      assert_no_selector "html[data-stale-document]", wait: 10
+      page.document.synchronize(10) do
+        unless evaluate_script("document.readyState === 'complete' && typeof window.Turbo === 'object'")
+          raise Capybara::ElementNotFound, "the reloaded page has not finished loading"
+        end
       end
+      start_browser_trace
+      return if input_reaches_page?
+
+      warn "reload_page: browser dropped input after reload (attempt #{attempt + 1}), reloading again"
     end
-    # Input sent before the new document has produced a frame was seen to be
-    # dropped by the browser without any error. Wait for two rendered frames.
-    evaluate_async_script("const done = arguments[0]; requestAnimationFrame(() => requestAnimationFrame(() => done(true)))")
-    start_browser_trace
+    flunk "the browser kept dropping input after reloading the page"
+  end
+
+  # On CI, Chrome was seen to silently discard every WebDriver pointer and key
+  # event sent to a freshly reloaded document: no error, no event in the page.
+  # Move the mouse over the page and check that the document saw it.
+  def input_reaches_page?
+    10.times do
+      page.driver.browser.action.move_to_location(5, 5).move_to_location(10, 10).perform
+      return true if evaluate_script("(window.__trace || []).some(entry => entry[1] === 'mousemove')")
+
+      sleep 0.2
+    end
+    false
   end
 
   # Records what happens in the page after the test takes over: focus moves,
