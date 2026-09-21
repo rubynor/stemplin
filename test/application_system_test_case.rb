@@ -8,6 +8,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :selenium, using: ENV["HEADFUL"].present? ? :chrome : :headless_chrome, screen_size: [ 1400, 1400 ] do |options|
     # Keep the browser console so a failure can be diagnosed from CI artifacts.
     options.add_option("goog:loggingPrefs", { browser: "ALL" })
+    # Google Chrome on CI runners takes part in Google's field trials, so it
+    # can behave differently from the Chromium on a developer machine. Turn
+    # them off so both run the same browser.
+    options.add_argument("--disable-field-trial-config")
   end
 
   # CI runners are slower than a laptop; the default 2 seconds makes
@@ -87,6 +91,9 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
         raise Capybara::ElementNotFound, "the reloaded page has not finished loading"
       end
     end
+    # Input sent before the new document has produced a frame was seen to be
+    # dropped by the browser without any error. Wait for two rendered frames.
+    evaluate_async_script("const done = arguments[0]; requestAnimationFrame(() => requestAnimationFrame(() => done(true)))")
     start_browser_trace
   end
 
