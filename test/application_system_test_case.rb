@@ -71,14 +71,21 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     reload_page unless keep_flash
   end
 
-  # Selenium can return from a navigation before the new document has replaced
-  # the one on screen, and everything the test then types or clicks is lost
-  # when the new document lands. Mark the current document and wait until it
-  # is gone.
+  # Navigating to the URL the browser is already on is a reload, and Selenium
+  # returns from it before the new document has finished loading. Anything the
+  # test types or clicks in the meantime is lost: Chrome restores the old
+  # document's (empty) form state at the end of parsing, and the deferred
+  # application script has not attached Turbo or Stimulus yet. Mark the current
+  # document, reload, and wait until the new document is complete.
   def reload_page
     execute_script("document.documentElement.setAttribute('data-stale-document', '')")
     visit current_path
     assert_no_selector "html[data-stale-document]", wait: 10
+    page.document.synchronize(10) do
+      unless evaluate_script("document.readyState === 'complete' && typeof window.Turbo === 'object'")
+        raise Capybara::ElementNotFound, "the reloaded page has not finished loading"
+      end
+    end
   end
 
   # Turbo marks <html> (visits) and the submitted <form> (submissions) with
