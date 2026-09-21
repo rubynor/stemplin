@@ -1,5 +1,6 @@
 <% content_for :base_layout do %>
-  <%= render "layouts/navbar" if user_signed_in? %>
+  <%# The navbar needs an organization; users still in onboarding have none. %>
+  <%= render "layouts/navbar" if user_signed_in? && current_user.current_organization %>
   <main>
     <%= yield %>
   </main>
@@ -10,7 +11,7 @@
     <% end %>
     <%= content_tag(:div, class: class_names("flex flex-row justify-between items-start lg:items-center w-full section-container py-4 gap-y-4": !user_signed_in?)) do %>
       <span class="font-regular text-sm text-gray-600">Stemplin <%= Date.current.year %></span>
-      <%= content_tag(:div, class: class_names("flex flex-col lg:flex-row items-start justify-center gap-x-4", "hidden": user_signed_in?)) do %>
+      <%= content_tag(:div, class: "flex flex-col lg:flex-row items-start justify-center gap-x-4") do %>
         <%= link_to t("privacy_policy.title"), privacy_policy_path, class: "text-gray-600 font-medium underline" %>
         <%= link_to t("contact_us.title"), "mailto:contact@stemplin.com", class: "text-gray-600 font-medium underline" %>
       <% end %>

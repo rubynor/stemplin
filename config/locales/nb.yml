@@ -642,17 +642,17 @@ nb:
               - "Nettsiden bruker ulike skjemaer som registrerer forskjellige opplysninger om brukeren. Det er brukeren selv som styrer hva slags informasjon som oppgis i disse skjemaene. Eksempler på slike skjemaer er opprettelse av en ny bruker og timeregistrering."
           - title: "Informasjonskapsler"
             content:
-              - "Informasjonskapsler (cookies) er små tekstfiler som plasseres på din datamaskin når du laster ned en nettside. Stemplin bruker informasjonskapsler for å lagre data om din bruker. Dette brukes til automatisk innlogging, så du slipper å logge inn på nytt hver gang du besøker <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. I tillegg brukes informasjonskapsler til å innhente statistikk og brukermønstre, gjennom Microsoft Clarity. "
+              - "Informasjonskapsler (cookies) er små tekstfiler som plasseres på din datamaskin når du laster ned en nettside. Stemplin bruker informasjonskapsler for å lagre data om din bruker. Dette brukes til automatisk innlogging, så du slipper å logge inn på nytt hver gang du besøker <span class='text-primary-600 font-semibold'>www.stemplin.com</span>. I tillegg brukes informasjonskapsler til å innhente statistikk og brukermønstre, gjennom Microsoft Clarity og PostHog."
       - title: "Hvor lenge lagrer vi personopplysninger"
         content:
           - "Vi lagrer opplysninger om deg, kun så lenge det er nødvendig for å oppnå formålet de ble innhentet for, eller så lenge vi er pålagt å lagre opplysningene. Opplysningene vil slettes eller anonymiseres når de ikke lengre er nødvendige for å oppnå formålet."
           - "Informasjon kan slettes på oppfordring ved skriftlig henvendelse til Rubynor AS."
       - title: "Hvem deler vi personopplysninger med"
         content:
-          - "Vi deler personopplysninger med databehandlere som leverer tekniske tjenester, nødvendig for Stemplin sin funksjonalitet. Dette inkluderer Hetzner Online GmbH."
+          - "Vi deler personopplysninger med databehandlere som leverer tekniske tjenester, nødvendig for Stemplin sin funksjonalitet. Dette inkluderer Hetzner Online GmbH (drift), Twilio SendGrid (utsending av e-post som invitasjoner og tilbakestilling av passord), Microsoft Clarity og PostHog (bruksstatistikk) og Sentry (feilrapportering)."
       - title: "Dine rettigheter"
         content:
-          - "Alle som spør har rett på grunnleggende informasjon om behandlinger av personopplysninger i en virksomhet etter personopplysningslovens § 18, 1. ledd. Stemplin har gitt grunnleggende informasjonen om behandling av personopplysninger ii denne erklæringen, og henvise til denne erklæringen ved eventuelle forespørsler. Du har rett til å be oss om å:"
+          - "Alle som spør har rett på grunnleggende informasjon om behandlinger av personopplysninger i en virksomhet etter personopplysningsloven og personvernforordningen (GDPR) artikkel 13–15. Stemplin har gitt grunnleggende informasjon om behandling av personopplysninger i denne erklæringen, og henviser til denne erklæringen ved eventuelle forespørsler. Du har rett til å be oss om å:"
         list_items:
           - "Gi deg ytterligere informasjon om hvordan vi behandler dine personopplysninger."
           - "Gi deg en kopi av personopplysninger om deg."
@@ -669,7 +669,7 @@ nb:
       - title: "Kontaktinformasjon"
         details:
           - label: "Postadresse"
-            value: "Bedriftsveien 64, 3735 Skien, Norge"
+            value: "Bedriftsvegen 64, 3735 Skien, Norge"
           - label: "Epost"
             value: "contact@stemplin.com"
   contact_us:

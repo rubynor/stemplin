@@ -13,6 +13,12 @@
         <div class="max-w-xl mx-auto h-full flex items-center p-4">
           <%= yield %>
         </div>
+        <div class="lg:absolute lg:bottom-0 lg:left-0 w-full">
+          <div class="flex items-center gap-x-4 max-w-xl mx-auto px-4 py-4 text-sm text-gray-600">
+            <span>Stemplin <%= Date.current.year %></span>
+            <%= link_to t("privacy_policy.title"), privacy_policy_path, class: "font-medium underline hover:text-primary-600" %>
+          </div>
+        </div>
       </div>
       <div class="hidden lg:block shadow-xl auth-illustration-wrapper relative">
         <div class="max-w-xl mx-auto p-4 flex flex-col justify-center items-center h-full">
