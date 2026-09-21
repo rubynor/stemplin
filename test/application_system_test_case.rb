@@ -63,7 +63,17 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     # test the old document, and everything typed or clicked there is lost when
     # the new one lands. Let Turbo settle first.
     wait_for_turbo
-    visit current_path unless keep_flash
+    reload_page unless keep_flash
+  end
+
+  # Selenium can return from a navigation before the new document has replaced
+  # the one on screen, and everything the test then types or clicks is lost
+  # when the new document lands. Mark the current document and wait until it
+  # is gone.
+  def reload_page
+    execute_script("document.documentElement.setAttribute('data-stale-document', '')")
+    visit current_path
+    assert_no_selector "html[data-stale-document]", wait: 10
   end
 
   # Turbo marks <html> (visits) and the submitted <form> (submissions) with
