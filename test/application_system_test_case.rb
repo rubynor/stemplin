@@ -12,6 +12,18 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     # can behave differently from the Chromium on a developer machine. Turn
     # them off so both run the same browser.
     options.add_argument("--disable-field-trial-config")
+    # Chrome offers to save the password after every sign-in. The bubble is
+    # browser UI outside the page, and while it is up, pointer and key events
+    # sent to the page were seen to vanish on CI. Turn the password manager,
+    # notifications and other first-run UI off.
+    options.add_argument("--disable-save-password-bubble")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-infobars")
+    options.add_argument("--no-first-run")
+    options.add_argument("--no-default-browser-check")
+    options.add_preference(:credentials_enable_service, false)
+    options.add_preference("profile.password_manager_enabled", false)
+    options.add_preference("profile.password_manager_leak_detection", false)
   end
 
   # CI runners are slower than a laptop; the default 2 seconds makes
@@ -62,6 +74,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
         scripts: Array.from(document.scripts).map(s => s.src || "(inline)")
       })
     JS
+    state["windowHandles"] = page.driver.browser.window_handles.size
     console = page.driver.browser.logs.get(:browser).map { |e| "#{e.level} #{e.message}" }
     File.write(dir.join("#{method_name}.browser.txt"), [ JSON.pretty_generate(state), *console ].join("\n"))
   rescue => e
