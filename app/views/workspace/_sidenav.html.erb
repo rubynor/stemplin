@@ -1,22 +1,31 @@
-<div class="px-4">
-  <ul class="space-y-1">
-    <li>
-      <%= link_to workspace_projects_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_projects_path, new_workspace_project_path, edit_workspace_project_path(@project&.id || 0), workspace_project_path(@project&.id || 0), workspace_client_path(@client&.id || 0)]) ? "bg-gray-100 text-primary-600": "hover:text-primary-700 text-gray-700") do %>
-        <i class="uc-icon text-xl">&#xe94f;</i>
-        <span><%= t("common.clients_and_projects") %></span>
-      <% end %>
-    </li>
-    <li>
-      <%= link_to workspace_team_members_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_team_members_path, invite_users_workspace_team_members_path]) ? "bg-gray-100 text-primary-600": "hover:text-primary-700 text-gray-700") do %>
-        <i class="uc-icon text-xl">&#xebb3;</i>
-        <span><%= t("common.team_members") %></span>
-      <% end %>
-    </li>
-    <li>
-      <%= link_to workspace_settings_path, class: class_names("group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold", is_page_active?([workspace_settings_path, edit_workspace_settings_path]) ? "bg-gray-100 text-primary-600": "hover:text-primary-700 text-gray-700") do %>
-        <i class="uc-icon text-xl">&#xe8f2;</i>
-        <span><%= t("common.settings") %></span>
-      <% end %>
-    </li>
+<%
+  items = []
+  items << {
+    label: t("common.clients_and_projects"), icon: "&#xe94f;", path: workspace_projects_path,
+    matches: [ workspace_projects_path, new_workspace_project_path, edit_workspace_project_path(@project&.id || 0), workspace_project_path(@project&.id || 0), workspace_client_path(@client&.id || 0) ]
+  }
+  items << {
+    label: t("common.team_members"), icon: "&#xebb3;", path: workspace_team_members_path,
+    matches: [ workspace_team_members_path, invite_users_workspace_team_members_path ]
+  }
+  items << {
+    label: t("common.settings"), icon: "&#xe8f2;", path: workspace_settings_path,
+    matches: [ workspace_settings_path, edit_workspace_settings_path ]
+  }
+%>
+<nav>
+  <ul class="flex flex-row lg:flex-col gap-1 overflow-x-auto no-scrollbar -mx-1 px-1">
+    <% items.each do |item| %>
+      <% active = is_page_active?(item[:matches]) %>
+      <li>
+        <%= link_to item[:path], class: class_names(
+              "group flex items-center gap-x-2.5 rounded-lg px-3 py-2 text-sm whitespace-nowrap transition-colors",
+              active ? "bg-primary-50 text-primary-700 font-semibold" : "text-secondary-text font-medium hover:bg-accent hover:text-foreground"
+            ) do %>
+          <i class="uc-icon text-lg <%= active ? "text-primary-600" : "text-muted-foreground" %>"><%= item[:icon].html_safe %></i>
+          <span><%= item[:label] %></span>
+        <% end %>
+      </li>
+    <% end %>
   </ul>
-</div>
+</nav>

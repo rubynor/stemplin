@@ -4,7 +4,7 @@
   <%= render RubyUI::DialogTrigger.new(class: "hidden", data: { custom_dialog_target: "trigger" }) do %>
     <%= render RubyUI::Button.new { "Open Dialog" } %>
   <% end %>
-  <%= render RubyUI::DialogContent.new(class: "bg-white") do %>
+  <%= render RubyUI::DialogContent.new do %>
     <%= content = capture do %>
       <%= render RubyUI::DialogHeader.new do %>
         <%= render RubyUI::DialogTitle.new { title } %>
@@ -14,8 +14,8 @@
       <%# Recent entries quick-select section - OUTSIDE the form to avoid nested forms %>
       <% unless is_admin_adding_new_record %>
         <% if defined?(recent_entries) && recent_entries.present? %>
-          <div class="px-1 py-3 border-b border-gray-100">
-            <span class="text-xs text-gray-500 font-medium mb-2 block"><%= t('time_regs.recent_entries') %></span>
+          <div class="px-1 py-3 border-b border-border">
+            <span class="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2 block"><%= t('time_regs.recent_entries') %></span>
             <div class="flex flex-wrap gap-2">
               <% recent_entries.each do |entry| %>
                 <%= render ButtonComponent.new(
@@ -25,12 +25,12 @@
                   class: "!h-auto !py-2 !px-3 flex-col items-start text-left max-w-[200px]"
                 ) do %>
                   <div class="flex items-center gap-1 w-full">
-                    <span class="text-xs font-semibold text-gray-700 truncate"><%= entry.client.name %></span>
-                    <span class="text-xs text-gray-400">&middot;</span>
-                    <span class="text-xs text-gray-500"><%= convert_time_int(entry.minutes) %></span>
+                    <span class="text-xs font-semibold text-primary-text truncate"><%= entry.client.name %></span>
+                    <span class="text-xs text-muted-foreground">&middot;</span>
+                    <span class="text-xs text-muted-foreground tnum"><%= convert_time_int(entry.minutes) %></span>
                   </div>
-                  <span class="text-sm text-gray-600 truncate w-full"><%= entry.project.name %></span>
-                  <span class="text-xs text-gray-400 truncate w-full"><%= entry.task.name %></span>
+                  <span class="text-sm text-secondary-text truncate w-full"><%= entry.project.name %></span>
+                  <span class="text-xs text-muted-foreground truncate w-full"><%= entry.task.name %></span>
                 <% end %>
               <% end %>
             </div>
@@ -48,26 +48,26 @@
           <%= content_tag(:div, class: "w-full flex flex-col") do %>
             <div class="block" data-controller="time-tasks">
               <% time_reg.errors.full_messages_for(:base).each do |message| %>
-                <div  class="text-red-600 text-xs italic mt-1"><%= message %></div>
+                <div class="form-error"><%= message %></div>
               <% end %>
               <%= hidden_field_tag :date, chosen_date %>
               <%= hidden_field_tag :provide_user, is_admin_adding_new_record %>
               <% if is_admin_adding_new_record %>
                 <div class="mb-4">
-                  <%= form.label :user, t("common.member"), class: 'block text-gray-700 text-sm font-bold mb-2' %>
+                  <%= form.label :user, t("common.member"), class: 'form-label' %>
                   <%= form.collection_select :user_id, (team_members || [] ), :id, ->(member) { "#{member.first_name} #{member.last_name}" }, { selected: "", prompt: t("common.select_member") }, {
-                    class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
+                    class: 'form-input'
                   } %>
                   <% time_reg.errors.full_messages_for(:user).each do |message| %>
-                    <div class="text-red-600 italic text-xs mt-1"><%= t("common.select_member") %></div>
+                    <div class="form-error"><%= t("common.select_member") %></div>
                   <% end %>
                 </div>
                 <div class="mb-4">
                   <%= render DropdownComponent.new(options: { close_background_delay: true }, class: "") do %>
-                    <%= form.label :date_worked, t("common.date_worked"), class: 'block text-gray-700 text-sm font-bold mb-2' %>
-                    <%= render DropdownComponentTrigger.new(class: "w-full bg-white border border-gray-200 rounded-md px-2 py-2 flex items-center gap-x-1 justify-between") do %>
-                      <span class="text-gray-600 text-base"><%= t("common.select_date_worked") %> </span>
-                      <i class="uc-icon text-2xl text-gray-500">&#xe81d;</i>
+                    <%= form.label :date_worked, t("common.date_worked"), class: 'form-label' %>
+                    <%= render DropdownComponentTrigger.new(class: "form-input flex items-center gap-x-1 justify-between") do %>
+                      <span class="text-sm text-muted-foreground"><%= t("common.select_date_worked") %> </span>
+                      <i class="uc-icon text-lg text-muted-foreground">&#xe81d;</i>
                     <% end %>
                     <%= render DropdownComponentContent.new do %>
                       <%= form.hidden_field :date_worked, id: "date_worked", value: chosen_date, data: { controller: "input" } %>
@@ -77,55 +77,55 @@
                 </div>
               <% end %>
               <div class="mb-4" data-time-tasks-target="project">
-                <%= form.label :project_id, t('common.project'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
+                <%= form.label :project_id, t('common.project'), class: 'form-label' %>
                 <%= form.grouped_collection_select :project_id, clients, :items, :name, :id, :name, {
                   selected: time_reg.assigned_task&.project_id || time_reg.project&.id || "",
                   prompt: t('common.select_project'),
                 }, {
-                  class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white',
+                  class: 'form-input',
                   data: { action: "change->custom-disable#toggleElement", custom_disable_enable_param: true }
                 } %>
               </div>
 
               <div class="mb-4" data-time-tasks-target="task">
-                <%= form.label :assigned_task_id, t('task.assign_task'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
+                <%= form.label :assigned_task_id, t('task.assign_task'), class: 'form-label' %>
                 <%= form.collection_select :assigned_task_id, (assigned_tasks || [] ), :id, :name, {
                   selected: time_reg.assigned_task&.id, include_blank: !time_reg.assigned_task }, {
-                                              class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white'
+                                              class: 'form-input'
                                             } %>
                 <% time_reg.errors.full_messages_for(:assigned_task).each do |message| %>
-                  <div class="text-red-600 italic text-xs mt-1"><%= t('alert.please_select_a_task') %></div>
+                  <div class="form-error"><%= t('alert.please_select_a_task') %></div>
                 <% end %>
               </div>
 
               <div class="mb-4">
-                <%= form.label :notes, t('common.notes'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
-                <%= form.text_area :notes, placeholder: t("common.remember_to_fill_out"), class: 'w-full rounded-md p-2 border border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white text-black placeholder:text-gray-400' %>
+                <%= form.label :notes, t('common.notes'), class: 'form-label' %>
+                <%= form.text_area :notes, placeholder: t("common.remember_to_fill_out"), class: 'form-input min-h-[5rem]' %>
                 <% time_reg.errors.full_messages_for(:notes).each do |message| %>
-                  <div  class="text-red-600 text-xs italic mt-1"><%= message %></div>
+                  <div class="form-error"><%= message %></div>
                 <% end %>
               </div>
 
               <%= content_tag :div do %>
-                <%= form.label :minutes_string, t('common.time'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
+                <%= form.label :minutes_string, t('common.time'), class: 'form-label' %>
                 <%= form.hidden_field :minutes, data: { "custom-input-target": "hiddenInput" } %>
                 <%= form.text_field :minutes_string, placeholder: "0:00", pattern: /^\d+([:,]\d+)?(\.\d+)?$/, autofocus: true, data: {
                   action: "custom-input#updatehiddenInput change->custom-input#updateFormat",
                   "custom-input-target": "input"
                 }, value: (convert_time_int(time_reg.minutes) if time_reg.minutes.to_i > 0),
-                        class: 'text-end w-full rounded-md p-2 border invalid:border-red-700 border-gray-300 focus:ring-1 focus:ring-seaGreenDark focus:border-seaGreenDark ring-offset-1 ring-offset-white text-black placeholder:text-gray-300'
+                        class: 'form-input text-end text-lg font-semibold tnum invalid:border-destructive-foreground'
                 %>
                 <% unless is_admin_adding_new_record %>
                   <%= form.hidden_field :date_worked, value: chosen_date %>
                 <% end %>
                 <% time_reg.errors.full_messages_for(:minutes).each do |message| %>
-                  <div class="text-red-600 italic text-xs mt-1"><%= message %></div>
+                  <div class="form-error"><%= message %></div>
                 <% end %>
               <% end %>
             </div>
           <% end %>
         <% end %>
-        <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-gray-100") do %>
+        <%= render RubyUI::DialogFooter.new(class: "mt-5 pt-4 border-t border-border") do %>
           <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->ruby-ui--dialog#dismiss' }) { t("common.cancel") } %>
           <%= render ButtonComponent.new(type: :submit, data: { custom_input_target: "submitButton", custom_disable_target: "content" }) {} %>
         <% end %>

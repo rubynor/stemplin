@@ -19,7 +19,7 @@ class SnackbarComponent < ApplicationComponent
 
   def view_template
     content_tag(:div, **wrapper_options) do
-      content_tag(:div, class: "rounded-lg shadow-sm overflow-hidden") do
+      content_tag(:div, class: "rounded-[0.875rem] overflow-hidden") do
         content_tag(:div, class: "p-4") do
           content_tag(:div, class: "flex items-start") do
             content_tag(:div, class: "h-6 w-6") do
@@ -39,12 +39,12 @@ class SnackbarComponent < ApplicationComponent
               end
             end
             content_tag(:button, class: "inline-flex focus:outline-none transition ease-in-out duration-150", data: { action: "snackbar#close" }) do
-              content_tag(:i, "&#xeb8e;".html_safe, class: "uc-icon text-gray-600 text-xl")
+              content_tag(:i, "&#xeb8e;".html_safe, class: "uc-icon text-secondary-text text-xl")
             end
           end
         end
         if @data[:countdown]
-          content_tag(:div, class: "bg-primary rounded-lg h-1 w-0",  data: { "snackbar-target": "countdown" }) do
+          content_tag(:div, class: "bg-primary h-1 w-0",  data: { "snackbar-target": "countdown" }) do
             ""
           end
         end
@@ -57,7 +57,7 @@ class SnackbarComponent < ApplicationComponent
   def wrapper_options
     {
       class: TAILWIND_MERGER.merge([
-        "snackbar__container sm:w-96 transition duration-300 ease-in-out shadow-xl opacity-0 translate-x-16",
+        "snackbar__container sm:w-96 transition duration-300 ease-in-out shadow-pop opacity-0 translate-x-16",
          snackbar_variant
       ]),
       data: {
@@ -122,9 +122,9 @@ class SnackbarComponent < ApplicationComponent
   def icon_class
     case type
     when "success"
-      "uc-icon text-xl text-green-600"
+      "uc-icon text-xl text-success-foreground"
     when "error"
-      "uc-icon text-xl text-red-600"
+      "uc-icon text-xl text-destructive-foreground"
     when "alert"
       "uc-icon text-xl text-orange-600"
     else

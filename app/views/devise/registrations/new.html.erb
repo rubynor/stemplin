@@ -1,7 +1,7 @@
 <% content_for :title, t("login_page.sign_up") %>
 
 <div class="flex flex-col gap-y-4 w-full">
-  <span class="text-xl font-semibold text-gray-600"><%= t("login_page.sign_up") %></span>
+  <span class="text-xl font-semibold text-secondary-text"><%= t("login_page.sign_up") %></span>
   <div class="flex flex-col mt-4 gap-y-2">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), class: "w-full") do |form| %>
       <%= render AlertComponent.new(variant: :destructive, title: t("common.unable_to_proceed"), message: resource.errors.full_messages) if resource.errors.any? %>
@@ -12,23 +12,23 @@
         <div class="flex flex-col w-full gap-y-4 lg:gap-y-8 mb-4">
           <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("registration.first_name") } %>
-            <%= form.text_field :first_name, id: "first-name", autocomplete: "given-name", required: true, placeholder: t("registration.first_name"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+            <%= form.text_field :first_name, id: "first-name", autocomplete: "given-name", required: true, placeholder: t("registration.first_name"), class: "form-input" %>
           <% end %>
           <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("registration.last_name") } %>
-            <%= form.text_field :last_name, id: "last-name", autocomplete: "family-name", required: true, placeholder: t("registration.last_name"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+            <%= form.text_field :last_name, id: "last-name", autocomplete: "family-name", required: true, placeholder: t("registration.last_name"), class: "form-input" %>
           <% end %>
           <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("registration.email") } %>
-            <%= form.email_field :email, id: "email-address", autocomplete: "email", required: true, placeholder: t("registration.email"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+            <%= form.email_field :email, id: "email-address", autocomplete: "email", required: true, placeholder: t("registration.email"), class: "form-input" %>
           <% end %>
           <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("registration.password") } %>
-            <%= form.password_field :password, id: "password", autocomplete: "current-password", required: true, placeholder: t("registration.password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+            <%= form.password_field :password, id: "password", autocomplete: "current-password", required: true, placeholder: t("registration.password"), class: "form-input" %>
           <% end %>
           <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("registration.confirm_password") } %>
-            <%= form.password_field :password_confirmation, id: "password_confirm", autocomplete: "current-password", required: true, placeholder: t("registration.confirm_password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+            <%= form.password_field :password_confirmation, id: "password_confirm", autocomplete: "current-password", required: true, placeholder: t("registration.confirm_password"), class: "form-input" %>
           <% end %>
         </div>
 

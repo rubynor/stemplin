@@ -1,56 +1,64 @@
-<header class="border-b border-gray-200 shadow-sm px-4 print:hidden">
-  <nav class="max-w-7xl mx-auto flex justify-between items-center">
+<% nav_link = ->(label, path, matches) do
+     active = is_page_active?(matches)
+     link_to label, path, class: class_names(
+       "px-3 py-2 text-sm rounded-lg transition-colors",
+       active ? "bg-primary-50 text-primary-700 font-semibold" : "text-secondary-text font-medium hover:bg-accent hover:text-foreground"
+     )
+   end %>
+
+<header class="sticky top-0 z-30 bg-background border-b border-border print:hidden">
+  <nav class="page-shell h-16 flex items-center gap-x-4">
     <%= render "organizations/switch", user: current_user %>
+
     <% if user_signed_in? %>
-      <div class="hidden lg:flex h-full gap-x-12">
+      <div class="hidden lg:flex items-center gap-x-1">
         <% unless current_user.access_info.organization_spectator? %>
-          <%= link_to t("common.home"), time_regs_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([root_path, time_regs_path]) ? "text-primary-600 font-semibold border-b-2 border-primary-600": "hover:text-primary-600 text-gray-600") %>
+          <%= nav_link.call(t("common.home"), time_regs_path, [ root_path, time_regs_path ]) %>
         <% end %>
         <% if current_user.organization_admin? %>
-            <%= link_to t("common.workspace"), workspace_projects_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([workspace_team_members_path, invite_users_workspace_team_members_path, workspace_projects_path, new_workspace_project_path, edit_workspace_project_path(@project&.id || 0), workspace_project_path(@project&.id || 0), workspace_client_path(@client&.id || 0), workspace_settings_path, edit_workspace_settings_path]) ? "text-primary-600 font-semibold border-b-2 border-primary-600": "hover:text-primary-600 text-gray-600") %>
+          <%= nav_link.call(t("common.workspace"), workspace_projects_path, [ workspace_team_members_path, invite_users_workspace_team_members_path, workspace_projects_path, new_workspace_project_path, edit_workspace_project_path(@project&.id || 0), workspace_project_path(@project&.id || 0), workspace_client_path(@client&.id || 0), workspace_settings_path, edit_workspace_settings_path ]) %>
         <% end %>
-        <%= link_to t("common.reports"), reports_path, class: class_names("h-full py-6 lg:py-8 transition duration-300 ease-in-out", is_page_active?([reports_path, detailed_reports_path]) ? "text-primary-600 font-semibold border-b-2 border-primary-600": "hover:text-primary-600 text-gray-600") %>
+        <%= nav_link.call(t("common.reports"), reports_path, [ reports_path, detailed_reports_path ]) %>
       </div>
-      <div class="flex items-center divide-x divide-gray-100 space-x-4">
-        <div class="text-gray-600">
+
+      <div class="flex-1"></div>
+
+      <div class="hidden lg:flex items-center gap-x-2">
+        <div class="text-secondary-text px-2 py-1.5 rounded-lg hover:bg-accent transition-colors">
           <%= render partial: "shared/language_picker" %>
         </div>
         <%= render partial: "shared/user_dropdown" %>
       </div>
-      <div class="lg:hidden p-6 lg:p-8">
+
+      <div class="lg:hidden ml-auto">
         <%= render RubyUI::Popover.new(options: { placement: "bottom-end" }) do %>
-          <%= render RubyUI::PopoverTrigger.new(class: "w-full flex flex-row justify-between items-center gap-x-8") do %>
-            <i class="uc-icon text-xl text-gray-600">&#xe80d;</i>
+          <%= render RubyUI::PopoverTrigger.new(class: "h-10 w-10 flex items-center justify-center rounded-lg hover:bg-accent transition-colors") do %>
+            <i class="uc-icon text-xl text-secondary-text">&#xe80d;</i>
           <% end  %>
-          <%= render RubyUI::PopoverContent.new(class: "divide-y divide-gray-50 w-48") do %>
+          <%= render RubyUI::PopoverContent.new(class: "w-56 p-1") do %>
             <% unless current_user.access_info.organization_spectator? %>
-              <%= render RubyUI::Link.new(href: time_regs_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
-                <div class="w-full flex justify-start items-center gap-x-1">
+              <%= render RubyUI::Link.new(href: time_regs_path, variant: :ghost, class: "w-full flex justify-start px-2") do %>
                 <%= render RubyUI::FormFieldLabel.new { t("common.home") } %>
-                </div>
               <% end %>
             <% end %>
             <% if current_user.organization_admin? %>
-              <%= render RubyUI::Link.new(href: workspace_projects_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
-                <div class="w-full flex justify-start items-center gap-x-1">
-                  <%= render RubyUI::FormFieldLabel.new { t("common.workspace")} %>
-                </div>
+              <%= render RubyUI::Link.new(href: workspace_projects_path, variant: :ghost, class: "w-full flex justify-start px-2") do %>
+                <%= render RubyUI::FormFieldLabel.new { t("common.workspace") } %>
               <% end %>
-              <%= render RubyUI::Link.new(href: reports_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
-                <div class="w-full flex justify-start items-center gap-x-1">
-                  <%= render RubyUI::FormFieldLabel.new { t("common.reports") } %>
-                </div>
+              <%= render RubyUI::Link.new(href: reports_path, variant: :ghost, class: "w-full flex justify-start px-2") do %>
+                <%= render RubyUI::FormFieldLabel.new { t("common.reports") } %>
               <% end %>
             <% end %>
-            <%= render RubyUI::Link.new(href: edit_user_registration_path, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
-              <div class="w-full flex justify-start items-center gap-x-1">
-                <i class="uc-icon text-base text-gray-500">&#xebb2;</i>
+            <div class="my-1 h-px bg-border"></div>
+            <%= render RubyUI::Link.new(href: edit_user_registration_path, variant: :ghost, class: "w-full flex justify-start px-2") do %>
+              <div class="w-full flex justify-start items-center gap-x-2">
+                <i class="uc-icon text-base text-muted-foreground">&#xebb2;</i>
                 <%= render RubyUI::FormFieldLabel.new { t("common.edit_account") } %>
               </div>
             <% end %>
-            <%= render ButtonComponent.new(path: destroy_user_session_path, method: :delete, variant: :ghost, class: "w-full hover:bg-gray-100 flex justify-start pl-2 pr-4") do %>
-              <div class="w-full flex justify-start items-center gap-x-1">
-                <i class="uc-icon text-base text-gray-500">&#xe978;</i>
+            <%= render ButtonComponent.new(path: destroy_user_session_path, method: :delete, variant: :ghost, class: "w-full flex justify-start px-2") do %>
+              <div class="w-full flex justify-start items-center gap-x-2">
+                <i class="uc-icon text-base text-muted-foreground">&#xe978;</i>
                 <%= render RubyUI::FormFieldLabel.new { t("common.sign_out") } %>
               </div>
             <% end %>
@@ -58,9 +66,10 @@
         <% end %>
       </div>
     <% else %>
-      <div class="flex items-center gap-x-6 p-6 lg:p-8">
-        <%= link_to "Register", new_registration_path(resource_name), class: "text-gray-600 hover:text-primary font-medium" %>
-        <%= link_to "Login", new_user_session_path ,  class: "text-gray-600 hover:text-primary font-medium" %>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-x-2">
+        <%= link_to "Register", new_registration_path(resource_name), class: "px-3 py-2 text-sm font-medium text-secondary-text rounded-lg hover:bg-accent transition-colors" %>
+        <%= link_to "Login", new_user_session_path, class: "px-3 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors" %>
       </div>
     <% end %>
   </nav>

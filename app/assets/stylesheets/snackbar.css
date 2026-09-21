@@ -3,7 +3,7 @@
 
 .snackbar__container {
   z-index: 999;
-  border-radius: 0.5rem;
+  border-radius: 0.875rem;
   position: fixed;
   margin-top: 1rem;
   width: 90%;
@@ -17,21 +17,25 @@
 }
 
 .snackbar-primary {
-  background: #ffffff;
-  color: #4b5563;
+  background: rgb(var(--background));
+  color: rgb(var(--secondary-text));
+  border: 1px solid rgb(var(--border));
 }
 
 .snackbar-primary .snackbar__action {
-  color: #d0bcff;
+  color: rgb(var(--primary));
+  font-weight: 600;
 }
 
 .snackbar-secondary {
-  background: #322f35;
-  color: #f5eff7;
+  background: #18181b;
+  color: #fafafa;
+  border: 1px solid #27272a;
 }
 
 .snackbar-secondary .snackbar__action {
-  color: #6750a4;
+  color: #c0c4fb;
+  font-weight: 600;
 }
 
 @media screen and (min-width: 640px) {

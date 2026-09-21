@@ -1,15 +1,19 @@
-<%= content_tag(:div, class: "fixed bottom-0 w-full p-4", data: { controller: "cookie-consent" }) do %>
-  <%= content_tag(:div, class: "relative bg-white ring-1 ring-gray-100 p-4 shadow-xl rounded-md hidden z-50 max-w-2xl mx-auto grid grid-cols-1 lg:grid-cols-6 gap-4 lg:gap-2", data: { cookie_consent_target: "banner" }) do %>
-    <div class="col-span-4 flex flex-col lg:flex-row items-center gap-4">
-      <%= image_tag("cookie.svg", class: "w-16 h-16") %>
-      <div class="w-full text-center lg:text-left">
-        <span class="font-semibold text-primary-text"><%= t("cookie_consent.title") %></span>
-        <p class="font-regular text-sm text-secondary-text"><%= t("cookie_consent.sub_text") %></p>
+<%# The wrapper spans the viewport, so it must not swallow taps: only the visible
+    card takes pointer events, otherwise it covers whatever sits behind it.
+    Display stays flex at every breakpoint — a responsive display utility would
+    override the `hidden` class the Stimulus controller toggles. %>
+<%= content_tag(:div, class: "fixed inset-x-0 bottom-0 z-50 p-3 sm:p-4 pointer-events-none", data: { controller: "cookie-consent" }) do %>
+  <%= content_tag(:div, class: "pointer-events-auto relative hidden flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 bg-background border border-border p-3 sm:p-4 shadow-pop rounded-xl max-w-2xl mx-auto", data: { cookie_consent_target: "banner" }) do %>
+    <div class="flex flex-row items-center gap-3 sm:gap-4 flex-1 min-w-0">
+      <%= image_tag("cookie.svg", class: "hidden sm:block sm:w-14 sm:h-14 shrink-0") %>
+      <div class="w-full text-left">
+        <span class="font-semibold text-sm sm:text-base text-primary-text"><%= t("cookie_consent.title") %></span>
+        <p class="text-xs sm:text-sm text-secondary-text"><%= t("cookie_consent.sub_text") %></p>
       </div>
     </div>
-    <div class="col-span-2 flex flex-row justify-center items-center gap-x-2">
-      <%= render ButtonComponent.new(variant: :outline, type: "button", data: { action: "click->cookie-consent#decline" }) { t("helpers.actions.decline") } %>
-      <%= render ButtonComponent.new(variant: :primary, type: "button", data: { action: "click->cookie-consent#accept" }) { t("helpers.actions.accept") } %>
+    <div class="flex flex-row justify-end items-center gap-x-2 shrink-0">
+      <%= render ButtonComponent.new(variant: :ghost, type: "button", class: "!h-9", data: { action: "click->cookie-consent#decline" }) { t("helpers.actions.decline") } %>
+      <%= render ButtonComponent.new(variant: :primary, type: "button", class: "!h-9", data: { action: "click->cookie-consent#accept" }) { t("helpers.actions.accept") } %>
     </div>
   <% end %>
 <% end %>

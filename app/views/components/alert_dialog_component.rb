@@ -11,18 +11,18 @@ class AlertDialogComponent < ApplicationComponent
                 content_tag(:i, "&#xe99b;".html_safe, class: "uc-icon text-red-600 text-lg")
               end
               content_tag(:div, class: "mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left") do
-                content_tag(:h2, class: "text-base font-semibold leading-6 text-gray-900") do
+                content_tag(:h2, class: "text-base font-semibold leading-6 text-primary-text") do
                   I18n.t("alert.wish_to_proceed")
                 end
                 content_tag(:div, class: "mt-2") do
-                  content_tag(:p, class: "text-sm text-gray-500 w-96") do
+                  content_tag(:p, class: "text-sm text-muted-foreground w-96") do
                     ""
                   end
                 end
               end
             end
           end
-          content_tag(:div, class: "bg-gray-50 px-4 py-3 flex flex-row-reverse sm:px-6") do
+          content_tag(:div, class: "bg-surface-muted px-4 py-3 flex flex-row-reverse sm:px-6") do
             content_tag(:div, class: "flex flex-row gap-x-2") do
               render ButtonComponent.new(type: "submit", value: "cancel", variant: :outline) { I18n.t("common.cancel") }
               render ButtonComponent.new(type: "submit", value: "confirm") { I18n.t("common.accept") }

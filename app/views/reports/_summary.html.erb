@@ -1,9 +1,14 @@
-<div class="flex flex-col lg:flex-row print:!flex-row gap-4 lg:gap-8 xl:gap-12 border-b border-gray-100 py-4 divide-x divide-gray-100">
+<%
+  total = @summary.total_minutes.to_i
+  billable = @summary.total_billable_minutes.to_i
+  billable_pct = total.positive? ? (billable * 100.0 / total).round : 0
+%>
+<div class="flex flex-col lg:flex-row print:!flex-row gap-6 lg:gap-10 pb-6 border-b border-border">
   <% unless selected_elements_names.blank? %>
-    <div class="grid grid-cols-2 auto-rows-min gap-2 pl-4 max-w-lg">
+    <div class="grid grid-cols-[auto_1fr] auto-rows-min gap-x-3 gap-y-1 max-w-lg text-sm lg:pr-10 lg:border-r lg:border-border">
       <% selected_elements_names.each do |element, names| %>
-        <span><%= I18n.t("organizations.reports_filter.tabs.#{names.length > 1 ? element : element.singularize}") %>:</span>
-        <div class="text-primary-600 font-bold">
+        <span class="text-muted-foreground"><%= I18n.t("organizations.reports_filter.tabs.#{names.length > 1 ? element : element.singularize}") %></span>
+        <div class="text-primary-text font-semibold">
           <% names.each do |name| %>
             <p><%= name %></p>
           <% end %>
@@ -11,37 +16,39 @@
       <% end %>
     </div>
   <% end %>
-  <div class="flex flex-row items-start gap-x-2 pl-4">
-    <div class="print:hidden"><i class="uc-icon text-2xl text-gray-300">&#xe8bb;</i></div>
-    <div class="flex flex-col">
-      <h2 class="text-base print:text-sm font-regular"><%= t("common.total_hours") %></h2>
-      <span class="font-semibold text-2xl print:text-lg text-primary-600 print:text-gray-900">
-        <%= minutes_to_float @summary.total_minutes %>
-      </span>
-      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-4 lg:gap-8 text-sm mt-4">
-        <div class="flex flex-row justify-between items-center gap-x-1">
-          <div class="rounded-md w-4 h-4 bg-purple-300 print:hidden"></div>
-          <span class="text-gray-500 font-regular"><%= t("common.billable") %></span>
-          <span class="text-gray-600 font-semibold"><%= minutes_to_float @summary.total_billable_minutes %></span>
-        </div>
-        <div class="flex flex-row justify-between items-center gap-x-1">
-          <div class="rounded-md w-4 h-4 bg-gray-300 print:hidden"></div>
-          <span class="text-gray-500 font-regular"><%= t("common.non_billable") %></span>
-          <span class="text-gray-600 font-semibold"><%= minutes_to_float @summary.total_non_billable_minutes %></span>
-        </div>
+
+  <div class="flex flex-col gap-y-3 min-w-[16rem]">
+    <h2 class="text-sm text-muted-foreground"><%= t("common.total_hours") %></h2>
+    <span class="text-4xl lg:text-5xl print:text-lg font-semibold leading-none text-primary-text">
+      <%= minutes_to_float @summary.total_minutes %>
+    </span>
+
+    <div class="mt-1 max-w-xs print-color-adjust">
+      <div class="h-2 w-full rounded-full bg-primary-100 overflow-hidden">
+        <div class="h-2 rounded-full bg-primary-600" style="width: <%= billable_pct %>%"></div>
+      </div>
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-1 mt-2.5 text-sm">
+        <span class="inline-flex items-center gap-x-2">
+          <span class="h-2.5 w-2.5 rounded-full bg-primary-600 shrink-0"></span>
+          <span class="text-muted-foreground"><%= t("common.billable") %></span>
+          <span class="text-primary-text font-semibold tnum"><%= minutes_to_float @summary.total_billable_minutes %></span>
+        </span>
+        <span class="inline-flex items-center gap-x-2">
+          <span class="h-2.5 w-2.5 rounded-full bg-primary-100 shrink-0"></span>
+          <span class="text-muted-foreground"><%= t("common.non_billable") %></span>
+          <span class="text-primary-text font-semibold tnum"><%= minutes_to_float @summary.total_non_billable_minutes %></span>
+        </span>
       </div>
     </div>
   </div>
-  <div class="flex flex-row items-start gap-x-2 pl-4">
-    <div class="print:hidden"><i class="uc-icon text-2xl text-gray-300">&#xea95;</i></div>
-    <div class="flex flex-col">
-      <h2 class="text-base print:text-sm font-regular"><%= t("common.billable_amount") %></h2>
-      <div class="flex flex-row font-semibold items-end gap-x-1">
-        <span class=" text-2xl print:text-lg text-primary-600 print:text-gray-900">
-          <%= @summary.total_billable_amount_currency %>
-        </span>
-        <span class="text-gray-400"><%= @currency %></span>
-      </div>
+
+  <div class="flex flex-col gap-y-3 lg:pl-10 lg:border-l lg:border-border">
+    <h2 class="text-sm text-muted-foreground"><%= t("common.billable_amount") %></h2>
+    <div class="flex flex-row items-baseline gap-x-2">
+      <span class="text-2xl lg:text-3xl print:text-lg font-semibold text-primary-text">
+        <%= @summary.total_billable_amount_currency %>
+      </span>
+      <span class="text-sm font-medium text-muted-foreground"><%= @currency %></span>
     </div>
   </div>
 </div>

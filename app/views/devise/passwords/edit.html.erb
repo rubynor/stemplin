@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-y-4 w-full">
-  <span class="text-xl font-semibold text-gray-600"><%= t("password_reset.edit.reset_password") %></span>
+  <span class="text-xl font-semibold text-secondary-text"><%= t("password_reset.edit.reset_password") %></span>
   <div class="flex flex-col mt-4 gap-y-2">
     <%= form_for(resource, as: resource_name, url: password_path(resource_name), class: "w-full", html: { method: :put }) do |form| %>
       <%= render AlertComponent.new(variant: :destructive, title: t("alert.unable_to_proceed"), message: resource.errors.full_messages) if resource.errors.any? %>
@@ -9,11 +9,11 @@
           <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("activerecord.attributes.user.password") } %>
             <%= render RubyUI::FormFieldHint.new { t("password_reset.edit.minimum_password_length", count: @minimum_password_length) if @minimum_password_length } %>
-            <%= form.password_field :password, id: "password", autofocus: true, required: true, placeholder: t("activerecord.attributes.user.password"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+            <%= form.password_field :password, id: "password", autofocus: true, required: true, placeholder: t("activerecord.attributes.user.password"), class: "form-input" %>
           <% end %>
           <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("activerecord.attributes.user.password_confirmation") } %>
-            <%= form.password_field :password_confirmation, id: "password_confirm", autofocus: true, required: true, placeholder: t("activerecord.attributes.user.password_confirmation"), class: "border-gray-200 rounded-md w-full placeholder:text-gray-400" %>
+            <%= form.password_field :password_confirmation, id: "password_confirm", autofocus: true, required: true, placeholder: t("activerecord.attributes.user.password_confirmation"), class: "form-input" %>
           <% end %>
         </div>
         <%= render ButtonComponent.new(type: "submit") { t("password_reset.edit.change_my_password") } %>
