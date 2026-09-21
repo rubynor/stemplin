@@ -58,6 +58,17 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     fill_in "user[password]", with: password
     click_button I18n.t("login_page.sign_in")
     assert_no_current_path new_user_session_path, wait: 5
+    # Turbo pushes the new URL before it has rendered the response. Navigating
+    # again at that point races the in-flight visit: the browser can hand the
+    # test the old document, and everything typed or clicked there is lost when
+    # the new one lands. Let Turbo settle first.
+    wait_for_turbo
     visit current_path unless keep_flash
+  end
+
+  # Turbo marks <html> (visits) and the submitted <form> (submissions) with
+  # aria-busy for as long as it is fetching and rendering.
+  def wait_for_turbo
+    assert_no_selector "html[aria-busy], form[aria-busy]", wait: 5
   end
 end
