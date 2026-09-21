@@ -17,7 +17,7 @@ module ComboboxComponent
     private
 
     def render_header
-      div(group_heading: @heading, class: "px-2 py-1.5 text-xs font-medium text-gray-400") { @heading }
+      div(group_heading: @heading, class: "px-2 py-1.5 text-xs font-medium text-muted-foreground") { @heading }
     end
 
     def render_items(&)

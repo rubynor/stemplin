@@ -23,7 +23,7 @@ class AlertComponent < ApplicationComponent
   def set_options
     case @variant
     when :info
-      { icon: "info_circle.svg", class_names: "bg-gray-50 text-gray-600 !ring-gray-300" }
+      { icon: "info_circle.svg", class_names: "bg-surface-muted text-secondary-text !ring-gray-300" }
     when :warning
       { icon: "warning_circle.svg", class_names: "bg-warning text-warning-foreground !ring-yellow-300" }
     when :success
@@ -31,7 +31,7 @@ class AlertComponent < ApplicationComponent
     when :destructive
       { icon: "error_circle.svg", class_names: "bg-destructive text-destructive-foreground !ring-red-300" }
     else
-      { icon: "info_circle.svg", class_names: "bg-gray-50 text-gray-600 !ring-gray-300" }
+      { icon: "info_circle.svg", class_names: "bg-surface-muted text-secondary-text !ring-gray-300" }
     end
   end
 

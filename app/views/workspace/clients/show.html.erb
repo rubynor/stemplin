@@ -2,11 +2,11 @@
 
 <%= content_tag :div, id: "#{dom_id(@client)}_show" do %>
   <div>
-    <div class="flex flex-wrap justify-between gap-y-3 py-3 border-b border-gray-100" id=1>
+    <div class="flex flex-wrap justify-between gap-y-3 py-3 border-b border-border" id=1>
       <div class="grid">
         <div class="flex flex-row items-center gap-x-3">
           <div class="flex flex-col">
-            <div class="font-medium text-gray-600 text-lg flex items-center gap-x-2">
+            <div class="font-medium text-secondary-text text-lg flex items-center gap-x-2">
               <span><%= @client.name %></span>
               <%= render RubyUI::Badge.new(variant: :purple, class: "!rounded-full flex gap-x-1") { t("common.client") } %>
             </div>
@@ -29,14 +29,14 @@
       </div>
       <div class="flex flex-wrap gap-y-1 gap-x-3">
         <%= render ButtonComponent.new(path: edit_modal_workspace_client_path(@client), method: :post, variant: :outline, class: "!py-3") do %>
-          <span class="hidden lg:block mr-2"><%= t("common.edit") %></span>
+          <span class="hidden sm:block"><%= t("common.edit") %></span>
           <i class="uc-icon">&#xe972;</i>
         <% end %>
         <%- has_projects = @client.projects.any? %>
         <%- turbo_body = "#{t("common.deletion_of_the_client")} <span class='font-semibold text-primary'>#{@client.name}</span>? #{t("common.cannot_be_undone")}" %>
         <%= render TooltipComponent.new(note: has_projects ? t("common.the_client_has_associated_projects") : nil) do %>
           <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_client_path(@client), disabled: has_projects, form: { data: { turbo_confirm: turbo_body } }) do %>
-            <span class="hidden lg:block mr-2"><%= t("common.delete") %></span>
+            <span class="hidden sm:block"><%= t("common.delete") %></span>
             <i class="uc-icon">&#xeb97;</i>
           <% end %>
         <% end %>
@@ -55,17 +55,14 @@
   <%= simple_format @client.description, class: "my-6" %>
 
   <% if @client.projects.any? %>
-    <div class="hide-table-overflow">
-      <%= render RubyUI::Table.new do %>
-        <%= render RubyUI::TableRow.new(class: "text-gray-500" ) do %>
-          <%= render RubyUI::TableHead.new { t("common.projects") } %>
-          <%= render RubyUI::TableHead.new { t("common.rate") } %>
-          <%= render RubyUI::TableHead.new { t("common.actions") } %>
-        <% end %>
-        <%= render RubyUI::TableBody.new(id: :organization_projects) do %>
-          <%= render partial: "workspace/projects/project", collection: @client.projects %>
-        <% end %>
-      <% end %>
+    <div class="mt-6">
+      <div class="flex items-center gap-x-2 mb-3">
+        <span class="text-xs font-semibold uppercase tracking-wide text-muted-foreground"><%= t("common.projects") %></span>
+        <span class="count-chip"><%= @client.projects.size %></span>
+      </div>
+      <ul id="organization_projects" class="surface-card divide-y divide-border overflow-hidden">
+        <%= render partial: "workspace/projects/project", collection: @client.projects %>
+      </ul>
     </div>
   <% end %>
 <% end %>

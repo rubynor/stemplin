@@ -16,7 +16,7 @@ module ComboboxComponent
     end
 
     def view_template
-      div(class: "flex flex-col gap-y-4 mb-4 border-b border-gray-200") do
+      div(class: "flex flex-col gap-y-4 mb-4 border-b border-border") do
         render_title
         render_items
       end
@@ -36,7 +36,7 @@ module ComboboxComponent
 
     def item_attrs(item = nil)
       {
-        class: "flex flex-row items-center gap-x-4 py-2 border-b border-gray-100",
+        class: "flex flex-row items-center gap-x-4 py-2 border-b border-border",
         data: {
           value: item&.public_send(@value_method),
           wrapper_id: @wrapper_id
@@ -45,7 +45,7 @@ module ComboboxComponent
     end
 
     def render_title
-      div(class: "border-b border-gray-50") do
+      div(class: "border-b border-border") do
         span(class: "font-medium text-sm") { @selected[:title] }
       end
     end
@@ -72,7 +72,7 @@ module ComboboxComponent
     def render_remove_button(item = nil)
       button(
         type: "button",
-        class: "border border-gray-200 py-1 px-2 rounded-md shadow-sm",
+        class: "border border-border py-1 px-2 rounded-md shadow-sm",
         data: {
           action: "click->combobox-selected-items#removeItem",
           value: item&.public_send(@value_method),
@@ -80,7 +80,7 @@ module ComboboxComponent
           wrapper_id: @wrapper_id
         }
       ) do
-        i(class: "uc-icon text-xl text-gray-400") { "&#xeb8e;".html_safe }
+        i(class: "uc-icon text-xl text-muted-foreground") { "&#xeb8e;".html_safe }
       end
     end
 

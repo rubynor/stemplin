@@ -14,7 +14,7 @@ class BannerComponent < ApplicationComponent
 
   def view_template
     if @message.present?
-      content_tag(:div, class: TAILWIND_MERGER.merge([ "flex justify-center items-center py-2.5 px-4 mx-auto relative shadow", @options[:container_class_names] ])) do
+      content_tag(:div, class: TAILWIND_MERGER.merge([ "flex justify-center items-center py-2.5 px-4 mx-auto relative border-b", @options[:container_class_names] ])) do
         link_to @action[:url] || "#", method: @action[:method], class: "flex-1 items-center" do
           content_tag(:div, class: "flex flex-col lg:flex-row lg:items-center gap-1 lg:justify-center") do
             content_tag(:div, class: "flex flex-row gap-x-1 items-center") do
@@ -29,7 +29,7 @@ class BannerComponent < ApplicationComponent
         if @dismissible
           content_tag(:div, class: "absolute right-4 top-0 flex items-center") do
             content_tag(:button, type: "button", class: "p-2 focus-visible:outline-offset-[-4px]") do
-              content_tag(:i, "&#xeb8e;".html_safe, class: "uc-icon text-white text-xl")
+              content_tag(:i, "&#xeb8e;".html_safe, class: "uc-icon text-xl")
             end
           end
         end
@@ -42,15 +42,15 @@ class BannerComponent < ApplicationComponent
   def set_options
     case @variant
     when :info
-      { icon: "&#xea39;", tile: I18n.t("helpers.alert.info"), container_class_names: "bg-blue-500 text-white" }
+      { icon: "&#xea39;", tile: I18n.t("helpers.alert.info"), container_class_names: "bg-primary-50 border-primary-200 text-primary-800" }
     when :warning
-      { icon: "&#xe99b;", tile: I18n.t("helpers.alert.info"), container_class_names: "bg-yellow-500 text-white" }
+      { icon: "&#xe99b;", tile: I18n.t("helpers.alert.info"), container_class_names: "bg-warning border-amber-200 text-warning-foreground" }
     when :success
-      { icon: "&#xe8b0;", tile: I18n.t("helpers.alert.info"), container_class_names: "bg-green-500 text-white" }
+      { icon: "&#xe8b0;", tile: I18n.t("helpers.alert.info"), container_class_names: "bg-success border-green-200 text-success-foreground" }
     when :destructive
-      { icon: "&#xe99b;", tile: I18n.t("helpers.alert.info"), container_class_names: "bg-red-500 text-white" }
+      { icon: "&#xe99b;", tile: I18n.t("helpers.alert.info"), container_class_names: "bg-destructive border-red-200 text-destructive-foreground" }
     else
-      { icon: "&#xea39;", tile: I18n.t("helpers.alert.info"), container_class_names: "bg-blue-500 text-white" }
+      { icon: "&#xea39;", tile: I18n.t("helpers.alert.info"), container_class_names: "bg-primary-50 border-primary-200 text-primary-800" }
     end
   end
 end

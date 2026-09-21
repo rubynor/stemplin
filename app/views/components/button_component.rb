@@ -2,16 +2,17 @@
 
 class ButtonComponent < ApplicationComponent
   module Styles
-    BASE = "py-2 !h-12"
-    ICON_BASE = "h-8 w-8"
+    BASE = "!h-10 px-4 gap-x-2 text-sm font-medium !rounded-lg transition-colors " \
+           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-1"
+    ICON_BASE = "!h-9 !w-9 !p-0 !rounded-lg"
 
     VARIANTS = {
-      primary: "!bg-primary-600 !text-white hover:!bg-primary-700",
-      secondary: "!bg-primary-100 !text-primary-600 hover:!bg-primary-200",
-      outline: "!bg-transparent border !border-gray-300 !text-gray-600 hover:!bg-gray-100",
-      ghost: "!bg-transparent hover:!bg-gray-100 !text-gray-600",
-      destructive: "!bg-red-100 !text-red-600 hover:!bg-red-200",
-      none: "font-medium text-sm shadow px-4 rounded-md"
+      primary: "!bg-primary-600 !text-white hover:!bg-primary-700 !shadow-xs",
+      secondary: "!bg-primary-50 !text-primary-700 hover:!bg-primary-100 !shadow-none",
+      outline: "!bg-background !border !border-input !text-secondary-text hover:!bg-accent !shadow-xs",
+      ghost: "!bg-transparent hover:!bg-accent !text-secondary-text !shadow-none",
+      destructive: "!bg-transparent !text-destructive-foreground hover:!bg-destructive !shadow-none",
+      none: "font-medium text-sm shadow-xs px-4 rounded-lg"
     }
 
     STATES = {

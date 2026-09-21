@@ -67,7 +67,7 @@ class PaginationComponent < ApplicationComponent
   end
 
   def default_class
-    "hover:bg-gray-100 hover:text-primary-600"
+    "hover:bg-accent hover:text-primary-600"
   end
 
   def page_path(page_number)
