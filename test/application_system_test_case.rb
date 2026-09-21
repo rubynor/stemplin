@@ -53,6 +53,12 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
         navigations: performance.getEntriesByType("navigation").map(n => ({ type: n.type, start: n.startTime, domContentLoaded: n.domContentLoadedEventEnd, load: n.loadEventEnd })),
         now: performance.now(),
         trace: window.__trace || null,
+        activeElement: document.activeElement && `${document.activeElement.tagName}#${document.activeElement.id}`,
+        autofocusElements: Array.from(document.querySelectorAll("[autofocus]")).map(e => `${e.tagName}#${e.id}`),
+        iframes: Array.from(document.querySelectorAll("iframe")).map(f => ({ src: f.src, rect: f.getBoundingClientRect().toJSON() })),
+        openDialogs: Array.from(document.querySelectorAll("dialog[open], [inert], [popover]:popover-open")).map(e => `${e.tagName}#${e.id}`),
+        viewport: { innerWidth: innerWidth, innerHeight: innerHeight, dpr: devicePixelRatio, scale: visualViewport.scale, scrollY: scrollY },
+        firstButton: (() => { const b = Array.from(document.querySelectorAll("button")).find(el => el.getBoundingClientRect().width > 0); if (!b) return null; const r = b.getBoundingClientRect(); const hit = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2); return { text: b.textContent.trim().slice(0, 30), rect: r.toJSON(), hit: hit && `${hit.tagName}.${hit.className}`.slice(0, 80), hitIsInside: !!(hit && b.contains(hit)) }; })(),
         scripts: Array.from(document.scripts).map(s => s.src || "(inline)")
       })
     JS
@@ -105,10 +111,11 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
       window.__trace = [];
       const log = (kind, detail) => window.__trace.push([Math.round(performance.now()), kind, detail]);
       const describe = (el) => el && el.tagName ? `${el.tagName}#${el.id}[name=${el.getAttribute && el.getAttribute("name")}]` : String(el);
-      ["focusin", "focusout", "input", "change", "reset", "submit", "click"].forEach(type =>
-        document.addEventListener(type, e => log(type, describe(e.target) + (type === "input" ? ` value=${JSON.stringify(e.target.value)}` : "")), true));
+      ["focusin", "focusout", "input", "change", "reset", "submit", "click", "pointerdown", "mousedown", "mousemove", "keydown"].forEach(type =>
+        window.addEventListener(type, e => log(type, describe(e.target) + (type === "input" ? ` value=${JSON.stringify(e.target.value)}` : "") + (e.clientX !== undefined ? ` @${e.clientX},${e.clientY}` : "")), true));
+      log("active", describe(document.activeElement));
       ["turbo:visit", "turbo:before-render", "turbo:render", "turbo:load", "turbo:before-cache", "turbo:before-fetch-request", "turbo:frame-render", "turbo:morph", "popstate", "pageshow", "pagehide", "visibilitychange"].forEach(type =>
-        (type.startsWith("turbo") || type === "popstate" ? document : window).addEventListener(type, e => log(type, e.detail && e.detail.url ? e.detail.url : "")));
+        (type.startsWith("turbo") || type === "popstate" ? document : window).addEventListener(type, e => log(type, e.detail && e.detail.url ? String(e.detail.url) : "")));
       new MutationObserver(records => records.forEach(r => {
         if (r.target === document.documentElement || r.target === document.body || r.target.tagName === "FORM") {
           log("mutation", `${describe(r.target)} +${[...r.addedNodes].map(describe)} -${[...r.removedNodes].map(describe)}`);
