@@ -5,7 +5,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   # flakiness. Keep them serial.
   parallelize(workers: 1)
 
-  driven_by :selenium, using: ENV["HEADFUL"].present? ? :chrome : :headless_chrome, screen_size: [ 1400, 1400 ]
+  driven_by :selenium, using: ENV["HEADFUL"].present? ? :chrome : :headless_chrome, screen_size: [ 1400, 1400 ] do |options|
+    # Keep the browser console so a failure can be diagnosed from CI artifacts.
+    options.add_option("goog:loggingPrefs", { browser: "ALL" })
+  end
 
   # CI runners are slower than a laptop; the default 2 seconds makes
   # Turbo navigations look like failures.
@@ -22,6 +25,33 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   # `keep_flash: true` leaves the "Signed in successfully" snackbar on screen.
   # It is dismissed by default because it floats over the top-right buttons and
   # swallows clicks meant for them.
+  # Next to the failure screenshot, write what the browser knew: its console,
+  # whether Turbo and Stimulus initialised, and the URL it was actually on.
+  def after_teardown
+    dump_browser_state if failed? && page.driver.respond_to?(:browser)
+  ensure
+    super
+  end
+
+  def dump_browser_state
+    dir = Rails.root.join("tmp/screenshots")
+    FileUtils.mkdir_p(dir)
+    state = page.evaluate_script(<<~JS)
+      ({
+        url: location.href,
+        readyState: document.readyState,
+        turbo: typeof window.Turbo,
+        stimulus: typeof window.Stimulus,
+        stimulusControllers: window.Stimulus ? window.Stimulus.router.modulesByIdentifier.size : null,
+        scripts: Array.from(document.scripts).map(s => s.src || "(inline)")
+      })
+    JS
+    console = page.driver.browser.logs.get(:browser).map { |e| "#{e.level} #{e.message}" }
+    File.write(dir.join("#{method_name}.browser.txt"), [ JSON.pretty_generate(state), *console ].join("\n"))
+  rescue => e
+    warn "Could not dump browser state: #{e.class}: #{e.message}"
+  end
+
   def sign_in_as(user, password: "password", keep_flash: false)
     visit new_user_session_path
     fill_in "user[email]", with: user.email
