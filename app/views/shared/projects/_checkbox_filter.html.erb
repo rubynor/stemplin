@@ -1,0 +1,18 @@
+<%# A dropdown of checkboxes for one filter attribute, in the style of the detailed report's filters. %>
+<%- selected = Array(selected).map(&:to_s) %>
+<%= render DropdownComponent.new do %>
+  <%= render DropdownComponentTrigger.new(class: "w-full h-10 bg-background border border-border rounded-lg px-3 flex items-center gap-x-2 text-sm hover:bg-accent transition-colors shadow-xs") do %>
+    <i class="uc-icon text-base text-muted-foreground"><%= icon %></i>
+    <span class="text-secondary-text text-sm"><%= label %></span>
+    <%= render RubyUI::Badge.new(variant: :gray, class: "!rounded-full", data: { "checkbox-badge": attribute }) { selected.empty? ? collection.size : selected.size } %>
+    <i class="uc-icon text-base text-muted-foreground ml-1">&#xe81d;</i>
+  <% end %>
+  <%= render DropdownComponentContent.new do %>
+    <div class="flex flex-col text-sm w-max" data-controller="checkbox" data-checkbox-badge-value="<%= attribute %>">
+      <%= single_filter_check_box(form, "all_#{attribute}", t("common.all"), false, { "data-checkbox-target": "checkboxAll", "data-action": "change->checkbox#toggleAll" }) %>
+      <%= form.collection_check_boxes attribute, collection, :id, :name, include_hidden: false do |cb| %>
+        <%= filter_check_box(cb, selected.empty? || selected.include?(cb.value.to_s), { data: { checkbox_target: :checkbox, action: "change->checkbox#updateCheckboxAll" } }) %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_09_25_120000) do
+ActiveRecord::Schema[7.1].define(version: 2026_09_25_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -65,6 +65,27 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_25_120000) do
     t.index ["access_info_id"], name: "index_project_accesses_on_access_info_id"
     t.index ["project_id", "access_info_id"], name: "index_project_accesses_on_project_id_and_access_info_id", unique: true
     t.index ["project_id"], name: "index_project_accesses_on_project_id"
+  end
+
+  create_table "project_shares", force: :cascade do |t|
+    t.datetime "accepted_at"
+    t.datetime "created_at", null: false
+    t.datetime "expires_at", null: false
+    t.string "invitation_token", null: false
+    t.bigint "invited_by_id", null: false
+    t.string "invited_email", null: false
+    t.bigint "organization_id"
+    t.bigint "project_id", null: false
+    t.datetime "rejected_at"
+    t.datetime "revoked_at"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["invitation_token"], name: "index_project_shares_on_invitation_token", unique: true
+    t.index ["invited_by_id"], name: "index_project_shares_on_invited_by_id"
+    t.index ["organization_id"], name: "index_project_shares_on_organization_id"
+    t.index ["project_id", "invited_email"], name: "index_project_shares_on_pending_project_and_email", unique: true, where: "(status = 0)"
+    t.index ["project_id", "organization_id"], name: "index_project_shares_on_accepted_project_and_organization", unique: true, where: "(status = 1)"
+    t.index ["project_id"], name: "index_project_shares_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -151,6 +172,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_25_120000) do
   add_foreign_key "clients", "organizations"
   add_foreign_key "project_accesses", "access_infos"
   add_foreign_key "project_accesses", "projects"
+  add_foreign_key "project_shares", "organizations"
+  add_foreign_key "project_shares", "projects"
+  add_foreign_key "project_shares", "users", column: "invited_by_id"
   add_foreign_key "projects", "clients"
   add_foreign_key "tasks", "organizations"
   add_foreign_key "time_regs", "assigned_tasks"

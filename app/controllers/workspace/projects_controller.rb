@@ -29,6 +29,7 @@ module Workspace
 
     def show
       authorize! @project
+      @project_shares = authorized_scope(ProjectShare, type: :relation).where(project: @project).listed.includes(:organization).order(:created_at)
     end
 
     def update

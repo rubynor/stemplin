@@ -1,0 +1,44 @@
+<% owner = @share.project.organization %>
+<% content_for :title, t("project_shares.invitation.title", organization: owner.name) %>
+
+<div class="page-shell py-10">
+  <%= render CardComponent.new(class: "max-w-xl mx-auto flex flex-col gap-y-6 p-6 sm:p-8") do %>
+    <div class="flex flex-col gap-y-3">
+      <div class="bg-primary-50 text-primary-700 rounded-lg w-10 h-10 flex justify-center items-center">
+        <i class="uc-icon text-xl">&#xeb1a;</i>
+      </div>
+      <h1 class="text-xl font-semibold text-primary-text"><%= t("project_shares.invitation.title", organization: owner.name) %></h1>
+    </div>
+
+    <dl class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-3 text-sm">
+      <dt class="text-muted-foreground"><%= t("project_shares.invitation.project") %></dt>
+      <dd class="font-semibold text-primary-text"><%= @share.project.name %></dd>
+      <dt class="text-muted-foreground"><%= t("project_shares.invitation.you_see") %></dt>
+      <dd class="text-primary-text"><%= t("project_shares.invitation.you_see_value") %></dd>
+      <dt class="text-muted-foreground"><%= t("project_shares.invitation.you_cannot") %></dt>
+      <dd class="text-primary-text"><%= t("project_shares.invitation.you_cannot_value") %></dd>
+    </dl>
+
+    <% if !@share.acceptable? %>
+      <%- status = @share.expired? ? :expired : @share.status.to_sym %>
+      <div class="rounded-lg bg-surface-muted border border-border px-4 py-3 text-sm text-secondary-text">
+        <%= t("project_shares.invitation.status.#{status}", organization: owner.name) %>
+      </div>
+    <% elsif @organizations.empty? %>
+      <div class="flex flex-col gap-y-3">
+        <p class="text-sm text-secondary-text"><%= t("project_shares.invitation.no_organization") %></p>
+        <%= render ButtonComponent.new(path: onboarding_wizard_path(:organization), method: :get, class: "w-fit") { t("project_shares.invitation.create_organization") } %>
+      </div>
+    <% else %>
+      <%= form_with url: accept_project_share_invitation_path(@share.invitation_token), method: :post, id: "accept_project_share", class: "flex flex-col gap-y-1.5" do |form| %>
+        <%= form.label :organization_id, t("project_shares.invitation.add_to"), class: "form-label" %>
+        <%= form.select :organization_id, options_from_collection_for_select(@organizations, :id, :name, current_user.current_organization&.id), {}, class: "form-input" %>
+      <% end %>
+      <%# Two separate forms side by side; the accept button submits the form above through its id. %>
+      <div class="flex flex-row justify-end gap-x-2">
+        <%= render ButtonComponent.new(variant: :outline, path: reject_project_share_invitation_path(@share.invitation_token), method: :post) { t("project_shares.invitation.reject") } %>
+        <button type="submit" form="accept_project_share" class="<%= ButtonComponent::Styles.compose(:primary) %> inline-flex items-center justify-center"><%= t("project_shares.invitation.accept") %></button>
+      </div>
+    <% end %>
+  <% end %>
+</div>

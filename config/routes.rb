@@ -64,6 +64,7 @@ Rails.application.routes.draw do
   namespace :workspace do
     resources :projects do
       post :import_modal, on: :collection
+      resources :shares, only: %i[create destroy], module: :projects
     end
 
     scope module: :projects do
@@ -85,6 +86,19 @@ Rails.application.routes.draw do
     end
 
     resource :settings, only: [ :show, :edit, :update ]
+  end
+
+  namespace :shared do
+    resources :projects, only: %i[index show destroy] do
+      get :export, on: :member
+    end
+  end
+
+  resources :project_share_invitations, path: "share_invitations", param: :token, only: :show do
+    member do
+      post :accept
+      post :reject
+    end
   end
 
   resources :reports, only: [ :index ]

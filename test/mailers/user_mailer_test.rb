@@ -24,7 +24,8 @@ class UserMailerTest < ActionMailer::TestCase
     Stemplin.config.emails.templates = {
       user: {
         welcome: { en: { template_id: "welcome_template_id" } },
-        password_reset: { en: { template_id: "password_reset_template_id" } }
+        password_reset: { en: { template_id: "password_reset_template_id" } },
+        project_share_invitation: { en: { template_id: "project_share_invitation_template_id" } }
       }
     }
     I18n.locale = :en
@@ -59,6 +60,22 @@ class UserMailerTest < ActionMailer::TestCase
     assert_equal "password_reset_template_id", headers[:sendgrid_template]
     assert_equal @user.name, headers[:content][:user_name]
     assert_includes headers[:content][:url], "reset_password_token=#{token}"
+  end
+
+  test "project share invitation links to the invitation and names the sharing organization" do
+    project = projects(:project_1)
+    share = ProjectShare.create!(project: project, invited_email: "newcomer@example.com", invited_by: users(:organization_admin))
+
+    headers = capture_headers do
+      CapturingUserMailer.project_share_invitation_email(project_share: share)
+    end
+
+    assert_equal "newcomer@example.com", headers[:to]
+    assert_equal "project_share_invitation_template_id", headers[:sendgrid_template]
+    assert_equal project.name, headers[:content][:project_name]
+    assert_equal project.organization.name, headers[:content][:inviting_organization_name]
+    assert_equal users(:organization_admin).name, headers[:content][:inviting_user_name]
+    assert_includes headers[:content][:url], "/share_invitations/#{share.invitation_token}"
   end
 
   test "headers are turned into a SendGrid payload with a personalization" do

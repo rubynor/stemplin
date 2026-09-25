@@ -12,3 +12,8 @@ shared:
           template_id: <%= ENV["PASSWORD_RESET_NB_TEMPLATE_ID"] %>
         en:
           template_id: <%= ENV["PASSWORD_RESET_EN_TEMPLATE_ID"] %>
+      project_share_invitation:
+        nb:
+          template_id: <%= ENV["PROJECT_SHARE_INVITATION_NB_TEMPLATE_ID"] %>
+        en:
+          template_id: <%= ENV["PROJECT_SHARE_INVITATION_EN_TEMPLATE_ID"] %>
