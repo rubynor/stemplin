@@ -24,8 +24,7 @@ class UserMailerTest < ActionMailer::TestCase
     Stemplin.config.emails.templates = {
       user: {
         welcome: { en: { template_id: "welcome_template_id" } },
-        password_reset: { en: { template_id: "password_reset_template_id" } },
-        project_invitation: { en: { template_id: "project_invitation_template_id" } }
+        password_reset: { en: { template_id: "password_reset_template_id" } }
       }
     }
     I18n.locale = :en
@@ -60,22 +59,6 @@ class UserMailerTest < ActionMailer::TestCase
     assert_equal "password_reset_template_id", headers[:sendgrid_template]
     assert_equal @user.name, headers[:content][:user_name]
     assert_includes headers[:content][:url], "reset_password_token=#{token}"
-  end
-
-  test "project invitation email is addressed to the invited email" do
-    project = projects(:project_1)
-    inviting_user = users(:organization_admin)
-    invitation = ProjectInvitation.new(invited_email: "newcomer@example.com", project: project, invited_by: inviting_user)
-
-    headers = capture_headers do
-      CapturingUserMailer.project_invitation_email(project_invitation: invitation, inviting_user: inviting_user, project: project)
-    end
-
-    assert_equal "newcomer@example.com", headers[:to]
-    assert_equal "project_invitation_template_id", headers[:sendgrid_template]
-    assert_equal project.name, headers[:content][:project_name]
-    assert_equal project.client.name, headers[:content][:client_name]
-    assert_equal inviting_user.name, headers[:content][:inviting_user_name]
   end
 
   test "headers are turned into a SendGrid payload with a personalization" do
