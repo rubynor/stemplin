@@ -55,8 +55,6 @@ WELCOME_EN_TEMPLATE_ID: organization_name, user_name, url
 WELCOME_NB_TEMPLATE_ID: organization_name, user_name, url
 PASSWORD_RESET_EN_TEMPLATE_ID: user_name, user_email, url
 PASSWORD_RESET_NB_TEMPLATE_ID: user_name, user_email, url
-PROJECT_INVITATION_EN_TEMPLATE_ID: organization_name, user_name, url
-PROJECT_INVITATION_NB_TEMPLATE_ID: organization_name, user_name, url
 ```
 
 When you have created the templates with the required parameters, you can insert the template ids in the `.env` file:

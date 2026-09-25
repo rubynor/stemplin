@@ -79,7 +79,7 @@ end
 
 **Background Jobs:** Sidekiq with Redis (required for Hotwire functionality)
 
-**Invitation System:** devise_invitable for user invitations with external project access
+**Invitation System:** devise_invitable for user invitations
 
 **Onboarding:** Multi-step wizard using Wicked gem (`OnboardingWizardController`)
 
@@ -102,7 +102,6 @@ end
 ## Services
 
 Business logic lives in `/app/services/`:
-- `ProjectInvitationService` - Creates and processes project invitations
 - `InviteUsersService` - Handles user invitation workflow
 - `ConvertCurrencyHundredths` - Currency conversion utility
 
