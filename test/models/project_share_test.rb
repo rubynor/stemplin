@@ -45,6 +45,18 @@ class ProjectShareTest < ActiveSupport::TestCase
     assert duplicate.valid?, "a cancelled invitation should not block a new one"
   end
 
+  test "someone who only belongs to the owning organization cannot be invited" do
+    share = ProjectShare.new(project: @project, invited_email: users(:joe).email, invited_by: users(:organization_admin))
+
+    assert_not share.valid?
+    assert share.errors.added?(:invited_email, :only_in_owner)
+  end
+
+  test "members of the owning organization with other organizations, and unknown addresses, can be invited" do
+    assert ProjectShare.new(project: @project, invited_email: users(:ron).email, invited_by: users(:organization_admin)).valid?
+    assert ProjectShare.new(project: @project, invited_email: "new@example.com", invited_by: users(:organization_admin)).valid?
+  end
+
   test "an invalid email is rejected" do
     assert_not ProjectShare.new(project: @project, invited_email: "not-an-email", invited_by: users(:organization_admin)).valid?
   end

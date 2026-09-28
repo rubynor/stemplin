@@ -43,6 +43,7 @@ nb:
       accept: "Godta deling"
       reject: "Avslå"
       no_organization: "Bare en administrator i en organisasjon kan godta. Opprett organisasjonen din, og åpne lenken igjen."
+      no_other_organization: "Du har ingen annen organisasjon å legge prosjektet i. Opprett en, og åpne lenken igjen."
       create_organization: "Opprett organisasjon"
       status:
         accepted: "Invitasjonen er allerede godtatt."
@@ -89,6 +90,7 @@ nb:
           attributes:
             invited_email:
               taken: "er allerede invitert til prosjektet"
+              only_in_owner: "er bare med i din egen organisasjon, og har ingen annen organisasjon å legge prosjektet i"
             organization:
               is_owner: "eier allerede prosjektet"
               taken: "har allerede prosjektet"

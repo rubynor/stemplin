@@ -85,6 +85,18 @@ class ProjectSharingTest < ActionDispatch::IntegrationTest
     assert share.reload.pending?
   end
 
+  test "an invitee who administers only the owning organization is told they have nowhere else to put it" do
+    invitee = User.create!(email: "both@example.com", first_name: "Bo", last_name: "Both", password: "password", invitation_accepted_at: Time.current)
+    AccessInfo.create!(user: invitee, organization: @project.organization, role: :organization_admin, active: true)
+    AccessInfo.create!(user: invitee, organization: @customer, role: :organization_user)
+    share = invite(invitee.email)
+    sign_in invitee
+
+    get project_share_invitation_path(share.invitation_token)
+    assert_includes response.body, I18n.t("project_shares.invitation.no_other_organization")
+    assert_not_includes response.body, accept_project_share_invitation_path(share.invitation_token)
+  end
+
   test "an invitation sent to someone else cannot be opened or accepted" do
     share = invite
     sign_in users(:customer_member)

@@ -43,6 +43,7 @@ en:
       accept: "Accept"
       reject: "Decline"
       no_organization: "Only an administrator of an organization can accept. Create your organization, then open this link again."
+      no_other_organization: "You have no other organization to put this project in. Create one, then open this link again."
       create_organization: "Create organization"
       status:
         accepted: "This invitation has already been accepted."
@@ -89,6 +90,7 @@ en:
           attributes:
             invited_email:
               taken: "has already been invited to this project"
+              only_in_owner: "only belongs to your own organization, so they have nowhere to put the project"
             organization:
               is_owner: "already owns this project"
               taken: "already has this project"

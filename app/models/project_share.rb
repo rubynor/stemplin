@@ -16,6 +16,7 @@ class ProjectShare < ApplicationRecord
   validates :organization, presence: true, if: :accepted?
   validates :organization_id, uniqueness: { scope: :project_id, conditions: -> { accepted } }, if: :accepted?
   validate :organization_is_not_the_owner
+  validate :invitee_has_somewhere_else_to_put_it, on: :create
 
   before_validation :set_expires_at, on: :create
 
@@ -52,6 +53,16 @@ class ProjectShare < ApplicationRecord
 
   def set_expires_at
     self.expires_at ||= EXPIRES_IN.from_now
+  end
+
+  # Someone who only belongs to the owning organization could never accept.
+  def invitee_has_somewhere_else_to_put_it
+    return unless project
+
+    invitee = User.find_by(email: invited_email)
+    return unless invitee
+
+    errors.add(:invited_email, :only_in_owner) if invitee.organizations.to_a == [ project.organization ]
   end
 
   def organization_is_not_the_owner

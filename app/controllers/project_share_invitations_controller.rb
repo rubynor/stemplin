@@ -9,6 +9,7 @@ class ProjectShareInvitationsController < ApplicationController
   def show
     authorize! @share, with: ProjectShareInvitationPolicy
     @organizations = eligible_organizations
+    @admin_elsewhere = current_user.access_infos.organization_admin.exists?
   end
 
   def accept
