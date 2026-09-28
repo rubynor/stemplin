@@ -34,7 +34,7 @@
         <%= form.label :organization_id, t("project_shares.invitation.add_to"), class: "form-label" %>
         <%= form.select :organization_id, options_from_collection_for_select(@organizations, :id, :name, current_user.current_organization&.id), {}, class: "form-input" %>
       <% end %>
-      <%# Two separate forms side by side; the accept button submits the form above through its id. %>
+      <%# Separate forms can't nest; the accept button submits the form above by id. %>
       <div class="flex flex-row justify-end gap-x-2">
         <%= render ButtonComponent.new(variant: :outline, path: reject_project_share_invitation_path(@share.invitation_token), method: :post) { t("project_shares.invitation.reject") } %>
         <button type="submit" form="accept_project_share" class="<%= ButtonComponent::Styles.compose(:primary) %> inline-flex items-center justify-center"><%= t("project_shares.invitation.accept") %></button>

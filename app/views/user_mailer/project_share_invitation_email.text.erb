@@ -1,0 +1,7 @@
+<%= t("project_shares.email.greeting") %>
+
+<%= t("project_shares.email.body", user: @inviting_user.name, organization: @owner.name, project: @project.name) %>
+
+<%= t("project_shares.email.button") %>: <%= @url %>
+
+<%= t("project_shares.email.expires") %>

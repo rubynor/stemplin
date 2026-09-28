@@ -26,6 +26,12 @@ nb:
     alert:
       invitation_not_found: "Invitasjonen finnes ikke, eller den ble sendt til en annen e-postadresse."
       pick_organization: "Velg hvilken organisasjon prosjektet skal inn i."
+    email:
+      subject: "%{organization} har delt %{project} med deg"
+      greeting: "Hei,"
+      body: "%{user} i %{organization} vil dele prosjektet %{project} med deg i Stemplin. Du vil se timene, konsulentene, notatene og kostnaden som føres."
+      button: "Se invitasjonen"
+      expires: "Invitasjonen utløper om 7 dager. Hvis du ikke ventet den, kan du se bort fra denne e-posten."
     invitation:
       title: "%{organization} vil dele et prosjekt med deg"
       project: "Prosjekt"

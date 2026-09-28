@@ -1,8 +1,6 @@
 require "csv"
 
 module Shared
-  # Projects other organizations have shared with the current one, read-only. Everything here goes
-  # through the Shared:: policies, which only ever return projects shared with the organization.
   class ProjectsController < ApplicationController
     before_action :authenticate_user!
     before_action :set_filter
@@ -40,7 +38,7 @@ module Shared
       time_regs = filtered_time_regs.includes(:user, assigned_task: %i[task project]).order(:date_worked, :created_at)
       summary = ProjectSummary.new(project: @project, time_regs: time_regs)
 
-      # Deliberately no email column: the recipient sees who did the work, not how to reach them.
+      # No email column: the recipient sees who did the work, not how to reach them.
       csv = CSV.generate(headers: true) do |rows|
         rows << %w[date project task consultant notes minutes hours amount currency]
         time_regs.each do |time_reg|

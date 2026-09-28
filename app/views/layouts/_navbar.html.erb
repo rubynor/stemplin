@@ -6,7 +6,6 @@
      )
    end %>
 
-<%# Only admins see shared projects, and only once something has been shared with their organization. %>
 <% shows_shared_projects = user_signed_in? && current_user.organization_admin? && authorized_scope(Project, type: :relation, with: Shared::ProjectPolicy).exists? %>
 
 <header class="sticky top-0 z-30 bg-background border-b border-border print:hidden">

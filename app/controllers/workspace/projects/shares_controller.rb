@@ -1,7 +1,5 @@
 module Workspace
   module Projects
-    # The owner shares a project with another organization by inviting one of its admins, and can
-    # take the share back at any time.
     class SharesController < WorkspaceController
       before_action :set_project
 

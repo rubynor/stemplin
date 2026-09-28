@@ -1,6 +1,3 @@
-# Gives another organization read access to a project: its admins see the time registered on it,
-# at the owner's rates and in the owner's currency. The share starts as an invitation to an email
-# address, and the recipient picks which of their organizations the project goes into.
 class ProjectShare < ApplicationRecord
   EXPIRES_IN = 7.days
 
@@ -23,7 +20,6 @@ class ProjectShare < ApplicationRecord
   before_validation :set_expires_at, on: :create
 
   scope :open_invitations, -> { pending.where("project_shares.expires_at > ?", Time.current) }
-  # What the owner lists on the project: live shares and invitations still waiting for an answer.
   scope :listed, -> { accepted.or(open_invitations) }
 
   def expired?

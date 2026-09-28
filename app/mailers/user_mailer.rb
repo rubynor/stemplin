@@ -12,20 +12,14 @@ class UserMailer < Devise::Mailer
   end
 
   def project_share_invitation_email(project_share:)
-    project = project_share.project
-    locale = User.find_by(email: project_share.invited_email)&.locale || project_share.invited_by.locale
+    @project = project_share.project
+    @owner = @project.organization
+    @inviting_user = project_share.invited_by
+    @url = project_share_invitation_url(project_share.invitation_token)
+    locale = User.find_by(email: project_share.invited_email)&.locale || @inviting_user.locale
 
     I18n.with_locale(locale) do
-      mail(
-        to: project_share.invited_email,
-        sendgrid_template: Stemplin.config.emails.templates[:user][:project_share_invitation][I18n.locale][:template_id],
-        content: {
-          inviting_user_name: project_share.invited_by.name,
-          inviting_organization_name: project.organization.name,
-          project_name: project.name,
-          url: project_share_invitation_url(project_share.invitation_token)
-        }
-      )
+      mail(to: project_share.invited_email, subject: t("project_shares.email.subject", organization: @owner.name, project: @project.name))
     end
   end
 

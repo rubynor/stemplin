@@ -1,6 +1,4 @@
 module Shared
-  # Hours and cost of a shared project over a set of its time registrations. The amount uses the
-  # owner's rates and is in the owner's currency — it is what the recipient is being billed.
   class ProjectSummary
     attr_reader :project, :time_regs
 
@@ -21,7 +19,6 @@ module Shared
       @total_minutes ||= time_regs.sum(&:minutes)
     end
 
-    # In hundredths, like every other amount in the app.
     def total_amount
       @total_amount ||= time_regs.sum { |time_reg| amount_for(time_reg) }
     end

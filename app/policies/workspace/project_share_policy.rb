@@ -1,5 +1,4 @@
 module Workspace
-  # The owner's side: an admin shares their organization's projects and revokes those shares.
   class ProjectSharePolicy < WorkspacePolicy
     %i[ create destroy ].each do |action|
       define_method("#{action}?") do

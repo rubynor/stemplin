@@ -1,6 +1,5 @@
 module Shared
-  # The recipient's side: projects other organizations have shared with the current one. Only admins
-  # see them, and only to read — nothing under Shared:: may write to a project it does not own.
+  # Read-only: nothing under Shared:: may write to a project it does not own.
   class ProjectPolicy < ApplicationPolicy
     def index?
       user.organization_admin?

@@ -1,5 +1,4 @@
 module Shared
-  # Lets the recipient's admin take a share back, just as the owner can.
   class ProjectSharePolicy < ApplicationPolicy
     def destroy?
       user.organization_admin? && record.accepted? && record.organization == user.current_organization

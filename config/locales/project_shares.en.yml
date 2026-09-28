@@ -26,6 +26,12 @@ en:
     alert:
       invitation_not_found: "This invitation does not exist, or it was sent to a different email address."
       pick_organization: "Pick the organization the project should go into."
+    email:
+      subject: "%{organization} has shared %{project} with you"
+      greeting: "Hi,"
+      body: "%{user} at %{organization} wants to share the project %{project} with you in Stemplin. You will see the hours, consultants, notes and cost registered on it."
+      button: "View invitation"
+      expires: "The invitation expires in 7 days. If you were not expecting it, you can ignore this email."
     invitation:
       title: "%{organization} wants to share a project with you"
       project: "Project"

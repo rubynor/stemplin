@@ -1,5 +1,4 @@
-# Answering an invitation to a shared project. The link is only good for the address it was sent to,
-# so a forwarded link cannot pull another company's project into the wrong organization.
+# Only the invited address may answer, so a forwarded link can't pull the project into another organization.
 class ProjectShareInvitationPolicy < ApplicationPolicy
   def show?
     invited?

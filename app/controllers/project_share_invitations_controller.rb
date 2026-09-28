@@ -1,5 +1,3 @@
-# Where the invited admin answers a share invitation and picks which of their organizations the
-# project goes into.
 class ProjectShareInvitationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_share
@@ -37,7 +35,6 @@ class ProjectShareInvitationsController < ApplicationController
     @share = authorized_scope(ProjectShare, type: :relation, with: ProjectShareInvitationPolicy).find_by!(invitation_token: params[:token])
   end
 
-  # Organizations the user administers, minus the owner and any that already have this project.
   def eligible_organizations
     project = @share.project
     current_user.access_infos.organization_admin.includes(:organization).map(&:organization)

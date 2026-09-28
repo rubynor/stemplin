@@ -9,8 +9,7 @@ export default class extends Controller {
     if (!this.hasActiveValue && this.triggerTargets.length > 0) {
       this.activeValue = this.triggerTargets[0].dataset.value;
     }
-    // A morphing page refresh (e.g. a redirect back to the same URL) resets the tab markup to the
-    // server's all-hidden state without reconnecting this controller, so show the active tab again.
+    // A morphing refresh resets the markup to all-hidden without reconnecting, so render again.
     this.render = this.render.bind(this);
     document.addEventListener("turbo:morph", this.render);
   }

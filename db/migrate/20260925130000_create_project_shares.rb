@@ -2,8 +2,7 @@ class CreateProjectShares < ActiveRecord::Migration[8.1]
   def change
     create_table :project_shares do |t|
       t.references :project, null: false, foreign_key: true
-      # The organization the project is shared with. Unknown until the invitation is accepted,
-      # because the recipient picks which of their organizations the project goes into.
+      # Set on acceptance, when the recipient picks the organization.
       t.references :organization, foreign_key: true
       t.references :invited_by, null: false, foreign_key: { to_table: :users }
       t.string :invited_email, null: false
