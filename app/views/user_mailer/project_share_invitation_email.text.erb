@@ -1,7 +1,8 @@
+<% content_for :heading, t("project_shares.email.heading", project: @project.name) %>
+<% content_for :action_url, @url %>
+<% content_for :action_label, t("project_shares.email.button") %>
 <%= t("project_shares.email.greeting") %>
 
 <%= t("project_shares.email.body", user: @inviting_user.name, organization: @owner.name, project: @project.name) %>
-
-<%= t("project_shares.email.button") %>: <%= @url %>
 
 <%= t("project_shares.email.expires") %>

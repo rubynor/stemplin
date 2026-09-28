@@ -1,8 +1,7 @@
-<div style="font-family: Inter, Helvetica, Arial, sans-serif; color: #18181b; font-size: 15px; line-height: 1.6; max-width: 520px; margin: 0 auto; padding: 24px;">
-  <p><%= t("project_shares.email.greeting") %></p>
-  <p><%= t("project_shares.email.body", user: @inviting_user.name, organization: @owner.name, project: @project.name) %></p>
-  <p style="margin: 28px 0;">
-    <a href="<%= @url %>" style="background: #4f46e5; color: #ffffff; text-decoration: none; font-weight: 600; padding: 12px 20px; border-radius: 8px; display: inline-block;"><%= t("project_shares.email.button") %></a>
-  </p>
-  <p style="color: #71717a; font-size: 13px;"><%= t("project_shares.email.expires") %></p>
-</div>
+<% content_for :heading do %><%= t("project_shares.email.heading_html", project: @project.name) %><% end %>
+<% content_for :action_url, @url %>
+<% content_for :action_label, t("project_shares.email.button") %>
+
+<p style="margin:16px 0;"><%= t("project_shares.email.greeting") %></p>
+<p style="margin:12px 0;"><%= t("project_shares.email.body", user: @inviting_user.name, organization: @owner.name, project: @project.name) %></p>
+<p style="margin:12px 0;"><%= t("project_shares.email.expires") %></p>

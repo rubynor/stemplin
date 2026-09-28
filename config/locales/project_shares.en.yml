@@ -28,6 +28,8 @@ en:
       pick_organization: "Pick the organization the project should go into."
     email:
       subject: "%{organization} has shared %{project} with you"
+      heading: "Shared project: %{project}"
+      heading_html: "Shared project: <strong>%{project}</strong>"
       greeting: "Hi,"
       body: "%{user} at %{organization} wants to share the project %{project} with you in Stemplin. You will see the hours, consultants, notes and cost registered on it."
       button: "View invitation"

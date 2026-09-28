@@ -2,12 +2,45 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <style>
-      /* Email styles need to be inline */
-    </style>
+    <meta name="x-apple-disable-message-reformatting" />
   </head>
 
-  <body>
-    <%= yield %>
+  <body style="margin:0;padding:0 12px;background-color:#EDF2F7;font-family:HelveticaNeue,Helvetica,Arial,sans-serif;color:#111827;">
+    <table align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="max-width:580px;margin:30px auto;background-color:#ffffff;border-radius:10px;">
+      <tr>
+        <td style="padding:35px 35px 0;text-align:center;">
+          <%= image_tag "email-logo.png", alt: "Stemplin", width: 120, style: "display:block;margin:0 auto;border:none;outline:none;text-decoration:none;" %>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:35px 20px 0;">
+          <h1 style="color:#000000;font-size:18px;font-weight:400;text-align:center;margin:0 0 30px;"><%= yield :heading %></h1>
+          <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+            <tr>
+              <td style="border-bottom:1px solid #e5e7eb;width:41.5%;"></td>
+              <td style="border-bottom:2px solid #3c44d4;width:17%;"></td>
+              <td style="border-bottom:1px solid #e5e7eb;width:41.5%;"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:15px 45px 10px;font-size:14px;line-height:1.5;">
+          <%= yield %>
+          <p style="margin:12px 0;"><%= t("mailer.sign_off") %><br><%= t("mailer.sender") %></p>
+        </td>
+      </tr>
+      <% if content_for?(:action_url) %>
+        <tr>
+          <td style="text-align:center;padding:10px 20px 36px;">
+            <a href="<%= yield :action_url %>" target="_blank" style="display:inline-block;background-color:#3c44d4;border-radius:0.25rem;color:#ffffff;font-size:12px;font-weight:600;line-height:120%;text-decoration:none;padding:1rem 1.25rem;"><%= yield :action_label %></a>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+
+    <p style="font-size:14px;line-height:24px;margin:16px 0 30px;text-align:center;color:#706a7b;">
+      <%= t("mailer.footer.rights") %><br><%= t("mailer.footer.address") %>
+    </p>
   </body>
 </html>

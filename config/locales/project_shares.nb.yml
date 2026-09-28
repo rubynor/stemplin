@@ -28,6 +28,8 @@ nb:
       pick_organization: "Velg hvilken organisasjon prosjektet skal inn i."
     email:
       subject: "%{organization} har delt %{project} med deg"
+      heading: "Delt prosjekt: %{project}"
+      heading_html: "Delt prosjekt: <strong>%{project}</strong>"
       greeting: "Hei,"
       body: "%{user} i %{organization} vil dele prosjektet %{project} med deg i Stemplin. Du vil se timene, konsulentene, notatene og kostnaden som føres."
       button: "Se invitasjonen"
