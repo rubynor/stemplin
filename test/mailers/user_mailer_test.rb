@@ -61,18 +61,33 @@ class UserMailerTest < ActionMailer::TestCase
     assert_includes headers[:content][:url], "reset_password_token=#{token}"
   end
 
-  test "project share invitation is a plain Rails email linking to the invitation" do
+  test "project share invitation is a plain Rails email naming the client and the sharing organization" do
     project = projects(:project_1)
     share = ProjectShare.create!(project: project, invited_email: "newcomer@example.com", invited_by: users(:organization_admin))
 
-    email = UserMailer.project_share_invitation_email(project_share: share)
+    email = UserMailer.project_share_invitation_email(project_shares: [ share ])
     assert_emails(1) { email.deliver_now }
 
     assert_equal [ "newcomer@example.com" ], email.to
-    assert_equal "#{project.organization.name} has shared #{project.name} with you", email.subject
+    assert_equal "#{project.organization.name} has shared #{project.name} (#{project.client.name}) with you", email.subject
     [ email.html_part, email.text_part ].each do |part|
       assert_includes part.body.to_s, "/share_invitations/#{share.invitation_token}"
       assert_includes part.body.to_s, users(:organization_admin).name
+      assert_includes part.body.to_s, project.organization.name
+      assert_includes part.body.to_s, project.client.name
+    end
+  end
+
+  test "several projects shared together go out as one email listing them all" do
+    projects = [ projects(:project_1), projects(:project_2) ]
+    shares = projects.map { |project| ProjectShare.create!(project: project, invited_email: "newcomer@example.com", invited_by: users(:organization_admin)) }
+
+    email = UserMailer.project_share_invitation_email(project_shares: shares)
+
+    assert_equal "#{projects.first.organization.name} has shared 2 projects for #{projects.first.client.name} with you", email.subject
+    [ email.html_part, email.text_part ].each do |part|
+      projects.each { |project| assert_includes part.body.to_s, project.name }
+      assert_includes part.body.to_s, "/share_invitations/#{shares.first.invitation_token}"
     end
   end
 
@@ -80,7 +95,7 @@ class UserMailerTest < ActionMailer::TestCase
     users(:customer_admin).update!(locale: "nb")
     share = ProjectShare.create!(project: projects(:project_1), invited_email: users(:customer_admin).email, invited_by: users(:organization_admin))
 
-    email = UserMailer.project_share_invitation_email(project_share: share)
+    email = UserMailer.project_share_invitation_email(project_shares: [ share ])
 
     assert_match(/har delt/, email.subject)
   end

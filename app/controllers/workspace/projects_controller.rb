@@ -44,7 +44,7 @@ module Workspace
     end
 
     def index
-      @pagy, @clients = pagy authorized_scope(Client, type: :relation).order(:name).includes(:projects), items: 6
+      @pagy, @clients = pagy authorized_scope(Client, type: :relation).order(:name).includes(projects: { listed_project_shares: :organization }), items: 6
       authorize!
     end
 

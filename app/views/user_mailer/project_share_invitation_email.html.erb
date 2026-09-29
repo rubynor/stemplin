@@ -1,7 +1,21 @@
-<% content_for :heading do %><%= t("project_shares.email.heading_html", project: @project.name) %><% end %>
+<% if @projects.one? %>
+  <% content_for :heading do %><%= t("project_shares.email.heading_html", project: @projects.first.name) %><% end %>
+<% else %>
+  <% content_for :heading do %><%= t("project_shares.email.heading_many_html", client: @clients) %><% end %>
+<% end %>
 <% content_for :action_url, @url %>
 <% content_for :action_label, t("project_shares.email.button") %>
 
 <p style="margin:16px 0;"><%= t("project_shares.email.greeting") %></p>
-<p style="margin:12px 0;"><%= t("project_shares.email.body", user: @inviting_user.name, organization: @owner.name, project: @project.name) %></p>
+<% if @projects.one? %>
+  <p style="margin:12px 0;"><%= t("project_shares.email.body", user: @inviting_user.name, organization: @owner.name, project: @projects.first.name, client: @clients) %></p>
+<% else %>
+  <p style="margin:12px 0;"><%= t("project_shares.email.body_many", user: @inviting_user.name, organization: @owner.name, client: @clients) %></p>
+  <ul style="margin:12px 0;padding-left:20px;">
+    <% @projects.each do |project| %>
+      <li><strong><%= project.name %></strong></li>
+    <% end %>
+  </ul>
+<% end %>
+<p style="margin:12px 0;"><%= t("project_shares.email.you_see") %></p>
 <p style="margin:12px 0;"><%= t("project_shares.email.expires") %></p>

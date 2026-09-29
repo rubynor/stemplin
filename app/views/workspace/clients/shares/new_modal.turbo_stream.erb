@@ -1,0 +1,8 @@
+<%= render RubyUI::Dialog.new(open: true, data: { controller: "custom-dialog" }) do %>
+  <%= render RubyUI::DialogTrigger.new(class: "hidden", data: { custom_dialog_target: "trigger" }) do %>
+    <%= render RubyUI::Button.new { "Open Dialog" } %>
+  <% end %>
+  <%= render RubyUI::DialogContent.new do %>
+    <%= render partial: "workspace/clients/shares/form", locals: { client: @client, projects: @projects, selected_ids: @selected_ids, email: "", errors: [] } %>
+  <% end %>
+<% end %>

@@ -1,0 +1,53 @@
+<%= turbo_frame_tag :modal do %>
+  <%= form_with url: workspace_client_shares_path(client), method: :post, scope: :project_share do |form| %>
+    <div class="flex flex-col gap-y-4">
+      <div class="flex flex-col gap-y-1">
+        <span class="font-semibold text-secondary-text text-lg"><%= t("project_shares.client.title", client: client.name) %></span>
+        <span class="text-sm text-muted-foreground"><%= t("project_shares.client.intro") %></span>
+      </div>
+
+      <% errors.each do |message| %>
+        <%= render RubyUI::FormFieldError.new(class: "w-full form-error") { message } %>
+      <% end %>
+
+      <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
+        <%= form.label :invited_email, t("activerecord.attributes.project_share.invited_email"), class: "form-label" %>
+        <%= form.email_field :invited_email, value: email, required: true, autofocus: true, autocomplete: "off", placeholder: t("project_shares.invite_placeholder"), class: "form-input" %>
+        <span class="text-xs text-muted-foreground"><%= t("project_shares.invite_hint") %></span>
+      <% end %>
+
+      <fieldset class="flex flex-col gap-y-2" data-controller="checkbox">
+        <div class="flex items-center justify-between">
+          <span class="form-label"><%= t("project_shares.client.projects") %></span>
+          <label class="flex items-center gap-x-2 text-sm text-secondary-text cursor-pointer">
+            <input type="checkbox" class="form-checkbox rounded" data-checkbox-target="checkboxAll" data-action="change->checkbox#toggleAll">
+            <%= t("project_shares.client.select_all") %>
+          </label>
+        </div>
+        <ul class="rounded-lg border border-border divide-y divide-border max-h-72 overflow-y-auto">
+          <% projects.each do |project| %>
+            <%- shared_with = project.listed_project_shares.select(&:accepted?).map { |share| share.organization.name }.uniq %>
+            <li>
+              <label class="flex items-center gap-x-3 px-3 py-2.5 cursor-pointer hover:bg-surface-muted">
+                <%= check_box_tag "project_share[project_ids][]", project.id, selected_ids.include?(project.id), id: "project_share_project_#{project.id}", class: "form-checkbox rounded", data: { checkbox_target: "checkbox", action: "change->checkbox#updateCheckboxAll" } %>
+                <span class="min-w-0 flex-1 flex flex-col">
+                  <span class="text-sm font-medium text-primary-text truncate"><%= project.name %></span>
+                  <% if shared_with.any? %>
+                    <span class="text-xs text-muted-foreground truncate"><%= t("project_shares.client.shared_with", organizations: shared_with.to_sentence) %></span>
+                  <% end %>
+                </span>
+              </label>
+            </li>
+          <% end %>
+        </ul>
+      </fieldset>
+    </div>
+    <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-border") do %>
+      <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->ruby-ui--dialog#dismiss' }) { t("common.cancel") } %>
+      <%= render ButtonComponent.new(type: :submit) do %>
+        <i class="uc-icon text-base">&#xe98b;</i>
+        <span><%= t("project_shares.invite_button") %></span>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
