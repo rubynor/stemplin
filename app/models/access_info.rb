@@ -10,6 +10,8 @@ class AccessInfo < ApplicationRecord
   validates :user, presence: true
   validates :organization, presence: true
   validates :user_id, uniqueness: { scope: :organization_id }
+  validates :plan_weekly_capacity_minutes, numericality: { only_integer: true, in: 0..(7 * 24 * 60) }, allow_nil: true
+  validates :plan_work_days, numericality: { only_integer: true, in: 0..0b1111111 }
   validate :no_project_accesses_unless_project_restricted
   validate :organization_has_at_least_one_admin
 
@@ -21,6 +23,10 @@ class AccessInfo < ApplicationRecord
 
   def self.project_restricted_roles
     self.roles.except(:super_admin).keys
+  end
+
+  def plan_capacity_minutes
+    plan_weekly_capacity_minutes || organization.plan_default_capacity_minutes
   end
 
   def project_restricted?

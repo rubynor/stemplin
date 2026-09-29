@@ -70,6 +70,9 @@ application.register("invite-users", InviteUsersController)
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 
+import PlanAppController from "./plan_app_controller"
+application.register("plan-app", PlanAppController)
+
 import PrintController from "./print_controller"
 application.register("print", PrintController)
 

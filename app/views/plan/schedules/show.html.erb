@@ -1,0 +1,11 @@
+<% content_for :title, t("plan.ui.title") %>
+
+<div id="plan-app"
+     data-controller="plan-app"
+     data-plan-app-src-value="<%= asset_path("plan.js") %>"
+     data-plan-app-flags-value="<%= @flags.to_json %>">
+  <div class="plan-app">
+    <div class="plan-head"><h1 class="page-title"><%= t("plan.ui.title") %></h1></div>
+    <div class="plan-card plan-empty"><%= t("plan.ui.loading") %></div>
+  </div>
+</div>
