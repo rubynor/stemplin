@@ -86,6 +86,8 @@ Rails.application.routes.draw do
     resources :team_members, only: [ :index, :create, :update ] do
       get :invite_users, on: :collection
       put :edit_modal, on: :member
+      patch :archive, on: :member
+      patch :restore, on: :member
     end
 
     resource :settings, only: [ :show, :edit, :update ]

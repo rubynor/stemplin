@@ -6,10 +6,10 @@ class ListUsersTool < ApplicationTool
   end
 
   def call(organization_id: nil)
-    resolve_organization(organization_id)
+    organization = resolve_organization(organization_id)
     authorize! with: UserPolicy, to: :index?
 
-    users = authorized_scope(User, type: :relation, with: UserPolicy).onboarded.ordered_by_name
+    users = authorized_scope(User, type: :relation, with: UserPolicy).unarchived_in(organization).onboarded.ordered_by_name
 
     JSON.generate(users.map { |user| format_user(user) })
   rescue => e

@@ -1,0 +1,11 @@
+<% access_info = user.all_access_infos.find_by(organization: current_user.current_organization) %>
+<%= render RubyUI::TableRow.new(id: dom_id(user), class: "text-muted-foreground") do %>
+  <%= render RubyUI::TableCell.new(class: "py-4 font-medium md:font-normal", data: { role: "title" }) { user.name.presence || user.email } %>
+  <%= render RubyUI::TableCell.new(class: "py-4 break-all md:break-normal", data: { label: t("common.email") }) { user.email } %>
+  <%= render RubyUI::TableCell.new(class: "py-4", data: { label: t("team_members.archived_on") }) { l(access_info.archived_at.to_date, format: :long) } %>
+  <%= render RubyUI::TableCell.new(data: { role: "actions" }) do %>
+    <%= render ButtonComponent.new(path: restore_workspace_team_member_path(user), method: :patch, variant: :outline) do %>
+      <%= t("team_members.restore") %>
+    <% end %>
+  <% end %>
+<% end %>

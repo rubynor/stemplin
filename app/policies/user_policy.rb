@@ -15,9 +15,11 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  # Admins also see members who have been archived: their time regs are still
+  # part of the organization's reports.
   scope_for :relation do |relation|
     if user.organization_admin?
-      relation.joins(:organizations).where(organizations: { id: user.current_organization.id }).distinct
+      relation.joins(:all_access_infos).where(access_infos: { organization_id: user.current_organization.id }).distinct
     elsif user.access_info.organization_spectator?
       projects = authorized_scope(Project.all, type: :relation).all
       relation.joins(time_regs: :project).where(projects: { id: projects }).distinct

@@ -7,6 +7,11 @@ class AccessInfo < ApplicationRecord
 
   enum :role, { organization_user: 0, organization_admin: 1, super_admin: 2, organization_spectator: 3 }
 
+  # Members who have left keep their history (time regs, plan bookings) but lose
+  # access to the organization and drop out of team lists and pickers.
+  scope :unarchived, -> { where(archived_at: nil) }
+  scope :archived, -> { where.not(archived_at: nil) }
+
   validates :user, presence: true
   validates :organization, presence: true
   validates :user_id, uniqueness: { scope: :organization_id }
@@ -31,6 +36,18 @@ class AccessInfo < ApplicationRecord
 
   def project_restricted?
     self.class.project_restricted_roles.include? self.role
+  end
+
+  def archived?
+    archived_at.present?
+  end
+
+  def archive
+    update(archived_at: Time.current, active: false)
+  end
+
+  def restore
+    update(archived_at: nil)
   end
 
   def update_project_accesses(project_ids)
@@ -59,9 +76,9 @@ class AccessInfo < ApplicationRecord
   end
 
   def organization_has_at_least_one_admin
-    return unless organization && role != "organization_admin"
+    return unless organization && (role != "organization_admin" || archived?)
 
-    other_admins_query = organization.access_infos.where(role: :organization_admin)
+    other_admins_query = organization.access_infos.unarchived.where(role: :organization_admin)
     other_admins_query = other_admins_query.where.not(id: id) if persisted?
     unless other_admins_query.exists?
       errors.add(:organization, :must_have_at_least_one_admin)

@@ -18,6 +18,7 @@ module Api
       def authenticate_api_user!
         token = request.headers["Authorization"]&.delete_prefix("Bearer ")
         @current_user = User.find_by_api_token(token)
+        @current_user = nil if @current_user&.archived_everywhere?
 
         render json: { errors: [ "Unauthorized" ] }, status: :unauthorized unless @current_user
       end

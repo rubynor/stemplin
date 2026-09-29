@@ -71,7 +71,10 @@ module Workspace
     end
 
     def convert_user_ids_to_access_info_ids(proj_params)
-      proj_params[:access_info_ids] = authorized_scope(AccessInfo, type: :relation).where(user_id: proj_params[:user_ids]).pluck(:id)
+      access_info_ids = authorized_scope(AccessInfo, type: :relation).unarchived.where(user_id: proj_params[:user_ids]).pluck(:id)
+      # Archived members aren't in the form; keep their access so restoring them brings it back.
+      access_info_ids += @project.access_infos.archived.ids if @project&.persisted?
+      proj_params[:access_info_ids] = access_info_ids
       proj_params.except(:user_ids)
     end
 
@@ -79,7 +82,7 @@ module Workspace
       @project = authorized_scope(Project, type: :relation).find(params[:id])
       @pagy_active_assigned_tasks, @active_assigned_tasks = pagy @project.active_assigned_tasks, items: 6
 
-      @pagy_members, @members = pagy @project.users.onboarded, items: 6
+      @pagy_members, @members = pagy @project.users.merge(AccessInfo.unarchived).onboarded, items: 6
     end
 
     def prepare_form_data

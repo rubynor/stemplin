@@ -8,7 +8,8 @@ class ApplicationTool < ActionTool::Base
   def current_user
     @current_user ||= begin
       token = (headers&.dig("Authorization") || headers&.dig("authorization"))&.delete_prefix("Bearer ")
-      User.find_by_api_token(token)
+      user = User.find_by_api_token(token)
+      user unless user&.archived_everywhere?
     end
   end
 

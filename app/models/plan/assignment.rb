@@ -26,7 +26,7 @@ module Plan
     def work_days
       return Plan::DEFAULT_WORK_DAYS unless user
 
-      user.access_info(organization)&.plan_work_days || Plan::DEFAULT_WORK_DAYS
+      user.all_access_infos.find_by(organization: organization)&.plan_work_days || Plan::DEFAULT_WORK_DAYS
     end
 
     # Number of the assignee's working days this assignment covers within the range.
@@ -74,7 +74,14 @@ module Plan
 
       errors.add(:project, :invalid) if project && project.organization != organization
       errors.add(:placeholder, :invalid) if placeholder && placeholder.organization_id != organization_id
-      errors.add(:user, :invalid) if user && !user.access_infos.exists?(organization: organization)
+      errors.add(:user, :invalid) if user && !user_member_of_organization?
+    end
+
+    # People who were archived keep their existing bookings (which can still be
+    # moved or trimmed), but can't be booked anew.
+    def user_member_of_organization?
+      memberships = user_id_changed? ? user.access_infos : user.all_access_infos
+      memberships.exists?(organization: organization)
     end
   end
 end

@@ -305,6 +305,15 @@ nb:
         description: "Arbeidsområdet ditt er klart til bruk. Du kan nå begynne å registrere tid for dine prosjekter og oppgaver."
         start_tracking: "Start tidsregistrering"
 
+  team_members:
+    active: "Aktive"
+    archived: "Arkiverte"
+    archived_on: "Arkivert"
+    archive: "Arkiver"
+    archive_confirm: "Arkivere %{name}? Personen mister tilgangen til organisasjonen og skjules fra teamlister og velgere. Timeføringene blir værende i rapportene, og du kan gjenopprette personen når som helst."
+    restore: "Gjenopprett"
+    no_archived: "Ingen arkiverte medlemmer. Arkiver folk som har sluttet, så holdes teamlisten ryddig."
+
   notice:
     are_you_sure: "Er du sikker?"
     project_has_been_updated: "Prosjekt har blitt oppdatert"
@@ -337,6 +346,8 @@ nb:
     tasks_was_successfully_deleted: "Oppgaven ble slettet."
     tasks_was_successfully_updated: "Oppgaven ble oppdatert."
     members_invited: "Invitasjonene ble sendt"
+    member_archived: "%{name} er arkivert og har ikke lenger tilgang til organisasjonen."
+    member_restored: "%{name} er gjenopprettet."
     user_updated: "Bruker ble oppdatert."
     time_entry_has_been_logged: "Tidsregistrering er loggført."
     edits_to_the_task_name: "Vær oppmerksom på at redigeringer av oppgavenavnet vil bli brukt på alle prosjektene. Endringer i den fakturerbare prisen vil kun brukes på dette prosjektet og vil bli tatt i bruk ved nye tidsregistreringer."

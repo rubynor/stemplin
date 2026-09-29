@@ -2,7 +2,35 @@ module Workspace
   class TeamMembersController < WorkspaceController
     def index
       authorize!
-      @pagy, @users = pagy authorized_scope(User, type: :relation).ordered_by_role.ordered_by_name
+      @showing_archived = params[:archived].present?
+      @archived_count = authorized_scope(User, type: :relation, as: :archived).count
+      @active_count = authorized_scope(User, type: :relation).count
+      users = if @showing_archived
+        authorized_scope(User, type: :relation, as: :archived).ordered_by_name
+      else
+        authorized_scope(User, type: :relation).ordered_by_role.ordered_by_name
+      end
+      @pagy, @users = pagy users
+    end
+
+    def archive
+      @user = authorized_scope(User, type: :relation).find(params[:id])
+      authorize! @user
+      access_info = @user.access_info(current_user.current_organization)
+      if access_info.archive
+        flash[:success] = t("notice.member_archived", name: @user.name.presence || @user.email)
+      else
+        flash[:error] = access_info.errors.full_messages.to_sentence
+      end
+      redirect_to workspace_team_members_path
+    end
+
+    def restore
+      @user = authorized_scope(User, type: :relation, as: :archived).find(params[:id])
+      authorize! @user
+      @user.all_access_infos.find_by!(organization: current_user.current_organization).restore
+      flash[:success] = t("notice.member_restored", name: @user.name.presence || @user.email)
+      redirect_to workspace_team_members_path(archived: 1)
     end
 
     def invite_users
