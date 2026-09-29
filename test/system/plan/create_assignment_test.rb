@@ -121,6 +121,20 @@ class Plan::CreateAssignmentTest < PlanSystemTestCase
     end
   end
 
+  test "the total can be cleared and retyped" do
+    open_joe
+    draw_assignment @crm_row, from: MONDAY + 7, to: MONDAY + 9 # three working days
+
+    within_modal do
+      total_hours_field.click
+      total_hours_field.send_keys(*([ :backspace ] * 6))
+      assert_equal "", total_hours_field.value
+      total_hours_field.send_keys("10")
+      assert_equal "10", total_hours_field.value
+      assert_equal "3.33", hours_per_day_field.value
+    end
+  end
+
   test "invalid input is explained and nothing is saved" do
     open_joe
     draw_assignment @crm_row, from: MONDAY + 7, to: MONDAY + 9

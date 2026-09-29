@@ -121,6 +121,7 @@ type alias AssignmentForm =
     , start : String
     , end : String
     , hours : String
+    , total : Maybe String
     , notes : String
     , repeat : Bool
     , repeatWeeks : String
@@ -1421,6 +1422,7 @@ formFromAssignment model assignment =
     , start = Date.toIsoString assignment.startDate
     , end = Date.toIsoString assignment.endDate
     , hours = Cal.formatHours (toFloat assignment.minutesPerDay)
+    , total = Nothing
     , notes = assignment.notes
     , repeat = False
     , repeatWeeks = "4"
@@ -1452,6 +1454,7 @@ newAssignmentForm model projectId assignee from to =
     , start = Date.toIsoString from
     , end = Date.toIsoString to
     , hours = Cal.formatHours perDay
+    , total = Nothing
     , notes = ""
     , repeat = False
     , repeatWeeks = "4"
@@ -1472,26 +1475,31 @@ setAssignmentField model field value form =
             { form | assignee = value }
 
         FStart ->
-            { form | start = value }
+            { form | start = value, total = Nothing }
 
         FEnd ->
-            { form | end = value }
+            { form | end = value, total = Nothing }
 
         FHours ->
-            { form | hours = value }
+            { form | hours = value, total = Nothing }
 
         FTotal ->
-            -- Editing the total spreads it evenly over the working days.
+            -- Editing the total spreads it evenly over the working days. The
+            -- typed text is kept so the field can be cleared and retyped.
+            let
+                typed =
+                    { form | total = Just value }
+            in
             case ( parseHours value, formWorkDays model form ) of
                 ( Just total, days ) ->
                     if days > 0 then
-                        { form | hours = Cal.formatHours (total * 60 / toFloat days) }
+                        { typed | hours = Cal.formatHours (total * 60 / toFloat days) }
 
                     else
-                        form
+                        typed
 
                 _ ->
-                    form
+                    typed
 
         FNotes ->
             { form | notes = value }
@@ -3316,7 +3324,7 @@ viewAssignmentForm model schedule form =
                         , A.min "0"
                         , A.class "form-input tnum"
                         , A.disabled readOnly
-                        , A.value (Cal.formatHours (hours * 60 * toFloat workDays))
+                        , A.value (form.total |> Maybe.withDefault (Cal.formatHours (hours * 60 * toFloat workDays)))
                         , E.onInput (UpdateAssignment FTotal)
                         ]
                         []
