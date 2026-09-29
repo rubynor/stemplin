@@ -33,13 +33,33 @@ class Plan::LocalizationAndLayoutTest < PlanSystemTestCase
     end
   end
 
-  test "switching language from the plan keeps the user on the plan" do
-    sign_in_and_visit "team"
-    visit "/locale?locale=nb"
-    visit_plan "team"
+  test "switching language from the plan keeps the user on a working plan" do
+    schedule!(@joe, @crm, MONDAY, MONDAY, 7.5)
+    sign_in_and_visit "projects"
+    page.driver.browser.logs.get(:browser)
+
+    # Redirecting back to the same page makes Turbo morph it in place, which
+    # must not touch the markup Elm owns.
+    find("nav", text: I18n.t("language.name")).find("span", text: I18n.t("language.name"), match: :first).click
+    click_on I18n.t("language.name", locale: :nb)
 
     assert_selector ".plan-tabs", text: "Planlagt mot ført"
+    assert_selector ".plan-range", text: "21 Sep – 18 Okt 2026"
+    assert_selector ".plan-row[data-row='#{project_key(@crm)}']"
     assert_equal "nb", @admin.reload.locale
+
+    # Only the new app may react to the keyboard.
+    find(".plan-tabs button", text: "Team").click
+    assert_selector ".plan-row[data-row='#{person_key(@joe)}']"
+    data_requests = -> { evaluate_script("performance.getEntriesByType('resource').filter((entry) => entry.name.includes('/plan/data')).length") }
+    before = data_requests.call
+    find("body").send_keys(:arrow_right)
+    assert_selector ".plan-range", text: "28 Sep – 25 Okt 2026"
+    assert_no_selector ".plan-app.plan-loading"
+    assert_equal 1, data_requests.call - before, "more than one plan app is still running"
+    assert_current_path plan_schedule_path(view: "team", date: (MONDAY + 7).iso8601, zoom: "day")
+    errors = page.driver.browser.logs.get(:browser).select { |entry| entry.level == "SEVERE" }
+    assert_empty errors.map(&:message)
   end
 
   test "on a phone the schedule scrolls inside its card and never widens the page" do

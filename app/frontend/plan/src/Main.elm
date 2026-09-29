@@ -33,6 +33,12 @@ import Url.Builder
 port replaceUrl : String -> Cmd msg
 
 
+{-| Sent when the host page drops this app to mount a fresh one (Elm apps
+cannot be destroyed), so it stops listening to window events.
+-}
+port stop : (() -> msg) -> Sub msg
+
+
 main : Program Decode.Value Model Msg
 main =
     Browser.element
@@ -212,6 +218,7 @@ type alias Model =
     , toast : Maybe Toast
     , counter : Int
     , exportForm : ExportForm
+    , stopped : Bool
     }
 
 
@@ -288,6 +295,7 @@ init value =
                     , toast = Nothing
                     , counter = 0
                     , exportForm = { view = "projects", period = "weekly", timeframe = "16_weeks", start = Date.toIsoString today, end = Date.toIsoString (Date.add Date.Days 27 today) }
+                    , stopped = False
                     }
             in
             fetch model
@@ -314,6 +322,7 @@ init value =
               , toast = Nothing
               , counter = 0
               , exportForm = { view = "projects", period = "weekly", timeframe = "16_weeks", start = "", end = "" }
+              , stopped = False
               }
             , Cmd.none
             )
@@ -540,6 +549,7 @@ type Msg
     | DismissToast Int
     | KeyDown String String
     | UpdateExport String String
+    | Stop
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -1132,6 +1142,9 @@ update msg model =
             in
             ( { model | exportForm = next }, Cmd.none )
 
+        Stop ->
+            ( { model | stopped = True, drag = Nothing }, Cmd.none )
+
 
 
 -- UPDATE HELPERS
@@ -1683,8 +1696,18 @@ hoursLabel minutes =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
+    if model.stopped then
+        Sub.none
+
+    else
+        subscriptionsWhileRunning model
+
+
+subscriptionsWhileRunning : Model -> Sub Msg
+subscriptionsWhileRunning model =
     Sub.batch
-        [ Browser.Events.onResize (\width _ -> Resized width)
+        [ stop (\_ -> Stop)
+        , Browser.Events.onResize (\width _ -> Resized width)
         , Browser.Events.onKeyDown
             (Decode.map2 KeyDown
                 (Decode.field "key" Decode.string)
