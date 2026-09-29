@@ -14,6 +14,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
     "autoprefixer": "^10.4.17",
+    "elm": "0.19.1-6",
     "esbuild": "^0.17.10",
     "flatpickr": "^4.6.13",
     "jquery": "^3.6.4",
@@ -29,7 +30,13 @@
     "yarn": "^1.22.19"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets",
-    "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify"
+    "build": "yarn build:elm && esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets",
+    "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify",
+    "build:elm": "cd app/frontend/plan && elm make src/Main.elm --optimize --output=../../assets/builds/plan.js && esbuild ../../assets/builds/plan.js --minify --allow-overwrite --log-level=warning --outfile=../../assets/builds/plan.js",
+    "watch:elm": "chokidar 'app/frontend/plan/src/**/*.elm' -c 'yarn build:elm' --initial"
+  },
+  "devDependencies": {
+    "chokidar-cli": "^3.0.0",
+    "elm-format": "^0.8.8"
   }
 }

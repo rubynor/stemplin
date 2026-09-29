@@ -40,3 +40,6 @@
 
 .DS_Store
 /dump.rdb
+
+# Elm build cache for the plan frontend
+/app/frontend/plan/elm-stuff
