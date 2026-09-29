@@ -6,19 +6,54 @@ export default class extends Controller {
   static values = { src: String, flags: Object }
 
   connect() {
+    this.replaceUrl = (url) => window.history.replaceState(window.history.state, "", url)
+    this.skipMorph = this.skipMorph.bind(this)
+    document.addEventListener("turbo:before-morph-element", this.skipMorph)
+    this.mount()
+  }
+
+  disconnect() {
+    document.removeEventListener("turbo:before-morph-element", this.skipMorph)
+    this.unmount()
+  }
+
+  // Elm owns everything inside this element. A morphing page refresh (e.g. the
+  // redirect back after switching language) must leave it alone, or Elm ends up
+  // patching nodes that are gone. Take the new flags and start over instead.
+  skipMorph(event) {
+    if (event.target !== this.element) return
+
+    event.preventDefault()
+    const flags = `data-${this.identifier}-flags-value`
+    this.element.setAttribute(flags, event.detail.newElement.getAttribute(flags))
+    this.mount()
+  }
+
+  mount() {
+    this.unmount()
+    const mounting = (this.mounting = {})
+
     this.loadElm().then((Elm) => {
-      if (!this.element.isConnected) return
+      if (this.mounting !== mounting || !this.element.isConnected) return
 
       const node = document.createElement("div")
       this.element.replaceChildren(node)
-      const app = Elm.Main.init({
+      this.app = Elm.Main.init({
         node,
         flags: { ...this.flagsValue, viewportWidth: window.innerWidth }
       })
-      app.ports.replaceUrl.subscribe((url) => {
-        window.history.replaceState(window.history.state, "", url)
-      })
+      this.app.ports.replaceUrl.subscribe(this.replaceUrl)
     })
+  }
+
+  // Elm apps cannot be destroyed, so tell the old one to stop listening instead.
+  unmount() {
+    this.mounting = null
+    if (!this.app) return
+
+    this.app.ports.replaceUrl.unsubscribe(this.replaceUrl)
+    this.app.ports.stop.send(null)
+    this.app = null
   }
 
   loadElm() {
