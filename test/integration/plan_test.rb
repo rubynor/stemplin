@@ -254,4 +254,22 @@ class PlanTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     assert Plan::Assignment.exists?(@visible.id)
   end
+
+  test "spectators are left off the plan and can't be booked" do
+    spectator = users(:organization_spectator)
+    sign_in @admin
+
+    assert_not_includes data["people"].map { |p| p["id"] }, spectator.id
+
+    post plan_assignments_path, params: create_params(user_id: spectator.id), headers: JSON_HEADERS
+    assert_response :unprocessable_entity
+  end
+
+  test "someone made a spectator stays on the plan while they have bookings" do
+    @organization.plan_assignments.create!(project: @project, user: @member, start_date: @monday, end_date: @monday + 4, minutes_per_day: 240)
+    access_infos(:access_info_org1_user).update!(role: :organization_spectator)
+    sign_in @admin
+
+    assert_includes data["people"].map { |p| p["id"] }, @member.id
+  end
 end
