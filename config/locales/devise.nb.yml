@@ -8,6 +8,7 @@ nb:
       send_paranoid_instructions: "Hvis epostadressen din finnes i vår database vil du innen få minutter motta en epost med instruksjoner for å aktivere din konto."
     failure:
       already_authenticated: "Du er allerede logget inn."
+      archived: "Tilgangen din til Stemplin er fjernet. Kontakt administratoren i organisasjonen din hvis du trenger den tilbake."
       inactive: "Din konto er ikke aktivert enda."
       invalid: "Epostadresse eller passord er ikke gyldig."
       invalid_token: "Ugyldig autentiserings-token."

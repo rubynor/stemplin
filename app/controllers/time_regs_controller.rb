@@ -152,7 +152,7 @@ class TimeRegsController < ApplicationController
 
   def set_assigned_tasks
     @assigned_tasks = authorized_scope(Task, type: :relation, as: :own).assigned_tasks(@time_reg&.project&.id).merge(AssignedTask.active_task)
-    @team_members = authorized_scope(User, type: :relation).onboarded if provide_user?
+    @team_members = authorized_scope(User, type: :relation).unarchived_in(current_user.current_organization).onboarded if provide_user?
   end
 
   def provide_user?

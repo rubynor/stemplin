@@ -3,8 +3,15 @@
   <%= render RubyUI::TableCell.new(class: "py-4 break-all md:break-normal", data: { label: t("common.email") }) { user.email } %>
   <%= render RubyUI::TableCell.new(class: "py-4", data: { label: t("common.role") }) { t("access_info.role." + user.access_info(current_user.current_organization).role) } %>
   <%= render RubyUI::TableCell.new(data: { role: "actions" }) do %>
-    <%= render ButtonComponent.new(path: edit_modal_workspace_team_member_path(user), method: :put, variant: :outline) do %>
-      <i class="uc-icon text-muted-foreground">&#xe972;</i>
-    <% end %>
+    <div class="flex flex-row items-center gap-x-2">
+      <%= render ButtonComponent.new(path: edit_modal_workspace_team_member_path(user), method: :put, variant: :outline) do %>
+        <i class="uc-icon text-muted-foreground">&#xe972;</i>
+      <% end %>
+      <% if allowed_to?(:archive?, user, with: Workspace::UserPolicy) %>
+        <%= render ButtonComponent.new(path: archive_workspace_team_member_path(user), method: :patch, variant: :ghost, form: { data: { turbo_confirm: t("team_members.archive_confirm", name: user.name.presence || user.email) } }) do %>
+          <%= t("team_members.archive") %>
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
 <% end %>

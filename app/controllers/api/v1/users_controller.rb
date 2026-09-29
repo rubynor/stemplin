@@ -9,7 +9,7 @@ module Api
 
       def index
         authorize!
-        @users = authorized_scope(User, type: :relation).onboarded.ordered_by_name
+        @users = authorized_scope(User, type: :relation).unarchived_in(current_user.current_organization).onboarded.ordered_by_name
       end
 
       def show

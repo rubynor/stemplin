@@ -288,6 +288,15 @@ en:
         description: "Your workspace is ready to go. You can now start tracking time for your projects and tasks."
         start_tracking: "Start tracking time"
 
+  team_members:
+    active: "Active"
+    archived: "Archived"
+    archived_on: "Archived on"
+    archive: "Archive"
+    archive_confirm: "Archive %{name}? They lose access to the organization and are hidden from team lists and pickers. Their time registrations stay in reports, and you can restore them at any time."
+    restore: "Restore"
+    no_archived: "No archived members. Archive people who have left the company to keep the team list tidy."
+
   notice:
     are_you_sure: "Are you sure?"
     project_has_been_updated: "project has been updated"
@@ -320,6 +329,8 @@ en:
     tasks_was_successfully_deleted: "Task was successfully deleted."
     tasks_was_successfully_updated: "Task was successfully updated."
     members_invited: "Members invited successfully"
+    member_archived: "%{name} was archived and no longer has access to the organization."
+    member_restored: "%{name} was restored."
     user_updated: "User updated."
     time_entry_has_been_logged: "Time entry has been logged."
     edits_to_the_task_name: "Kindly note that edits to the task name will be applied to all the projects. Edits to the billable rate will be applied to this project only and will take effect on new Time registrations."

@@ -74,7 +74,7 @@ class ReportsController < AuthenticatedController
       @form_data.selectable_tasks = authorized_scope(Task, type: :relation).joins(:projects)
                                         .where(projects: { id: @filter.project_ids })
                                         .distinct.order(:name)
-      @form_data.selectable_users = authorized_scope(User, type: :relation).joins(:projects)
+      @form_data.selectable_users = authorized_scope(User, type: :relation).joins(all_access_infos: { organization: { clients: :projects } })
                                         .where(projects: { id: @filter.project_ids })
                                         .distinct.onboarded.ordered_by_name
     end

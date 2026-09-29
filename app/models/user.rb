@@ -7,7 +7,11 @@ class User < ApplicationRecord
   self.ignored_columns += [ "is_verified", "api_token" ]
 
   has_many :time_regs
-  has_many :access_infos
+  # `access_infos` only covers organizations the user is still a member of, so
+  # everything derived from it (organizations, current organization, policy
+  # scopes) ignores memberships that were archived when the user left.
+  has_many :all_access_infos, class_name: "AccessInfo"
+  has_many :access_infos, -> { unarchived }
   has_many :organizations, through: :access_infos
   has_many :clients, through: :organizations
   has_many :projects, through: :clients
@@ -19,6 +23,7 @@ class User < ApplicationRecord
   scope :project_restricted, ->(organization) { joins(access_infos: :organization).where(access_infos: { organizations: { id: organization.id }, role: AccessInfo.project_restricted_roles }) }
   # TODO: Use invitation_accepted for onboarded scope
   scope :onboarded, -> { where.not(first_name: nil).where.not(last_name: nil) }
+  scope :unarchived_in, ->(organization) { where(id: AccessInfo.unarchived.where(organization: organization).select(:user_id)) }
 
   validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s) }
   validates :first_name, :last_name, :email, presence: true
@@ -67,10 +72,25 @@ class User < ApplicationRecord
     !accepted_or_not_invited?
   end
 
+  # Someone archived in every organization they belonged to has left for good;
+  # users without any membership yet are still onboarding and may sign in.
+  def active_for_authentication?
+    super && !archived_everywhere?
+  end
+
+  def inactive_message
+    archived_everywhere? ? :archived : super
+  end
+
+  def archived_everywhere?
+    all_access_infos.exists? && !access_infos.exists?
+  end
+
+  # Re-inviting someone whose membership was archived restores it.
   def update_or_create_access_info(role, organization)
-    access_info = self.access_info(organization)
+    access_info = all_access_infos.find_by(organization: organization)
     if access_info
-      access_info.update!(role: AccessInfo.roles[role])
+      access_info.update!(role: AccessInfo.roles[role], archived_at: nil)
     else
       access_info = access_infos.create!(organization: organization, role: AccessInfo.roles[role])
     end

@@ -2,9 +2,16 @@
 
 <div class="flex flex-col gap-y-6">
   <div class="section-head">
-    <div class="flex flex-row items-center gap-x-2">
+    <div class="flex flex-row flex-wrap items-center gap-3">
       <span class="section-title"><%=  t("common.team_members") %></span>
-      <div class="count-chip"><%= @pagy.count %></div>
+      <div class="toolbar-segment h-8">
+        <%= link_to workspace_team_members_path, class: class_names("gap-x-2", "bg-accent font-medium text-primary-text": !@showing_archived) do %>
+          <%= t("team_members.active") %> <span class="tnum"><%= @active_count %></span>
+        <% end %>
+        <%= link_to workspace_team_members_path(archived: 1), class: class_names("gap-x-2", "bg-accent font-medium text-primary-text": @showing_archived) do %>
+          <%= t("team_members.archived") %> <span class="tnum"><%= @archived_count %></span>
+        <% end %>
+      </div>
     </div>
     <div class="flex flex-row gap-2">
       <%= render ButtonComponent.new(path: invite_users_workspace_team_members_path, method: :get) do %>
@@ -19,14 +26,17 @@
         <%= render RubyUI::TableRow.new do %>
           <%= render RubyUI::TableHead.new { t("common.name") } %>
           <%= render RubyUI::TableHead.new { t("common.email") } %>
-          <%= render RubyUI::TableHead.new { t("common.role") } %>
+          <%= render RubyUI::TableHead.new { @showing_archived ? t("team_members.archived_on") : t("common.role") } %>
           <%= render RubyUI::TableHead.new { t("common.actions") } %>
         <% end %>
       <% end %>
       <%= render RubyUI::TableBody.new(id: :organization_users) do %>
-        <%= render partial: "workspace/team_members/user", collection: @users %>
+        <%= render partial: (@showing_archived ? "workspace/team_members/archived_user" : "workspace/team_members/user"), collection: @users, as: :user %>
       <% end %>
     <% end %>
-    <%= render PaginationComponent.new(pagy: @pagy, path: workspace_team_members_path) if @pagy.pages > 1 %>
+    <% if @showing_archived && @users.empty? %>
+      <p class="py-8 text-center text-sm text-muted-foreground"><%= t("team_members.no_archived") %></p>
+    <% end %>
+    <%= render PaginationComponent.new(pagy: @pagy, path: workspace_team_members_path, params: @showing_archived ? { archived: 1 } : {}) if @pagy.pages > 1 %>
   </div>
 </div>
