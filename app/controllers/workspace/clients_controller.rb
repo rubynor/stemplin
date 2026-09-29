@@ -78,7 +78,7 @@ module Workspace
 
     def load_clients_with_pagination
       current_page = extract_page_from_referrer || 1
-      @pagy, @clients = pagy authorized_scope(Client, type: :relation).order(:name).includes(:projects),
+      @pagy, @clients = pagy authorized_scope(Client, type: :relation).order(:name).includes(projects: { listed_project_shares: :organization }),
         items: 6, page: current_page
     end
 

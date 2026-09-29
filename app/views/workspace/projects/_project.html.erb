@@ -7,6 +7,17 @@
       <% end %>
     <% end %>
 
+    <%- shares = project.listed_project_shares %>
+    <% if shares.any? %>
+      <%- shared_with = shares.select(&:accepted?).map { |share| share.organization.name }.uniq %>
+      <%= link_to workspace_project_path(project, tab: "sharing"), class: "shrink-0 w-fit" do %>
+        <%= render RubyUI::Badge.new(variant: shared_with.any? ? :green : :gray, size: :sm, class: "!rounded-full flex items-center gap-x-1 max-w-[16rem]") do %>
+          <i class="uc-icon"><%= shared_with.any? ? raw("&#xe88a;") : raw("&#xe992;") %></i>
+          <span class="truncate"><%= shared_with.any? ? t("project_shares.list.shared_with", organizations: shared_with.to_sentence) : t("project_shares.list.pending") %></span>
+        <% end %>
+      <% end %>
+    <% end %>
+
     <div class="flex items-center justify-between gap-x-3 sm:justify-end">
       <div class="shrink-0 sm:min-w-[7rem] sm:text-right">
         <% if project.billable %>

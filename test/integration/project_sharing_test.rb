@@ -125,6 +125,111 @@ class ProjectSharingTest < ActionDispatch::IntegrationTest
     assert_redirected_to project_share_invitation_path(share.invitation_token)
   end
 
+  def share_client_projects(projects, email = @customer_admin.email)
+    sign_in @owner_admin
+    post workspace_client_shares_path(@project.client), params: { project_share: { invited_email: email, project_ids: projects.map(&:id) } }, as: :turbo_stream
+    sign_out @owner_admin
+  end
+
+  test "the owner shares several of a client's projects at once, in one email" do
+    projects = [ projects(:project_1), projects(:project_2) ]
+    sign_in @owner_admin
+
+    post new_modal_workspace_client_shares_path(@project.client), as: :turbo_stream
+    assert_response :success
+    projects.each { |project| assert_includes response.body, project.name }
+
+    assert_difference -> { ProjectShare.pending.count }, 2 do
+      assert_enqueued_emails 1 do
+        post workspace_client_shares_path(@project.client), params: { project_share: { invited_email: @customer_admin.email, project_ids: projects.map(&:id) } }, as: :turbo_stream
+      end
+    end
+    assert_response :success
+    assert_includes response.body, I18n.t("project_shares.list.pending")
+  end
+
+  test "sharing a client's projects needs at least one project and a valid address" do
+    sign_in @owner_admin
+    assert_no_difference -> { ProjectShare.count } do
+      post workspace_client_shares_path(@project.client), params: { project_share: { invited_email: @customer_admin.email } }, as: :turbo_stream
+      assert_includes response.body, I18n.t("project_shares.client.none_selected")
+
+      post workspace_client_shares_path(@project.client), params: { project_share: { invited_email: "nope", project_ids: [ @project.id, projects(:project_2).id ] } }, as: :turbo_stream
+      assert_includes response.body, "Email is invalid"
+    end
+  end
+
+  test "nothing is shared when one of the projects is already invited" do
+    invite
+    sign_in @owner_admin
+    assert_no_difference -> { ProjectShare.count } do
+      post workspace_client_shares_path(@project.client), params: { project_share: { invited_email: @customer_admin.email, project_ids: [ @project.id, projects(:project_2).id ] } }, as: :turbo_stream
+    end
+    assert_includes response.body, @project.name
+  end
+
+  test "another organization's client or project cannot be shared" do
+    sign_in @owner_admin
+    assert_no_difference -> { ProjectShare.count } do
+      post workspace_client_shares_path(clients(:f_corp)), params: { project_share: { invited_email: @customer_admin.email, project_ids: [ projects(:org_two_project).id ] } }, as: :turbo_stream
+      post workspace_client_shares_path(@project.client), params: { project_share: { invited_email: @customer_admin.email, project_ids: [ projects(:org_two_project).id ] } }, as: :turbo_stream
+    end
+
+    sign_in users(:organization_user)
+    assert_no_difference -> { ProjectShare.count } do
+      post workspace_client_shares_path(@project.client), params: { project_share: { invited_email: @customer_admin.email, project_ids: [ @project.id ] } }, as: :turbo_stream
+    end
+  end
+
+  test "the invited admin accepts all projects shared together in one go" do
+    projects = [ projects(:project_1), projects(:project_2) ]
+    share_client_projects(projects)
+    share = ProjectShare.find_by!(project: projects.first)
+    sign_in @customer_admin
+
+    get project_share_invitation_path(share.invitation_token)
+    assert_response :success
+    projects.each { |project| assert_includes response.body, project.name }
+    assert_includes response.body, @project.client.name
+
+    post accept_project_share_invitation_path(share.invitation_token), params: { organization_id: @customer.id }
+    assert_redirected_to shared_projects_path
+    assert_equal projects.sort_by(&:id), Project.shared_with(@customer).order(:id).to_a
+  end
+
+  test "declining an invitation declines the projects shared alongside it" do
+    share_client_projects([ projects(:project_1), projects(:project_2) ])
+    sign_in @customer_admin
+
+    post reject_project_share_invitation_path(ProjectShare.first.invitation_token)
+    assert_equal 2, ProjectShare.rejected.count
+    assert_empty Project.shared_with(@customer)
+  end
+
+  test "a project already in the organization is left alone when accepting the rest" do
+    accepted_share
+    other = User.create!(email: "other@example.com", first_name: "Ot", last_name: "Her", password: "password", invitation_accepted_at: Time.current)
+    AccessInfo.create!(user: other, organization: @customer, role: :organization_admin, active: true)
+    share_client_projects([ @project, projects(:project_2) ], other.email)
+    sign_in other
+
+    post accept_project_share_invitation_path(ProjectShare.find_by!(project: projects(:project_2), invited_email: other.email).invitation_token), params: { organization_id: @customer.id }
+    assert_redirected_to shared_project_path(projects(:project_2))
+    assert_equal 2, Project.shared_with(@customer).count
+  end
+
+  test "the clients and projects list shows who a project is shared with" do
+    accepted_share
+    share_client_projects([ projects(:project_2) ], "someone@example.com")
+    sign_in @owner_admin
+
+    get workspace_projects_path
+    assert_response :success
+    assert_includes response.body, I18n.t("project_shares.list.shared_with", organizations: @customer.name)
+    assert_includes response.body, I18n.t("project_shares.list.pending")
+    assert_includes response.body, new_modal_workspace_client_shares_path(@project.client)
+  end
+
   test "the customer's admin reads hours, consultants, notes and cost, in the owner's currency" do
     accepted_share
     sign_in @customer_admin

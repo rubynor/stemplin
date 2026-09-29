@@ -22,6 +22,7 @@ class ProjectShare < ApplicationRecord
 
   scope :open_invitations, -> { pending.where("project_shares.expires_at > ?", Time.current) }
   scope :listed, -> { accepted.or(open_invitations) }
+  scope :owned_by, ->(organization) { where(project: Project.owned_by(organization)) }
 
   def expired?
     pending? && expires_at <= Time.current
@@ -29,6 +30,11 @@ class ProjectShare < ApplicationRecord
 
   def acceptable?
     pending? && !expired?
+  end
+
+  # Open invitations from one organization to one address are answered together, this one included.
+  def open_invitations_alongside
+    ProjectShare.open_invitations.owned_by(project.organization).where(invited_email: invited_email)
   end
 
   def accept!(organization)

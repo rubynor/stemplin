@@ -18,6 +18,14 @@
     </div>
 
     <div class="flex items-center gap-2 w-full justify-end sm:w-auto sm:ml-auto">
+      <% if has_projects %>
+        <%= render TooltipComponent.new(note: t("project_shares.client.button")) do %>
+          <%= render ButtonComponent.new(path: new_modal_workspace_client_shares_path(client), method: :post, variant: :outline, icon: true, aria: { label: t("project_shares.client.button") }) do %>
+            <i class="uc-icon">&#xeb1a;</i>
+          <% end %>
+        <% end %>
+      <% end %>
+
       <%= render TooltipComponent.new(note: t("common.new_project")) do %>
         <%= render ButtonComponent.new(path: new_workspace_project_path(client_id: client.id), method: :get, variant: :outline, icon: true, aria: { label: t("common.new_project") }) do %>
           <i class="uc-icon">&#xead3;</i>

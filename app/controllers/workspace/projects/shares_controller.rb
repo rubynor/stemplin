@@ -8,7 +8,7 @@ module Workspace
         authorize! @share
 
         if @share.save
-          UserMailer.project_share_invitation_email(project_share: @share).deliver_later
+          UserMailer.project_share_invitation_email(project_shares: [ @share ]).deliver_later
           flash[:success] = t("project_shares.notice.invited", email: @share.invited_email)
         else
           flash[:error] = @share.errors.full_messages.to_sentence

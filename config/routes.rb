@@ -78,6 +78,9 @@ Rails.application.routes.draw do
     resources :clients, except: [ :index ] do
       post :new_modal, on: :collection
       post :edit_modal, on: :member
+      resources :shares, only: :create, module: :clients do
+        post :new_modal, on: :collection
+      end
     end
 
     resources :team_members, only: [ :index, :create, :update ] do

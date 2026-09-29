@@ -1,8 +1,18 @@
-<% content_for :heading, t("project_shares.email.heading", project: @project.name) %>
+<% content_for :heading, @projects.one? ? t("project_shares.email.heading", project: @projects.first.name) : t("project_shares.email.heading_many", client: @clients) %>
 <% content_for :action_url, @url %>
 <% content_for :action_label, t("project_shares.email.button") %>
 <%= t("project_shares.email.greeting") %>
 
-<%= t("project_shares.email.body", user: @inviting_user.name, organization: @owner.name, project: @project.name) %>
+<% if @projects.one? -%>
+<%= t("project_shares.email.body", user: @inviting_user.name, organization: @owner.name, project: @projects.first.name, client: @clients) %>
+<% else -%>
+<%= t("project_shares.email.body_many", user: @inviting_user.name, organization: @owner.name, client: @clients) %>
+
+<% @projects.each do |project| -%>
+- <%= project.name %>
+<% end -%>
+<% end -%>
+
+<%= t("project_shares.email.you_see") %>
 
 <%= t("project_shares.email.expires") %>

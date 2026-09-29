@@ -11,15 +11,23 @@ class UserMailer < Devise::Mailer
     )
   end
 
-  def project_share_invitation_email(project_share:)
-    @project = project_share.project
-    @owner = @project.organization
-    @inviting_user = project_share.invited_by
-    @url = project_share_invitation_url(project_share.invitation_token)
-    locale = User.find_by(email: project_share.invited_email)&.locale || @inviting_user.locale
+  # One email for shares sent together; the link opens all of them, since they are answered together.
+  def project_share_invitation_email(project_shares:)
+    share = project_shares.first
+    @projects = project_shares.map(&:project)
+    @clients = @projects.map(&:client).uniq.map(&:name).to_sentence
+    @owner = share.project.organization
+    @inviting_user = share.invited_by
+    @url = project_share_invitation_url(share.invitation_token)
+    locale = User.find_by(email: share.invited_email)&.locale || @inviting_user.locale
 
     I18n.with_locale(locale) do
-      mail(to: project_share.invited_email, subject: t("project_shares.email.subject", organization: @owner.name, project: @project.name))
+      subject = if @projects.one?
+        t("project_shares.email.subject", organization: @owner.name, project: @projects.first.name, client: @clients)
+      else
+        t("project_shares.email.subject_many", organization: @owner.name, count: @projects.size, client: @clients)
+      end
+      mail(to: share.invited_email, subject: subject)
     end
   end
 

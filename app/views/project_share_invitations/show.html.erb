@@ -1,5 +1,10 @@
-<% owner = @share.project.organization %>
-<% content_for :title, t("project_shares.invitation.title", organization: owner.name) %>
+<%
+  owner = @share.project.organization
+  projects = @shares.map(&:project)
+  many = projects.many?
+  title = many ? t("project_shares.invitation.title_many", organization: owner.name, count: projects.size) : t("project_shares.invitation.title", organization: owner.name)
+%>
+<% content_for :title, title %>
 
 <div class="page-shell py-10">
   <%= render CardComponent.new(class: "max-w-xl mx-auto flex flex-col gap-y-6 p-6 sm:p-8") do %>
@@ -7,12 +12,24 @@
       <div class="bg-primary-50 text-primary-700 rounded-lg w-10 h-10 flex justify-center items-center">
         <i class="uc-icon text-xl">&#xeb1a;</i>
       </div>
-      <h1 class="text-xl font-semibold text-primary-text"><%= t("project_shares.invitation.title", organization: owner.name) %></h1>
+      <h1 class="text-xl font-semibold text-primary-text"><%= title %></h1>
     </div>
 
     <dl class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-3 text-sm">
-      <dt class="text-muted-foreground"><%= t("project_shares.invitation.project") %></dt>
-      <dd class="font-semibold text-primary-text"><%= @share.project.name %></dd>
+      <dt class="text-muted-foreground"><%= t("project_shares.invitation.client") %></dt>
+      <dd class="text-primary-text"><%= projects.map(&:client).uniq.map(&:name).to_sentence %></dd>
+      <dt class="text-muted-foreground"><%= t(many ? "project_shares.invitation.projects" : "project_shares.invitation.project") %></dt>
+      <dd class="font-semibold text-primary-text">
+        <% if many %>
+          <ul class="flex flex-col gap-y-1">
+            <% projects.each do |project| %>
+              <li><%= project.name %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          <%= projects.first.name %>
+        <% end %>
+      </dd>
       <dt class="text-muted-foreground"><%= t("project_shares.invitation.you_see") %></dt>
       <dd class="text-primary-text"><%= t("project_shares.invitation.you_see_value") %></dd>
       <dt class="text-muted-foreground"><%= t("project_shares.invitation.you_cannot") %></dt>
@@ -31,7 +48,7 @@
       </div>
     <% else %>
       <%= form_with url: accept_project_share_invitation_path(@share.invitation_token), method: :post, id: "accept_project_share", class: "flex flex-col gap-y-1.5" do |form| %>
-        <%= form.label :organization_id, t("project_shares.invitation.add_to"), class: "form-label" %>
+        <%= form.label :organization_id, t(many ? "project_shares.invitation.add_to_many" : "project_shares.invitation.add_to"), class: "form-label" %>
         <%= form.select :organization_id, options_from_collection_for_select(@organizations, :id, :name, current_user.current_organization&.id), {}, class: "form-input" %>
       <% end %>
       <%# Separate forms can't nest; the accept button submits the form above by id. %>
