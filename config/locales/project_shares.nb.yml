@@ -1,0 +1,98 @@
+nb:
+  project_shares:
+    tab: "Deling"
+    intro: "Del prosjektet med kundens organisasjon, så deres administratorer ser timene, notatene og kostnaden som føres."
+    shared_since: "Delt siden %{date}"
+    active: "Aktiv"
+    pending: "Venter på svar"
+    sent: "Sendt %{date} · utløper %{expires}"
+    revoke: "Opphev"
+    revoke_confirm: "%{organization} vil ikke lenger se prosjektet."
+    cancel: "Avbryt"
+    cancel_confirm: "Invitasjonen til %{email} slutter å virke."
+    copy_link: "Kopier lenke"
+    copied: "Kopiert"
+    empty: "Prosjektet er ikke delt med noen ennå."
+    invite_title: "Inviter kunden"
+    invite_hint: "E-posten til en administrator i kundens organisasjon. De velger selv hvilken av sine organisasjoner prosjektet skal inn i."
+    invite_placeholder: "navn@kunde.no"
+    invite_button: "Send invitasjon"
+    notice:
+      invited: "Invitasjonen er sendt til %{email}."
+      revoked: "Prosjektet er ikke lenger delt."
+      cancelled: "Invitasjonen er avbrutt."
+      accepted: "%{project} er nå delt med deg."
+      rejected: "Du takket nei til å se %{project}."
+    alert:
+      invitation_not_found: "Invitasjonen finnes ikke, eller den ble sendt til en annen e-postadresse."
+      pick_organization: "Velg hvilken organisasjon prosjektet skal inn i."
+    email:
+      subject: "%{organization} har delt %{project} med deg"
+      heading: "Delt prosjekt: %{project}"
+      heading_html: "Delt prosjekt: <strong>%{project}</strong>"
+      greeting: "Hei,"
+      body: "%{user} i %{organization} vil dele prosjektet %{project} med deg i Stemplin. Du vil se timene, konsulentene, notatene og kostnaden som føres."
+      button: "Se invitasjonen"
+      expires: "Invitasjonen utløper om 7 dager. Hvis du ikke ventet den, kan du se bort fra denne e-posten."
+    invitation:
+      title: "%{organization} vil dele et prosjekt med deg"
+      project: "Prosjekt"
+      you_see: "Du ser"
+      you_see_value: "Timer, konsulenter, oppgaver, notater og kostnad"
+      you_cannot: "Du kan ikke"
+      you_cannot_value: "Endre prosjektet eller føre timer på det"
+      add_to: "Legg prosjektet i"
+      accept: "Godta deling"
+      reject: "Avslå"
+      no_organization: "Bare en administrator i en organisasjon kan godta. Opprett organisasjonen din, og åpne lenken igjen."
+      no_other_organization: "Du har ingen annen organisasjon å legge prosjektet i. Opprett en, og åpne lenken igjen."
+      create_organization: "Opprett organisasjon"
+      status:
+        accepted: "Invitasjonen er allerede godtatt."
+        rejected: "Invitasjonen ble avslått."
+        revoked: "%{organization} har trukket tilbake invitasjonen."
+        expired: "Invitasjonen har utløpt. Be %{organization} sende en ny."
+
+  shared_projects:
+    nav: "Delte prosjekter"
+    title: "Delte prosjekter"
+    subtitle: "Prosjekter andre organisasjoner har delt med %{organization}."
+    shared_by: "Delt av %{organization}"
+    shared_since: "delt %{date}"
+    read_only: "Skrivebeskyttet"
+    banner: "Delt av %{organization} · skrivebeskyttet · beløp i %{currency} etter %{organization} sine rater"
+    empty: "Ingen prosjekter er delt med %{organization} ennå."
+    no_time: "Ingen timer ført i perioden."
+    date: "Dato"
+    consultant: "Konsulent"
+    consultants: "Konsulenter"
+    task: "Oppgave"
+    tasks: "Oppgaver"
+    notes: "Notat"
+    hours: "Timer"
+    amount: "Beløp"
+    total: "Totalt"
+    not_billable: "Ikke fakturerbart"
+    export: "Eksporter CSV"
+    remove: "Fjern"
+    remove_confirm: "Du vil ikke lenger se %{project}. %{organization} må dele det på nytt for å angre."
+    notice:
+      removed: "%{project} er fjernet fra delte prosjekter."
+    alert:
+      not_found: "Det prosjektet er ikke delt med denne organisasjonen."
+
+  activerecord:
+    attributes:
+      project_share:
+        invited_email: "E-post"
+        organization: "Organisasjonen"
+    errors:
+      models:
+        project_share:
+          attributes:
+            invited_email:
+              taken: "er allerede invitert til prosjektet"
+              only_in_owner: "er bare med i din egen organisasjon, og har ingen annen organisasjon å legge prosjektet i"
+            organization:
+              is_owner: "eier allerede prosjektet"
+              taken: "har allerede prosjektet"

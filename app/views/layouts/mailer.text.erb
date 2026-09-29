@@ -1,1 +1,15 @@
-<%= yield %>
+<%= "*" * 28 %>
+<%= yield :heading %>
+<%= "*" * 28 %>
+
+<%= yield.strip %>
+
+<%= t("mailer.sign_off") %>
+<%= t("mailer.sender") %>
+<% if content_for?(:action_url) %>
+
+<%= yield :action_label %> ( <%= yield :action_url %> )
+<% end %>
+
+<%= t("mailer.footer.rights") %>
+<%= t("mailer.footer.address") %>

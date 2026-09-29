@@ -11,6 +11,18 @@ class UserMailer < Devise::Mailer
     )
   end
 
+  def project_share_invitation_email(project_share:)
+    @project = project_share.project
+    @owner = @project.organization
+    @inviting_user = project_share.invited_by
+    @url = project_share_invitation_url(project_share.invitation_token)
+    locale = User.find_by(email: project_share.invited_email)&.locale || @inviting_user.locale
+
+    I18n.with_locale(locale) do
+      mail(to: project_share.invited_email, subject: t("project_shares.email.subject", organization: @owner.name, project: @project.name))
+    end
+  end
+
   # @Note: This overrides `reset_password_instructions` from Devise::Mailer to send a sendgrid template
   # this implementations sends over a url with the `reset_password_token`
   # I think this is something Sendgrid should be handling well, but if it poses security concerns

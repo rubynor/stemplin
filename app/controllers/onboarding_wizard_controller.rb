@@ -58,12 +58,12 @@ class OnboardingWizardController < ApplicationController
       AssignedTask.create!(project_id: session[:project_id], task: @task)
       redirect_to next_wizard_path
     else
-      redirect_to root_path
+      redirect_to stored_location_for(:user) || root_path
     end
   end
 
   def skip
-    redirect_to root_path
+    redirect_to stored_location_for(:user) || root_path
   end
 
   private

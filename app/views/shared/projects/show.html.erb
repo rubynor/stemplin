@@ -1,0 +1,95 @@
+<% content_for :title, @project.name %>
+<% owner = @summary.owner %>
+
+<%= render partial: "shared/projects/header", locals: {
+  title: @project.name,
+  subtitle: t("shared_projects.shared_by", organization: owner.name),
+  period_path: ->(filter) { shared_project_path(@project, filter: filter) }
+} %>
+
+<div class="page-shell pb-10 flex flex-col gap-y-4">
+  <div class="flex flex-row items-center gap-x-2 rounded-lg border border-border bg-surface-muted px-4 py-3 text-sm text-secondary-text">
+    <i class="uc-icon text-base text-muted-foreground">&#xea6b;</i>
+    <span><%= t("shared_projects.banner", organization: owner.name, currency: @summary.currency) %></span>
+  </div>
+
+  <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 print:hidden">
+    <%= form_with scope: :filter, url: shared_project_path(@project), method: :get, class: "flex flex-row flex-wrap items-center gap-3" do |form| %>
+      <%= form.hidden_field :time_frame, value: @filter.time_frame %>
+      <%= form.hidden_field :start_date, value: @filter.start_date %>
+      <%= form.hidden_field :end_date, value: @filter.end_date %>
+      <%= link_to shared_projects_path(filter: @filter.to_h(user_ids: nil, task_ids: nil)), class: "w-10 h-10 rounded-lg border border-border bg-background hover:bg-accent flex justify-center items-center transition-colors" do %>
+        <i class="uc-icon text-xl">&#xe833;</i>
+      <% end %>
+      <%= render partial: "shared/projects/checkbox_filter", locals: { form: form, attribute: :user_ids, label: t("shared_projects.consultants"), icon: raw("&#xebb3;"), collection: @consultants, selected: @filter.user_ids } %>
+      <%= render partial: "shared/projects/checkbox_filter", locals: { form: form, attribute: :task_ids, label: t("shared_projects.tasks"), icon: raw("&#xe8f2;"), collection: @tasks, selected: @filter.task_ids } %>
+      <%= render ButtonComponent.new(type: "submit", variant: :secondary) do %>
+        <i class="uc-icon text-base">&#xe9d9;</i>
+        <span><%= t("common.filter") %></span>
+      <% end %>
+    <% end %>
+
+    <div class="flex flex-row gap-2">
+      <%= render ButtonComponent.new(path: export_shared_project_path(@project, filter: @filter.to_h), method: :get, variant: :outline, data: { turbo: false }) do %>
+        <i class="uc-icon text-base">&#xe9a3;</i>
+        <span><%= t("shared_projects.export") %></span>
+      <% end %>
+      <%= render ButtonComponent.new(path: shared_project_path(@project), method: :delete, variant: :outline, form: { data: { turbo_confirm: t("shared_projects.remove_confirm", project: @project.name, organization: owner.name) } }) do %>
+        <span><%= t("shared_projects.remove") %></span>
+      <% end %>
+    </div>
+  </div>
+
+  <%= render CardComponent.new(class: "flex flex-col !p-0 overflow-hidden") do %>
+    <div class="flex flex-row flex-wrap gap-x-10 gap-y-3 px-5 lg:px-6 py-5 border-b border-border">
+      <div class="flex flex-col gap-y-1">
+        <span class="text-sm text-muted-foreground"><%= t("shared_projects.hours") %></span>
+        <span class="text-3xl font-semibold text-primary-text tnum"><%= minutes_to_float @summary.total_minutes %></span>
+      </div>
+      <div class="flex flex-col gap-y-1">
+        <span class="text-sm text-muted-foreground"><%= t("shared_projects.amount") %></span>
+        <% if @project.billable %>
+          <span class="flex items-baseline gap-x-2">
+            <span class="text-3xl font-semibold text-primary-text tnum"><%= ConvertCurrencyHundredths.out(@summary.total_amount) %></span>
+            <span class="text-sm font-medium text-muted-foreground"><%= @summary.currency %></span>
+          </span>
+        <% else %>
+          <span class="text-base text-muted-foreground"><%= t("shared_projects.not_billable") %></span>
+        <% end %>
+      </div>
+    </div>
+
+    <% if @time_regs.empty? %>
+      <p class="px-5 lg:px-6 py-10 text-sm text-center text-muted-foreground"><%= t("shared_projects.no_time") %></p>
+    <% else %>
+      <div class="px-2 lg:px-3 py-1">
+        <%= render RubyUI::Table.new(class: "table-stack") do %>
+          <%= render RubyUI::TableHeader.new do %>
+            <%= render RubyUI::TableRow.new do %>
+              <%= render RubyUI::TableHead.new { t("shared_projects.date") } %>
+              <%= render RubyUI::TableHead.new { t("shared_projects.consultant") } %>
+              <%= render RubyUI::TableHead.new { t("shared_projects.task") } %>
+              <%= render RubyUI::TableHead.new { t("shared_projects.notes") } %>
+              <%= render RubyUI::TableHead.new(class: "text-right") { t("shared_projects.hours") } %>
+              <%= render RubyUI::TableHead.new(class: "text-right") { t("shared_projects.amount") } %>
+            <% end %>
+          <% end %>
+          <%= render RubyUI::TableBody.new do %>
+            <% @time_regs.each do |time_reg| %>
+              <%= render RubyUI::TableRow.new(id: dom_id(time_reg, :shared)) do %>
+                <%= render RubyUI::TableCell.new(class: "text-sm text-secondary-text whitespace-nowrap tnum", data: { role: "title" }) { l(time_reg.date_worked, format: "%d.%m.%Y") } %>
+                <%= render RubyUI::TableCell.new(class: "text-sm text-primary-text font-medium", data: { label: t("shared_projects.consultant") }) { time_reg.user.name } %>
+                <%= render RubyUI::TableCell.new(class: "text-sm text-secondary-text", data: { label: t("shared_projects.task") }) { time_reg.assigned_task.task&.name } %>
+                <%= render RubyUI::TableCell.new(class: "text-sm text-secondary-text max-w-md whitespace-pre-line", data: { label: t("shared_projects.notes") }) { time_reg.notes } %>
+                <%= render RubyUI::TableCell.new(class: "text-right text-sm tnum text-secondary-text", data: { label: t("shared_projects.hours") }) { minutes_to_float time_reg.minutes } %>
+                <%= render RubyUI::TableCell.new(class: "text-right text-sm tnum text-secondary-text whitespace-nowrap", data: { label: t("shared_projects.amount") }) do %>
+                  <%= @project.billable ? ConvertCurrencyHundredths.out(@summary.amount_for(time_reg)) : "–" %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

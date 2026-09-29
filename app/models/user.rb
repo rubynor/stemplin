@@ -46,6 +46,13 @@ class User < ApplicationRecord
     access_info&.organization
   end
 
+  def activate_organization!(organization)
+    transaction do
+      access_info&.update!(active: false)
+      access_infos.find_by!(organization: organization).update!(active: true)
+    end
+  end
+
   def access_info(organization = nil)
     return access_infos.find_by(organization: organization) if organization
     access_infos.find_by(active: true) || access_infos.first

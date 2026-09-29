@@ -46,6 +46,8 @@ module Stemplin
     end
     config.http_protocol = (Rails.env.production? || Rails.env.staging?) ? "https" : "http"
     config.http_url = "#{config.http_protocol}://#{config.http_host}".freeze
+    # Emails need absolute asset URLs, e.g. for the logo.
+    config.action_mailer.asset_host = config.http_url
 
     config.emails = config_for(:emails)
     config.currencies = config_for(:currencies)

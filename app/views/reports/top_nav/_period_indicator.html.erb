@@ -4,7 +4,7 @@
   </h1>
   <% unless @filter.default_period? %>
     <p class="page-subtitle">
-      <%= link_to reports_path(filter: @filter.to_h(start_date: nil, end_date: nil)), class: "inline-flex items-center gap-x-1 text-primary font-medium hover:underline underline-offset-4" do %>
+      <%= link_to period_path.call(@filter.to_h(start_date: nil, end_date: nil)), class: "inline-flex items-center gap-x-1 text-primary font-medium hover:underline underline-offset-4" do %>
         <span><%= t('common.reset') %></span>
         <i class="uc-icon text-sm">&#xeb8c;</i>
       <% end %>

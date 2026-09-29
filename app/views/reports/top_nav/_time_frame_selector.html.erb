@@ -1,5 +1,5 @@
 <div class="toolbar-segment print:hidden">
-  <%= link_to reports_path(filter: @filter.to_h(**@filter.previous_period)), class: "rotate-180" do %>
+  <%= link_to period_path.call(@filter.to_h(**@filter.previous_period)), class: "rotate-180" do %>
     <i class="uc-icon text-lg">&#xe81f;</i>
   <% end %>
   <div>
@@ -10,14 +10,14 @@
       <% end  %>
       <%= render RubyUI::PopoverContent.new(class: "w-48 p-1") do %>
         <% @filter.time_frames.each do |time_frame| %>
-          <%= render RubyUI::Link.new(href: reports_path(filter: @filter.to_h(time_frame: time_frame[:value], start_date: nil, end_date: nil)), variant: :ghost, class: "w-full flex justify-start px-2") do %>
+          <%= render RubyUI::Link.new(href: period_path.call(@filter.to_h(time_frame: time_frame[:value], start_date: nil, end_date: nil)), variant: :ghost, class: "w-full flex justify-start px-2") do %>
             <%= render RubyUI::FormFieldLabel.new(class: "capitalize") { time_frame[:label] } %>
           <% end %>
         <% end %>
       <% end %>
     <% end %>
   </div>
-  <%= link_to reports_path(filter: @filter.to_h(**@filter.next_period)) do %>
+  <%= link_to period_path.call(@filter.to_h(**@filter.next_period)) do %>
     <i class="uc-icon text-lg">&#xe81f;</i>
   <% end %>
 </div>

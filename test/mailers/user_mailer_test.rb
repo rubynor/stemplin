@@ -61,6 +61,30 @@ class UserMailerTest < ActionMailer::TestCase
     assert_includes headers[:content][:url], "reset_password_token=#{token}"
   end
 
+  test "project share invitation is a plain Rails email linking to the invitation" do
+    project = projects(:project_1)
+    share = ProjectShare.create!(project: project, invited_email: "newcomer@example.com", invited_by: users(:organization_admin))
+
+    email = UserMailer.project_share_invitation_email(project_share: share)
+    assert_emails(1) { email.deliver_now }
+
+    assert_equal [ "newcomer@example.com" ], email.to
+    assert_equal "#{project.organization.name} has shared #{project.name} with you", email.subject
+    [ email.html_part, email.text_part ].each do |part|
+      assert_includes part.body.to_s, "/share_invitations/#{share.invitation_token}"
+      assert_includes part.body.to_s, users(:organization_admin).name
+    end
+  end
+
+  test "project share invitation uses the invited user's locale" do
+    users(:customer_admin).update!(locale: "nb")
+    share = ProjectShare.create!(project: projects(:project_1), invited_email: users(:customer_admin).email, invited_by: users(:organization_admin))
+
+    email = UserMailer.project_share_invitation_email(project_share: share)
+
+    assert_match(/har delt/, email.subject)
+  end
+
   test "headers are turned into a SendGrid payload with a personalization" do
     headers = {
       to: @user.email,

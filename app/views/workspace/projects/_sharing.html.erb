@@ -1,0 +1,60 @@
+<div class="flex flex-col gap-y-6 pt-6">
+  <p class="text-sm text-secondary-text max-w-2xl"><%= t("project_shares.intro") %></p>
+
+  <div id="<%= dom_id(project) %>_shares" class="divide-y divide-border">
+    <% project_shares.each do |share| %>
+      <%= content_tag(:div, id: dom_id(share), class: "py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3") do %>
+        <div class="flex flex-row gap-x-3 items-center">
+          <div class="bg-surface-muted border border-border rounded-lg w-9 h-9 flex justify-center items-center shrink-0">
+            <i class="uc-icon text-base text-muted-foreground"><%= share.accepted? ? raw("&#xe88a;") : raw("&#xe992;") %></i>
+          </div>
+          <div class="flex flex-col gap-y-0.5">
+            <div class="flex flex-row items-center gap-x-2">
+              <span class="text-sm font-semibold text-primary-text"><%= share.accepted? ? share.organization.name : share.invited_email %></span>
+              <%= render RubyUI::Badge.new(variant: share.accepted? ? :green : :gray, class: "!rounded-full w-fit") do %>
+                <%= share.accepted? ? t("project_shares.active") : t("project_shares.pending") %>
+              <% end %>
+            </div>
+            <span class="text-xs text-muted-foreground">
+              <% if share.accepted? %>
+                <%= t("project_shares.shared_since", date: l(share.accepted_at.to_date, format: "%d.%m.%Y")) %> · <%= share.invited_email %>
+              <% else %>
+                <%= t("project_shares.sent", date: l(share.created_at.to_date, format: "%d.%m.%Y"), expires: l(share.expires_at.to_date, format: "%d.%m.%Y")) %>
+              <% end %>
+            </span>
+          </div>
+        </div>
+
+        <div class="flex flex-row gap-2">
+          <% if share.pending? %>
+            <%= render ButtonComponent.new(variant: :outline, data: { controller: "copy-link", action: "copy-link#copy", copy_link_text_value: project_share_invitation_url(share.invitation_token), copy_link_copied_label_value: t("project_shares.copied") }) do %>
+              <i class="uc-icon text-base">&#xe938;</i>
+              <span data-copy-link-target="label"><%= t("project_shares.copy_link") %></span>
+            <% end %>
+          <% end %>
+          <%- confirm = share.accepted? ? t("project_shares.revoke_confirm", organization: share.organization.name) : t("project_shares.cancel_confirm", email: share.invited_email) %>
+          <%= render ButtonComponent.new(variant: :outline, method: :delete, path: workspace_project_share_path(project, share), form: { data: { turbo_confirm: confirm } }) do %>
+            <%= share.accepted? ? t("project_shares.revoke") : t("project_shares.cancel") %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+    <% if project_shares.empty? %>
+      <p class="py-4 text-sm text-muted-foreground"><%= t("project_shares.empty") %></p>
+    <% end %>
+  </div>
+
+  <%= render CardComponent.new(class: "flex flex-col gap-y-4 max-w-2xl p-5") do %>
+    <div class="flex flex-col gap-y-1">
+      <span class="text-sm font-semibold text-primary-text"><%= t("project_shares.invite_title") %></span>
+      <span class="text-sm text-muted-foreground"><%= t("project_shares.invite_hint") %></span>
+    </div>
+    <%= form_with model: ProjectShare.new, url: workspace_project_shares_path(project), class: "flex flex-col sm:flex-row gap-3" do |form| %>
+      <%= form.email_field :invited_email, required: true, placeholder: t("project_shares.invite_placeholder"), autocomplete: "off", class: "form-input flex-1" %>
+      <%= render ButtonComponent.new(type: "submit") do %>
+        <i class="uc-icon text-base">&#xe98b;</i>
+        <span><%= t("project_shares.invite_button") %></span>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

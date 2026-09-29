@@ -15,10 +15,14 @@ class Project < ApplicationRecord
   has_many :time_regs, through: :assigned_tasks
   has_many :active_assigned_tasks, -> { active_task }, class_name: "AssignedTask"
   has_many :project_accesses, dependent: :destroy
+  has_many :project_shares, dependent: :destroy
   has_many :access_infos, through: :project_accesses
   has_many :users, through: :access_infos
 
   accepts_nested_attributes_for :assigned_tasks, allow_destroy: true
+
+  scope :owned_by, ->(organization) { joins(:client).where(clients: { organization_id: organization.id }) }
+  scope :shared_with, ->(organization) { where(id: ProjectShare.accepted.where(organization: organization).select(:project_id)) }
 
   attr_accessor :onboarding
 

@@ -5,13 +5,7 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     authorize! @organization
 
-    ActiveRecord::Base.transaction do
-      access_infos = current_user.access_infos
-      active_access_info = current_user.access_info
-
-      active_access_info.update(active: false)
-      access_infos.find_by(organization: @organization).update(active: true)
-    end
+    current_user.activate_organization!(@organization)
 
     redirect_back fallback_location: root_path
   end

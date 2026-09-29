@@ -51,3 +51,14 @@ access_info_org1_spectator:
   organization: organization_one
   active: true
   role: 3
+access_info_customer_admin:
+  user: customer_admin
+  organization: customer_org
+  active: true
+  role: 1
+
+access_info_customer_member:
+  user: customer_member
+  organization: customer_org
+  active: true
+  role: 0

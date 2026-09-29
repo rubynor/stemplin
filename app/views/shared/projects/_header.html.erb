@@ -1,6 +1,9 @@
-<%- period_path = local_assigns.fetch(:period_path) { ->(filter) { reports_path(filter: filter) } } %>
 <div class="page-head print:hidden">
-  <%= render partial: "reports/top_nav/period_indicator", locals: { period_path: period_path } %>
+  <div>
+    <h1 class="page-title"><%= title %></h1>
+    <p class="page-subtitle"><%= subtitle %></p>
+    <p class="text-sm text-secondary-text mt-2"><%= render partial: "reports/top_nav/selected_time_range" %></p>
+  </div>
   <div class="flex lg:items-center gap-x-3">
     <% if @filter.is_custom_time_frame? %>
       <%= render partial: "reports/top_nav/custom_time_range_picker", locals: { period_path: period_path } %>

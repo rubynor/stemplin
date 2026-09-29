@@ -57,3 +57,15 @@ pending_invitation_user:
   invitation_token: pending_test_token
   invitation_created_at: <%= 1.day.ago %>
   invitation_sent_at: <%= 1.day.ago %>
+
+customer_admin:
+  email: customer_admin@example.com
+  first_name: Cora
+  last_name: Customer
+  <<: *DEFAULTS
+
+customer_member:
+  email: customer_member@example.com
+  first_name: Carl
+  last_name: Customer
+  <<: *DEFAULTS

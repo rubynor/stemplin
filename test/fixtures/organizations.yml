@@ -17,3 +17,8 @@ organization_w_one_admin:
 one:
   name: One Organization
   currency: USD
+
+# A client of organization_one that also uses Stemplin, for project sharing.
+customer_org:
+  name: Acme AS
+  currency: NOK

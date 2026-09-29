@@ -31,6 +31,9 @@ application.register("combobox-selected-items", ComboboxSelectedItemsController)
 import CookieConsentController from "./cookie_consent_controller"
 application.register("cookie-consent", CookieConsentController)
 
+import CopyLinkController from "./copy_link_controller"
+application.register("copy-link", CopyLinkController)
+
 import CustomDialogController from "./custom_dialog_controller"
 application.register("custom-dialog", CustomDialogController)
 

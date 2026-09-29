@@ -1,0 +1,7 @@
+en:
+  mailer:
+    sign_off: "Thanks,"
+    sender: "Stemplin Support"
+    footer:
+      rights: "Stemplin, All Rights Reserved"
+      address: "Bedriftsveien 64 3735 Skien Norge"

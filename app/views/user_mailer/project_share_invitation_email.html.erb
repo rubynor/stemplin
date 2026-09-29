@@ -1,0 +1,7 @@
+<% content_for :heading do %><%= t("project_shares.email.heading_html", project: @project.name) %><% end %>
+<% content_for :action_url, @url %>
+<% content_for :action_label, t("project_shares.email.button") %>
+
+<p style="margin:16px 0;"><%= t("project_shares.email.greeting") %></p>
+<p style="margin:12px 0;"><%= t("project_shares.email.body", user: @inviting_user.name, organization: @owner.name, project: @project.name) %></p>
+<p style="margin:12px 0;"><%= t("project_shares.email.expires") %></p>

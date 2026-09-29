@@ -6,6 +6,8 @@
      )
    end %>
 
+<% shows_shared_projects = user_signed_in? && current_user.organization_admin? && authorized_scope(Project, type: :relation, with: Shared::ProjectPolicy).exists? %>
+
 <header class="sticky top-0 z-30 bg-background border-b border-border print:hidden">
   <nav class="page-shell h-16 flex items-center gap-x-4">
     <%= render "organizations/switch", user: current_user %>
@@ -19,6 +21,9 @@
           <%= nav_link.call(t("common.workspace"), workspace_projects_path, [ workspace_team_members_path, invite_users_workspace_team_members_path, workspace_projects_path, new_workspace_project_path, edit_workspace_project_path(@project&.id || 0), workspace_project_path(@project&.id || 0), workspace_client_path(@client&.id || 0), workspace_settings_path, edit_workspace_settings_path ]) %>
         <% end %>
         <%= nav_link.call(t("common.reports"), reports_path, [ reports_path, detailed_reports_path ]) %>
+        <% if shows_shared_projects %>
+          <%= nav_link.call(t("shared_projects.nav"), shared_projects_path, [ shared_projects_path, shared_project_path(@project&.id || 0) ]) %>
+        <% end %>
       </div>
 
       <div class="flex-1"></div>
@@ -47,6 +52,11 @@
               <% end %>
               <%= render RubyUI::Link.new(href: reports_path, variant: :ghost, class: "w-full flex justify-start px-2") do %>
                 <%= render RubyUI::FormFieldLabel.new { t("common.reports") } %>
+              <% end %>
+            <% end %>
+            <% if shows_shared_projects %>
+              <%= render RubyUI::Link.new(href: shared_projects_path, variant: :ghost, class: "w-full flex justify-start px-2") do %>
+                <%= render RubyUI::FormFieldLabel.new { t("shared_projects.nav") } %>
               <% end %>
             <% end %>
             <div class="my-1 h-px bg-border"></div>

@@ -1,0 +1,73 @@
+<% content_for :title, t("shared_projects.title") %>
+
+<%= render partial: "shared/projects/header", locals: {
+  title: t("shared_projects.title"),
+  subtitle: t("shared_projects.subtitle", organization: current_user.current_organization.name),
+  period_path: ->(filter) { shared_projects_path(filter: filter) }
+} %>
+
+<div class="page-shell pb-10 flex flex-col gap-y-6">
+  <% if @summaries_by_owner.empty? %>
+    <%= render CardComponent.new do %>
+      <%= render partial: "shared/empty_illustration", locals: { title: t("shared_projects.title"), sub_text: t("shared_projects.empty", organization: current_user.current_organization.name) } %>
+    <% end %>
+  <% end %>
+
+  <% @summaries_by_owner.each do |owner, summaries| %>
+    <%= render CardComponent.new(class: "flex flex-col !p-0 overflow-hidden", id: dom_id(owner, :shared_by)) do %>
+      <div class="flex flex-row items-center justify-between gap-3 px-5 lg:px-6 py-4 border-b border-border">
+        <div class="flex flex-row items-center gap-x-3">
+          <div class="bg-surface-muted border border-border rounded-lg w-9 h-9 flex justify-center items-center shrink-0">
+            <i class="uc-icon text-base text-muted-foreground">&#xe88a;</i>
+          </div>
+          <span class="text-base font-semibold text-primary-text"><%= owner.name %></span>
+        </div>
+        <span class="stat-chip"><i class="uc-icon">&#xea6b;</i><%= t("shared_projects.read_only") %></span>
+      </div>
+
+      <div class="px-2 lg:px-3 py-1">
+        <%= render RubyUI::Table.new(class: "table-stack") do %>
+          <%= render RubyUI::TableHeader.new do %>
+            <%= render RubyUI::TableRow.new do %>
+              <%= render RubyUI::TableHead.new { t("common.project") } %>
+              <%= render RubyUI::TableHead.new(class: "text-right") { t("shared_projects.hours") } %>
+              <%= render RubyUI::TableHead.new(class: "text-right") { t("shared_projects.amount") } %>
+            <% end %>
+          <% end %>
+          <%= render RubyUI::TableBody.new do %>
+            <% summaries.each do |summary| %>
+              <%= render RubyUI::TableRow.new(id: dom_id(summary.project, :shared)) do %>
+                <%= render RubyUI::TableCell.new(data: { role: "title" }) do %>
+                  <%= link_to shared_project_path(summary.project, filter: @filter.to_h), class: "flex flex-col text-primary hover:underline underline-offset-4" do %>
+                    <span class="font-medium text-sm"><%= summary.project.name %></span>
+                  <% end %>
+                  <% if (share = @shares_by_project[summary.project.id]) %>
+                    <span class="text-xs text-muted-foreground"><%= t("shared_projects.shared_since", date: l(share.accepted_at.to_date, format: "%d.%m.%Y")) %></span>
+                  <% end %>
+                <% end %>
+                <%= render RubyUI::TableCell.new(class: "text-right tnum text-secondary-text", data: { label: t("shared_projects.hours") }) { minutes_to_float summary.total_minutes } %>
+                <%= render RubyUI::TableCell.new(class: "text-right", data: { label: t("shared_projects.amount") }) do %>
+                  <% if summary.project.billable %>
+                    <span class="tnum text-secondary-text"><%= ConvertCurrencyHundredths.out(summary.total_amount) %></span>
+                    <span class="text-xs text-muted-foreground"><%= summary.currency %></span>
+                  <% else %>
+                    <span class="text-xs text-muted-foreground"><%= t("shared_projects.not_billable") %></span>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <%- currency = summaries.first.currency %>
+            <%= render RubyUI::TableRow.new(class: "bg-surface-muted hover:bg-surface-muted border-b-0") do %>
+              <%= render RubyUI::TableCell.new(class: "text-sm font-semibold text-primary-text", data: { role: "title" }) { t("shared_projects.total") } %>
+              <%= render RubyUI::TableCell.new(class: "text-right font-semibold text-base text-primary-text tnum", data: { label: t("shared_projects.hours") }) { minutes_to_float summaries.sum(&:total_minutes) } %>
+              <%= render RubyUI::TableCell.new(class: "text-right", data: { label: t("shared_projects.amount") }) do %>
+                <span class="font-semibold text-base text-primary-text tnum"><%= ConvertCurrencyHundredths.out(summaries.sum(&:total_amount)) %></span>
+                <span class="text-xs font-medium text-muted-foreground"><%= currency %></span>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

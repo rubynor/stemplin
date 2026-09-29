@@ -1,0 +1,98 @@
+en:
+  project_shares:
+    tab: "Sharing"
+    intro: "Share this project with your client's organization, so their administrators can see the hours, notes and cost registered on it."
+    shared_since: "Shared since %{date}"
+    active: "Active"
+    pending: "Waiting for an answer"
+    sent: "Sent %{date} · expires %{expires}"
+    revoke: "Stop sharing"
+    revoke_confirm: "%{organization} will no longer see this project."
+    cancel: "Cancel"
+    cancel_confirm: "The invitation to %{email} will stop working."
+    copy_link: "Copy link"
+    copied: "Copied"
+    empty: "This project is not shared with anyone yet."
+    invite_title: "Invite your client"
+    invite_hint: "The email of an administrator in the client's organization. They pick which of their organizations the project goes into."
+    invite_placeholder: "name@client.com"
+    invite_button: "Send invitation"
+    notice:
+      invited: "Invitation sent to %{email}."
+      revoked: "The project is no longer shared."
+      cancelled: "The invitation was cancelled."
+      accepted: "%{project} is now shared with you."
+      rejected: "You declined to see %{project}."
+    alert:
+      invitation_not_found: "This invitation does not exist, or it was sent to a different email address."
+      pick_organization: "Pick the organization the project should go into."
+    email:
+      subject: "%{organization} has shared %{project} with you"
+      heading: "Shared project: %{project}"
+      heading_html: "Shared project: <strong>%{project}</strong>"
+      greeting: "Hi,"
+      body: "%{user} at %{organization} wants to share the project %{project} with you in Stemplin. You will see the hours, consultants, notes and cost registered on it."
+      button: "View invitation"
+      expires: "The invitation expires in 7 days. If you were not expecting it, you can ignore this email."
+    invitation:
+      title: "%{organization} wants to share a project with you"
+      project: "Project"
+      you_see: "You will see"
+      you_see_value: "Hours, consultants, tasks, notes and cost"
+      you_cannot: "You cannot"
+      you_cannot_value: "Change the project or register time on it"
+      add_to: "Add the project to"
+      accept: "Accept"
+      reject: "Decline"
+      no_organization: "Only an administrator of an organization can accept. Create your organization, then open this link again."
+      no_other_organization: "You have no other organization to put this project in. Create one, then open this link again."
+      create_organization: "Create organization"
+      status:
+        accepted: "This invitation has already been accepted."
+        rejected: "This invitation was declined."
+        revoked: "%{organization} has cancelled this invitation."
+        expired: "This invitation has expired. Ask %{organization} to send a new one."
+
+  shared_projects:
+    nav: "Shared projects"
+    title: "Shared projects"
+    subtitle: "Projects other organizations have shared with %{organization}."
+    shared_by: "Shared by %{organization}"
+    shared_since: "shared %{date}"
+    read_only: "Read-only"
+    banner: "Shared by %{organization} · read-only · amounts in %{currency} at %{organization}'s rates"
+    empty: "No projects have been shared with %{organization} yet."
+    no_time: "No time registered in this period."
+    date: "Date"
+    consultant: "Consultant"
+    consultants: "Consultants"
+    task: "Task"
+    tasks: "Tasks"
+    notes: "Notes"
+    hours: "Hours"
+    amount: "Amount"
+    total: "Total"
+    not_billable: "Not billable"
+    export: "Export CSV"
+    remove: "Remove"
+    remove_confirm: "You will no longer see %{project}. %{organization} has to share it again to undo this."
+    notice:
+      removed: "%{project} was removed from your shared projects."
+    alert:
+      not_found: "That project is not shared with this organization."
+
+  activerecord:
+    attributes:
+      project_share:
+        invited_email: "Email"
+        organization: "Organization"
+    errors:
+      models:
+        project_share:
+          attributes:
+            invited_email:
+              taken: "has already been invited to this project"
+              only_in_owner: "only belongs to your own organization, so they have nowhere to put the project"
+            organization:
+              is_owner: "already owns this project"
+              taken: "already has this project"

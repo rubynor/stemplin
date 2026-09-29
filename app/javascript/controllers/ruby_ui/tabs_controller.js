@@ -9,6 +9,13 @@ export default class extends Controller {
     if (!this.hasActiveValue && this.triggerTargets.length > 0) {
       this.activeValue = this.triggerTargets[0].dataset.value;
     }
+    // A morphing refresh resets the markup to all-hidden without reconnecting, so render again.
+    this.render = this.render.bind(this);
+    document.addEventListener("turbo:morph", this.render);
+  }
+
+  disconnect() {
+    document.removeEventListener("turbo:morph", this.render);
   }
 
   show(e) {
@@ -18,6 +25,10 @@ export default class extends Controller {
   activeValueChanged(currentValue, previousValue) {
     if (currentValue == "" || currentValue == previousValue) return;
 
+    this.render();
+  }
+
+  render() {
     this.contentTargets.forEach((el) => {
       el.classList.add("hidden");
     });
@@ -28,7 +39,7 @@ export default class extends Controller {
 
     this.activeContentTarget() &&
       this.activeContentTarget().classList.remove("hidden");
-    this.activeTriggerTarget().dataset.state = "active";
+    this.activeTriggerTarget() && (this.activeTriggerTarget().dataset.state = "active");
   }
 
   activeTriggerTarget() {
