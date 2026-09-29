@@ -1,9 +1,12 @@
-<% nav_link = ->(label, path, matches) do
+<% beta_chip = -> { tag.span(t("common.beta"), class: "beta-chip") } %>
+<% nav_link = ->(label, path, matches, beta: false) do
      active = is_page_active?(matches)
-     link_to label, path, class: class_names(
-       "px-3 py-2 text-sm rounded-lg transition-colors",
+     link_to path, class: class_names(
+       "inline-flex items-center gap-x-1.5 px-3 py-2 text-sm rounded-lg transition-colors",
        active ? "bg-primary-50 text-primary-700 font-semibold" : "text-secondary-text font-medium hover:bg-accent hover:text-foreground"
-     )
+     ) do
+       safe_join([ label, (beta_chip.call if beta) ].compact)
+     end
    end %>
 
 <% shows_shared_projects = user_signed_in? && current_user.organization_admin? && authorized_scope(Project, type: :relation, with: Shared::ProjectPolicy).exists? %>
@@ -17,7 +20,7 @@
         <% unless current_user.access_info.organization_spectator? %>
           <%= nav_link.call(t("common.home"), time_regs_path, [ root_path, time_regs_path ]) %>
         <% end %>
-        <%= nav_link.call(t("common.plan"), plan_schedule_path, [ plan_schedule_path, *%w[projects team report export].map { |view| plan_schedule_path(view) } ]) %>
+        <%= nav_link.call(t("common.plan"), plan_schedule_path, [ plan_schedule_path, *%w[projects team report export].map { |view| plan_schedule_path(view) } ], beta: true) %>
         <% if current_user.organization_admin? %>
           <%= nav_link.call(t("common.workspace"), workspace_projects_path, [ workspace_team_members_path, invite_users_workspace_team_members_path, workspace_projects_path, new_workspace_project_path, edit_workspace_project_path(@project&.id || 0), workspace_project_path(@project&.id || 0), workspace_client_path(@client&.id || 0), workspace_settings_path, edit_workspace_settings_path ]) %>
         <% end %>
@@ -48,7 +51,10 @@
               <% end %>
             <% end %>
             <%= render RubyUI::Link.new(href: plan_schedule_path, variant: :ghost, class: "w-full flex justify-start px-2") do %>
-              <%= render RubyUI::FormFieldLabel.new { t("common.plan") } %>
+              <div class="w-full flex justify-start items-center gap-x-2">
+                <%= render RubyUI::FormFieldLabel.new { t("common.plan") } %>
+                <%= beta_chip.call %>
+              </div>
             <% end %>
             <% if current_user.organization_admin? %>
               <%= render RubyUI::Link.new(href: workspace_projects_path, variant: :ghost, class: "w-full flex justify-start px-2") do %>

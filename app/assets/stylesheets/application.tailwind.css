@@ -201,6 +201,10 @@
   .section-title {
     @apply text-base font-semibold text-primary-text;
   }
+  /* Marks a feature that is still in beta, e.g. next to its nav item. */
+  .beta-chip {
+    @apply inline-flex items-center h-[18px] px-1.5 rounded-full bg-primary-100 text-primary-700 text-[10px] font-bold uppercase tracking-wider leading-none;
+  }
   .count-chip {
     @apply inline-flex items-center justify-center h-6 min-w-[1.5rem] px-1.5 rounded-md bg-secondary border border-border text-xs font-semibold text-secondary-text tnum;
   }

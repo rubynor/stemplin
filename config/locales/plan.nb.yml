@@ -1,6 +1,7 @@
 nb:
   common:
     plan: "Plan"
+    beta: "Beta"
 
   plan:
     time_off: "Fravær"

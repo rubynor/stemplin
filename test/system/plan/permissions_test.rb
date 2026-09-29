@@ -13,7 +13,10 @@ class Plan::PermissionsTest < PlanSystemTestCase
   test "every role finds the Plan in the navigation" do
     [ @admin, @member, users(:organization_spectator) ].each do |user|
       sign_in_as user
-      within("header") { assert_link I18n.t("common.plan") }
+      within("header") do
+        assert_link I18n.t("common.plan")
+        assert_selector "a[href='#{plan_schedule_path}'] .beta-chip", text: /#{I18n.t("common.beta")}/i
+      end
       Capybara.reset_sessions!
     end
   end

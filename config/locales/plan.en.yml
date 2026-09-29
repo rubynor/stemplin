@@ -1,6 +1,7 @@
 en:
   common:
     plan: "Plan"
+    beta: "Beta"
 
   plan:
     time_off: "Time off"
