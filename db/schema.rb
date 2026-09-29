@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_09_25_130000) do
+ActiveRecord::Schema[7.1].define(version: 2026_09_29_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -22,6 +22,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_25_130000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "active", default: false
+    t.integer "plan_weekly_capacity_minutes"
+    t.integer "plan_work_days", default: 31, null: false
     t.index ["organization_id"], name: "index_access_infos_on_organization_id"
     t.index ["user_id", "organization_id"], name: "index_access_infos_on_user_id_and_organization_id", unique: true
     t.index ["user_id"], name: "index_access_infos_on_user_id"
@@ -55,6 +57,47 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_25_130000) do
     t.datetime "updated_at", null: false
     t.string "currency"
     t.boolean "advanced_time_copying", default: false, null: false
+    t.integer "plan_default_capacity_minutes", default: 2250, null: false
+  end
+
+  create_table "plan_assignments", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.bigint "project_id"
+    t.bigint "user_id"
+    t.bigint "placeholder_id"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.integer "minutes_per_day", null: false
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id", "start_date", "end_date"], name: "index_plan_assignments_on_organization_and_dates"
+    t.index ["organization_id"], name: "index_plan_assignments_on_organization_id"
+    t.index ["placeholder_id"], name: "index_plan_assignments_on_placeholder_id"
+    t.index ["project_id"], name: "index_plan_assignments_on_project_id"
+    t.index ["user_id"], name: "index_plan_assignments_on_user_id"
+    t.check_constraint "(user_id IS NULL) <> (placeholder_id IS NULL)", name: "plan_assignments_one_assignee"
+    t.check_constraint "end_date >= start_date", name: "plan_assignments_date_order"
+  end
+
+  create_table "plan_milestones", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.bigint "project_id", null: false
+    t.string "name", null: false
+    t.date "date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_plan_milestones_on_organization_id"
+    t.index ["project_id"], name: "index_plan_milestones_on_project_id"
+  end
+
+  create_table "plan_placeholders", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.string "name", null: false
+    t.string "roles"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_plan_placeholders_on_organization_id"
   end
 
   create_table "project_accesses", force: :cascade do |t|
@@ -97,6 +140,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_25_130000) do
     t.integer "rate", default: 0, null: false
     t.boolean "billable", default: false, null: false
     t.datetime "discarded_at"
+    t.string "plan_color"
     t.index ["client_id"], name: "index_projects_on_client_id"
     t.index ["discarded_at"], name: "index_projects_on_discarded_at"
   end
@@ -170,6 +214,13 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_25_130000) do
   add_foreign_key "assigned_tasks", "projects"
   add_foreign_key "assigned_tasks", "tasks"
   add_foreign_key "clients", "organizations"
+  add_foreign_key "plan_assignments", "organizations"
+  add_foreign_key "plan_assignments", "plan_placeholders", column: "placeholder_id"
+  add_foreign_key "plan_assignments", "projects"
+  add_foreign_key "plan_assignments", "users"
+  add_foreign_key "plan_milestones", "organizations"
+  add_foreign_key "plan_milestones", "projects"
+  add_foreign_key "plan_placeholders", "organizations"
   add_foreign_key "project_accesses", "access_infos"
   add_foreign_key "project_accesses", "projects"
   add_foreign_key "project_shares", "organizations"

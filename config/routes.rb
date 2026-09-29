@@ -101,6 +101,22 @@ Rails.application.routes.draw do
     end
   end
 
+  scope "plan", module: "plan", as: "plan" do
+    get "data", to: "schedules#data", as: :data
+    get "export.csv", to: "exports#show", as: :export, defaults: { format: :csv }
+    resources :assignments, only: %i[create update destroy] do
+      post :split, on: :member
+    end
+    resources :milestones, only: %i[create update destroy]
+    resources :placeholders, only: %i[create update destroy]
+    resources :people, only: %i[update]
+    resources :projects, only: %i[update] do
+      post :shift, on: :member
+    end
+    # The schedule is one page; the frontend owns these sub-paths.
+    get "(:view)", to: "schedules#show", as: :schedule, constraints: { view: /projects|team|report|export/ }
+  end
+
   resources :reports, only: [ :index ]
   get "reports/detailed", to: "reports#detailed", as: :detailed_reports
 

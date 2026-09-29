@@ -5,6 +5,7 @@ class Project < ApplicationRecord
   validates :name, presence: true, length: { minimum: 2, maximum: 60 }, uniqueness: { scope: :client, conditions: -> { where(discarded_at: nil) } }
   # validates :description, length: { maximum: 100 }
   validates :rate, numericality: { only_integer: true }
+  validates :plan_color, inclusion: { in: Plan::COLORS }, allow_nil: true
   validate :must_have_at_least_one_active_assigned_task, unless: :onboarding?
 
   belongs_to :client
@@ -18,6 +19,8 @@ class Project < ApplicationRecord
   has_many :project_shares, dependent: :destroy
   has_many :access_infos, through: :project_accesses
   has_many :users, through: :access_infos
+  has_many :plan_assignments, class_name: "Plan::Assignment", dependent: :destroy
+  has_many :plan_milestones, class_name: "Plan::Milestone", dependent: :destroy
 
   accepts_nested_attributes_for :assigned_tasks, allow_destroy: true
 
