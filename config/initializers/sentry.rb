@@ -1,5 +1,7 @@
 Sentry.init do |config|
   config.dsn = ENV["SENTRY_KEY"]
+  # Dokku exposes the deployed commit; the browser SDK reuses it (SentryHelper).
+  config.release = ENV["GIT_REV"] if ENV["GIT_REV"].present?
   config.breadcrumbs_logger = [ :active_support_logger, :http_logger ]
 
   # Set traces_sample_rate to 1.0 to capture 100%
