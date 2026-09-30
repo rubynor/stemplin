@@ -4,13 +4,13 @@ class SentryHelperTest < ActionView::TestCase
   setup { @user = users(:joe) }
 
   test "renders nothing where Sentry is disabled" do
-    with_env("SENTRY_KEY" => "https://key@sentry.example/1") do
+    with_env("SENTRY_FRONTEND_DSN" => "https://frontend@sentry.example/2") do
       assert_nil sentry_meta_tags
     end
   end
 
-  test "renders nothing without a DSN" do
-    with_env("SENTRY_KEY" => nil, "SENTRY_FRONTEND_DSN" => nil) do
+  test "never exposes the backend DSN" do
+    with_env("SENTRY_KEY" => "https://backend@sentry.example/1", "SENTRY_FRONTEND_DSN" => nil) do
       @sentry_enabled = true
       assert_nil sentry_meta_tags
     end

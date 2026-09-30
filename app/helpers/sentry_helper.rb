@@ -1,8 +1,9 @@
 module SentryHelper
-  # Configures the browser SDK (app/javascript/sentry.js). Rendered only where
-  # the Ruby SDK reports too, so development and test send nothing.
+  # Configures the browser SDK (app/javascript/src/sentry.js). Rendered only where
+  # the Ruby SDK reports too, so development and test send nothing. The DSN ends
+  # up in every page, so it must be the frontend project's, never SENTRY_KEY.
   def sentry_meta_tags
-    dsn = ENV["SENTRY_FRONTEND_DSN"].presence || ENV["SENTRY_KEY"].presence
+    dsn = ENV["SENTRY_FRONTEND_DSN"].presence
     return unless dsn && sentry_enabled?
 
     organization = current_user&.current_organization
