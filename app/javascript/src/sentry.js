@@ -8,15 +8,25 @@ const meta = (name) => document.querySelector(`meta[name="sentry-${name}"]`)?.co
 const MAX_EVENTS_PER_PAGE_LOAD = 20
 let sent = 0
 
+// Only report errors thrown from our own bundles (application.js, plan.js). This
+// drops extensions, third-party snippets and errors without a stack. The last
+// frame is where it was thrown; earlier ones may be Sentry's own timer wrappers.
+const fromOurBundles = (event) =>
+  (event.exception?.values || []).some((exception) => {
+    const frames = exception.stacktrace?.frames || []
+    return frames[frames.length - 1]?.filename?.startsWith(`${window.location.origin}/assets/`)
+  })
+
 const dsn = meta("dsn")
 if (dsn) {
   Sentry.init({
     dsn,
     environment: meta("environment"),
     release: meta("release"),
-    // Only our own bundles, not browser extensions or third-party trackers.
-    allowUrls: [window.location.origin],
+    // Flaky connections and requests cut short by navigating away; nothing to fix.
+    ignoreErrors: [/^Failed to fetch/, /^NetworkError/, /^Load failed/, /aborted/i],
     beforeSend(event) {
+      if (!fromOurBundles(event)) return null
       if (++sent > MAX_EVENTS_PER_PAGE_LOAD) return null
 
       // Turbo swaps the meta tags on every visit, so read them per event.
