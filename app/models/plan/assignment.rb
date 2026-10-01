@@ -77,10 +77,10 @@ module Plan
       errors.add(:user, :invalid) if user && !user_member_of_organization?
     end
 
-    # People who were archived keep their existing bookings (which can still be
-    # moved or trimmed), but can't be booked anew.
+    # People who were archived or made spectators keep their existing bookings
+    # (which can still be moved or trimmed), but can't be booked anew.
     def user_member_of_organization?
-      memberships = user_id_changed? ? user.access_infos : user.all_access_infos
+      memberships = user_id_changed? ? user.access_infos.plannable : user.all_access_infos
       memberships.exists?(organization: organization)
     end
   end

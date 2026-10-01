@@ -11,6 +11,8 @@ class AccessInfo < ApplicationRecord
   # access to the organization and drop out of team lists and pickers.
   scope :unarchived, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
+  # Spectators only read reports; they don't do the work, so they aren't planned.
+  scope :plannable, -> { where.not(role: :organization_spectator) }
 
   validates :user, presence: true
   validates :organization, presence: true

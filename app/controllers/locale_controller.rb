@@ -4,7 +4,7 @@ class LocaleController < ApplicationController
 
   before_action :authenticate_user!
 
-  # Named `update` on purpose: LocaleHandler already registers a before_action
+  # Named `update` on purpose: LocaleHandler already registers an around_action
   # called `set_locale`, and an action with the same name would override it and
   # run before authentication.
   def update

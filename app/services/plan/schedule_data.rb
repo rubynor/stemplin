@@ -48,11 +48,12 @@ module Plan
 
     private
 
-    # Archived members only stay on the plan while they have bookings in range,
-    # so past (and leftover future) work still shows who it belonged to.
+    # Archived members and spectators only stay on the plan while they have
+    # bookings in range, so past (and leftover future) work still shows who it
+    # belonged to.
     def people_json
       booked = @assignments.overlapping(@range.begin, @range.end).select(:user_id)
-      @people.unarchived.or(@people.where(user_id: booked)).includes(:user).to_a
+      @people.unarchived.plannable.or(@people.where(user_id: booked)).includes(:user).to_a
         .reject { |access_info| access_info.user.nil? }
         .sort_by { |access_info| access_info.user.name.downcase }
         .map do |access_info|

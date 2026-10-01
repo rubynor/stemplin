@@ -2,20 +2,19 @@ module LocaleHandler
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_locale
+    around_action :set_locale
   end
 
   private
 
-  def set_locale
+  # Scoped to the request with `with_locale`, so the locale doesn't stay on the
+  # thread and leak into whatever it runs next (another request, or a test).
+  def set_locale(&action)
     locale = params[:locale] || locale_from_current_user || session[:locale] || extract_locale_from_accept_language_header || I18n.default_locale
+    locale = I18n.default_locale unless I18n.locale_available?(locale)
 
-    begin
-      I18n.locale = locale
-    rescue I18n::InvalidLocale
-      I18n.locale = I18n.default_locale
-    end
-    session[:locale] = I18n.locale
+    session[:locale] = locale.to_sym
+    I18n.with_locale(locale, &action)
   end
 
   def locale_from_current_user
