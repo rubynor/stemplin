@@ -7,7 +7,12 @@ module Workspace
         @share = @project.project_shares.new(invited_email: params.dig(:project_share, :invited_email), invited_by: current_user)
         authorize! @share
 
-        if @share.save
+        saved = ProjectShare.transaction do
+          ProjectShare.retire_lapsed!(project: @project, invited_email: @share.invited_email)
+          @share.save || raise(ActiveRecord::Rollback)
+        end
+
+        if saved
           UserMailer.project_share_invitation_email(project_shares: [ @share ]).deliver_later
           flash[:success] = t("project_shares.notice.invited", email: @share.invited_email)
         else
