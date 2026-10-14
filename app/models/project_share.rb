@@ -21,11 +21,19 @@ class ProjectShare < ApplicationRecord
   before_validation :set_expires_at, on: :create
 
   scope :open_invitations, -> { pending.where("project_shares.expires_at > ?", Time.current) }
+  scope :lapsed, -> { pending.where("project_shares.expires_at <= ?", Time.current) }
   scope :listed, -> { accepted.or(open_invitations) }
   scope :owned_by, ->(organization) { where(project: Project.owned_by(organization)) }
 
+  # A lapsed invitation that was retired to make room for a new one still reads as expired.
   def expired?
-    pending? && expires_at <= Time.current
+    expires_at <= Time.current && (pending? || (revoked? && revoked_at >= expires_at))
+  end
+
+  # An expired invitation is still pending, and would block a new one to the same address.
+  def self.retire_lapsed!(project:, invited_email:)
+    lapsed.where(project: project, invited_email: invited_email)
+      .update_all(status: statuses[:revoked], revoked_at: Time.current, updated_at: Time.current)
   end
 
   def acceptable?

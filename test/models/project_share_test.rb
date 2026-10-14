@@ -45,6 +45,21 @@ class ProjectShareTest < ActiveSupport::TestCase
     assert duplicate.valid?, "a cancelled invitation should not block a new one"
   end
 
+  test "an expired invitation is retired to make room for a new one, and still reads as expired" do
+    @share.update_columns(expires_at: 1.minute.ago)
+    ProjectShare.retire_lapsed!(project: @project, invited_email: @share.invited_email)
+
+    assert @share.reload.revoked?
+    assert @share.expired?
+    assert ProjectShare.create(project: @project, invited_email: "customer_admin@example.com", invited_by: users(:organization_admin)).persisted?
+  end
+
+  test "retiring lapsed invitations leaves open ones alone" do
+    ProjectShare.retire_lapsed!(project: @project, invited_email: @share.invited_email)
+
+    assert @share.reload.pending?
+  end
+
   test "someone who only belongs to the owning organization cannot be invited" do
     share = ProjectShare.new(project: @project, invited_email: users(:joe).email, invited_by: users(:organization_admin))
 
