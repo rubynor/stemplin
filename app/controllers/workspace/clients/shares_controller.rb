@@ -19,13 +19,18 @@ module Workspace
           .map { |project| project.project_shares.new(invited_email: @email, invited_by: current_user) }
         shares.each { |share| authorize! share }
 
-        @errors = share_errors(shares)
+        ActiveRecord::Base.transaction do
+          shares.each { |share| ProjectShare.retire_lapsed!(project: share.project, invited_email: share.invited_email) }
+          @errors = share_errors(shares)
+          raise ActiveRecord::Rollback if @errors.any?
+
+          shares.each(&:save!)
+        end
         if @errors.any?
           return render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/clients/shares/form",
             locals: { client: @client, projects: @projects, selected_ids: @selected_ids, email: @email, errors: @errors })
         end
 
-        ActiveRecord::Base.transaction { shares.each(&:save!) }
         UserMailer.project_share_invitation_email(project_shares: shares).deliver_later
 
         notice = shares.one? ? t("project_shares.notice.invited", email: shares.first.invited_email) : t("project_shares.notice.invited_many", count: shares.size, email: shares.first.invited_email)

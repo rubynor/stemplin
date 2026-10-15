@@ -139,7 +139,7 @@ class ProjectSharingTest < ActionDispatch::IntegrationTest
     assert_response :success
     projects.each { |project| assert_includes response.body, project.name }
 
-    assert_difference -> { ProjectShare.pending.count }, 2 do
+    assert_difference -> { ProjectShare.count }, 2 do
       assert_enqueued_emails 1 do
         post workspace_client_shares_path(@project.client), params: { project_share: { invited_email: @customer_admin.email, project_ids: projects.map(&:id) } }, as: :turbo_stream
       end
@@ -166,6 +166,39 @@ class ProjectSharingTest < ActionDispatch::IntegrationTest
       post workspace_client_shares_path(@project.client), params: { project_share: { invited_email: @customer_admin.email, project_ids: [ @project.id, projects(:project_2).id ] } }, as: :turbo_stream
     end
     assert_includes response.body, @project.name
+  end
+
+  test "an expired invitation can be sent again from the project" do
+    lapsed = invite
+    lapsed.update_columns(expires_at: 1.minute.ago)
+
+    sign_in @owner_admin
+    assert_enqueued_emails 1 do
+      post workspace_project_shares_path(@project), params: { project_share: { invited_email: @customer_admin.email } }
+    end
+    assert lapsed.reload.revoked?
+    assert ProjectShare.order(:created_at).last.acceptable?
+  end
+
+  test "an expired invitation can be sent again by sharing the client's projects" do
+    lapsed = invite
+    lapsed.update_columns(expires_at: 1.minute.ago)
+
+    sign_in @owner_admin
+    assert_difference -> { ProjectShare.count }, 2 do
+      post workspace_client_shares_path(@project.client), params: { project_share: { invited_email: @customer_admin.email, project_ids: [ @project.id, projects(:project_2).id ] } }, as: :turbo_stream
+    end
+    assert lapsed.reload.revoked?
+    assert_equal 2, ProjectShare.open_invitations.where(invited_email: @customer_admin.email).count
+  end
+
+  test "an expired invitation is left as it was when sharing the client's projects fails" do
+    lapsed = invite
+    lapsed.update_columns(expires_at: 1.minute.ago)
+
+    sign_in @owner_admin
+    post workspace_client_shares_path(@project.client), params: { project_share: { invited_email: "nope", project_ids: [ @project.id ] } }, as: :turbo_stream
+    assert lapsed.reload.pending?
   end
 
   test "another organization's client or project cannot be shared" do
