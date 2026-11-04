@@ -1,4 +1,5 @@
 // Entry point for the build script in your package.json
+import "./src/sentry";
 import "@hotwired/turbo-rails";
 import "phlex_ui";
 import "./controllers";
