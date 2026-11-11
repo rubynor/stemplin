@@ -57,6 +57,17 @@ class TimeRegsControllerTest < ActionController::TestCase
       assert_select "span", text: I18n.t("tripletex.locks.locked")
     end
 
+    test "an empty locked day does not offer to log time" do
+      last = Date.current.last_month.beginning_of_month
+      get :index, params: { date: (last + 2).to_s }
+      assert_select "form[action=?]", new_modal_time_regs_path(date: last + 2), minimum: 1
+
+      TimeLock.create!(organization: organizations(:organization_one), user: @user,
+                       locked_by: users(:organization_admin), period: last)
+      get :index, params: { date: (last + 2).to_s }
+      assert_select "form[action=?]", new_modal_time_regs_path(date: last + 2), count: 0
+    end
+
     test "destroying an entry in a locked month flashes the error and keeps the entry" do
       last = Date.current.last_month
       reg = @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: last.beginning_of_month + 2)
@@ -163,6 +174,30 @@ class TimeRegsControllerTest < ActionController::TestCase
       end
 
       assert TimeReg.exists?(time_reg.id)
+    end
+  end
+
+  class SpectatorUser < TimeRegsControllerTest
+    # TimeRegPolicy#index? already turns spectators away; this checks the lock
+    # state on its own, so the policy is let through for the duration of the test.
+    test "a spectator with qualifying hours does not get the lock button" do
+      user = users(:organization_spectator)
+      TripletexIntegration.create!(organization: organizations(:organization_one), employee_token: "t", created_at: 3.months.ago)
+      last = Date.current.last_month.beginning_of_month
+      user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 90, date_worked: last + 2)
+      sign_in user
+
+      original = TimeRegPolicy.instance_method(:index?)
+      TimeRegPolicy.send(:define_method, :index?) { true }
+      begin
+        get :index
+      ensure
+        TimeRegPolicy.send(:define_method, :index?, original)
+      end
+
+      assert_response :success
+      assert_nil assigns(:lockable_period)
+      assert_select "button", text: /#{Regexp.escape(I18n.t("tripletex.locks.lock_button", month: I18n.l(last, format: "%B %Y")))}/, count: 0
     end
   end
 

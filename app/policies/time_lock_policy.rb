@@ -1,6 +1,6 @@
 class TimeLockPolicy < ApplicationPolicy
   def create?
-    return false unless same_organization?
+    return false unless same_organization? && record.organization.tripletex_integration
     return true if user.organization_admin?
 
     record.user_id == user.id && !user.access_info.organization_spectator?

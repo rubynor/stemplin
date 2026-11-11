@@ -150,6 +150,8 @@ class TimeRegsController < ApplicationController
   def set_lock_state
     organization = current_user.current_organization
     @month_locked = TimeLock.locked?(organization_id: organization.id, user_id: current_user.id, date: @chosen_date)
+    return if current_user.spectator_in_organization?(organization)
+
     @lockable_period = TimeLock.next_lockable_period(user: current_user, organization: organization)
     @lockable_minutes = TimeLock.minutes_in(user: current_user, organization: organization, period: @lockable_period) if @lockable_period
   end

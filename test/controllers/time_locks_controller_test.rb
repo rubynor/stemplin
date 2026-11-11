@@ -7,6 +7,7 @@ class TimeLocksControllerTest < ActionController::TestCase
     @admin = users(:organization_admin)
     @last = Date.current.last_month.beginning_of_month
     @month = @last.strftime("%Y-%m")
+    @organization.create_tripletex_integration!(employee_token: "x")
   end
 
   def lock_for(user, period = @last, locked_by: @admin)
@@ -52,6 +53,24 @@ class TimeLocksControllerTest < ActionController::TestCase
     sign_in @admin
     assert_no_difference -> { TimeLock.count } do
       post :create, params: { month: @month, user_id: users(:customer_member).id }
+    end
+    assert_redirected_to root_path
+  end
+
+  test "a member cannot lock in an organization without an integration" do
+    @organization.tripletex_integration.destroy!
+    sign_in @member
+    assert_no_difference -> { TimeLock.count } do
+      post :create, params: { month: @month }
+    end
+    assert_redirected_to root_path
+  end
+
+  test "an admin cannot lock for a member in an organization without an integration" do
+    @organization.tripletex_integration.destroy!
+    sign_in @admin
+    assert_no_difference -> { TimeLock.count } do
+      post :create, params: { month: @month, user_id: @member.id }
     end
     assert_redirected_to root_path
   end
