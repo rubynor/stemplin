@@ -78,6 +78,28 @@ module Tripletex
       assert TimeReg.invoiced.none?
     end
 
+    test "attaches the detailed report as a PDF to each order, for the next invoice" do
+      call
+
+      assert_equal 1, @api.attachments.size
+      attachment = @api.attachments.first
+      assert_equal 1001, attachment[:order_id]
+      assert_equal "NEXT", attachment[:add_to_invoice_mode]
+      assert attachment[:data].start_with?("%PDF")
+      assert_match(/\Ae-corp-\d{4}-\d{2}-\d{2}-\d{4}-\d{2}-\d{2}\.pdf\z/, attachment[:filename])
+    end
+
+    test "keeps the hours invoiced when only the attachment fails" do
+      @api = FakeTripletexApi.new(attach_error: "Tripletex: for stor fil")
+
+      result = call
+
+      assert_equal 1, result.orders.size
+      assert_empty result.errors
+      assert_match "for stor fil", result.warnings.first
+      assert TimeReg.invoiced.exists?
+    end
+
     test "refuses to run without a connection" do
       assert_raises(Tripletex::Error) do
         CreateOrders.new(organization: @organization, time_regs: TimeReg.all).call

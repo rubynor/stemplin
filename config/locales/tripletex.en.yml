@@ -46,6 +46,7 @@ en:
         one: "Created 1 order in Tripletex (%{hours} hours)."
         other: "Created %{count} orders in Tripletex (%{hours} hours)."
       skipped: "Not sent, no Tripletex customer: %{clients}."
+      attachment_failed: "The order for %{client} (%{order}) was created, but the report could not be attached: %{message}"
       failed: "Failed: %{errors}"
       invoiced: "Invoiced"
     print:

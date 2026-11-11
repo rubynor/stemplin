@@ -55,6 +55,20 @@ module Tripletex
       end
     end
 
+    test "uploads attachments as multipart for the next invoice" do
+      with_http(
+        response(Net::HTTPOK, "200", { value: { token: "session-123" } }),
+        response(Net::HTTPOK, "200", {})
+      ) do |http|
+        @client.attach_to_order(99, filename: "rapport.pdf", data: "%PDF-1.4 test")
+
+        upload = http.requests.last
+        assert_kind_of Net::HTTP::Put, upload
+        assert_equal "/v2/order/99/:attach?addToInvoiceMode=NEXT", upload.path
+        assert_equal "Basic #{Base64.strict_encode64('0:session-123')}", upload["Authorization"]
+      end
+    end
+
     test "reports a rejected token in plain words" do
       with_http(response(Net::HTTPForbidden, "403", { message: "Forbidden" })) do
         error = assert_raises(Tripletex::Error) { @client.company }

@@ -39,6 +39,12 @@ module Tripletex
       post("/order", attributes).dig("value", "id")
     end
 
+    # Attaches a PDF to the order; with "NEXT" it goes out with the next invoice made from the order.
+    def attach_to_order(order_id, filename:, data:, add_to_invoice_mode: "NEXT")
+      file = [ "file", StringIO.new(data), { filename: filename, content_type: "application/pdf" } ]
+      request(Net::HTTP::Put, "/order/#{order_id}/:attach", { addToInvoiceMode: add_to_invoice_mode }, form: [ file ])
+    end
+
     private
 
     def session_token
@@ -62,7 +68,7 @@ module Tripletex
       request(Net::HTTP::Post, path, {}, body: body)
     end
 
-    def request(method, path, params, body: nil, authenticate: true)
+    def request(method, path, params, body: nil, form: nil, authenticate: true)
       uri = URI("#{@base_url}#{path}")
       uri.query = URI.encode_www_form(params) if params.any?
 
@@ -73,8 +79,9 @@ module Tripletex
         request["Content-Type"] = "application/json"
         request.body = body.to_json
       end
+      request.set_form(form, "multipart/form-data") if form
 
-      response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https", open_timeout: 5, read_timeout: 20) do |http|
+      response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https", open_timeout: 5, read_timeout: 30) do |http|
         http.request(request)
       end
       parsed = parse(response.body)

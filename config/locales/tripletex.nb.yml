@@ -46,6 +46,7 @@ nb:
         one: "Opprettet 1 bestilling i Tripletex (%{hours} timer)."
         other: "Opprettet %{count} bestillinger i Tripletex (%{hours} timer)."
       skipped: "Ikke sendt, mangler Tripletex-kunde: %{clients}."
+      attachment_failed: "Bestillingen for %{client} (%{order}) er opprettet, men rapporten ble ikke lagt ved: %{message}"
       failed: "Feilet: %{errors}"
       invoiced: "Fakturert"
     print:

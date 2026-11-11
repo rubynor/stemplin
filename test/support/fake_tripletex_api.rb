@@ -12,13 +12,15 @@ class FakeTripletexApi
     def reset = self.current = nil
   end
 
-  attr_reader :orders
+  attr_reader :orders, :attachments
 
-  def initialize(company: { "id" => 42, "name" => "Firma AS" }, customers: [], error: nil)
+  def initialize(company: { "id" => 42, "name" => "Firma AS" }, customers: [], error: nil, attach_error: nil)
     @company = company
     @customers = customers
     @error = error
+    @attach_error = attach_error
     @orders = []
+    @attachments = []
   end
 
   def company
@@ -35,6 +37,12 @@ class FakeTripletexApi
     raise Tripletex::Error, @error if @error
     @orders << attributes
     1000 + @orders.size
+  end
+
+  def attach_to_order(order_id, filename:, data:, add_to_invoice_mode: "NEXT")
+    raise Tripletex::Error, @attach_error if @attach_error
+    @attachments << { order_id: order_id, filename: filename, data: data, add_to_invoice_mode: add_to_invoice_mode }
+    {}
   end
 end
 

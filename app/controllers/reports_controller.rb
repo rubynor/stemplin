@@ -37,7 +37,7 @@ class ReportsController < AuthenticatedController
   def send_to_tripletex
     begin
       result = Tripletex::CreateOrders.new(organization: current_user.current_organization, time_regs: @time_regs).call
-      flash[result.errors.any? ? :error : :success] = tripletex_result_message(result)
+      flash[result.errors.any? || result.warnings.any? ? :error : :success] = tripletex_result_message(result)
     rescue Tripletex::Error => e
       flash[:error] = e.message
     end
@@ -54,7 +54,8 @@ class ReportsController < AuthenticatedController
     end
     body = [
       (t("tripletex.reports.skipped", clients: result.skipped_clients.map(&:name).to_sentence) if result.skipped_clients.any?),
-      (t("tripletex.reports.failed", errors: result.errors.join("; ")) if result.errors.any?)
+      (t("tripletex.reports.failed", errors: result.errors.join("; ")) if result.errors.any?),
+      *result.warnings
     ].compact
 
     { title: title || body.shift, body: body.join(" ") }
