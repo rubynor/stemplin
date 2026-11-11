@@ -90,6 +90,7 @@ nb:
         release: "Frigjør"
       confirm: "Utbetale til %{name} for %{month}? %{hours} timer à %{rate} = %{amount}. Det opprettes en lønnskjøring i Tripletex."
       lock_confirm: "Låse %{month} for %{name} med %{hours} timer? Registreringer i den måneden kan ikke endres før du låser opp."
+      unlock_confirm: "Låse opp %{month} for %{name}? Timene i den måneden kan endres igjen, og måneden må låses på nytt før den kan utbetales."
       mark_sent_confirm: "Merke %{month} for %{name} som sendt? Gjør dette bare hvis lønnsslippen finnes i Tripletex."
       release_confirm: "Frigjøre %{month} for %{name}? Gjør dette bare hvis det ikke finnes noen lønnsslipp i Tripletex. Måneden kan da utbetales på nytt."
       payout_sent: "%{month} ble sendt til Tripletex for %{name}."

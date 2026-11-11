@@ -90,6 +90,7 @@ en:
         release: "Release"
       confirm: "Pay out %{name} for %{month}? %{hours} hours at %{rate} = %{amount}. A salary run is created in Tripletex."
       lock_confirm: "Lock %{month} for %{name} with %{hours} hours? Entries in that month can no longer be changed until you unlock it."
+      unlock_confirm: "Unlock %{month} for %{name}? The hours in that month can be changed again, and the month must be locked again before it can be paid out."
       mark_sent_confirm: "Mark %{month} for %{name} as sent? Only do this if the payslip exists in Tripletex."
       release_confirm: "Release %{month} for %{name}? Only do this if there is no payslip in Tripletex. The month can then be paid out again."
       payout_sent: "%{month} was sent to Tripletex for %{name}."

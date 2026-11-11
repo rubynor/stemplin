@@ -93,7 +93,8 @@
       <% end %>
       <%# Any lock without a payout can be undone here, whatever the row's status. %>
       <% if row.lock && row.payout.nil? %>
-        <%= render ButtonComponent.new(path: time_lock_path(row.lock), method: :delete, variant: :ghost) { t("tripletex.payroll.actions.unlock") } %>
+        <%= render ButtonComponent.new(path: time_lock_path(row.lock), method: :delete, variant: :ghost,
+              form: { data: { turbo_confirm: t("tripletex.payroll.unlock_confirm", name: name, month: month) } }) { t("tripletex.payroll.actions.unlock") } %>
       <% end %>
     </div>
   <% end %>

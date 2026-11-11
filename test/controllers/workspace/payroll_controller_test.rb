@@ -86,7 +86,7 @@ module Workspace
 
       assert_select "#{member_row} form[action^='#{workspace_payroll_payouts_path}']", count: 1
       assert_select "#{member_row} form[action^='#{workspace_payroll_payouts_path}'][data-turbo-confirm*='520']"
-      assert_select "#{member_row} form[action^='/time_locks/']"
+      assert_select "#{member_row} form[action^='/time_locks/'][data-turbo-confirm]"
       assert_includes response.body, "expected_rate=250.0"
       assert_includes response.body, "expected_minutes=125"
     end
