@@ -45,5 +45,33 @@ module  Workspace
         delete :destroy, params: { id: client.id }
       end
     end
+
+    test "links a client to a Tripletex customer" do
+      patch :update, params: { id: @client.id, client: { tripletex_customer_id: 501 } }
+
+      assert_response :success
+      assert_equal 501, @client.reload.tripletex_customer_id
+    end
+
+    test "lists Tripletex customers when the workspace is connected" do
+      @organization_admin.current_organization.create_tripletex_integration!(employee_token: "secret-token")
+      FakeTripletexApi.install(FakeTripletexApi.new(customers: [ { "id" => 501, "name" => "Kunde AS", "customerNumber" => 10001 } ]))
+
+      request.accept = "text/vnd.turbo-stream.html, text/html"
+      post :edit_modal, params: { id: @client.id }
+
+      assert_response :success
+      assert_includes response.body, "10001 – Kunde AS"
+    ensure
+      FakeTripletexApi.reset
+    end
+
+    test "has no Tripletex field when the workspace is not connected" do
+      request.accept = "text/vnd.turbo-stream.html, text/html"
+      post :edit_modal, params: { id: @client.id }
+
+      assert_response :success
+      assert_not_includes response.body, "tripletex_customer_id"
+    end
   end
 end

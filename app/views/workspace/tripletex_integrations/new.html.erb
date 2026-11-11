@@ -1,0 +1,41 @@
+<% content_for :title, t("tripletex.setup.title") %>
+
+<div class="flex flex-col gap-y-6 max-w-2xl">
+  <div class="flex flex-row items-center gap-x-3 border-b border-border pb-5">
+    <%= link_to workspace_integrations_path, class: "w-9 h-9 rounded-lg border border-border bg-background hover:bg-accent flex justify-center items-center transition-colors" do %>
+      <i class="uc-icon text-xl">&#xe833;</i>
+    <% end %>
+    <span class="section-title"><%= t("tripletex.setup.title") %></span>
+  </div>
+
+  <% unless Tripletex::Client.configured? %>
+    <%= render BannerComponent.new(message: t("tripletex.setup.missing_consumer_token"), variant: :warning, dismissible: false) %>
+  <% end %>
+
+  <ol class="flex flex-col gap-y-4">
+    <% t("tripletex.setup.steps").each_with_index do |step, index| %>
+      <li class="flex gap-x-4">
+        <span class="w-7 h-7 shrink-0 rounded-full bg-primary-50 text-primary-700 text-sm font-semibold flex items-center justify-center tnum"><%= index + 1 %></span>
+        <div class="flex flex-col gap-y-0.5 pt-0.5">
+          <span class="font-medium text-primary-text"><%= step[:title] %></span>
+          <span class="text-sm text-secondary-text"><%= step[:body] %></span>
+        </div>
+      </li>
+    <% end %>
+  </ol>
+
+  <%= form_with model: @tripletex_integration, url: workspace_tripletex_integration_path, method: :post, scope: :tripletex_integration, class: "flex flex-col gap-y-4" do |form| %>
+    <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
+      <%= render RubyUI::FormFieldLabel.new(for: "tripletex_integration_employee_token") { t("tripletex.setup.employee_token") } %>
+      <%= form.password_field :employee_token, value: nil, class: "form-input font-mono", autocomplete: "off", autofocus: true, required: true %>
+      <span class="text-xs text-muted-foreground"><%= t("tripletex.setup.employee_token_hint") %></span>
+      <% @tripletex_integration.errors[:employee_token].each do |message| %>
+        <%= render RubyUI::FormFieldError.new(class: "w-full form-error") { message } %>
+      <% end %>
+    <% end %>
+    <div class="pt-4 border-t border-border flex justify-end gap-x-4">
+      <%= render ButtonComponent.new(variant: :outline, path: workspace_integrations_path, method: :get) { t("common.cancel") } %>
+      <%= render ButtonComponent.new(type: :submit, data: { turbo_submits_with: t("tripletex.setup.verifying") }) { t("tripletex.setup.submit") } %>
+    </div>
+  <% end %>
+</div>

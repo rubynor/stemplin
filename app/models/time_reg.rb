@@ -38,6 +38,8 @@ class TimeReg < ApplicationRecord
   }
   scope :all_active, -> { where.not(start_time: nil) }
   scope :billable, -> { joins(:project).where(projects: { billable: true }) }
+  scope :invoiced, -> { where.not(invoiced_at: nil) }
+  scope :not_invoiced, -> { where(invoiced_at: nil) }
 
   scope :by_clients, ->(client_ids) { joins(project: :client).where(clients: { id: client_ids }) }
   scope :by_projects, ->(project_ids) { where(assigned_task: AssignedTask.where(project_id: project_ids)) }
@@ -46,6 +48,10 @@ class TimeReg < ApplicationRecord
 
   def active?
     start_time.present?
+  end
+
+  def invoiced?
+    invoiced_at.present?
   end
 
   def is_zero_minutes?
