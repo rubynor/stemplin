@@ -308,3 +308,24 @@
 .hide-table-overflow > div {
   overflow: unset !important; /* Disable overflow on div wrapping table component from PhlexUI */
 }
+
+/* Printed reports (browser "Save as PDF"): A4 with even margins, header repeated on each page,
+   and rows that never split across a page break. */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 12mm 16mm;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr {
+    break-inside: avoid;
+  }
+}

@@ -91,6 +91,8 @@ Rails.application.routes.draw do
     end
 
     resource :settings, only: [ :show, :edit, :update ]
+    resource :integrations, only: :show
+    resource :tripletex_integration, only: %i[new create destroy], path: "integrations/tripletex"
   end
 
   namespace :shared do
@@ -124,6 +126,7 @@ Rails.application.routes.draw do
 
   resources :reports, only: [ :index ]
   get "reports/detailed", to: "reports#detailed", as: :detailed_reports
+  post "reports/send_to_tripletex", to: "reports#send_to_tripletex", as: :send_to_tripletex_reports
 
   # PWA routes
 

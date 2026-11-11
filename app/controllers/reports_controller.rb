@@ -34,7 +34,32 @@ class ReportsController < AuthenticatedController
     )
   end
 
+  def send_to_tripletex
+    begin
+      result = Tripletex::CreateOrders.new(organization: current_user.current_organization, time_regs: @time_regs).call
+      flash[result.errors.any? || result.warnings.any? ? :error : :success] = tripletex_result_message(result)
+    rescue Tripletex::Error => e
+      flash[:error] = e.message
+    end
+    redirect_to params[:return_to] == "detailed" ? detailed_reports_path(filter: @filter.to_h) : reports_path(filter: @filter.to_h)
+  end
+
   private
+
+  def tripletex_result_message(result)
+    title = if result.orders.any?
+      t("tripletex.reports.sent", count: result.orders.size, hours: helpers.minutes_to_float(result.minutes))
+    elsif result.errors.none?
+      t("tripletex.reports.nothing_to_send")
+    end
+    body = [
+      (t("tripletex.reports.skipped", clients: result.skipped_clients.map(&:name).to_sentence) if result.skipped_clients.any?),
+      (t("tripletex.reports.failed", errors: result.errors.join("; ")) if result.errors.any?),
+      *result.warnings
+    ].compact
+
+    { title: title || body.shift, body: body.join(" ") }
+  end
 
   def filter_params
     params.fetch(:filter, {}).permit(:start_date, :end_date, :category, :time_frame, client_ids: [], project_ids: [], user_ids: [], task_ids: [])

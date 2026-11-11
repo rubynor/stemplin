@@ -1,0 +1,27 @@
+<%# locals: (time_regs:, filter:, return_to:) %>
+<% if allowed_to?(:send_to_tripletex?, Report) %>
+  <%
+    invoiceable = Tripletex::CreateOrders.invoiceable(time_regs, current_user.current_organization)
+    minutes = invoiceable.sum(:minutes)
+    clients = Client.where(id: Project.where(id: AssignedTask.where(id: invoiceable.select(:assigned_task_id)).select(:project_id)).select(:client_id)).order(:name).to_a
+    unlinked = clients.select { |client| client.tripletex_customer_id.blank? }
+    confirmation = [
+      t("tripletex.reports.confirm", hours: minutes_to_float(minutes), clients: clients.size - unlinked.size),
+      (t("tripletex.reports.confirm_skipped", clients: unlinked.map(&:name).to_sentence) if unlinked.any?)
+    ].compact.join("\n\n")
+  %>
+  <% if minutes.zero? || unlinked.size == clients.size %>
+    <%= render ButtonComponent.new(class: "print:!hidden", variant: :outline, disabled: true, title: minutes.zero? ? t("tripletex.reports.nothing_to_send") : t("tripletex.reports.skipped", clients: unlinked.map(&:name).to_sentence)) do %>
+      <i class="uc-icon text-base">&#xea3b;</i>
+      <span class="hidden sm:block"><%= t("tripletex.reports.send") %></span>
+    <% end %>
+  <% else %>
+    <%= render ButtonComponent.new(class: "print:!hidden", variant: :outline,
+          path: send_to_tripletex_reports_path(filter: filter.to_h, return_to: return_to), method: :post,
+          data: { turbo_submits_with: t("tripletex.reports.sending") },
+          form: { data: { turbo_confirm: confirmation } }) do %>
+      <i class="uc-icon text-base">&#xea3b;</i>
+      <span class="hidden sm:block"><%= t("tripletex.reports.send") %></span>
+    <% end %>
+  <% end %>
+<% end %>

@@ -125,4 +125,8 @@ gem "tailwind_merge", "~> 1.2"
 
 gem "wicked", "~> 2.0"
 
+# Server-side PDFs (detailed report attached to Tripletex orders)
+gem "prawn", "~> 2.5"
+gem "prawn-table", "~> 0.2.2"
+
 gem "fast-mcp"

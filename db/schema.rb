@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
+ActiveRecord::Schema[7.1].define(version: 2026_11_10_100200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -48,6 +48,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
     t.datetime "updated_at", null: false
     t.bigint "organization_id"
     t.datetime "discarded_at"
+    t.bigint "tripletex_customer_id"
     t.index ["discarded_at"], name: "index_clients_on_discarded_at"
     t.index ["organization_id"], name: "index_clients_on_organization_id"
   end
@@ -166,9 +167,21 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
     t.datetime "start_time", precision: nil
     t.bigint "user_id", null: false
     t.datetime "discarded_at"
+    t.datetime "invoiced_at"
+    t.bigint "tripletex_order_id"
     t.index ["assigned_task_id"], name: "index_time_regs_on_assigned_task_id"
     t.index ["discarded_at"], name: "index_time_regs_on_discarded_at"
     t.index ["user_id"], name: "index_time_regs_on_user_id"
+  end
+
+  create_table "tripletex_integrations", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.text "employee_token", null: false
+    t.bigint "company_id"
+    t.string "company_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_tripletex_integrations_on_organization_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -231,4 +244,5 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
   add_foreign_key "tasks", "organizations"
   add_foreign_key "time_regs", "assigned_tasks"
   add_foreign_key "time_regs", "users"
+  add_foreign_key "tripletex_integrations", "organizations"
 end
