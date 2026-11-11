@@ -11,7 +11,8 @@ class DeleteTimeRegTool < ApplicationTool
 
     time_reg = authorized_scope(TimeReg, type: :relation, as: :own).find(id)
     authorize! time_reg, with: TimeRegPolicy, to: :destroy?
-    time_reg.discard!
+    # A locked month refuses the discard; report why instead of the generic failure.
+    return JSON.generate({ error: time_reg.errors.full_messages.to_sentence }) unless time_reg.discard
 
     JSON.generate({ status: "deleted", id: time_reg.id })
   rescue => e

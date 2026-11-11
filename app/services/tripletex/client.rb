@@ -98,7 +98,8 @@ module Tripletex
 
     def pay_details_on(employee, on)
       employment = Array(employee&.dig("employments")).find do |e|
-        Date.parse(e["startDate"]) <= on && (e["endDate"].blank? || Date.parse(e["endDate"]) >= on)
+        # An employment without a start date covers no date.
+        e["startDate"].present? && Date.parse(e["startDate"]) <= on && (e["endDate"].blank? || Date.parse(e["endDate"]) >= on)
       end
       details = Array(employment&.dig("employmentDetails"))
         .select { |d| d["date"].present? && Date.parse(d["date"]) <= on }

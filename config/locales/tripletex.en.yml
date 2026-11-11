@@ -6,7 +6,7 @@ en:
       invalid_token: "Tripletex rejected the key. Check that the API key is correct and active."
       unreachable: "Could not reach Tripletex (%{message})."
       salary_access: "Tripletex refused access to salary. The API key needs access to employees and salary, and the company needs the salary module."
-      uncertain: "Lost contact with Tripletex (%{message}). The change may or may not have been saved there; check Tripletex before trying again."
+      uncertain: "Lost contact with Tripletex (%{message}). The change may or may not have been saved there."
     integrations:
       title: "Integrations"
       description: "Pay employees from their Stemplin hours: create salary transactions in Tripletex."

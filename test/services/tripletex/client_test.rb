@@ -156,6 +156,17 @@ module Tripletex
       end
     end
 
+    test "pay_details skips an employment without a start date and details rows without a date" do
+      with_http(session, ok({ values: [ { id: 7, employments: [
+        employment(nil, nil, [ "2020-01-01", "MONTHLY_WAGE", 0.0 ]),
+        employment("2020-01-01", nil, [ nil, "MONTHLY_WAGE", 0.0 ], [ "2026-06-01", "HOURLY_WAGE", 250.0 ])
+      ] }, { id: 8, employments: [ employment(nil, nil, [ "2020-01-01", "HOURLY_WAGE", 250.0 ]) ] } ] })) do
+        details = client.pay_details([ 7, 8 ], on: Date.new(2026, 10, 31))
+        assert_equal({ "remunerationType" => "HOURLY_WAGE", "hourlyWage" => BigDecimal("250") }, details[7])
+        assert_nil details[8]
+      end
+    end
+
     test "pay_details has a nil wage when Tripletex sends none" do
       with_http(session, ok({ values: [ { id: 7, employments: [ employment("2020-01-01", nil, [ "2020-01-01", "FEE", nil ]) ] } ] })) do
         assert_equal({ "remunerationType" => "FEE", "hourlyWage" => nil }, client.pay_details([ 7 ], on: Date.new(2026, 10, 31))[7])

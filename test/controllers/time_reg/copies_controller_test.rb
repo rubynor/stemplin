@@ -31,6 +31,24 @@ class TimeReg::CopiesControllerTest < ActionController::TestCase
     assert_no_difference("TimeReg.count") do
       post :create, params: { time_reg_id: @time_reg.id, date: last.end_of_month.to_s }
     end
+    assert_includes flash[:alert], I18n.l(last, format: "%B %Y")
+  end
+
+  test "copies the allowed dates and flashes why the others were refused" do
+    last = Date.current.last_month
+    @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: last.beginning_of_month)
+    TimeLock.create!(organization: organizations(:organization_one), user: @user,
+                     locked_by: users(:organization_admin), period: last.beginning_of_month)
+
+    assert_difference("TimeReg.count", 1) do
+      post :create, params: { time_reg_id: @time_reg.id, dates: [ last.end_of_month.to_s, @target_date.to_s ] }
+    end
+    assert_equal I18n.t("tripletex.locks.errors.month_locked", month: I18n.l(last, format: "%B %Y")), flash[:alert]
+  end
+
+  test "a successful copy sets no alert" do
+    post :create, params: { time_reg_id: @time_reg.id, date: @target_date.to_s }
+    assert_nil flash[:alert]
   end
 
   test "should copy to several dates at once" do

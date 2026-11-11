@@ -8,12 +8,13 @@ class TimeReg::CopiesController < ApplicationController
     authorize! @time_reg
     target_dates = parse_target_dates
 
-    target_dates.each do |target_date|
+    refused = target_dates.filter_map do |target_date|
       new_time_reg = @time_reg.dup
       new_time_reg.date_worked = target_date
       new_time_reg.start_time = nil
-      new_time_reg.save
+      new_time_reg unless new_time_reg.save
     end
+    flash[:alert] = refused.flat_map { |time_reg| time_reg.errors.full_messages }.uniq.to_sentence if refused.any?
 
     redirect_to time_regs_path(date: target_dates.last || @time_reg.date_worked)
   end

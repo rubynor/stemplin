@@ -3,7 +3,7 @@
       path: time_locks_path(month: @lockable_period.strftime("%Y-%m")),
       method: :post,
       variant: :outline,
-      form: { data: { turbo_confirm: t("tripletex.locks.confirm", month: month, hours: (@lockable_minutes / 60.0).round(2)) } }
+      form: { data: { turbo_confirm: t("tripletex.locks.confirm", month: month, hours: number_with_precision(@lockable_minutes / 60.0, precision: 2, strip_insignificant_zeros: true)) } }
     ) do %>
   <i class="uc-icon text-lg">&#xe8bb;</i>
   <span><%= t("tripletex.locks.lock_button", month: month) %></span>

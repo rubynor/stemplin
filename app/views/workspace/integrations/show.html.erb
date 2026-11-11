@@ -19,7 +19,7 @@
         </div>
         <% if @tripletex_integration %>
           <span class="text-sm text-secondary-text">
-            <%= t("tripletex.integrations.connected_to", company: @tripletex_integration.company_name || "–", date: @tripletex_integration.updated_at.strftime("%d.%m.%Y")) %>
+            <%= t("tripletex.integrations.connected_to", company: @tripletex_integration.company_name || "–", date: @tripletex_integration.connected_at.strftime("%d.%m.%Y")) %>
           </span>
         <% else %>
           <span class="text-sm text-secondary-text"><%= t("tripletex.integrations.description") %></span>

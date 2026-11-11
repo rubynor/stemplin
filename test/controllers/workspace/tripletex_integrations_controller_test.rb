@@ -167,6 +167,26 @@ module Workspace
       assert_empty @organization.access_infos.where.not(tripletex_employee_id: nil)
     end
 
+    test "members are refused update and destroy even without an integration" do
+      sign_in users(:organization_user)
+
+      patch :update, params: { tripletex_integration: { hourly_salary_type_id: "321" } }
+      assert_redirected_to root_path
+
+      delete :destroy
+      assert_redirected_to root_path
+      assert_nil @organization.reload.tripletex_integration
+    end
+
+    test "an admin without an integration is sent to the integrations page on update and destroy" do
+      patch :update, params: { tripletex_integration: { hourly_salary_type_id: "321" } }
+      assert_redirected_to workspace_integrations_path
+
+      delete :destroy
+      assert_redirected_to workspace_integrations_path
+      assert_nil @organization.reload.tripletex_integration
+    end
+
     test "members cannot connect" do
       sign_in users(:organization_user)
       FakeTripletexApi.install

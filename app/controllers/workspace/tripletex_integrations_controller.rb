@@ -37,10 +37,10 @@ module Workspace
     end
 
     def update
-      @tripletex_integration = @organization.tripletex_integration
-      return redirect_to workspace_integrations_path unless @tripletex_integration
-
+      @tripletex_integration = @organization.tripletex_integration || @organization.build_tripletex_integration
       authorize! @tripletex_integration
+      return redirect_to workspace_integrations_path unless @tripletex_integration.persisted?
+
       @tripletex_integration.update!(hourly_salary_type_id: params.dig(:tripletex_integration, :hourly_salary_type_id).presence&.to_i)
       redirect_to workspace_integrations_path, flash: { success: t("tripletex.integrations.salary_type_saved") }
     end
@@ -49,10 +49,10 @@ module Workspace
     # Months with a sent payout stay locked. The employee links are cleared too: the stored company id goes with
     # the integration, so a later connection to another company could not tell the old links are foreign.
     def destroy
-      @tripletex_integration = @organization.tripletex_integration
-      return redirect_to workspace_integrations_path unless @tripletex_integration
-
+      @tripletex_integration = @organization.tripletex_integration || @organization.build_tripletex_integration
       authorize! @tripletex_integration
+      return redirect_to workspace_integrations_path unless @tripletex_integration.persisted?
+
       ActiveRecord::Base.transaction do
         # Row locks serialize this with a payout being inserted for one of these months.
         @organization.time_locks.lock.reject(&:sent?).each(&:destroy!)

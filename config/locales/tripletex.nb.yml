@@ -2,11 +2,11 @@ nb:
   tripletex:
     errors:
       not_configured: "Tripletex er ikke satt opp på denne serveren (TRIPLETEX_CONSUMER_TOKEN mangler)."
-      not_connected: "Workspacet er ikke koblet til Tripletex."
+      not_connected: "Arbeidsområdet er ikke koblet til Tripletex."
       invalid_token: "Tripletex avviste nøkkelen. Sjekk at API-nøkkelen er riktig og aktiv."
       unreachable: "Fikk ikke kontakt med Tripletex (%{message})."
       salary_access: "Tripletex nektet tilgang til lønn. API-nøkkelen må ha tilgang til ansatte og lønn, og selskapet må ha lønnsmodulen."
-      uncertain: "Mistet kontakten med Tripletex (%{message}). Endringen kan ha blitt lagret der; sjekk Tripletex før du prøver igjen."
+      uncertain: "Mistet kontakten med Tripletex (%{message}). Endringen kan ha blitt lagret der."
     integrations:
       title: "Integrasjoner"
       description: "Send timer fra Stemplin til Tripletex som lønnstransaksjoner."
@@ -45,7 +45,7 @@ nb:
       unlocked_notice: "%{month} er låst opp."
       errors:
         month_locked: "%{month} er låst for denne brukeren. Be en administrator om å låse opp."
-        timer_running: "En timer går i den måneden. Stopp den før du låser."
+        timer_running: "En stoppeklokke går i den måneden. Stopp den før du låser."
         no_hours: "Det er ingen timer å låse i denne måneden."
         period_not_first_of_month: "må være den første dagen i en måned"
         already_sent: "Denne måneden er allerede sendt til lønn og kan ikke låses opp."
@@ -97,7 +97,7 @@ nb:
       release_notice: "%{month} er frigjort."
       run_description: "Timer %{month} (Stemplin)"
       errors:
-        not_connected: "Workspacet er ikke koblet til Tripletex."
+        not_connected: "Arbeidsområdet er ikke koblet til Tripletex."
         no_salary_type: "Velg lønnsart for timelønn i Tripletex-innstillingene før du utbetaler."
         not_linked: "Dette medlemmet er ikke koblet til en ansatt i Tripletex."
         not_locked: "Denne måneden er ikke låst for dette medlemmet."
@@ -109,11 +109,11 @@ nb:
         already_sent: "Denne måneden er allerede sendt for dette medlemmet."
         in_progress: "Denne utbetalingen sendes fortsatt. Vent noen minutter før du avklarer den."
         rejected: "Ingenting ble utbetalt. %{message}"
-        unclear: "Vi vet ikke om lønnsslippen ble opprettet i Tripletex (%{message}). Sjekk Tripletex, og marker deretter måneden som sendt eller frigi den."
+        unclear: "Vi vet ikke om lønnsslippen ble opprettet i Tripletex (%{message}). Sjekk Tripletex, og merk deretter måneden som sendt eller frigjør den."
         failed: "Ingenting ble utbetalt på grunn av en uventet feil (%{message})."
         rate_missing: "Lønnen som skulle utbetales ble ikke sendt. Last inn siden på nytt og prøv igjen."
         hours_missing: "Timene som skulle utbetales ble ikke sendt. Last inn siden på nytt og prøv igjen."
         month_missing: "Måneden som skulle utbetales ble ikke sendt. Last inn siden på nytt og prøv igjen."
         wage_precision: "Timelønnen i Tripletex har mer enn to desimaler og kan ikke sendes. Rett lønnen i Tripletex og prøv igjen."
-        released: "Denne utbetalingen ble frigjort mens den fortsatt ble sendt, så det kan finnes en lønnskjøring i Tripletex. Sjekk Tripletex, og marker deretter måneden som sendt eller frigi den."
+        released: "Denne utbetalingen ble frigjort mens den fortsatt ble sendt, så det kan finnes en lønnskjøring i Tripletex. Sjekk Tripletex, og merk deretter måneden som sendt eller frigjør den."
         released_conflict: "Denne utbetalingen ble frigjort mens den fortsatt ble sendt, og en ny utbetaling for samme måned er startet. Sjekk både det tidligere og det nye forsøket i Tripletex."
