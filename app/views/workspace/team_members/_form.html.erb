@@ -21,6 +21,21 @@
             <%= render GroupedSelectMultipleComponent.new form, :project_ids, grouped_projects, :name, :id, :name, { checked: selected_project_ids }, label: t("common.select_projects") %>
           <% end %>
 
+          <% unless user.new_record? || tripletex_employees.nil? %>
+            <%= render RubyUI::FormField.new do %>
+              <%= render RubyUI::FormFieldLabel.new(for: "user_tripletex_employee_id") { t("tripletex.team_members.employee") } %>
+              <%
+                options = tripletex_employees.map { |employee| [ "#{employee["firstName"]} #{employee["lastName"]} (#{employee["employeeNumber"]})", employee["id"] ] }
+                if selected_tripletex_employee_id.present? && options.none? { |option| option[1] == selected_tripletex_employee_id }
+                  options.unshift([ "##{selected_tripletex_employee_id}", selected_tripletex_employee_id ])
+                end
+              %>
+              <%= form.select :tripletex_employee_id, options, { include_blank: t("tripletex.team_members.none"), selected: selected_tripletex_employee_id }, class: "form-input" %>
+              <% if tripletex_employees_error %>
+                <%= render RubyUI::FormFieldError.new(class: "w-full form-error") { t("tripletex.team_members.unavailable", message: tripletex_employees_error) } %>
+              <% end %>
+            <% end %>
+          <% end %>
         </div>
         <%= render RubyUI::DialogFooter.new(class: "mt-4 pt-4 border-t border-border") do %>
           <%= render ButtonComponent.new(variant: :outline, data: { action: 'click->ruby-ui--dialog#dismiss' }) { t("common.cancel") } %>

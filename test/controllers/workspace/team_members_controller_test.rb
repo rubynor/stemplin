@@ -6,7 +6,10 @@ module  Workspace
       sign_in @organization_admin
 
       @project = @organization_admin.current_organization.projects.first
+      @organization = @organization_admin.current_organization
     end
+
+    teardown { FakeTripletexApi.reset }
 
     test "should get index" do
       get :index
@@ -231,6 +234,124 @@ module  Workspace
 
       assert_response :success
       assert_not_equal "Newfirstname", @organization_admin.reload.first_name
+    end
+
+    # Tripletex employee link
+
+    def employee(id, first, last, email: nil)
+      { "id" => id, "firstName" => first, "lastName" => last, "email" => email, "employeeNumber" => id.to_s }
+    end
+
+    def connect_tripletex(**options)
+      TripletexIntegration.create!(organization: @organization_admin.current_organization, employee_token: "t")
+      FakeTripletexApi.install(FakeTripletexApi.new(**options))
+    end
+
+    def open_edit_modal(user)
+      @request.headers["Accept"] = "text/vnd.turbo-stream.html, text/html"
+      put :edit_modal, params: { id: user.id }
+    end
+
+    test "edit modal lists the Tripletex employees" do
+      connect_tripletex(employees: [ employee(7, "Kari", "Nordmann"), employee(8, "Ola", "Hansen") ])
+      open_edit_modal users(:organization_user)
+
+      assert_response :success
+      assert_select "select[name='user[tripletex_employee_id]'] option[value='7']", text: "Kari Nordmann (7)"
+      assert_select "select[name='user[tripletex_employee_id]'] option[value='8']"
+    end
+
+    test "edit modal preselects the employee with the same email when there is no link" do
+      user = users(:organization_user)
+      connect_tripletex(employees: [ employee(7, "Kari", "Nordmann"), employee(8, "Ola", "Hansen", email: user.email.upcase) ])
+      open_edit_modal user
+
+      assert_select "select[name='user[tripletex_employee_id]'] option[selected][value='8']"
+      assert_nil user.access_info(@organization_admin.current_organization).tripletex_employee_id
+    end
+
+    test "edit modal keeps the stored link over an email match" do
+      user = users(:organization_user)
+      user.access_info(@organization_admin.current_organization).update!(tripletex_employee_id: 7)
+      connect_tripletex(employees: [ employee(7, "Kari", "Nordmann"), employee(8, "Ola", "Hansen", email: user.email) ])
+      open_edit_modal user
+
+      assert_select "select[name='user[tripletex_employee_id]'] option[selected][value='7']"
+      assert_select "select[name='user[tripletex_employee_id]'] option[selected]", count: 1
+    end
+
+    test "edit modal keeps a linked employee that is missing from the list selectable" do
+      user = users(:organization_user)
+      user.access_info(@organization_admin.current_organization).update!(tripletex_employee_id: 99)
+      connect_tripletex(employees: [ employee(7, "Kari", "Nordmann") ])
+      open_edit_modal user
+
+      assert_select "select[name='user[tripletex_employee_id]'] option[selected][value='99']", text: "#99"
+    end
+
+    test "edit modal shows an error when Tripletex is unavailable" do
+      connect_tripletex(error: "boom")
+      open_edit_modal users(:organization_user)
+
+      assert_response :success
+      assert_includes response.body, I18n.t("tripletex.team_members.unavailable", message: "boom")
+      assert_select "select[name='user[tripletex_employee_id]']"
+    end
+
+    test "edit modal has no Tripletex field without an integration" do
+      open_edit_modal users(:organization_user)
+
+      assert_response :success
+      assert_select "select[name='user[tripletex_employee_id]']", count: 0
+    end
+
+    test "update stores the Tripletex employee on the access info" do
+      user = users(:organization_user)
+      connect_tripletex(employees: [ employee(7, "Kari", "Nordmann") ])
+      patch :update, params: { id: user.id, user: { role: :organization_user, tripletex_employee_id: "7", project_ids: [] } }
+
+      assert_equal 7, user.access_info(@organization_admin.current_organization).reload.tripletex_employee_id
+    end
+
+    test "update with a blank employee clears the link" do
+      user = users(:organization_user)
+      access_info = user.access_info(@organization_admin.current_organization)
+      access_info.update!(tripletex_employee_id: 7)
+      connect_tripletex(employees: [ employee(7, "Kari", "Nordmann") ])
+      patch :update, params: { id: user.id, user: { role: :organization_user, tripletex_employee_id: "", project_ids: [] } }
+
+      assert_nil access_info.reload.tripletex_employee_id
+    end
+
+    test "update refuses an employee already linked to another member" do
+      other = users(:organization_spectator)
+      other.access_info(@organization_admin.current_organization).update!(tripletex_employee_id: 7)
+      user = users(:organization_user)
+      connect_tripletex(employees: [ employee(7, "Kari", "Nordmann") ])
+      patch :update, params: { id: user.id, user: { role: :organization_admin, tripletex_employee_id: "7", project_ids: [] } }
+
+      assert_response :success
+      assert_includes response.body, I18n.t("tripletex.team_members.errors.employee_taken")
+      assert_nil user.access_info(@organization_admin.current_organization).reload.tripletex_employee_id
+      assert_equal "organization_user", user.access_info(@organization_admin.current_organization).role
+    end
+
+    test "update saves the role and keeps the link when Tripletex is unavailable" do
+      user = users(:organization_user)
+      access_info = user.access_info(@organization_admin.current_organization)
+      access_info.update!(tripletex_employee_id: 7)
+      connect_tripletex(error: "boom")
+      patch :update, params: { id: user.id, user: { role: :organization_spectator, tripletex_employee_id: "", project_ids: [] } }
+
+      assert_equal "organization_spectator", access_info.reload.role
+      assert_equal 7, access_info.tripletex_employee_id
+    end
+
+    test "update ignores the employee param without an integration" do
+      user = users(:organization_user)
+      patch :update, params: { id: user.id, user: { role: :organization_user, tripletex_employee_id: "7", project_ids: [] } }
+
+      assert_nil user.access_info(@organization_admin.current_organization).reload.tripletex_employee_id
     end
   end
 end

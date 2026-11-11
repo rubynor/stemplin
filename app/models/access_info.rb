@@ -19,6 +19,7 @@ class AccessInfo < ApplicationRecord
   validates :user_id, uniqueness: { scope: :organization_id }
   validates :plan_weekly_capacity_minutes, numericality: { only_integer: true, in: 0..(7 * 24 * 60) }, allow_nil: true
   validates :plan_work_days, numericality: { only_integer: true, in: 0..0b1111111 }
+  validates :tripletex_employee_id, uniqueness: { scope: :organization_id, message: ->(*) { I18n.t("tripletex.team_members.errors.employee_taken") } }, allow_nil: true
   validate :no_project_accesses_unless_project_restricted
   validate :organization_has_at_least_one_admin
 

@@ -44,3 +44,9 @@ nb:
         period_not_first_of_month: "må være den første dagen i en måned"
         already_sent: "Denne måneden er allerede sendt til lønn og kan ikke låses opp."
         month_not_ended: "kan først låses etter at måneden er over"
+    team_members:
+      employee: "Tripletex-ansatt"
+      none: "Ikke koblet"
+      unavailable: "Kunne ikke hente ansatte fra Tripletex (%{message}). Rolle og prosjekter kan fortsatt lagres; koblingen beholdes som den er."
+      errors:
+        employee_taken: "Denne Tripletex-ansatte er allerede koblet til et annet medlem."

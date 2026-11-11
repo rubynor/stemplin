@@ -37,7 +37,10 @@ class FakeTripletexApi
     @company
   end
 
-  def employees = @employees
+  def employees
+    raise Tripletex::Error, @error if @error
+    @employees
+  end
 
   def pay_details(employee_ids, on:)
     employee_ids.index_with { |id| @pay_details[id] }

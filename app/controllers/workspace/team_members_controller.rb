@@ -1,5 +1,7 @@
 module Workspace
   class TeamMembersController < WorkspaceController
+    helper_method :tripletex_employees, :tripletex_employees_error
+
     def index
       authorize!
       @showing_archived = params[:archived].present?
@@ -60,6 +62,7 @@ module Workspace
         ActiveRecord::Base.transaction do
           access_info = @user.update_or_create_access_info edit_team_member_params[:role], current_user.current_organization
           access_info.update_project_accesses edit_team_member_params[:project_ids]
+          link_tripletex_employee(access_info)
         end
         render turbo_stream: [
           turbo_flash(type: :success, data: t("notice.user_updated")),
@@ -71,6 +74,7 @@ module Workspace
         prepare_form_data
         @selected_role = edit_team_member_params[:role]
         @selected_project_ids = edit_team_member_params[:project_ids]
+        @selected_tripletex_employee_id = edit_team_member_params[:tripletex_employee_id].presence&.to_i
 
         render turbo_stream: turbo_stream.replace(:modal, partial: "workspace/team_members/form", locals: {
           user: @user,
@@ -78,7 +82,8 @@ module Workspace
           grouped_projects: @grouped_projects,
           selected_role: @selected_role,
           selected_project_ids: @selected_project_ids,
-          project_restricted_roles: @project_restricted_roles
+          project_restricted_roles: @project_restricted_roles,
+          selected_tripletex_employee_id: @selected_tripletex_employee_id
         })
       end
     end
@@ -90,12 +95,13 @@ module Workspace
       access_info = @user.access_info(current_user.current_organization)
       @selected_role = access_info.role
       @selected_project_ids = access_info.projects.ids
+      @selected_tripletex_employee_id = access_info.tripletex_employee_id || tripletex_employee_for(@user)&.fetch("id")
     end
 
     private
 
     def edit_team_member_params
-      params.require(:user).permit(:role, project_ids: [])
+      params.require(:user).permit(:role, :tripletex_employee_id, project_ids: [])
     end
 
     def invite_users_params
@@ -108,6 +114,39 @@ module Workspace
       @roles = AccessInfo.allowed_organization_roles
       @grouped_projects = authorized_scope(Project, type: :relation).group_by(&:client)
       @project_restricted_roles = AccessInfo.project_restricted_roles
+    end
+
+    # Only touches the link when the employee list was loaded: if Tripletex is down the
+    # field is a stale snapshot, and a stored link must not be cleared by it.
+    def link_tripletex_employee(access_info)
+      return if tripletex_employees.nil? || tripletex_employees_error
+      return unless edit_team_member_params.key?(:tripletex_employee_id)
+
+      access_info.update!(tripletex_employee_id: edit_team_member_params[:tripletex_employee_id].presence)
+    end
+
+    def tripletex_employee_for(user)
+      return if user.email.blank?
+
+      tripletex_employees&.find { |employee| employee["email"].to_s.casecmp?(user.email) }
+    end
+
+    # nil when the workspace isn't connected to Tripletex; cached briefly so the dialog opens fast.
+    def tripletex_employees
+      return @tripletex_employees if defined?(@tripletex_employees)
+
+      integration = current_user.current_organization.tripletex_integration
+      @tripletex_employees = integration && Rails.cache.fetch([ "tripletex_employees", integration.id, integration.updated_at.to_i ], expires_in: 5.minutes) do
+        integration.api.employees
+      end
+    rescue Tripletex::Error => e
+      @tripletex_employees_error = e.message
+      @tripletex_employees = []
+    end
+
+    def tripletex_employees_error
+      tripletex_employees
+      @tripletex_employees_error
     end
 
     def implicit_authorization_target

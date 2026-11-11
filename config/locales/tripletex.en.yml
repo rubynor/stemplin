@@ -44,3 +44,9 @@ en:
         period_not_first_of_month: "must be the first day of a month"
         already_sent: "This month has already been sent to payroll and cannot be unlocked."
         month_not_ended: "can only be locked after the month has ended"
+    team_members:
+      employee: "Tripletex employee"
+      none: "Not linked"
+      unavailable: "Could not load employees from Tripletex (%{message}). Role and projects can still be saved; the link is left as it is."
+      errors:
+        employee_taken: "This Tripletex employee is already linked to another member."
