@@ -1,0 +1,41 @@
+<% content_for :title, t("tripletex.integrations.title") %>
+
+<div class="flex flex-col gap-y-6">
+  <div class="section-head">
+    <span class="section-title"><%= t("tripletex.integrations.title") %></span>
+  </div>
+
+  <div class="rounded-lg border border-border p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+    <div class="flex items-start gap-x-4 grow">
+      <div class="w-10 h-10 shrink-0 rounded-lg bg-primary-50 text-primary-700 flex items-center justify-center">
+        <i class="uc-icon text-xl">&#xea3b;</i>
+      </div>
+      <div class="flex flex-col gap-y-1">
+        <div class="flex items-center gap-x-2">
+          <span class="font-semibold text-primary-text">Tripletex</span>
+          <% if @tripletex_integration %>
+            <%= render RubyUI::Badge.new(size: :sm, variant: :green) { t("tripletex.integrations.status_connected") } %>
+          <% end %>
+        </div>
+        <% if @tripletex_integration %>
+          <span class="text-sm text-secondary-text">
+            <%= t("tripletex.integrations.connected_to", company: @tripletex_integration.company_name || "–", date: @tripletex_integration.updated_at.strftime("%d.%m.%Y")) %>
+          </span>
+        <% else %>
+          <span class="text-sm text-secondary-text"><%= t("tripletex.integrations.description") %></span>
+        <% end %>
+      </div>
+    </div>
+    <div class="flex flex-row gap-2 shrink-0">
+      <% if @tripletex_integration %>
+        <%= render ButtonComponent.new(variant: :outline, path: new_workspace_tripletex_integration_path, method: :get) { t("tripletex.integrations.change_token") } %>
+        <%= render ButtonComponent.new(variant: :destructive, path: workspace_tripletex_integration_path, method: :delete, form: { data: { turbo_confirm: t("tripletex.integrations.disconnect_confirmation") } }) { t("tripletex.integrations.disconnect") } %>
+      <% else %>
+        <%= render ButtonComponent.new(path: new_workspace_tripletex_integration_path, method: :get) do %>
+          <span><%= t("tripletex.integrations.connect") %></span>
+          <i class="uc-icon text-lg">&#xea5f;</i>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

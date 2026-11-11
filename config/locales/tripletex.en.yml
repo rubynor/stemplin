@@ -1,0 +1,55 @@
+en:
+  tripletex:
+    errors:
+      not_configured: "Tripletex is not set up on this server (TRIPLETEX_CONSUMER_TOKEN is missing)."
+      not_connected: "This workspace is not connected to Tripletex."
+      invalid_token: "Tripletex rejected the key. Check that the API key is correct and active."
+      vat_type_missing: "VAT code %{number} was not found in Tripletex."
+      unreachable: "Could not reach Tripletex (%{message})."
+    order:
+      comment: "Hours from Stemplin, %{from} – %{to}"
+    integrations:
+      title: "Integrations"
+      description: "Send hours to Tripletex as orders and link clients to Tripletex customers."
+      status_connected: "Connected"
+      connected_to: "Connected to %{company} since %{date}."
+      connect: "Connect"
+      change_token: "Change key"
+      disconnect: "Disconnect"
+      disconnect_confirmation: "Disconnect Tripletex? Client links and invoiced hours are kept."
+      connected: "Connected to Tripletex (%{company})."
+      disconnected: "Tripletex has been disconnected."
+    setup:
+      title: "Connect Tripletex"
+      missing_consumer_token: "The server is missing TRIPLETEX_CONSUMER_TOKEN. Connecting will not work until it is set."
+      steps:
+        - title: "Create an API key in Tripletex"
+          body: "Log in to Tripletex, go to Settings → Integrations → API access and create a new key for Stemplin."
+        - title: "Give the key access"
+          body: "Grant access to customers and orders (or \"All access\"). The key inherits the permissions of the user who creates it."
+        - title: "Paste the key here"
+          body: "We verify the key with Tripletex and store it encrypted."
+      employee_token: "API key (employee token)"
+      employee_token_hint: "Tripletex only shows the key once."
+      verifying: "Verifying…"
+      submit: "Connect"
+    clients:
+      customer: "Tripletex customer"
+      none: "Not linked"
+      unavailable: "Could not load customers from Tripletex: %{message}"
+    reports:
+      send: "Send to Tripletex"
+      confirm: "Create orders in Tripletex for %{hours} hours across %{clients} client(s)? The hours will be marked as invoiced."
+      confirm_skipped: "%{clients} is not linked to a Tripletex customer and will be skipped."
+      sending: "Sending…"
+      nothing_to_send: "No billable, uninvoiced hours in this selection."
+      sent:
+        one: "Created 1 order in Tripletex (%{hours} hours)."
+        other: "Created %{count} orders in Tripletex (%{hours} hours)."
+      skipped: "Not sent, no Tripletex customer: %{clients}."
+      attachment_failed: "The order for %{client} (%{order}) was created, but the report could not be attached: %{message}"
+      failed: "Failed: %{errors}"
+      invoiced: "Invoiced"
+    print:
+      printed_at: "Printed %{time}"
+      period: "Period"

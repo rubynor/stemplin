@@ -3,6 +3,7 @@ require_relative "../config/environment"
 require "rails/test_help"
 require "rails-controller-testing"
 require "action_policy/test_helper"
+require_relative "support/fake_tripletex_api"
 
 Sidekiq.testing!(:fake)
 

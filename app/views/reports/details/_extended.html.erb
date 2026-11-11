@@ -30,7 +30,7 @@
         <td class="pl-4 py-3 print:pl-1 print:py-1"><%= t("common.client")%> (<%= detailed_report_data.clients.count %>)</td>
         <td><%= t("common.project")%> (<%= detailed_report_data.projects.count %>)</td>
         <td><%= t("common.task")%> (<%= detailed_report_data.tasks.count %>)</td>
-        <td><%= t("common.rate")%> (<%= detailed_report_data.tasks.count %>)</td>
+        <td><%= t("common.rate")%></td>
         <td><%= t("common.person")%> (<%= detailed_report_data.users.count %>)</td>
         <td class="w-[6rem] text-end"><%= t("common.hours")%></td>
         <td class="w-6"></td>
@@ -58,17 +58,22 @@
               <td data-label="<%= t("common.task") %>" class="md:items-start">
                 <div class="flex flex-col gap-3">
                   <div class="flex flex-col">
-                    <span><%= child.task.name %></span>
+                    <span class="flex items-center gap-x-2">
+                      <%= child.task.name %>
+                      <% if child.invoiced? %>
+                        <%= render RubyUI::Badge.new(size: :sm, variant: :green, class: "print-color-adjust", title: child.invoiced_at.strftime("%d.%m.%Y")) { t("tripletex.reports.invoiced") } %>
+                      <% end %>
+                    </span>
                     <%= simple_format child.notes, wrapper_tag: "span", class: "text-muted-foreground text-xs print:text-xs" %>
                   </div>
                 </div>
               </td>
               <td data-label="<%= t("common.rate") %>">
                 <div class="flex flex-col items-end md:items-start">
-                  <%= render RubyUI::Badge.new(size: :sm, variant: child.assigned_task.rate.zero? ? :gray : :purple, class: "text-nowrap w-fit gap-x-1 justify-center") do %>
+                  <%= render RubyUI::Badge.new(size: :sm, variant: child.assigned_task.rate.zero? ? :gray : :purple, class: "text-nowrap w-fit gap-x-1 justify-center print:!hidden") do %>
                     <span><%= child.assigned_task.rate.zero? ? t("common.project_rate") : t("common.custom_rate") %></span>
                   <% end %>
-                  <span class="text-xs text-muted-foreground block mt-0.5"><%= @currency %> <%= child.assigned_task.rate.zero? ? child.project.rate_currency : child.assigned_task.rate_currency %> </span>
+                  <span class="text-xs text-muted-foreground block mt-0.5 print:mt-0 print:text-secondary-text"><%= @currency %> <%= child.assigned_task.rate.zero? ? child.project.rate_currency : child.assigned_task.rate_currency %> </span>
                 </div>
               </td>
               <td data-label="<%= t("common.person") %>"><%= child.user.name %></td>
