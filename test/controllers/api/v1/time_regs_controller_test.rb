@@ -56,9 +56,25 @@ class Api::V1::TimeRegsControllerTest < Api::V1::BaseTest
     assert_raises(ActiveRecord::RecordNotFound) { TimeReg.find(@time_reg.id) }
   end
 
+  test "destroy of an entry in a locked month returns 422 and keeps the entry" do
+    reg = lock_last_month_for(@user)
+    delete api_v1_time_reg_path(reg), headers: api_headers(@user)
+    assert_response :unprocessable_entity
+    assert_includes json_response["errors"].first, I18n.l(reg.date_worked, format: "%B %Y")
+    assert TimeReg.find(reg.id).kept?
+  end
+
   test "cannot access another user time reg" do
     other_user_time_reg = time_regs(:time_reg_2)
     get api_v1_time_reg_path(other_user_time_reg), headers: api_headers(@user)
     assert_response :not_found
+  end
+
+  def lock_last_month_for(user)
+    last = Date.current.last_month
+    reg = user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: last.beginning_of_month + 2)
+    TimeLock.create!(organization: organizations(:organization_one), user: user,
+                     locked_by: users(:organization_admin), period: last.beginning_of_month)
+    reg
   end
 end

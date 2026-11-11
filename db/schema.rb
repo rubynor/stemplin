@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_11_10_100000) do
+ActiveRecord::Schema[7.1].define(version: 2026_11_11_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -171,6 +171,19 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_10_100000) do
     t.index ["user_id"], name: "index_time_regs_on_user_id"
   end
 
+  create_table "time_locks", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.bigint "user_id", null: false
+    t.date "period", null: false
+    t.bigint "locked_by_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["locked_by_id"], name: "index_time_locks_on_locked_by_id"
+    t.index ["organization_id", "user_id", "period"], name: "index_time_locks_on_organization_user_period", unique: true
+    t.index ["organization_id"], name: "index_time_locks_on_organization_id"
+    t.index ["user_id"], name: "index_time_locks_on_user_id"
+  end
+
   create_table "tripletex_integrations", force: :cascade do |t|
     t.bigint "organization_id", null: false
     t.text "employee_token", null: false
@@ -241,5 +254,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_10_100000) do
   add_foreign_key "tasks", "organizations"
   add_foreign_key "time_regs", "assigned_tasks"
   add_foreign_key "time_regs", "users"
+  add_foreign_key "time_locks", "organizations"
+  add_foreign_key "time_locks", "users"
+  add_foreign_key "time_locks", "users", column: "locked_by_id"
   add_foreign_key "tripletex_integrations", "organizations"
 end

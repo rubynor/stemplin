@@ -1,0 +1,51 @@
+# Freezes one user's time entries for one calendar month in one organization.
+# The rule is enforced by TimeReg, so every write path is covered.
+class TimeLock < ApplicationRecord
+  has_paper_trail
+
+  belongs_to :organization
+  belongs_to :user
+  belongs_to :locked_by, class_name: "User"
+
+  validates :period, presence: true, uniqueness: { scope: [ :organization_id, :user_id ] }
+  validate :period_is_first_of_month
+  validate :month_has_ended, on: :create
+  validate :no_running_timer, on: :create
+
+  def self.for_period(date)
+    where(period: date.to_date.beginning_of_month)
+  end
+
+  def self.locked?(organization_id:, user_id:, date:)
+    return false if organization_id.nil? || user_id.nil? || date.nil?
+
+    where(organization_id: organization_id, user_id: user_id).for_period(date).exists?
+  end
+
+  def locked_by_other?
+    locked_by_id != user_id
+  end
+
+  private
+
+  def period_is_first_of_month
+    return if period.blank? || period.day == 1
+
+    errors.add(:period, I18n.t("tripletex.locks.errors.period_not_first_of_month"))
+  end
+
+  def month_has_ended
+    return if period.blank? || period.end_of_month < Date.current
+
+    errors.add(:period, I18n.t("tripletex.locks.errors.month_not_ended"))
+  end
+
+  def no_running_timer
+    return if period.blank? || user_id.blank? || organization_id.blank?
+
+    running = TimeReg.all_active
+                     .where(user_id: user_id, date_worked: period.beginning_of_month..period.end_of_month)
+                     .in_organization(organization_id)
+    errors.add(:base, I18n.t("tripletex.locks.errors.timer_running")) if running.exists?
+  end
+end

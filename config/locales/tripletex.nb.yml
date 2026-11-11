@@ -30,3 +30,9 @@ nb:
       employee_token_hint: "Nøkkelen vises bare én gang i Tripletex."
       verifying: "Sjekker…"
       submit: "Koble til"
+    locks:
+      errors:
+        month_locked: "%{month} er låst for denne brukeren. Be en administrator om å låse opp."
+        timer_running: "En timer går i den måneden. Stopp den før du låser."
+        period_not_first_of_month: "må være den første dagen i en måned"
+        month_not_ended: "kan først låses etter at måneden er over"

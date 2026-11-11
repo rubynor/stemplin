@@ -30,3 +30,9 @@ en:
       employee_token_hint: "Tripletex only shows the key once."
       verifying: "Verifying…"
       submit: "Connect"
+    locks:
+      errors:
+        month_locked: "%{month} is locked for this user. Ask an admin to unlock it."
+        timer_running: "A timer is running in that month. Stop it before locking."
+        period_not_first_of_month: "must be the first day of a month"
+        month_not_ended: "can only be locked after the month has ended"

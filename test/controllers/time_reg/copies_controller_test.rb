@@ -22,6 +22,16 @@ class TimeReg::CopiesControllerTest < ActionController::TestCase
     assert_redirected_to time_regs_path(date: @target_date)
   end
 
+  test "does not copy into a locked month" do
+    last = Date.current.last_month
+    TimeLock.create!(organization: organizations(:organization_one), user: @user,
+                     locked_by: users(:organization_admin), period: last.beginning_of_month)
+
+    assert_no_difference("TimeReg.count") do
+      post :create, params: { time_reg_id: @time_reg.id, date: last.end_of_month.to_s }
+    end
+  end
+
   test "should copy to several dates at once" do
     dates = [ @target_date, @target_date + 1, @target_date + 2 ]
     assert_difference("TimeReg.count", 3) do

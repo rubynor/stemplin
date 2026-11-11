@@ -77,8 +77,8 @@ class TimeRegsController < ApplicationController
     @time_reg.discard!
     redirect_to time_regs_path(date: @time_reg.date_worked)
 
-  rescue ActiveRecord::RecordNotDestroyed
-    flash[:alert] = "Unable to delete time registration"
+  rescue ActiveRecord::RecordNotDestroyed, Discard::RecordNotDiscarded
+    flash[:alert] = @time_reg.errors.full_messages.to_sentence.presence || "Unable to delete time registration"
     redirect_back(fallback_location: time_regs_path)
   end
 

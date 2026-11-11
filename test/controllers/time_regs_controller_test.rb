@@ -31,6 +31,19 @@ class TimeRegsControllerTest < ActionController::TestCase
       end
     end
 
+    test "destroying an entry in a locked month flashes the error and keeps the entry" do
+      last = Date.current.last_month
+      reg = @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: last.beginning_of_month + 2)
+      TimeLock.create!(organization: organizations(:organization_one), user: @user,
+                       locked_by: users(:organization_admin), period: last.beginning_of_month)
+
+      delete :destroy, params: { id: reg.id }
+
+      assert_redirected_to time_regs_path
+      assert_includes flash[:alert], I18n.l(last, format: "%B %Y")
+      assert TimeReg.find(reg.id).kept?
+    end
+
     test "should destroy time_reg" do
       assert_authorized_to(:destroy?, @time_reg) do
         delete :destroy, params: { id: @time_reg.id }
