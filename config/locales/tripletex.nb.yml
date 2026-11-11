@@ -15,7 +15,7 @@ nb:
       connect: "Koble til"
       change_token: "Bytt nøkkel"
       disconnect: "Koble fra"
-      disconnect_confirmation: "Koble fra Tripletex? Måneder som ikke er sendt låses opp, og lønnstransaksjoner som allerede er sendt beholdes."
+      disconnect_confirmation: "Koble fra Tripletex? Ansattkoblinger og måneder som ikke er sendt fjernes, og lønnstransaksjoner som allerede er sendt beholdes."
       connected: "Koblet til Tripletex (%{company})."
       salary_type: "Lønnsart for timelønn"
       salary_type_hint: "Lønnsarten i Tripletex som timelønn sendes som."

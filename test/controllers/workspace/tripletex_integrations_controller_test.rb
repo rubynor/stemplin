@@ -20,6 +20,10 @@ module Workspace
       access_info
     end
 
+    def link_archived_membership(employee_id)
+      users(:user_wo_access_info).access_infos.create!(organization: @organization, role: :organization_user, archived_at: Time.current, tripletex_employee_id: employee_id)
+    end
+
     test "shows the setup flow" do
       get :new
       assert_response :success
@@ -87,7 +91,7 @@ module Workspace
     test "reconnecting to a different company clears links and salary type and resets connected_at" do
       integration = connected_integration(company_id: 41)
       access_info = link_member(users(:organization_user), 77)
-      archived = users(:organization_user).access_infos.where.not(id: access_info.id).first
+      archived = link_archived_membership(78)
       FakeTripletexApi.install
 
       travel_to Time.zone.local(2026, 11, 11, 12) do
@@ -99,7 +103,7 @@ module Workspace
       assert_equal 42, integration.company_id
       assert_nil access_info.reload.tripletex_employee_id
       assert_empty @organization.access_infos.where.not(tripletex_employee_id: nil)
-      assert_nil archived&.tripletex_employee_id
+      assert_nil archived.reload.tripletex_employee_id
     end
 
     test "stores the chosen salary type" do
@@ -121,9 +125,10 @@ module Workspace
       assert_equal 555, integration.reload.hourly_salary_type_id
     end
 
-    test "disconnecting releases unsent locks and keeps employee links" do
+    test "disconnecting releases unsent locks and clears employee links" do
       connected_integration(company_id: 42)
       access_info = link_member(users(:organization_user), 77)
+      archived = link_archived_membership(78)
       lock = TimeLock.new(organization: @organization, user: users(:organization_user), locked_by: @admin, period: Date.new(2026, 1, 1))
       lock.save!(validate: false)
       sent = TimeLock.new(organization: @organization, user: @admin, locked_by: @admin, period: Date.new(2026, 1, 1))
@@ -141,7 +146,23 @@ module Workspace
       assert_nil @organization.reload.tripletex_integration
       assert_not TimeLock.exists?(lock.id)
       assert TimeLock.exists?(sent.id)
-      assert_equal 77, access_info.reload.tripletex_employee_id
+      assert_nil access_info.reload.tripletex_employee_id
+      assert_nil archived.reload.tripletex_employee_id
+    end
+
+    test "disconnecting and connecting a different company leaves no employee links" do
+      connected_integration(company_id: 41)
+      access_info = link_member(users(:organization_user), 77)
+      archived = link_archived_membership(78)
+
+      delete :destroy
+      FakeTripletexApi.install
+      post :create, params: { tripletex_integration: { employee_token: "new-token" } }
+
+      assert_equal 42, @organization.reload.tripletex_integration.company_id
+      assert_nil access_info.reload.tripletex_employee_id
+      assert_nil archived.reload.tripletex_employee_id
+      assert_empty @organization.access_infos.where.not(tripletex_employee_id: nil)
     end
 
     test "members cannot connect" do

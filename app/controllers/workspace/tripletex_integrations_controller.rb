@@ -46,7 +46,8 @@ module Workspace
     end
 
     # Months that were never sent would stay locked with nobody able to unlock them, so they are released.
-    # Months with a sent payout stay locked, and the employee links are kept for a later reconnect.
+    # Months with a sent payout stay locked. The employee links are cleared too: the stored company id goes with
+    # the integration, so a later connection to another company could not tell the old links are foreign.
     def destroy
       @tripletex_integration = @organization.tripletex_integration
       return redirect_to workspace_integrations_path unless @tripletex_integration
@@ -54,6 +55,7 @@ module Workspace
       authorize! @tripletex_integration
       ActiveRecord::Base.transaction do
         @organization.time_locks.reject(&:sent?).each(&:destroy!)
+        @organization.access_infos.update_all(tripletex_employee_id: nil)
         @tripletex_integration.destroy!
       end
       redirect_to workspace_integrations_path, flash: { success: t("tripletex.integrations.disconnected") }

@@ -15,7 +15,7 @@ en:
       connect: "Connect"
       change_token: "Change key"
       disconnect: "Disconnect"
-      disconnect_confirmation: "Disconnect Tripletex? Months that have not been sent are unlocked, and salary transactions already sent are kept."
+      disconnect_confirmation: "Disconnect Tripletex? Employee links and months that have not been sent are removed, and salary transactions already sent are kept."
       connected: "Connected to Tripletex (%{company})."
       salary_type: "Salary type for hourly pay"
       salary_type_hint: "The Tripletex salary type that hourly pay is sent as."
