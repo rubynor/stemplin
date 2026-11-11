@@ -248,8 +248,7 @@ class TimeRegsControllerTest < ActionController::TestCase
     end
 
     test "should export the project's time regs as csv" do
-      time_reg = @project.time_regs.first
-      assert_not_nil time_reg, "fixture project is expected to have time registrations"
+      assert_predicate @project.time_regs, :any?, "fixture project is expected to have time registrations"
 
       get :export, params: { project_id: @project.id }
 
@@ -260,11 +259,11 @@ class TimeRegsControllerTest < ActionController::TestCase
       assert_equal [ "date", "client", "project", "task", "notes", "minutes", "first name", "last name", "email" ], rows.first
       assert_equal @project.time_regs.count, rows.size - 1
 
-      exported = rows[1..].find { |row| row[4] == time_reg.notes }
-      assert_not_nil exported, "expected the time registration to be part of the export"
-      assert_equal @project.client.name, exported[1]
-      assert_equal @project.name, exported[2]
-      assert_equal time_reg.user.email, exported[8]
+      expected = @project.time_regs.includes(:user, assigned_task: :task).map do |reg|
+        [ reg.date_worked.to_s, @project.client.name, @project.name, reg.assigned_task.task.name,
+          reg.notes, reg.minutes.to_s, reg.user.first_name, reg.user.last_name, reg.user.email ]
+      end
+      assert_equal expected.sort_by(&:to_s), rows[1..].map { |row| row.map(&:to_s) }.sort_by(&:to_s)
     end
 
     test "should not export a project belonging to another organization" do
