@@ -25,6 +25,7 @@ module Tripletex
       assert_equal expected.map(&:assigned_task_id).uniq.size, order[:orderLines].size
       assert_in_delta expected.sum(&:minutes) / 60.0, order[:orderLines].sum { |line| line[:count] }, 0.01
       assert_equal expected.map { |reg| reg.used_rate / 100.0 }.uniq.sort, order[:orderLines].map { |line| line[:unitPriceExcludingVatCurrency] }.uniq.sort
+      assert order[:orderLines].all? { |line| line[:vatType] == { id: 3 } }
       assert_equal expected.sum(&:minutes), result.minutes
       assert_empty result.errors
     end

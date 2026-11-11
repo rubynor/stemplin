@@ -4,6 +4,7 @@ en:
       not_configured: "Tripletex is not set up on this server (TRIPLETEX_CONSUMER_TOKEN is missing)."
       not_connected: "This workspace is not connected to Tripletex."
       invalid_token: "Tripletex rejected the key. Check that the API key is correct and active."
+      vat_type_missing: "VAT code %{number} was not found in Tripletex."
       unreachable: "Could not reach Tripletex (%{message})."
     order:
       comment: "Hours from Stemplin, %{from} – %{to}"

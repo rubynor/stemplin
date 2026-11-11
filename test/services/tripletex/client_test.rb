@@ -69,6 +69,16 @@ module Tripletex
       end
     end
 
+    test "looks up the account's id for a VAT code" do
+      with_http(
+        response(Net::HTTPOK, "200", { value: { token: "session-123" } }),
+        response(Net::HTTPOK, "200", { values: [ { id: 3 } ] })
+      ) do |http|
+        assert_equal 3, @client.vat_type_id("3")
+        assert_includes http.requests.last.path, "/ledger/vatType?number=3"
+      end
+    end
+
     test "reports a rejected token in plain words" do
       with_http(response(Net::HTTPForbidden, "403", { message: "Forbidden" })) do
         error = assert_raises(Tripletex::Error) { @client.company }

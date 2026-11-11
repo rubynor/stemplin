@@ -33,6 +33,11 @@ class FakeTripletexApi
     @customers
   end
 
+  def vat_type_id(number)
+    raise Tripletex::Error, @error if @error
+    { "3" => 3 }.fetch(number)
+  end
+
   def create_order(attributes)
     raise Tripletex::Error, @error if @error
     @orders << attributes

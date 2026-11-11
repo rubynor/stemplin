@@ -1,9 +1,12 @@
 module Tripletex
   # Sends time registrations to Tripletex as one order per client, with one order line per
-  # project + task (hours summed, priced at the task rate or else the project rate).
+  # project + task (hours summed, priced at the task rate or else the project rate, with 25 % VAT).
   # The detailed report for those hours is attached as a PDF that goes out with the invoice.
   # Sent registrations get `invoiced_at`, so sending the same report again skips them.
   class CreateOrders
+    # Tripletex VAT code for outgoing VAT at the high rate (25 %).
+    HOURS_VAT_CODE = "3".freeze
+
     Result = Struct.new(:orders, :skipped_clients, :errors, :warnings, keyword_init: true) do
       def minutes = orders.sum { |order| order[:minutes] }
     end
@@ -78,6 +81,10 @@ module Tripletex
       }
     end
 
+    def vat_type_id
+      @vat_type_id ||= @api.vat_type_id(HOURS_VAT_CODE)
+    end
+
     def order_lines(regs)
       regs.group_by(&:assigned_task)
           .sort_by { |assigned_task, _| [ assigned_task.project.name.downcase, assigned_task.task.name.downcase ] }
@@ -85,7 +92,8 @@ module Tripletex
             {
               description: "#{assigned_task.project.name} – #{assigned_task.task.name}",
               count: (task_regs.sum(&:minutes) / 60.0).round(2),
-              unitPriceExcludingVatCurrency: task_regs.first.used_rate / 100.0
+              unitPriceExcludingVatCurrency: task_regs.first.used_rate / 100.0,
+              vatType: { id: vat_type_id }
             }
           end
     end

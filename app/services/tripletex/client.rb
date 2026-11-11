@@ -34,6 +34,14 @@ module Tripletex
       customers.sort_by { |customer| customer["name"].to_s.downcase }
     end
 
+    # The account's id for a VAT code, e.g. "3" (outgoing VAT, high rate).
+    def vat_type_id(number)
+      vat_type = get("/ledger/vatType", number: number, fields: "id").fetch("values").first
+      raise Error, I18n.t("tripletex.errors.vat_type_missing", number: number) unless vat_type
+
+      vat_type["id"]
+    end
+
     # Returns the id of the created order.
     def create_order(attributes)
       post("/order", attributes).dig("value", "id")

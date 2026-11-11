@@ -4,6 +4,7 @@ nb:
       not_configured: "Tripletex er ikke satt opp på denne serveren (TRIPLETEX_CONSUMER_TOKEN mangler)."
       not_connected: "Workspacet er ikke koblet til Tripletex."
       invalid_token: "Tripletex avviste nøkkelen. Sjekk at API-nøkkelen er riktig og aktiv."
+      vat_type_missing: "Fant ikke mva-kode %{number} i Tripletex."
       unreachable: "Fikk ikke kontakt med Tripletex (%{message})."
     order:
       comment: "Timer fra Stemplin, %{from} – %{to}"
