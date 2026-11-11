@@ -76,7 +76,7 @@ en:
       statuses:
         not_linked: "Not linked"
         not_locked: "Not locked"
-        unsupported: "Not handled yet"
+        unsupported: "No hourly wage in Tripletex for this month"
         ready: "Ready"
         sent: "Sent"
         unclear: "Check Tripletex"

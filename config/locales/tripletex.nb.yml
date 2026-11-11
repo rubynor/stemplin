@@ -76,7 +76,7 @@ nb:
       statuses:
         not_linked: "Ikke koblet"
         not_locked: "Ikke låst"
-        unsupported: "Ikke håndtert ennå"
+        unsupported: "Ingen timelønn i Tripletex for denne måneden"
         ready: "Klar"
         sent: "Sendt"
         unclear: "Sjekk Tripletex"
