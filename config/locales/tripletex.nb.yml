@@ -109,3 +109,6 @@ nb:
         unclear: "Vi vet ikke om lønnsslippen ble opprettet i Tripletex (%{message}). Sjekk Tripletex, og marker deretter måneden som sendt eller frigi den."
         failed: "Ingenting ble utbetalt på grunn av en uventet feil (%{message})."
         rate_missing: "Lønnen som skulle utbetales ble ikke sendt. Last inn siden på nytt og prøv igjen."
+        wage_precision: "Timelønnen i Tripletex har mer enn to desimaler og kan ikke sendes. Rett lønnen i Tripletex og prøv igjen."
+        released: "Denne utbetalingen ble frigjort mens den fortsatt ble sendt, så det kan finnes en lønnskjøring i Tripletex. Sjekk Tripletex, og marker deretter måneden som sendt eller frigi den."
+        released_conflict: "Denne utbetalingen ble frigjort mens den fortsatt ble sendt, og en ny utbetaling for samme måned er startet. Sjekk både det tidligere og det nye forsøket i Tripletex."

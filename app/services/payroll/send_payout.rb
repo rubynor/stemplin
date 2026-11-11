@@ -29,8 +29,10 @@ module Payroll
       rule = pay_rule(employee_id)
       refuse(:wage_changed) unless @expected_rate.is_a?(BigDecimal) && rule.rate == @expected_rate
 
-      payout = insert_pending(lock:, employee_id:, minutes:, rule:)
-      send_to_tripletex(payout, salary_type_id: integration.hourly_salary_type_id)
+      refuse(:wage_precision) unless rule.rate == rule.rate.round(2)
+
+      @payout = insert_pending(lock:, employee_id:, minutes:, rule:)
+      send_to_tripletex(salary_type_id: integration.hourly_salary_type_id)
     end
 
     private
@@ -63,61 +65,110 @@ module Payroll
       refuse(:already_sent)
     end
 
-    def send_to_tripletex(payout, salary_type_id:)
+    def send_to_tripletex(salary_type_id:)
       @write_attempted = false
-      run = create_run(payout)
-      payout.update!(tripletex_transaction_id: run["transaction_id"], tripletex_payslip_id: run["payslip_id"])
-      add_line(payout, run, salary_type_id)
-      payout.update!(status: :sent, sent_at: Time.current)
-      payout
+      run = create_run
+      @transaction_id, @payslip_id = run.values_at("transaction_id", "payslip_id")
+      transition!(tripletex_transaction_id: @transaction_id, tripletex_payslip_id: @payslip_id)
+      add_line(run, salary_type_id)
+      transition!(status: :sent, sent_at: Time.current)
+      @payout
     rescue Error
       raise
     rescue StandardError => e
       # A bug or a database error. Without a Tripletex write there is nothing to check; otherwise a run may exist.
       # If even this cannot be stored, the row stays pending, which an admin can resolve once it is stale.
       begin
-        @write_attempted ? unclear!(payout, e.message) : payout.destroy!
+        @write_attempted ? unclear!(e.message) : discard!
+      rescue Error
+        raise
       rescue StandardError => store_error
-        Rails.logger.error("Payroll::SendPayout could not record failure of payout #{payout.id}: #{store_error.message}")
+        Rails.logger.error("Payroll::SendPayout could not record failure of payout #{@payout.id}: #{store_error.message}")
       end
       refuse(@write_attempted ? :unclear : :failed, message: e.message)
     end
 
-    def create_run(payout)
+    def create_run
       @write_attempted = true
-      @api.create_salary_run(employee_id: payout.tripletex_employee_id, year: Date.current.year, month: Date.current.month,
+      @api.create_salary_run(employee_id: @payout.tripletex_employee_id, year: Date.current.year, month: Date.current.month,
                              date: Date.current, description: run_description)
     rescue Tripletex::UncertainError => e
-      unclear!(payout, e.message)
+      unclear!(e.message)
       refuse(:unclear, message: e.message)
     rescue Tripletex::Error => e
-      payout.destroy!
+      discard!
       refuse(:rejected, message: e.message)
     end
 
     # Whatever went wrong, the half-made run is deleted so a retry starts clean. Only a confirmed delete
     # releases the month; if the delete fails too, a run may still exist.
-    def add_line(payout, run, salary_type_id)
+    def add_line(run, salary_type_id)
       @api.add_salary_line(transaction_id: run["transaction_id"], payslip_id: run["payslip_id"],
-                           salary_type_id: salary_type_id, rate: payout.hourly_wage, count: payout.hours)
+                           salary_type_id: salary_type_id, rate: @payout.hourly_wage, count: @payout.hours)
     rescue Tripletex::Error => e
       begin
         @api.delete_salary_run(run["transaction_id"])
       rescue Tripletex::Error => delete_error
-        unclear!(payout, "#{e.message} / #{delete_error.message}")
+        unclear!("#{e.message} / #{delete_error.message}")
         refuse(:unclear, message: e.message)
       end
-      payout.destroy!
+      discard!
       refuse(:rejected, message: e.message)
     end
 
     # The row keeps blocking a retry until an admin resolves it.
-    def unclear!(payout, message)
-      payout.update!(status: :unclear, error_message: message)
+    def unclear!(message)
+      transition!(status: :unclear, error_message: message)
+    end
+
+    # Changes the row only while this send still owns it: it exists and is pending. An admin can release or
+    # mark sent a pending row that looks stale (PayrollPayout::IN_FLIGHT_FOR); if that happened, a run may
+    # exist in Tripletex that no record accounts for, so a blocking record is put back.
+    def transition!(**attributes)
+      owned = PayrollPayout.transaction do
+        row = PayrollPayout.lock.find_by(id: @payout.id)
+        next false unless row&.pending?
+
+        row.update!(attributes)
+        @payout = row
+        true
+      end
+      restore_blocking_record! unless owned
+    end
+
+    # Only when Tripletex certainly holds no run for this payout. A row no longer ours is left alone.
+    def discard!
+      PayrollPayout.transaction do
+        row = PayrollPayout.lock.find_by(id: @payout.id)
+        row.destroy! if row&.pending?
+      end
+    end
+
+    def restore_blocking_record!
+      message = I18n.t("tripletex.payroll.errors.released")
+      attributes = { status: :unclear, error_message: message,
+                     tripletex_transaction_id: @transaction_id, tripletex_payslip_id: @payslip_id }.compact
+      PayrollPayout.transaction do
+        if (row = PayrollPayout.lock.find_by(id: @payout.id))
+          row.update!(attributes)
+        else
+          PayrollPayout.create!(
+            organization: @organization, user: @user, period: @period, sent_by: @sent_by,
+            **@payout.attributes.symbolize_keys.slice(:minutes, :hours, :hourly_wage, :amount, :tripletex_employee_id), **attributes
+          )
+        end
+      end
+      raise Error, message
+    rescue ActiveRecord::RecordNotUnique
+      Rails.logger.error(
+        "Payroll::SendPayout: payout released mid-send and replaced by a new attempt; check both in Tripletex " \
+        "(organization #{@organization.id}, user #{@user.id}, period #{@period.iso8601}, transaction #{@transaction_id || 'unknown'})"
+      )
+      refuse(:released_conflict)
     end
 
     def run_description
-      month = I18n.l(@period, format: "%B %Y", locale: :nb)
+      month = I18n.l(@period, format: "%B %Y", locale: :nb).downcase # nb.yml capitalizes month names
       I18n.t("tripletex.payroll.run_description", month: month, locale: :nb)
     end
   end

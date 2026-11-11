@@ -257,6 +257,13 @@ module Tripletex
       end
     end
 
+    test "every request is bounded by open, read and write timeouts" do
+      with_http(session, ok({ values: [] })) do |http|
+        client.salary_types
+        assert_equal [ [ 5, 30, 30 ] ] * 2, http.start_options.map { |options| options.values_at(:open_timeout, :read_timeout, :write_timeout) }
+      end
+    end
+
     test "create_salary_run raises UncertainError when the response lacks ids" do
       [ {}, { value: { id: 1 } }, { value: { id: 1, payslips: [] } }, { value: { payslips: [ { id: 2 } ] } } ].each do |body|
         with_http(session, response(Net::HTTPCreated, "201", body)) do

@@ -130,7 +130,9 @@ module Tripletex
       sent = false
       begin
         # max_retries: 0 stops Net::HTTP replaying PUT/DELETE by itself; a write is never sent twice.
-        response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https", open_timeout: 5, read_timeout: 30, max_retries: 0) do |http|
+        # Every timeout is explicit so a call is bounded (PayrollPayout::IN_FLIGHT_FOR relies on it).
+        response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https", open_timeout: 5, read_timeout: 30,
+                                   write_timeout: 30, max_retries: 0) do |http|
           sent = true # connected; from here on the request may reach Tripletex
           http.request(request)
         end

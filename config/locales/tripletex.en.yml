@@ -109,3 +109,6 @@ en:
         unclear: "Could not tell whether the payslip was created in Tripletex (%{message}). Check Tripletex, then mark the month as sent or release it."
         failed: "Nothing was paid out because of an unexpected error (%{message})."
         rate_missing: "The wage to pay was not sent. Reload the page and try again."
+        wage_precision: "The hourly wage in Tripletex has more than two decimals and cannot be sent. Correct the wage in Tripletex and try again."
+        released: "This payout was released while it was still being sent, so a salary run may exist in Tripletex. Check Tripletex, then mark the month as sent or release it."
+        released_conflict: "This payout was released while it was still being sent, and a new payout for the same month has been started. Check both the earlier and the new attempt in Tripletex."
