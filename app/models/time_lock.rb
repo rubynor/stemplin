@@ -12,6 +12,9 @@ class TimeLock < ApplicationRecord
   validate :month_has_ended, on: :create
   validate :no_running_timer, on: :create
 
+  # Paid hours stay locked whichever path tries to unlock them.
+  before_destroy { throw :abort if sent? }
+
   def self.for_period(date)
     where(period: date.to_date.beginning_of_month)
   end
@@ -58,9 +61,10 @@ class TimeLock < ApplicationRecord
     locked_by_id != user_id
   end
 
-  # True once a payout exists for this lock; a later task implements it.
+  # True once a payout of any status exists for this month: an unclear or pending payout may have
+  # reached Tripletex, so its hours must not change either.
   def sent?
-    false
+    PayrollPayout.exists?(organization_id: organization_id, user_id: user_id, period: period)
   end
 
   private

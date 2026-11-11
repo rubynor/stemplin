@@ -1,8 +1,6 @@
 require "test_helper"
 
 class Payroll::OverviewTest < ActiveSupport::TestCase
-  PayoutStub = Struct.new(:status, :hours, :rate, :amount)
-
   setup do
     @organization = organizations(:organization_one)
     @organization.create_tripletex_integration!(employee_token: "x")
@@ -40,11 +38,10 @@ class Payroll::OverviewTest < ActiveSupport::TestCase
     overview.rows.find { |r| r.user == user }
   end
 
-  def with_payout(payout)
-    Payroll::Overview.class_eval { alias_method :__orig_payout_for, :payout_for; define_method(:payout_for) { |_u| payout } }
-    yield
-  ensure
-    Payroll::Overview.class_eval { alias_method :payout_for, :__orig_payout_for; remove_method :__orig_payout_for }
+  def payout_for(user, status, period: @period, organization: @organization)
+    PayrollPayout.create!(organization: organization, user: user, period: period, status: status, minutes: 120,
+                          hours: BigDecimal("2.00"), hourly_wage: BigDecimal("200"), amount: BigDecimal("400.00"),
+                          tripletex_employee_id: 7, sent_by: @admin, sent_at: (Time.current if status == :sent))
   end
 
   test "ready with hours, rate and amount" do
@@ -61,19 +58,30 @@ class Payroll::OverviewTest < ActiveSupport::TestCase
   end
 
   test "sent when the payout is sent, with the payout's figures" do
-    with_payout(PayoutStub.new("sent", BigDecimal("2.00"), BigDecimal("200"), BigDecimal("400.00"))) do
+    payout = payout_for(@user, :sent)
+    row = row_for(@user)
+    assert_equal :sent, row.status
+    assert_equal payout, row.payout
+    assert_equal [ BigDecimal("2.00"), BigDecimal("200"), BigDecimal("400.00") ], [ row.hours, row.rate, row.amount ]
+  end
+
+  test "unclear for an unclear or pending payout, with the payout's figures" do
+    %i[unclear pending].each do |status|
+      PayrollPayout.delete_all
+      payout_for(@user, status)
       row = row_for(@user)
-      assert_equal :sent, row.status
+      assert_equal :unclear, row.status, status
       assert_equal [ BigDecimal("2.00"), BigDecimal("200"), BigDecimal("400.00") ], [ row.hours, row.rate, row.amount ]
     end
   end
 
-  test "unclear for an unclear or pending payout" do
-    %w[unclear pending].each do |status|
-      with_payout(PayoutStub.new(status, BigDecimal("2.00"), BigDecimal("200"), BigDecimal("400.00"))) do
-        assert_equal :unclear, row_for(@user).status
-      end
-    end
+  test "only payouts of the same organization and month count" do
+    payout_for(@user, :sent, period: @period.last_month)
+    payout_for(@user, :sent, organization: organizations(:organization_two))
+    payout_for(@admin, :sent)
+    row = row_for(@user)
+    assert_equal :ready, row.status
+    assert_nil row.payout
   end
 
   test "no hours" do

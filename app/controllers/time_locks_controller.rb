@@ -21,11 +21,14 @@ class TimeLocksController < ApplicationController
     lock = authorized_scope(TimeLock, type: :relation).find_by(id: params[:id]) || TimeLock.new
     authorize! lock
 
-    if lock.sent?
-      flash[:alert] = t("tripletex.locks.errors.already_sent")
-    else
-      lock.destroy!
-      flash[:notice] = t("tripletex.locks.unlocked_notice", month: month_name(lock.period))
+    # The row lock serializes this with Payroll::SendPayout, which locks the same row before inserting its payout.
+    lock.with_lock do
+      if lock.sent?
+        flash[:alert] = t("tripletex.locks.errors.already_sent")
+      else
+        lock.destroy!
+        flash[:notice] = t("tripletex.locks.unlocked_notice", month: month_name(lock.period))
+      end
     end
     redirect_back fallback_location: root_path
   end

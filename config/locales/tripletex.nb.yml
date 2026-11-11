@@ -55,3 +55,19 @@ nb:
       unavailable: "Kunne ikke hente ansatte fra Tripletex (%{message}). Rolle og prosjekter kan fortsatt lagres; koblingen beholdes som den er."
       errors:
         employee_taken: "Denne Tripletex-ansatte er allerede koblet til et annet medlem."
+    payroll:
+      run_description: "Timer %{month} (Stemplin)"
+      errors:
+        not_connected: "Workspacet er ikke koblet til Tripletex."
+        no_salary_type: "Velg lønnsart for timelønn i Tripletex-innstillingene før du utbetaler."
+        not_linked: "Dette medlemmet er ikke koblet til en ansatt i Tripletex."
+        not_locked: "Denne måneden er ikke låst for dette medlemmet."
+        no_hours: "Dette medlemmet har ingen timer denne måneden."
+        unsupported: "Denne ansatte har ikke timelønn i Tripletex."
+        pay_unavailable: "Kunne ikke hente lønnen fra Tripletex. %{message}"
+        wage_changed: "Lønnen i Tripletex er endret siden siden ble lastet. Last inn siden på nytt og sjekk beløpet før du utbetaler."
+        already_sent: "Denne måneden er allerede sendt for dette medlemmet."
+        in_progress: "Denne utbetalingen sendes fortsatt. Vent noen minutter før du avklarer den."
+        rejected: "Ingenting ble utbetalt. %{message}"
+        unclear: "Vi vet ikke om lønnsslippen ble opprettet i Tripletex (%{message}). Sjekk Tripletex, og marker deretter måneden som sendt eller frigi den."
+        failed: "Ingenting ble utbetalt på grunn av en uventet feil (%{message})."

@@ -11,6 +11,7 @@ class Organization < ApplicationRecord
   has_many :plan_placeholders, class_name: "Plan::Placeholder", dependent: :destroy
   has_one :tripletex_integration, dependent: :destroy
   has_many :time_locks
+  has_many :payroll_payouts
 
   validates :name, presence: true, uniqueness: true
   validate :currency_exists

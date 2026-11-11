@@ -21,20 +21,20 @@ module Payroll
       access_infos = relevant_access_infos
       minutes = minutes_by_user
       locks = TimeLock.where(organization_id: @organization.id).for_period(@period).index_by(&:user_id)
+      payouts = PayrollPayout.where(organization_id: @organization.id, period: @period).index_by(&:user_id)
       pay = pay_details(access_infos.filter_map(&:tripletex_employee_id))
 
       access_infos.sort_by { |info| sort_key(info.user) }.map do |info|
-        build_row(info, minutes.fetch(info.user_id, 0), locks[info.user_id], pay)
+        build_row(info, minutes.fetch(info.user_id, 0), locks[info.user_id], payouts[info.user_id], pay)
       end
     end
 
-    def build_row(info, minutes, lock, pay)
-      payout = payout_for(info.user)
+    def build_row(info, minutes, lock, payout, pay)
       rule = PayRules.for(pay[info.tripletex_employee_id]) if info.tripletex_employee_id
       status = status_for(payout:, minutes:, info:, lock:, rule:)
 
       if payout && %i[sent unclear].include?(status)
-        hours, rate, amount = payout.hours, payout.rate, payout.amount
+        hours, rate, amount = payout.hours, payout.hourly_wage, payout.amount
       else
         hours = (minutes / 60.0).round(2).to_d
         rate = rule&.rate
@@ -77,11 +77,6 @@ module Payroll
     rescue Tripletex::Error => e
       @error = e.message
       {}
-    end
-
-    # Replaced when payouts exist.
-    def payout_for(_user)
-      nil
     end
 
     def sort_key(user)

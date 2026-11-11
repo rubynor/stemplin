@@ -117,16 +117,18 @@ class TimeLocksControllerTest < ActionController::TestCase
     assert flash[:notice].present?
   end
 
-  test "an admin cannot unlock a month that was already sent" do
+  test "an admin cannot unlock a month with a payout of any status" do
     lock = lock_for(@member)
-    TimeLock.class_eval { alias_method :orig_sent?, :sent?; define_method(:sent?) { true } }
     sign_in @admin
-    assert_no_difference -> { TimeLock.count } do
-      delete :destroy, params: { id: lock.id }
+    %i[pending unclear sent].each do |status|
+      PayrollPayout.delete_all
+      PayrollPayout.create!(organization: @organization, user: @member, period: @last, status: status, minutes: 60, hours: 1,
+                            hourly_wage: 250, amount: 250, tripletex_employee_id: 7, sent_by: @admin)
+      assert_no_difference -> { TimeLock.count } do
+        delete :destroy, params: { id: lock.id }
+      end
+      assert_equal I18n.t("tripletex.locks.errors.already_sent"), flash[:alert]
     end
-    assert_equal I18n.t("tripletex.locks.errors.already_sent"), flash[:alert]
-  ensure
-    TimeLock.class_eval { alias_method :sent?, :orig_sent?; remove_method :orig_sent? }
   end
 
   test "an admin of another organization cannot unlock" do

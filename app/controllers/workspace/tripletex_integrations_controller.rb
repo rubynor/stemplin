@@ -54,7 +54,8 @@ module Workspace
 
       authorize! @tripletex_integration
       ActiveRecord::Base.transaction do
-        @organization.time_locks.reject(&:sent?).each(&:destroy!)
+        # Row locks serialize this with a payout being inserted for one of these months.
+        @organization.time_locks.lock.reject(&:sent?).each(&:destroy!)
         @organization.access_infos.update_all(tripletex_employee_id: nil)
         @tripletex_integration.destroy!
       end

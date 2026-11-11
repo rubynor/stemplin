@@ -55,3 +55,19 @@ en:
       unavailable: "Could not load employees from Tripletex (%{message}). Role and projects can still be saved; the link is left as it is."
       errors:
         employee_taken: "This Tripletex employee is already linked to another member."
+    payroll:
+      run_description: "Hours %{month} (Stemplin)"
+      errors:
+        not_connected: "This workspace is not connected to Tripletex."
+        no_salary_type: "Choose the salary type for hourly pay in the Tripletex settings before paying out."
+        not_linked: "This member is not linked to a Tripletex employee."
+        not_locked: "This month is not locked for this member."
+        no_hours: "This member has no hours in this month."
+        unsupported: "This employee is not paid by the hour in Tripletex."
+        pay_unavailable: "Could not read the wage from Tripletex. %{message}"
+        wage_changed: "The wage in Tripletex has changed since the page was loaded. Reload the page and check the amount before paying out."
+        already_sent: "This month has already been sent for this member."
+        in_progress: "This payout is still being sent. Wait a few minutes before resolving it."
+        rejected: "Nothing was paid out. %{message}"
+        unclear: "Could not tell whether the payslip was created in Tripletex (%{message}). Check Tripletex, then mark the month as sent or release it."
+        failed: "Nothing was paid out because of an unexpected error (%{message})."

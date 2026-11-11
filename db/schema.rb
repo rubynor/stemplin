@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_11_11_120000) do
+ActiveRecord::Schema[7.1].define(version: 2026_11_11_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -61,6 +61,29 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_11_120000) do
     t.string "currency"
     t.boolean "advanced_time_copying", default: false, null: false
     t.integer "plan_default_capacity_minutes", default: 2250, null: false
+  end
+
+  create_table "payroll_payouts", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.bigint "user_id", null: false
+    t.date "period", null: false
+    t.integer "status", default: 0, null: false
+    t.integer "minutes", null: false
+    t.decimal "hours", precision: 8, scale: 2, null: false
+    t.decimal "hourly_wage", precision: 12, scale: 2, null: false
+    t.decimal "amount", precision: 12, scale: 2, null: false
+    t.bigint "tripletex_employee_id", null: false
+    t.bigint "tripletex_transaction_id"
+    t.bigint "tripletex_payslip_id"
+    t.bigint "sent_by_id", null: false
+    t.datetime "sent_at"
+    t.text "error_message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id", "user_id", "period"], name: "index_payroll_payouts_on_organization_user_period", unique: true
+    t.index ["organization_id"], name: "index_payroll_payouts_on_organization_id"
+    t.index ["sent_by_id"], name: "index_payroll_payouts_on_sent_by_id"
+    t.index ["user_id"], name: "index_payroll_payouts_on_user_id"
   end
 
   create_table "plan_assignments", force: :cascade do |t|
@@ -242,6 +265,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_11_120000) do
   add_foreign_key "assigned_tasks", "projects"
   add_foreign_key "assigned_tasks", "tasks"
   add_foreign_key "clients", "organizations"
+  add_foreign_key "payroll_payouts", "organizations"
+  add_foreign_key "payroll_payouts", "users"
+  add_foreign_key "payroll_payouts", "users", column: "sent_by_id"
   add_foreign_key "plan_assignments", "organizations"
   add_foreign_key "plan_assignments", "plan_placeholders", column: "placeholder_id"
   add_foreign_key "plan_assignments", "projects"

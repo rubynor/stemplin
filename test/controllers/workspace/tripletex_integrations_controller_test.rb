@@ -133,19 +133,21 @@ module Workspace
       lock.save!(validate: false)
       sent = TimeLock.new(organization: @organization, user: @admin, locked_by: @admin, period: Date.new(2026, 1, 1))
       sent.save!(validate: false)
-      TimeLock.class_eval { alias_method :__sent?, :sent? }
-      TimeLock.define_method(:sent?) { id == sent.id }
+      unclear = TimeLock.new(organization: @organization, user: users(:joe), locked_by: @admin, period: Date.new(2026, 1, 1))
+      unclear.save!(validate: false)
+      { @admin => :sent, users(:joe) => :unclear }.each do |user, status|
+        PayrollPayout.create!(organization: @organization, user: user, period: Date.new(2026, 1, 1), status: status, minutes: 60,
+                              hours: 1, hourly_wage: 250, amount: 250, tripletex_employee_id: 7, sent_by: @admin)
+      end
 
-      begin
+      assert_no_difference -> { PayrollPayout.count } do
         delete :destroy
-      ensure
-        TimeLock.define_method(:sent?) { __sent? }
-        TimeLock.send(:remove_method, :__sent?)
       end
 
       assert_nil @organization.reload.tripletex_integration
       assert_not TimeLock.exists?(lock.id)
       assert TimeLock.exists?(sent.id)
+      assert TimeLock.exists?(unclear.id)
       assert_nil access_info.reload.tripletex_employee_id
       assert_nil archived.reload.tripletex_employee_id
     end
