@@ -19,20 +19,43 @@ module Workspace
         return render :new, status: :unprocessable_entity
       end
 
+      previous_company_id = @tripletex_integration.company_id_was
       company = @tripletex_integration.api.company
-      @tripletex_integration.update!(company_id: company&.dig("id"), company_name: company&.dig("name"))
+      company_id = company&.dig("id")
+      switched_company = previous_company_id.present? && previous_company_id != company_id
+
+      # A different company has other employees and salary types, so the old links and choice are meaningless.
+      ActiveRecord::Base.transaction do
+        @organization.access_infos.update_all(tripletex_employee_id: nil) if switched_company
+        @tripletex_integration.hourly_salary_type_id = nil if switched_company
+        @tripletex_integration.update!(company_id: company_id, company_name: company&.dig("name"), connected_at: Time.current)
+      end
       redirect_to workspace_integrations_path, flash: { success: t("tripletex.integrations.connected", company: @tripletex_integration.company_name) }
     rescue Tripletex::Error => e
       @tripletex_integration.errors.add(:employee_token, e.message)
       render :new, status: :unprocessable_entity
     end
 
+    def update
+      @tripletex_integration = @organization.tripletex_integration
+      return redirect_to workspace_integrations_path unless @tripletex_integration
+
+      authorize! @tripletex_integration
+      @tripletex_integration.update!(hourly_salary_type_id: params.dig(:tripletex_integration, :hourly_salary_type_id).presence&.to_i)
+      redirect_to workspace_integrations_path, flash: { success: t("tripletex.integrations.salary_type_saved") }
+    end
+
+    # Months that were never sent would stay locked with nobody able to unlock them, so they are released.
+    # Months with a sent payout stay locked, and the employee links are kept for a later reconnect.
     def destroy
       @tripletex_integration = @organization.tripletex_integration
       return redirect_to workspace_integrations_path unless @tripletex_integration
 
       authorize! @tripletex_integration
-      @tripletex_integration.destroy!
+      ActiveRecord::Base.transaction do
+        @organization.time_locks.reject(&:sent?).each(&:destroy!)
+        @tripletex_integration.destroy!
+      end
       redirect_to workspace_integrations_path, flash: { success: t("tripletex.integrations.disconnected") }
     end
 

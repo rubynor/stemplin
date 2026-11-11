@@ -94,7 +94,7 @@ Rails.application.routes.draw do
 
     resource :settings, only: [ :show, :edit, :update ]
     resource :integrations, only: :show
-    resource :tripletex_integration, only: %i[new create destroy], path: "integrations/tripletex"
+    resource :tripletex_integration, only: %i[new create update destroy], path: "integrations/tripletex"
   end
 
   namespace :shared do

@@ -46,7 +46,10 @@ class FakeTripletexApi
     employee_ids.index_with { |id| @pay_details[id] }
   end
 
-  def salary_types = @salary_types
+  def salary_types
+    raise Tripletex::Error, @error if @error
+    @salary_types
+  end
 
   def create_salary_run(employee_id:, year:, month:, date:, description:)
     raise @run_error if @run_error

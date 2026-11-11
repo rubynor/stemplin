@@ -38,4 +38,27 @@
       <% end %>
     </div>
   </div>
+
+  <% if @tripletex_integration %>
+    <%= form_with model: @tripletex_integration, scope: :tripletex_integration, url: workspace_tripletex_integration_path, method: :patch, class: "rounded-lg border border-border p-5 flex flex-col gap-4" do |form| %>
+      <%= render RubyUI::FormField.new do %>
+        <%= render RubyUI::FormFieldLabel.new(for: "tripletex_integration_hourly_salary_type_id") { t("tripletex.integrations.salary_type") } %>
+        <%= render RubyUI::FormFieldHint.new { t("tripletex.integrations.salary_type_hint") } %>
+        <%
+          selected = selected_salary_type_id
+          options = salary_types.map { |type| [ "#{type["number"]} #{type["name"]}", type["id"] ] }
+          if selected.present? && options.none? { |option| option[1] == selected }
+            options.unshift([ "##{selected}", selected ])
+          end
+        %>
+        <%= form.select :hourly_salary_type_id, options, { include_blank: t("tripletex.integrations.salary_type_none"), selected: selected }, class: "form-input" %>
+        <% if salary_types_error %>
+          <%= render RubyUI::FormFieldError.new(class: "w-full form-error") { t("tripletex.integrations.salary_types_unavailable", message: salary_types_error) } %>
+        <% end %>
+      <% end %>
+      <div>
+        <%= render ButtonComponent.new(type: :submit) { t("common.save") } %>
+      </div>
+    <% end %>
+  <% end %>
 </div>

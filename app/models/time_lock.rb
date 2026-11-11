@@ -49,9 +49,8 @@ class TimeLock < ApplicationRecord
   end
   private_class_method :kept_time_regs
 
-  # Stands in for a connected_at column.
   def self.connected_on(integration)
-    integration.created_at.to_date
+    integration.connected_at.to_date
   end
   private_class_method :connected_on
 

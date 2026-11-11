@@ -151,7 +151,7 @@ class TimeLocksControllerTest < ActionController::TestCase
     end
 
     def connect(at)
-      TripletexIntegration.create!(organization: @organization, employee_token: "t", created_at: at)
+      TripletexIntegration.create!(organization: @organization, employee_token: "t", connected_at: at)
     end
 
     test "is nil without an integration" do
