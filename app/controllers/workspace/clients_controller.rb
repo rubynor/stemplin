@@ -4,8 +4,6 @@ module Workspace
 
     before_action :set_client, only: %i[edit_modal update destroy]
 
-    helper_method :tripletex_customers, :tripletex_customers_error
-
     def show
       @client = authorized_scope(Client, type: :relation).find(params[:id])
       authorize! @client
@@ -85,25 +83,7 @@ module Workspace
     end
 
     def client_params
-      params.require(:client).permit(:name, :description, :tripletex_customer_id)
-    end
-
-    # nil when the workspace isn't connected to Tripletex; cached briefly so the modal opens fast.
-    def tripletex_customers
-      return @tripletex_customers if defined?(@tripletex_customers)
-
-      integration = current_user.current_organization.tripletex_integration
-      @tripletex_customers = integration && Rails.cache.fetch([ "tripletex_customers", integration.id, integration.updated_at.to_i ], expires_in: 5.minutes) do
-        integration.api.customers
-      end
-    rescue Tripletex::Error => e
-      @tripletex_customers_error = e.message
-      @tripletex_customers = []
-    end
-
-    def tripletex_customers_error
-      tripletex_customers
-      @tripletex_customers_error
+      params.require(:client).permit(:name, :description)
     end
 
     def set_client

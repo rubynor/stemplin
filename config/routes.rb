@@ -126,7 +126,6 @@ Rails.application.routes.draw do
 
   resources :reports, only: [ :index ]
   get "reports/detailed", to: "reports#detailed", as: :detailed_reports
-  post "reports/send_to_tripletex", to: "reports#send_to_tripletex", as: :send_to_tripletex_reports
 
   # PWA routes
 

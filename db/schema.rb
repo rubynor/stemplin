@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_11_10_100200) do
+ActiveRecord::Schema[7.1].define(version: 2026_11_10_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -48,7 +48,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_10_100200) do
     t.datetime "updated_at", null: false
     t.bigint "organization_id"
     t.datetime "discarded_at"
-    t.bigint "tripletex_customer_id"
     t.index ["discarded_at"], name: "index_clients_on_discarded_at"
     t.index ["organization_id"], name: "index_clients_on_organization_id"
   end
@@ -167,8 +166,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_10_100200) do
     t.datetime "start_time", precision: nil
     t.bigint "user_id", null: false
     t.datetime "discarded_at"
-    t.datetime "invoiced_at"
-    t.bigint "tripletex_order_id"
     t.index ["assigned_task_id"], name: "index_time_regs_on_assigned_task_id"
     t.index ["discarded_at"], name: "index_time_regs_on_discarded_at"
     t.index ["user_id"], name: "index_time_regs_on_user_id"

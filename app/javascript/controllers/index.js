@@ -76,9 +76,6 @@ application.register("plan-app", PlanAppController)
 import PrintController from "./print_controller"
 application.register("print", PrintController)
 
-import PrintedAtController from "./printed_at_controller"
-application.register("printed-at", PrintedAtController)
-
 import RefreshMinutesController from "./refresh_minutes_controller"
 application.register("refresh-minutes", RefreshMinutesController)
 
@@ -123,9 +120,6 @@ application.register("snackbar", SnackbarController)
 
 import TimeTasksController from "./time_tasks_controller"
 application.register("time-tasks", TimeTasksController)
-
-import TripletexCustomerController from "./tripletex_customer_controller"
-application.register("tripletex-customer", TripletexCustomerController)
 
 import VisibilityController from "./visibility_controller"
 application.register("visibility", VisibilityController)

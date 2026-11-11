@@ -32,8 +32,6 @@
           <span class="hidden sm:block"><%= t("task.detailed_report") %></span>
         <% end %>
 
-        <%= render partial: "reports/send_to_tripletex", locals: { time_regs: @time_regs, filter: @filter, return_to: "index" } %>
-
         <%= render ButtonComponent.new(class: "print:!hidden", variant: :primary, data: { controller: "print", action: "print#togglePrintLayout" }) do %>
           <i class="uc-icon text-base">&#xeaea;</i>
           <span class="hidden sm:block"><%= t('common.print') %></span>

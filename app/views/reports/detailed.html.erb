@@ -1,10 +1,9 @@
 <% content_for :title, t("common.reports") %>
 
 <%= render partial: "reports/details/filter", locals: { filter: @filter, form_data: @form_data } %>
-<div class="page-shell py-6 pb-10 print:p-0 print:max-w-none">
-  <div class="flex flex-col gap-y-4 print:gap-y-3">
-    <%= render partial: "reports/details/print_header", locals: { filter: @filter } %>
-    <div class="flex justify-between items-center print:hidden">
+<div class="page-shell py-6 pb-10 print:px-0">
+  <div class="flex flex-col gap-y-4 print:gap-y-2">
+    <div class="flex justify-between items-center print:py-1">
       <%= link_to reports_path(filter: @filter.to_h), class: "print:!hidden w-9 h-9 rounded-lg border border-border bg-background hover:bg-accent flex justify-center items-center transition-colors" do %>
         <i class="uc-icon text-xl">&#xe833;</i>
       <% end %>
@@ -18,7 +17,6 @@
             <span class="hidden sm:block"><%= t('common.add_time_registration') %></span>
           <% end %>
         <% end %>
-        <%= render partial: "reports/send_to_tripletex", locals: { time_regs: @time_regs, filter: @filter, return_to: "detailed" } %>
         <%= render ButtonComponent.new(class: "print:!hidden", variant: :primary, data: { controller: "print", action: "print#togglePrintLayout" }) do %>
           <i class="uc-icon text-base">&#xeaea;</i>
           <span class="hidden sm:block"><%= t('common.print') %></span>

@@ -1,29 +1,14 @@
 <%= turbo_frame_tag :modal do %>
-  <%= form_with url: client.new_record? ? workspace_clients_path : workspace_client_path, method: client.new_record? ?  :post : :patch, scope: client, data: { controller: "tripletex-customer" } do |form| %>
+  <%= form_with url: client.new_record? ? workspace_clients_path : workspace_client_path, method: client.new_record? ?  :post : :patch, scope: client do |form| %>
     <div class="flex flex-col gap-y-4">
       <span class="font-semibold text-secondary-text text-lg"><%= client.new_record? ? t("task.new_client") : "#{t("common.edit")} #{client.name}" %></span>
       <%= content_tag(:div, class: "flex flex-col gap-y-4") do %>
       <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
           <%= render RubyUI::FormFieldLabel.new { t("common.name") } %>
-          <%= form.text_field :name, class: "form-input", autofocus: true, data: { tripletex_customer_target: "name" } %>
+          <%= form.text_field :name, class: "form-input", autofocus: true %>
           <% client.errors.full_messages_for(:name).each do |message|%>
           <%= render RubyUI::FormFieldError.new(class: "w-full form-error") { message }  %>
           <% end %>
-      <% end %>
-      <% unless tripletex_customers.nil? %>
-        <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
-          <%= render RubyUI::FormFieldLabel.new(for: "client_tripletex_customer_id") { t("tripletex.clients.customer") } %>
-          <%
-            options = tripletex_customers.map { |customer| [ [ customer["customerNumber"], customer["name"] ].compact.join(" – "), customer["id"], { data: { name: customer["name"] } } ] }
-            if client.tripletex_customer_id.present? && options.none? { |option| option[1] == client.tripletex_customer_id }
-              options.unshift([ "##{client.tripletex_customer_id}", client.tripletex_customer_id ])
-            end
-          %>
-          <%= form.select :tripletex_customer_id, options, { include_blank: t("tripletex.clients.none") }, class: "form-input", data: { action: "tripletex-customer#fillName" } %>
-          <% if tripletex_customers_error %>
-            <%= render RubyUI::FormFieldError.new(class: "w-full form-error") { t("tripletex.clients.unavailable", message: tripletex_customers_error) } %>
-          <% end %>
-        <% end %>
       <% end %>
       <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
           <%= render RubyUI::FormFieldLabel.new { t("common.description") } %>
