@@ -46,6 +46,7 @@ nb:
       errors:
         month_locked: "%{month} er låst for denne brukeren. Be en administrator om å låse opp."
         timer_running: "En timer går i den måneden. Stopp den før du låser."
+        no_hours: "Det er ingen timer å låse i denne måneden."
         period_not_first_of_month: "må være den første dagen i en måned"
         already_sent: "Denne måneden er allerede sendt til lønn og kan ikke låses opp."
         month_not_ended: "kan først låses etter at måneden er over"

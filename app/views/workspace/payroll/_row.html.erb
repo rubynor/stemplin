@@ -80,12 +80,15 @@
           <%= render ButtonComponent.new(path: workspace_payroll_payouts_path(user_id: row.user.id, month: month_param, expected_rate: row.rate.to_s("F")), method: :post,
                 form: { data: { turbo_confirm: t("tripletex.payroll.confirm", name: name, month: month, hours: payroll_hours(row.hours), rate: payroll_money(row.rate), amount: payroll_money(row.amount)) } }) { t("tripletex.payroll.actions.payout") } %>
         <% end %>
-        <%= render ButtonComponent.new(path: time_lock_path(row.lock), method: :delete, variant: :ghost) { t("tripletex.payroll.actions.unlock") } %>
       <% when :unclear %>
         <%= render ButtonComponent.new(path: mark_sent_workspace_payroll_payout_path(row.payout), method: :patch, variant: :outline,
               form: { data: { turbo_confirm: t("tripletex.payroll.mark_sent_confirm", name: name, month: month) } }) { t("tripletex.payroll.actions.mark_sent") } %>
         <%= render ButtonComponent.new(path: release_workspace_payroll_payout_path(row.payout), method: :delete, variant: :ghost,
               form: { data: { turbo_confirm: t("tripletex.payroll.release_confirm", name: name, month: month) } }) { t("tripletex.payroll.actions.release") } %>
+      <% end %>
+      <%# Any lock without a payout can be undone here, whatever the row's status. %>
+      <% if row.lock && row.payout.nil? %>
+        <%= render ButtonComponent.new(path: time_lock_path(row.lock), method: :delete, variant: :ghost) { t("tripletex.payroll.actions.unlock") } %>
       <% end %>
     </div>
   <% end %>

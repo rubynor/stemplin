@@ -6,6 +6,7 @@ class TimeLockTest < ActiveSupport::TestCase
     @user = users(:organization_user)
     @admin = users(:organization_admin)
     @last = Date.current.last_month.beginning_of_month
+    @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: @last + 1)
   end
 
   def build_lock(**attrs)
@@ -14,6 +15,18 @@ class TimeLockTest < ActiveSupport::TestCase
 
   test "is valid for last month" do
     assert build_lock.valid?
+  end
+
+  test "rejects a month without hours in the organization" do
+    lock = build_lock(user: users(:joe))
+    assert_not lock.valid?
+    assert_includes lock.errors[:base], I18n.t("tripletex.locks.errors.no_hours")
+  end
+
+  test "hours in another organization do not count" do
+    lock = build_lock(organization: organizations(:organization_two))
+    assert_not lock.valid?
+    assert_includes lock.errors[:base], I18n.t("tripletex.locks.errors.no_hours")
   end
 
   test "rejects the current month" do
@@ -34,6 +47,8 @@ class TimeLockTest < ActiveSupport::TestCase
   end
 
   test "allows the same month for another user or organization" do
+    users(:joe).time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: @last + 1)
+    @user.time_regs.create!(assigned_task: assigned_task(:org_two_task), minutes: 30, date_worked: @last + 1)
     build_lock.save!
     assert build_lock(user: users(:joe)).valid?
     assert build_lock(organization: organizations(:organization_two)).valid?

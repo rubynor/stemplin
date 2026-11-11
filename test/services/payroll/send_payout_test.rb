@@ -273,9 +273,7 @@ class Payroll::SendPayoutTest < ActiveSupport::TestCase
   end
 
   test "refuses when there are no hours" do
-    @lock.delete
     @user.time_regs.where(date_worked: @period..@period.end_of_month).delete_all
-    TimeLock.create!(organization: @organization, user: @user, locked_by: @admin, period: @period)
     assert_refused(:no_hours) { service.call }
   end
 

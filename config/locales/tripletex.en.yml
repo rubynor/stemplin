@@ -46,6 +46,7 @@ en:
       errors:
         month_locked: "%{month} is locked for this user. Ask an admin to unlock it."
         timer_running: "A timer is running in that month. Stop it before locking."
+        no_hours: "There are no hours to lock in this month."
         period_not_first_of_month: "must be the first day of a month"
         already_sent: "This month has already been sent to payroll and cannot be unlocked."
         month_not_ended: "can only be locked after the month has ended"

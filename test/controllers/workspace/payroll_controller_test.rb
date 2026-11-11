@@ -115,6 +115,26 @@ module Workspace
       assert_select "#{member_row} form[action='#{edit_modal_workspace_team_member_path(@member)}']"
     end
 
+    test "a locked row that is not linked shows unlock" do
+      lock_member
+      sign_in @admin
+      get :show
+
+      assert_select member_row, text: /#{I18n.t("tripletex.payroll.statuses.not_linked")}/
+      assert_select "#{member_row} form[action^='/time_locks/']", count: 1
+    end
+
+    test "a locked row with no hours shows unlock" do
+      link_member
+      lock = lock_member
+      @member.time_regs.where(date_worked: @period..@period.end_of_month).update_all(discarded_at: Time.current)
+      sign_in @admin
+      get :show
+
+      assert_select member_row, text: /#{I18n.t("tripletex.payroll.statuses.no_hours")}/
+      assert_select "#{member_row} form[action='#{time_lock_path(lock)}']", count: 1
+    end
+
     test "locked by another shows who locked" do
       link_member
       lock_member

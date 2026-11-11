@@ -14,6 +14,7 @@ class PayrollPayoutTest < ActiveSupport::TestCase
   end
 
   def lock
+    @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: @period + 1)
     TimeLock.create!(organization: @organization, user: @user, locked_by: @admin, period: @period)
   end
 

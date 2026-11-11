@@ -101,6 +101,37 @@ class TimeRegTest < ActiveSupport::TestCase
       assert_not other.update(assigned_task: @task)
     end
 
+    test "cannot move a locked entry to another user" do
+      assert_not @locked_reg.update(user: users(:joe))
+      assert_equal @user.id, @locked_reg.reload.user_id
+    end
+
+    test "cannot move an entry into another user's locked month by changing its user" do
+      reg = users(:joe).time_regs.create!(assigned_task: @task, minutes: 15, date_worked: last.end_of_month)
+      assert_not reg.update(user: @user)
+      assert_includes reg.errors[:base].first, I18n.l(last, format: "%B %Y")
+    end
+
+    test "moving an entry across organizations checks only its old and new state" do
+      reg = @user.time_regs.create!(assigned_task: @task, minutes: 15, date_worked: Date.current)
+      assert reg.update(assigned_task: @other_org_task, date_worked: last.end_of_month)
+    end
+
+    test "cannot undiscard an entry into a locked month" do
+      reg = @user.time_regs.create!(assigned_task: @task, minutes: 15, date_worked: Date.current)
+      reg.discard!
+      reg.update_columns(date_worked: last.end_of_month)
+      assert_not reg.undiscard
+      assert reg.reload.discarded?
+      assert_raises(Discard::RecordNotUndiscarded) { reg.undiscard! }
+    end
+
+    test "can undiscard an entry outside a locked month" do
+      reg = @user.time_regs.create!(assigned_task: @task, minutes: 15, date_worked: Date.current)
+      reg.discard!
+      assert reg.undiscard
+    end
+
     test "a lock in one organization does not block the user's entries in another" do
       assert @user.time_regs.new(assigned_task: @other_org_task, minutes: 60, date_worked: last.end_of_month).save
     end

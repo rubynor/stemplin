@@ -24,6 +24,7 @@ class TimeReg::CopiesControllerTest < ActionController::TestCase
 
   test "does not copy into a locked month" do
     last = Date.current.last_month
+    @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: last.beginning_of_month)
     TimeLock.create!(organization: organizations(:organization_one), user: @user,
                      locked_by: users(:organization_admin), period: last.beginning_of_month)
 

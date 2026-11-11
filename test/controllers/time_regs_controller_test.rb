@@ -62,6 +62,7 @@ class TimeRegsControllerTest < ActionController::TestCase
       get :index, params: { date: (last + 2).to_s }
       assert_select "form[action=?]", new_modal_time_regs_path(date: last + 2), minimum: 1
 
+      @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: last + 5)
       TimeLock.create!(organization: organizations(:organization_one), user: @user,
                        locked_by: users(:organization_admin), period: last)
       get :index, params: { date: (last + 2).to_s }

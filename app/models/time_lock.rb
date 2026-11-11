@@ -11,6 +11,7 @@ class TimeLock < ApplicationRecord
   validate :period_is_first_of_month
   validate :month_has_ended, on: :create
   validate :no_running_timer, on: :create
+  validate :has_hours, on: :create
 
   # Paid hours stay locked whichever path tries to unlock them.
   before_destroy { throw :abort if sent? }
@@ -79,6 +80,13 @@ class TimeLock < ApplicationRecord
     return if period.blank? || period.end_of_month < Date.current
 
     errors.add(:period, I18n.t("tripletex.locks.errors.month_not_ended"))
+  end
+
+  def has_hours
+    return if period.blank? || user.blank? || organization.blank?
+    return if TimeLock.minutes_in(user:, organization:, period:).positive?
+
+    errors.add(:base, I18n.t("tripletex.locks.errors.no_hours"))
   end
 
   def no_running_timer

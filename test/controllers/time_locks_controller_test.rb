@@ -8,6 +8,7 @@ class TimeLocksControllerTest < ActionController::TestCase
     @last = Date.current.last_month.beginning_of_month
     @month = @last.strftime("%Y-%m")
     @organization.create_tripletex_integration!(employee_token: "x")
+    @member.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: @last + 1)
   end
 
   def lock_for(user, period = @last, locked_by: @admin)

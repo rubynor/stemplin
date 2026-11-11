@@ -23,6 +23,7 @@ class TimeReg < ApplicationRecord
   validate :month_not_locked
 
   before_discard :prevent_change_in_locked_month
+  before_undiscard :prevent_change_in_locked_month
   before_destroy :prevent_change_in_locked_month
 
   scope :for_report, ->(client_ids, project_ids, user_ids, task_ids) {
@@ -114,17 +115,18 @@ class TimeReg < ApplicationRecord
           .pick(:organization_id)
   end
 
-  # The first locked month this change touches: the entry's current date and, when
-  # it already exists, the date and assigned task it was saved with.
+  # The first locked month this change touches. Checks the entry's new state (user,
+  # organization, date) and, when it already exists, the state it was saved with,
+  # each as a whole: an entry may neither leave nor enter a locked month.
   def locked_date
-    dates = [ date_worked ]
-    organization_ids = [ organization_id_for_lock ]
+    states = [ [ user_id, organization_id_for_lock, date_worked ] ]
     if persisted?
-      dates << date_worked_in_database
-      organization_ids << organization_id_for_assigned_task(assigned_task_id_in_database)
+      states << [ user_id_in_database,
+                  organization_id_for_assigned_task(assigned_task_id_in_database),
+                  date_worked_in_database ]
     end
-    organization_ids.compact.uniq.product(dates.compact.uniq).find do |organization_id, date|
-      TimeLock.locked?(organization_id: organization_id, user_id: user_id, date: date)
+    states.uniq.find do |state_user_id, organization_id, date|
+      TimeLock.locked?(organization_id: organization_id, user_id: state_user_id, date: date)
     end&.last
   end
 
