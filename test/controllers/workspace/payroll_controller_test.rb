@@ -88,6 +88,7 @@ module Workspace
       assert_select "#{member_row} form[action^='#{workspace_payroll_payouts_path}'][data-turbo-confirm*='520']"
       assert_select "#{member_row} form[action^='/time_locks/']"
       assert_includes response.body, "expected_rate=250.0"
+      assert_includes response.body, "expected_minutes=125"
     end
 
     test "a not locked row has the lock button and no payout button" do
@@ -112,7 +113,16 @@ module Workspace
     test "an unlinked row has the link action" do
       sign_in @admin
       get :show
-      assert_select "#{member_row} form[action='#{edit_modal_workspace_team_member_path(@member)}']"
+      assert_select "#{member_row} form[action='#{edit_modal_workspace_team_member_path(@member, return_to: "payroll")}']"
+    end
+
+    test "an archived unlinked row has no link action and says to restore the member" do
+      @member.access_info(@organization).archive
+      sign_in @admin
+      get :show
+
+      assert_select "#{member_row} form[action^='#{edit_modal_workspace_team_member_path(@member)}']", count: 0
+      assert_select member_row, text: /#{Regexp.escape(I18n.t("tripletex.payroll.restore_to_link"))}/
     end
 
     test "a locked row that is not linked shows unlock" do

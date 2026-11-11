@@ -6,12 +6,13 @@ module Payroll
   # Tripletex certainly holds no run for it; whenever a run may exist, the row stays as unclear.
   # The caller authorizes the admin, and must not call this inside a transaction (the pending row must be committed).
   class SendPayout
-    def initialize(organization:, user:, period:, sent_by:, expected_rate:)
+    def initialize(organization:, user:, period:, sent_by:, expected_rate:, expected_minutes:)
       @organization = organization
       @user = user
       @period = period.to_date.beginning_of_month
       @sent_by = sent_by
       @expected_rate = expected_rate
+      @expected_minutes = expected_minutes
     end
 
     def call
@@ -24,6 +25,7 @@ module Payroll
       refuse(:not_locked) unless lock
       minutes = TimeLock.minutes_in(user: @user, organization: @organization, period: @period)
       refuse(:no_hours) unless minutes.positive?
+      refuse(:hours_changed) unless minutes == @expected_minutes
 
       @api = integration.api
       rule = pay_rule(employee_id)

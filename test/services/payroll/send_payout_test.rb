@@ -20,8 +20,10 @@ class Payroll::SendPayoutTest < ActiveSupport::TestCase
     FakeTripletexApi.install(FakeTripletexApi.new(pay_details: pay, **opts))
   end
 
-  def service(expected_rate: BigDecimal("250"), user: @user, period: @period)
-    Payroll::SendPayout.new(organization: @organization, user: user, period: period, sent_by: @admin, expected_rate: expected_rate)
+  def service(expected_rate: BigDecimal("250"), expected_minutes: nil, user: @user, period: @period)
+    expected_minutes ||= TimeLock.minutes_in(user: user, organization: @organization, period: period)
+    Payroll::SendPayout.new(organization: @organization, user: user, period: period, sent_by: @admin,
+                            expected_rate: expected_rate, expected_minutes: expected_minutes)
   end
 
   def assert_refused(key, &block)
@@ -92,6 +94,11 @@ class Payroll::SendPayoutTest < ActiveSupport::TestCase
 
   test "an equal wage in another BigDecimal form is accepted" do
     assert service(expected_rate: BigDecimal("250.00")).call.sent?
+  end
+
+  test "refuses when the hours changed since the page was shown" do
+    assert_refused(:hours_changed) { service(expected_minutes: 120).call }
+    assert_empty @fake.pay_details_calls
   end
 
   test "refuses a missing expected wage" do

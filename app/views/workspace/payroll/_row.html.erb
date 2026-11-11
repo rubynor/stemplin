@@ -69,7 +69,12 @@
     <div class="flex flex-row flex-wrap items-center gap-2">
       <% case status %>
       <% when :not_linked %>
-        <%= render ButtonComponent.new(path: edit_modal_workspace_team_member_path(row.user), method: :put, variant: :outline) { t("tripletex.payroll.actions.link") } %>
+        <%# The team member dialog only opens for active members. %>
+        <% if row.access_info.archived? %>
+          <span class="text-xs text-muted-foreground"><%= t("tripletex.payroll.restore_to_link") %></span>
+        <% else %>
+          <%= render ButtonComponent.new(path: edit_modal_workspace_team_member_path(row.user, return_to: "payroll"), method: :put, variant: :outline) { t("tripletex.payroll.actions.link") } %>
+        <% end %>
       <% when :not_locked %>
         <% if month_ended %>
           <%= render ButtonComponent.new(path: time_locks_path(user_id: row.user.id, month: month_param), method: :post, variant: :outline,
@@ -77,7 +82,7 @@
         <% end %>
       <% when :ready, :unsupported %>
         <% if status == :ready && !outage && !no_salary_type %>
-          <%= render ButtonComponent.new(path: workspace_payroll_payouts_path(user_id: row.user.id, month: month_param, expected_rate: row.rate.to_s("F")), method: :post,
+          <%= render ButtonComponent.new(path: workspace_payroll_payouts_path(user_id: row.user.id, month: month_param, expected_rate: row.rate.to_s("F"), expected_minutes: row.minutes), method: :post,
                 form: { data: { turbo_confirm: t("tripletex.payroll.confirm", name: name, month: month, hours: payroll_hours(row.hours), rate: payroll_money(row.rate), amount: payroll_money(row.amount)) } }) { t("tripletex.payroll.actions.payout") } %>
         <% end %>
       <% when :unclear %>

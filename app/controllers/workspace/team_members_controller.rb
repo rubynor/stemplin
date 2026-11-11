@@ -64,11 +64,21 @@ module Workspace
           access_info.update_project_accesses edit_team_member_params[:project_ids]
           link_tripletex_employee(access_info)
         end
-        render turbo_stream: [
-          turbo_flash(type: :success, data: t("notice.user_updated")),
-          turbo_stream.action(:remove_modal, :modal),
-          turbo_stream.replace(dom_id(@user), partial: "workspace/team_members/user", locals: { user: @user })
-        ]
+        if return_to_payroll?
+          # The payroll page has no team member row to replace, so it is reloaded instead. Without a
+          # request id the refresh is not ignored by the browser that sent this request.
+          flash[:success] = t("notice.user_updated")
+          render turbo_stream: [
+            turbo_stream.action(:remove_modal, :modal),
+            turbo_stream.refresh(request_id: nil)
+          ]
+        else
+          render turbo_stream: [
+            turbo_flash(type: :success, data: t("notice.user_updated")),
+            turbo_stream.action(:remove_modal, :modal),
+            turbo_stream.replace(dom_id(@user), partial: "workspace/team_members/user", locals: { user: @user })
+          ]
+        end
       rescue => e
         flash[:error] = e.message
         prepare_form_data
@@ -83,7 +93,8 @@ module Workspace
           selected_role: @selected_role,
           selected_project_ids: @selected_project_ids,
           project_restricted_roles: @project_restricted_roles,
-          selected_tripletex_employee_id: @selected_tripletex_employee_id
+          selected_tripletex_employee_id: @selected_tripletex_employee_id,
+          return_to_payroll: return_to_payroll?
         })
       end
     end
@@ -96,9 +107,14 @@ module Workspace
       @selected_role = access_info.role
       @selected_project_ids = access_info.projects.ids
       @selected_tripletex_employee_id = access_info.tripletex_employee_id || tripletex_employee_for(@user)&.fetch("id")
+      @return_to_payroll = return_to_payroll?
     end
 
     private
+
+    def return_to_payroll?
+      params[:return_to] == "payroll"
+    end
 
     def edit_team_member_params
       params.require(:user).permit(:role, :tripletex_employee_id, project_ids: [])

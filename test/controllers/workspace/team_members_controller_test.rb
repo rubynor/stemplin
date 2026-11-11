@@ -313,6 +313,38 @@ module  Workspace
       assert_equal 7, user.access_info(@organization_admin.current_organization).reload.tripletex_employee_id
     end
 
+    test "the edit modal opened from the payroll page carries return_to into the form" do
+      @request.headers["Accept"] = "text/vnd.turbo-stream.html, text/html"
+      put :edit_modal, params: { id: users(:organization_user).id, return_to: "payroll" }
+
+      assert_select "input[type=hidden][name=return_to][value=payroll]", count: 1
+    end
+
+    test "the edit modal opened from the team page has no return_to" do
+      open_edit_modal users(:organization_user)
+      assert_select "input[name=return_to]", count: 0
+    end
+
+    test "update from the payroll page refreshes the page instead of replacing the team member row" do
+      user = users(:organization_user)
+      connect_tripletex(employees: [ employee(7, "Kari", "Nordmann") ])
+      patch :update, params: { id: user.id, return_to: "payroll", user: { role: :organization_user, tripletex_employee_id: "7", project_ids: [] } }
+
+      assert_equal 7, user.access_info(@organization_admin.current_organization).reload.tripletex_employee_id
+      assert_select "turbo-stream[action=refresh]", count: 1
+      assert_select "turbo-stream[action=refresh][request-id]", count: 0
+      assert_select "turbo-stream[action=replace][target=#{ActionView::RecordIdentifier.dom_id(user)}]", count: 0
+      assert_equal I18n.t("notice.user_updated"), flash[:success]
+    end
+
+    test "update from the team page replaces the team member row" do
+      user = users(:organization_user)
+      patch :update, params: { id: user.id, user: { role: :organization_user, project_ids: [] } }
+
+      assert_select "turbo-stream[action=replace][target=#{ActionView::RecordIdentifier.dom_id(user)}]", count: 1
+      assert_select "turbo-stream[action=refresh]", count: 0
+    end
+
     test "update with a blank employee clears the link" do
       user = users(:organization_user)
       access_info = user.access_info(@organization_admin.current_organization)

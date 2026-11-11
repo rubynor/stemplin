@@ -6,13 +6,18 @@ module Workspace
       user = authorized_scope(User, type: :relation, with: ::UserPolicy).find(params[:user_id])
       authorize! PayrollPayout.new(organization: organization, user: user)
 
+      return redirect_to workspace_payroll_path, flash: { error: t("tripletex.payroll.errors.month_missing") } unless period
+
       expected_rate = BigDecimal(params[:expected_rate].to_s, exception: false)
+      expected_minutes = Integer(params[:expected_minutes].to_s, 10, exception: false)
       if expected_rate.nil?
         flash[:error] = t("tripletex.payroll.errors.rate_missing")
+      elsif expected_minutes.nil?
+        flash[:error] = t("tripletex.payroll.errors.hours_missing")
       else
-        send_payout(organization, user, expected_rate)
+        send_payout(organization, user, expected_rate, expected_minutes)
       end
-      redirect_to workspace_payroll_path(month: month_param)
+      redirect_to workspace_payroll_path(month: period.strftime("%Y-%m"))
     end
 
     def mark_sent
@@ -25,9 +30,9 @@ module Workspace
 
     private
 
-    def send_payout(organization, user, expected_rate)
+    def send_payout(organization, user, expected_rate, expected_minutes)
       payout = Payroll::SendPayout.new(organization: organization, user: user, period: period, sent_by: current_user,
-                                       expected_rate: expected_rate).call
+                                       expected_rate: expected_rate, expected_minutes: expected_minutes).call
       flash[:success] = t("tripletex.payroll.payout_sent", name: user.name.presence || user.email, month: month_name(payout.period))
     rescue Payroll::Error => e
       flash[:error] = e.message
@@ -45,14 +50,15 @@ module Workspace
       redirect_to workspace_payroll_path(month: payout.period.strftime("%Y-%m"))
     end
 
+    # Nil when the month is missing or unparseable: a payout is never sent for a guessed month.
     def period
-      Date.strptime(params[:month].to_s, "%Y-%m")
-    rescue Date::Error
-      Date.current.last_month.beginning_of_month
-    end
+      return @period if defined?(@period)
 
-    def month_param
-      period.strftime("%Y-%m")
+      @period = begin
+        Date.strptime(params[:month].to_s, "%Y-%m")
+      rescue Date::Error
+        nil
+      end
     end
 
     def month_name(date)

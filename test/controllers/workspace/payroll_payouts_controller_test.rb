@@ -23,7 +23,7 @@ module Workspace
     end
 
     def create_payout(params = {})
-      post :create, params: { user_id: @member.id, month: @month, expected_rate: "250.0" }.merge(params)
+      post :create, params: { user_id: @member.id, month: @month, expected_rate: "250.0", expected_minutes: "125" }.merge(params)
     end
 
     test "create sends the payout and redirects to the same month" do
@@ -49,9 +49,41 @@ module Workspace
     test "a missing or unparseable rate is refused without calling the service" do
       sign_in @admin
       [ {}, { expected_rate: "abc" } ].each do |extra|
-        post :create, params: { user_id: @member.id, month: @month }.merge(extra)
+        post :create, params: { user_id: @member.id, month: @month, expected_minutes: "125" }.merge(extra)
         assert_redirected_to workspace_payroll_path(month: @month)
         assert_equal I18n.t("tripletex.payroll.errors.rate_missing"), flash[:error]
+      end
+      assert_equal 0, PayrollPayout.count
+      assert_empty @fake.pay_details_calls
+    end
+
+    test "a missing or unparseable minutes count is refused without calling the service" do
+      sign_in @admin
+      [ { expected_minutes: nil }, { expected_minutes: "abc" }, { expected_minutes: "12.5" } ].each do |extra|
+        create_payout(extra)
+        assert_redirected_to workspace_payroll_path(month: @month)
+        assert_equal I18n.t("tripletex.payroll.errors.hours_missing"), flash[:error]
+      end
+      assert_equal 0, PayrollPayout.count
+      assert_empty @fake.pay_details_calls
+    end
+
+    test "hours that changed since the page was shown are refused" do
+      sign_in @admin
+      assert_no_difference -> { PayrollPayout.count } do
+        create_payout(expected_minutes: "120")
+      end
+      assert_redirected_to workspace_payroll_path(month: @month)
+      assert_equal I18n.t("tripletex.payroll.errors.hours_changed"), flash[:error]
+      assert_empty @fake.salary_runs
+    end
+
+    test "a missing or unparseable month is refused without calling the service" do
+      sign_in @admin
+      [ { month: nil }, { month: "nonsense" } ].each do |extra|
+        create_payout(extra)
+        assert_redirected_to workspace_payroll_path
+        assert_equal I18n.t("tripletex.payroll.errors.month_missing"), flash[:error]
       end
       assert_equal 0, PayrollPayout.count
       assert_empty @fake.pay_details_calls
