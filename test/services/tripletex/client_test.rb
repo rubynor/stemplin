@@ -321,5 +321,19 @@ module Tripletex
         assert_equal I18n.t("tripletex.errors.invalid_token"), error.message
       end
     end
+
+    test "staging uses the Tripletex test environment unless TRIPLETEX_BASE_URL is set" do
+      original = ENV.delete("TRIPLETEX_BASE_URL")
+      staging = ActiveSupport::EnvironmentInquirer.new("staging")
+      production = ActiveSupport::EnvironmentInquirer.new("production")
+
+      assert_equal "https://api-test.tripletex.tech/v2", Client.default_base_url(staging)
+      assert_equal "https://tripletex.no/v2", Client.default_base_url(production)
+
+      ENV["TRIPLETEX_BASE_URL"] = "https://example.test/v2"
+      assert_equal "https://example.test/v2", Client.default_base_url(staging)
+    ensure
+      original ? ENV["TRIPLETEX_BASE_URL"] = original : ENV.delete("TRIPLETEX_BASE_URL")
+    end
   end
 end

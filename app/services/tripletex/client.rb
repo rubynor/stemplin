@@ -5,14 +5,21 @@ module Tripletex
   # Auth: a consumer token (Stemplin's, from ENV) and an employee token (the workspace's) are
   # exchanged for a session token, which is sent as the password in Basic auth with user "0".
   class Client
-    DEFAULT_BASE_URL = "https://tripletex.no/v2".freeze
+    PRODUCTION_BASE_URL = "https://tripletex.no/v2".freeze
+    TEST_BASE_URL = "https://api-test.tripletex.tech/v2".freeze
     PAGE_SIZE = 1000
     SALARY_PATHS = %w[/salary/ /employee/employment].freeze
 
-    def initialize(employee_token:, consumer_token: ENV["TRIPLETEX_CONSUMER_TOKEN"], base_url: ENV.fetch("TRIPLETEX_BASE_URL", DEFAULT_BASE_URL))
+    def initialize(employee_token:, consumer_token: ENV["TRIPLETEX_CONSUMER_TOKEN"], base_url: self.class.default_base_url)
       @employee_token = employee_token
       @consumer_token = consumer_token
       @base_url = base_url.chomp("/")
+    end
+
+    # TRIPLETEX_BASE_URL wins when set. Otherwise staging talks to Tripletex's test environment,
+    # so it can never create salary runs in a real company; everything else uses production.
+    def self.default_base_url(env = Rails.env)
+      ENV["TRIPLETEX_BASE_URL"].presence || (env.staging? ? TEST_BASE_URL : PRODUCTION_BASE_URL)
     end
 
     def self.configured?
