@@ -2,7 +2,7 @@ require "test_helper"
 
 module Tripletex
   class ClientTest < ActiveSupport::TestCase
-    FakeHttp = Struct.new(:responses, :requests) do
+    FakeHttp = Struct.new(:responses, :requests, :start_options) do
       def request(request)
         requests << request
         response = responses.shift
@@ -22,8 +22,9 @@ module Tripletex
     # Net::HTTP.start is swapped for the duration of the block; requests are captured in order.
     def with_http(*responses)
       http = FakeHttp.new(responses, [])
+      http.start_options = []
       original = Net::HTTP.method(:start)
-      Net::HTTP.define_singleton_method(:start) { |*, **, &block| block.call(http) }
+      Net::HTTP.define_singleton_method(:start) { |*, **options, &block| http.start_options << options; block.call(http) }
       yield http
     ensure
       Net::HTTP.define_singleton_method(:start, original)
@@ -46,6 +47,11 @@ module Tripletex
     end
 
     attr_reader :client
+
+    # The session token is cached per client, so tests with several with_http blocks need a new client for each.
+    def fresh_client
+      Client.new(employee_token: "employee", consumer_token: "consumer", base_url: "https://api-test.tripletex.tech/v2")
+    end
 
     setup do
       @client = Client.new(employee_token: "employee", consumer_token: "consumer", base_url: "https://api-test.tripletex.tech/v2")
@@ -206,6 +212,56 @@ module Tripletex
     test "a timeout on a write raises UncertainError" do
       with_http(session, Net::ReadTimeout.new) do
         assert_raises(Tripletex::UncertainError) { client.create_salary_run(employee_id: 7, year: 2026, month: 11, date: Date.new(2026, 11, 11), description: "x") }
+      end
+    end
+
+    test "a write failing mid-request raises UncertainError" do
+      [ Errno::ECONNRESET, EOFError, Net::HTTPBadResponse ].each do |failure|
+        with_http(session, failure.new) do
+          assert_raises(Tripletex::UncertainError, failure.name) { fresh_client.add_salary_line(transaction_id: 1, payslip_id: 2, salary_type_id: 3, rate: 1, count: 1) }
+        end
+        with_http(session, failure.new) do
+          assert_raises(Tripletex::UncertainError, failure.name) { fresh_client.delete_salary_run(1) }
+        end
+      end
+    end
+
+    test "a session creation timeout stays a plain error" do
+      with_http(Net::ReadTimeout.new) do
+        error = assert_raises(Tripletex::Error) { fresh_client.delete_salary_run(1) }
+        assert_not_kind_of Tripletex::UncertainError, error
+      end
+    end
+
+    test "a 5xx on a write raises UncertainError, on a read a plain error, a 4xx stays plain" do
+      with_http(session, response(Net::HTTPInternalServerError, "500", { message: "boom" })) do
+        assert_raises(Tripletex::UncertainError) { fresh_client.delete_salary_run(1) }
+      end
+      with_http(session, response(Net::HTTPBadGateway, "502", {})) do
+        assert_raises(Tripletex::UncertainError) { fresh_client.add_salary_line(transaction_id: 1, payslip_id: 2, salary_type_id: 3, rate: 1, count: 1) }
+      end
+      with_http(session, response(Net::HTTPInternalServerError, "500", { message: "boom" })) do
+        error = assert_raises(Tripletex::Error) { fresh_client.salary_types }
+        assert_not_kind_of Tripletex::UncertainError, error
+      end
+      with_http(session, response(Net::HTTPUnprocessableEntity, "422", { message: "no" })) do
+        error = assert_raises(Tripletex::Error) { fresh_client.delete_salary_run(1) }
+        assert_not_kind_of Tripletex::UncertainError, error
+      end
+    end
+
+    test "Net::HTTP is told never to retry a request" do
+      with_http(session, ok({ values: [] })) do |http|
+        client.salary_types
+        assert_equal [ 0, 0 ], http.start_options.map { |options| options[:max_retries] }
+      end
+    end
+
+    test "create_salary_run raises UncertainError when the response lacks ids" do
+      [ {}, { value: { id: 1 } }, { value: { id: 1, payslips: [] } }, { value: { payslips: [ { id: 2 } ] } } ].each do |body|
+        with_http(session, response(Net::HTTPCreated, "201", body)) do
+          assert_raises(Tripletex::UncertainError) { fresh_client.create_salary_run(employee_id: 7, year: 2026, month: 10, date: Date.new(2026, 11, 11), description: "x") }
+        end
       end
     end
 

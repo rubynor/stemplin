@@ -59,7 +59,13 @@ module Tripletex
         year: year, month: month, date: date.iso8601, description: description, addDefaultSpecifications: false
       }, body: [ employee_id ])["value"]
 
-      { "transaction_id" => run["id"], "payslip_id" => run.dig("payslips", 0, "id") }
+      transaction_id = run.is_a?(Hash) ? run["id"] : nil
+      payslip_id = run.is_a?(Hash) ? run.dig("payslips", 0, "id") : nil
+      if transaction_id.nil? || payslip_id.nil?
+        raise UncertainError, I18n.t("tripletex.errors.uncertain", message: "response without transaction or payslip id")
+      end
+
+      { "transaction_id" => transaction_id, "payslip_id" => payslip_id }
     end
 
     # Tripletex computes the line amount as rate × count.
@@ -120,24 +126,32 @@ module Tripletex
         request.body = body.to_json
       end
 
+      write = authenticate && method != Net::HTTP::Get
       sent = false
-      response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https", open_timeout: 5, read_timeout: 30) do |http|
-        sent = true # connected; from here on the request may reach Tripletex
-        http.request(request)
+      begin
+        # max_retries: 0 stops Net::HTTP replaying PUT/DELETE by itself; a write is never sent twice.
+        response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https", open_timeout: 5, read_timeout: 30, max_retries: 0) do |http|
+          sent = true # connected; from here on the request may reach Tripletex
+          http.request(request)
+        end
+      rescue StandardError => e
+        if sent && write
+          raise UncertainError, I18n.t("tripletex.errors.uncertain", message: e.message)
+        end
+
+        raise Error, I18n.t("tripletex.errors.unreachable", message: e.message)
       end
+
       parsed = parse(response.body)
       if response.code.in?(%w[401 403]) && salary
         raise AccessError, I18n.t("tripletex.errors.salary_access")
       end
+      if write && response.code.start_with?("5")
+        raise UncertainError, I18n.t("tripletex.errors.uncertain", message: error_message(response, parsed))
+      end
       raise Error, error_message(response, parsed) unless response.is_a?(Net::HTTPSuccess)
 
       parsed
-    rescue Timeout::Error, SocketError, SystemCallError, OpenSSL::SSL::SSLError, IOError => e
-      if sent && authenticate && method != Net::HTTP::Get
-        raise UncertainError, I18n.t("tripletex.errors.uncertain", message: e.message)
-      end
-
-      raise Error, I18n.t("tripletex.errors.unreachable", message: e.message)
     end
 
     def parse(body)
