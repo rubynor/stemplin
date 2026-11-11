@@ -1,0 +1,92 @@
+<%
+  name = row.user.name.presence || row.user.email
+  month = l(period, format: "%B %Y")
+  month_param = payroll_month_param(period)
+  status = row.status
+  # During an outage the wage is unknown, so a linked, locked row says nothing about the pay type.
+  outage = error.present? && %i[ready unsupported].include?(status)
+  show_money = !outage && %i[ready sent unclear].include?(status)
+  preliminary = status == :not_locked && !month_ended
+%>
+<%= render RubyUI::TableRow.new(id: "payroll_row_#{row.user.id}") do %>
+  <%= render RubyUI::TableCell.new(class: "py-4 font-medium text-primary-text md:font-normal md:text-inherit", data: { role: "title" }) do %>
+    <%= name %>
+    <% if row.access_info.archived? %>
+      <span class="text-xs text-muted-foreground"><%= t("team_members.archived") %></span>
+    <% end %>
+  <% end %>
+  <%= render RubyUI::TableCell.new(class: class_names("text-right tnum", "italic text-muted-foreground": preliminary), data: { label: t("common.hours") }) do %>
+    <%= payroll_hours(row.hours) %>
+    <% if preliminary %><span class="text-xs">(<%= t("tripletex.payroll.preliminary") %>)</span><% end %>
+  <% end %>
+  <%= render RubyUI::TableCell.new(class: "text-right tnum", data: { label: t("tripletex.payroll.hourly_wage") }) do %>
+    <%= show_money && row.rate ? payroll_money(row.rate) : "–" %>
+  <% end %>
+  <%= render RubyUI::TableCell.new(class: class_names("text-right tnum", "italic text-muted-foreground": status == :not_locked), data: { label: t("tripletex.payroll.amount") }) do %>
+    <% if (show_money || (status == :not_locked && !error.present?)) && row.amount %>
+      <%= payroll_money(row.amount) %> <span class="text-xs text-muted-foreground"><%= @currency %></span>
+    <% else %>
+      –
+    <% end %>
+  <% end %>
+  <%= render RubyUI::TableCell.new(data: { label: t("tripletex.payroll.status") }) do %>
+    <div class="flex flex-col gap-y-1">
+      <% case status %>
+      <% when :not_linked %>
+        <%= render(RubyUI::Badge.new(size: :sm, variant: :gray)) { t("tripletex.payroll.statuses.not_linked") } %>
+      <% when :not_locked %>
+        <%= render(RubyUI::Badge.new(size: :sm, variant: :yellow)) { t("tripletex.payroll.statuses.not_locked") } %>
+        <span class="text-xs text-muted-foreground"><%= t("tripletex.payroll.waiting_for_employee") %></span>
+      <% when :unsupported %>
+        <% if outage %>
+          <span class="text-muted-foreground">–</span>
+        <% else %>
+          <%= render(RubyUI::Badge.new(size: :sm, variant: :gray)) { t("tripletex.payroll.statuses.unsupported") } %>
+        <% end %>
+      <% when :ready %>
+        <% if outage %>
+          <span class="text-muted-foreground">–</span>
+        <% else %>
+          <%= render(RubyUI::Badge.new(size: :sm, variant: :green)) { t("tripletex.payroll.statuses.ready") } %>
+        <% end %>
+      <% when :sent %>
+        <%= render(RubyUI::Badge.new(size: :sm, variant: :green)) { t("tripletex.payroll.statuses.sent") } %>
+        <span class="text-xs text-muted-foreground"><%= t("tripletex.payroll.sent_on", date: l(row.payout.sent_at.to_date, format: "%d.%m.%Y")) %></span>
+      <% when :unclear %>
+        <%= render(RubyUI::Badge.new(size: :sm, variant: :red)) { t("tripletex.payroll.statuses.unclear") } %>
+        <% if row.payout.error_message.present? %>
+          <span class="text-xs text-muted-foreground"><%= row.payout.error_message %></span>
+        <% end %>
+      <% when :no_hours %>
+        <%= render(RubyUI::Badge.new(size: :sm, variant: :gray)) { t("tripletex.payroll.statuses.no_hours") } %>
+      <% end %>
+      <% if row.lock&.locked_by_other? %>
+        <span class="text-xs text-muted-foreground"><%= t("tripletex.payroll.locked_by", name: row.lock.locked_by.name.presence || row.lock.locked_by.email) %></span>
+      <% end %>
+    </div>
+  <% end %>
+  <%= render RubyUI::TableCell.new(data: { role: "actions" }) do %>
+    <div class="flex flex-row flex-wrap items-center gap-2">
+      <% case status %>
+      <% when :not_linked %>
+        <%= render ButtonComponent.new(path: edit_modal_workspace_team_member_path(row.user), method: :put, variant: :outline) { t("tripletex.payroll.actions.link") } %>
+      <% when :not_locked %>
+        <% if month_ended %>
+          <%= render ButtonComponent.new(path: time_locks_path(user_id: row.user.id, month: month_param), method: :post, variant: :outline,
+                form: { data: { turbo_confirm: t("tripletex.payroll.lock_confirm", name: name, month: month, hours: payroll_hours(row.hours)) } }) { t("tripletex.payroll.actions.lock") } %>
+        <% end %>
+      <% when :ready, :unsupported %>
+        <% if status == :ready && !outage && !no_salary_type %>
+          <%= render ButtonComponent.new(path: workspace_payroll_payouts_path(user_id: row.user.id, month: month_param, expected_rate: row.rate.to_s("F")), method: :post,
+                form: { data: { turbo_confirm: t("tripletex.payroll.confirm", name: name, month: month, hours: payroll_hours(row.hours), rate: payroll_money(row.rate), amount: payroll_money(row.amount)) } }) { t("tripletex.payroll.actions.payout") } %>
+        <% end %>
+        <%= render ButtonComponent.new(path: time_lock_path(row.lock), method: :delete, variant: :ghost) { t("tripletex.payroll.actions.unlock") } %>
+      <% when :unclear %>
+        <%= render ButtonComponent.new(path: mark_sent_workspace_payroll_payout_path(row.payout), method: :patch, variant: :outline,
+              form: { data: { turbo_confirm: t("tripletex.payroll.mark_sent_confirm", name: name, month: month) } }) { t("tripletex.payroll.actions.mark_sent") } %>
+        <%= render ButtonComponent.new(path: release_workspace_payroll_payout_path(row.payout), method: :delete, variant: :ghost,
+              form: { data: { turbo_confirm: t("tripletex.payroll.release_confirm", name: name, month: month) } }) { t("tripletex.payroll.actions.release") } %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

@@ -94,6 +94,13 @@ Rails.application.routes.draw do
 
     resource :settings, only: [ :show, :edit, :update ]
     resource :integrations, only: :show
+    resource :payroll, only: :show, controller: "payroll"
+    resources :payroll_payouts, only: :create do
+      member do
+        patch :mark_sent
+        delete :release
+      end
+    end
     resource :tripletex_integration, only: %i[new create update destroy], path: "integrations/tripletex"
   end
 
