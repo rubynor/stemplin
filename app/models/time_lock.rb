@@ -22,8 +22,46 @@ class TimeLock < ApplicationRecord
     where(organization_id: organization_id, user_id: user_id).for_period(date).exists?
   end
 
+  # The oldest ended month with hours and no lock, from the month before the
+  # integration was connected onwards. Nil when there is nothing to lock.
+  def self.next_lockable_period(user:, organization:)
+    integration = organization.tripletex_integration
+    return unless integration
+
+    first_month = connected_on(integration).last_month.beginning_of_month
+    locked = where(organization_id: organization.id, user_id: user.id).pluck(:period)
+    months = kept_time_regs(user_id: user.id, organization_id: organization.id)
+             .where(date_worked: first_month...Date.current.beginning_of_month)
+             .distinct.pluck(Arel.sql("date_trunc('month', time_regs.date_worked)::date"))
+    (months - locked).min
+  end
+
+  # Minutes logged in the month, including on soft-deleted projects and clients.
+  def self.minutes_in(user:, organization:, period:)
+    kept_time_regs(user_id: user.id, organization_id: organization.id)
+      .where(date_worked: period.beginning_of_month..period.end_of_month)
+      .sum(:minutes)
+  end
+
+  # Kept time entries of one user in one organization, ignoring soft-deletes on project and client.
+  def self.kept_time_regs(user_id:, organization_id:)
+    TimeReg.where(user_id: user_id).in_organization(organization_id)
+  end
+  private_class_method :kept_time_regs
+
+  # Stands in for a connected_at column.
+  def self.connected_on(integration)
+    integration.created_at.to_date
+  end
+  private_class_method :connected_on
+
   def locked_by_other?
     locked_by_id != user_id
+  end
+
+  # True once a payout exists for this lock; a later task implements it.
+  def sent?
+    false
   end
 
   private

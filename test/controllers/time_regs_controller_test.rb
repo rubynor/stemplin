@@ -31,6 +31,32 @@ class TimeRegsControllerTest < ActionController::TestCase
       end
     end
 
+    test "offers to lock the oldest ended month when the organization is connected" do
+      TripletexIntegration.create!(organization: organizations(:organization_one), employee_token: "t", created_at: 3.months.ago)
+      last = Date.current.last_month.beginning_of_month
+      @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 90, date_worked: last + 2)
+
+      get :index
+      assert_equal last, assigns(:lockable_period)
+      assert_equal 90, assigns(:lockable_minutes)
+      assert_select "button", text: /#{Regexp.escape(I18n.t("tripletex.locks.lock_button", month: I18n.l(last, format: "%B %Y")))}/
+    end
+
+    test "hides edit controls on a locked day" do
+      last = Date.current.last_month.beginning_of_month
+      reg = @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: last + 2)
+      get :index, params: { date: (last + 2).to_s }
+      assert_select "a[href=?], form[action=?]", edit_modal_time_reg_path(reg, date: last + 2), edit_modal_time_reg_path(reg, date: last + 2), minimum: 1
+
+      TimeLock.create!(organization: organizations(:organization_one), user: @user,
+                       locked_by: users(:organization_admin), period: last)
+      get :index, params: { date: (last + 2).to_s }
+      assert_select "form[action=?]", edit_modal_time_reg_path(reg, date: last + 2), count: 0
+      assert_select "form[action=?]", time_reg_path(reg), count: 0
+      assert_select "form[action=?]", new_modal_time_regs_path(date: last + 2), count: 0
+      assert_select "span", text: I18n.t("tripletex.locks.locked")
+    end
+
     test "destroying an entry in a locked month flashes the error and keeps the entry" do
       last = Date.current.last_month
       reg = @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: last.beginning_of_month + 2)

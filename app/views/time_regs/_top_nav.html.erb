@@ -28,9 +28,16 @@
         <i class="uc-icon text-lg">&#xe81f;</i>
       <% end %>
     </div>
-    <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: @chosen_date), method: :post) do %>
-      <i class="uc-icon text-lg">&#xeb5b;</i>
-      <span><%= t("common.log_time") %></span>
+    <%= render partial: "time_regs/lock_month" if @lockable_period %>
+    <% if @month_locked %>
+      <%= render RubyUI::Badge.new(variant: :gray, size: :lg, class: "self-center") do %>
+        <%= t("tripletex.locks.locked") %>
+      <% end %>
+    <% else %>
+      <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: @chosen_date), method: :post) do %>
+        <i class="uc-icon text-lg">&#xeb5b;</i>
+        <span><%= t("common.log_time") %></span>
+      <% end %>
     <% end %>
   </div>
 </div>

@@ -20,6 +20,7 @@ class TimeRegsController < ApplicationController
     @active_time_reg = authorized_scope(TimeReg, type: :relation, as: :own).all_active.first
     @current_minutes = @active_time_reg&.current_minutes
     @time_regs_zero_min = @time_regs_week.where(minutes: 0, start_time: nil).group(:date_worked).count
+    set_lock_state
   end
 
   def new_modal
@@ -144,6 +145,13 @@ class TimeRegsController < ApplicationController
     @clients ||= authorized_scope(Project, type: :relation, as: :own).group_by(&:client).map do |client, projects|
       OpenStruct.new(name: client.name, items: projects)
     end
+  end
+
+  def set_lock_state
+    organization = current_user.current_organization
+    @month_locked = TimeLock.locked?(organization_id: organization.id, user_id: current_user.id, date: @chosen_date)
+    @lockable_period = TimeLock.next_lockable_period(user: current_user, organization: organization)
+    @lockable_minutes = TimeLock.minutes_in(user: current_user, organization: organization, period: @lockable_period) if @lockable_period
   end
 
   def set_chosen_date

@@ -31,8 +31,14 @@ nb:
       verifying: "Sjekker…"
       submit: "Koble til"
     locks:
+      lock_button: "Lås timer for %{month}"
+      confirm: "Låse %{month} med %{hours} timer? Timene i den måneden kan ikke endres før en administrator låser opp."
+      locked: "Låst"
+      locked_notice: "%{month} er låst."
+      unlocked_notice: "%{month} er låst opp."
       errors:
         month_locked: "%{month} er låst for denne brukeren. Be en administrator om å låse opp."
         timer_running: "En timer går i den måneden. Stopp den før du låser."
         period_not_first_of_month: "må være den første dagen i en måned"
+        already_sent: "Denne måneden er allerede sendt til lønn og kan ikke låses opp."
         month_not_ended: "kan først låses etter at måneden er over"

@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
   root to: redirect("users/sign_in")
 
+  resources :time_locks, only: %i[create destroy]
+
   get "privacy-policy", to: "privacy_policy#index", as: :privacy_policy
 
   match "/404", to: "errors#not_found", via: :all
