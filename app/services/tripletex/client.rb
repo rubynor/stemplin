@@ -7,6 +7,7 @@ module Tripletex
   class Client
     DEFAULT_BASE_URL = "https://tripletex.no/v2".freeze
     PAGE_SIZE = 1000
+    SALARY_PATHS = %w[/salary/ /employee/employment].freeze
 
     def initialize(employee_token:, consumer_token: ENV["TRIPLETEX_CONSUMER_TOKEN"], base_url: ENV.fetch("TRIPLETEX_BASE_URL", DEFAULT_BASE_URL))
       @employee_token = employee_token
@@ -21,6 +22,57 @@ module Tripletex
     # => { "id" => 123, "name" => "Firma AS" }
     def company
       get("/token/session/%3EwhoAmI", fields: "company(id,name)").dig("value", "company")
+    end
+
+    # Active employees, sorted by name.
+    # => [{ "id" => 7, "firstName" => "Kari", "lastName" => "Nordmann", "email" => "...", "employeeNumber" => "1" }]
+    def employees
+      get("/employee", isInactive: false, fields: "id,firstName,lastName,email,employeeNumber", count: PAGE_SIZE)["values"]
+        .sort_by { |employee| [ employee["firstName"].to_s.downcase, employee["lastName"].to_s.downcase ] }
+    end
+
+    # What each employee is paid on the given date, from the employment that covers it and the latest
+    # details row dated on or before it. nil when no employment covers the date.
+    # One request: employments are nested on /employee (the unfiltered /employee/employment list is incomplete).
+    # => { 7 => { "remunerationType" => "HOURLY_WAGE", "hourlyWage" => BigDecimal("250") }, 8 => nil }
+    def pay_details(employee_ids, on:)
+      return {} if employee_ids.empty?
+
+      employees = request(Net::HTTP::Get, "/employee", {
+        id: employee_ids.join(","),
+        fields: "id,employments(startDate,endDate,employmentDetails(date,remunerationType,hourlyWage))",
+        count: PAGE_SIZE
+      }, salary: true)["values"].index_by { |employee| employee["id"] }
+
+      employee_ids.index_with { |id| pay_details_on(employees[id], on) }
+    end
+
+    # Active salary types. => [{ "id" => 40018615, "number" => "2001", "name" => "Timelønn" }]
+    def salary_types
+      get("/salary/type", isInactive: false, fields: "id,number,name", count: PAGE_SIZE)["values"]
+    end
+
+    # Creates an open salary run with one payslip for the employee and no default lines (Tripletex still
+    # adds its tax deduction line). => { "transaction_id" => 5377193, "payslip_id" => 24486093 }
+    def create_salary_run(employee_id:, year:, month:, date:, description:)
+      run = request(Net::HTTP::Post, "/salary/transaction/:createSalaryRun", {
+        year: year, month: month, date: date.iso8601, description: description, addDefaultSpecifications: false
+      }, body: [ employee_id ])["value"]
+
+      { "transaction_id" => run["id"], "payslip_id" => run.dig("payslips", 0, "id") }
+    end
+
+    # Tripletex computes the line amount as rate × count.
+    def add_salary_line(transaction_id:, payslip_id:, salary_type_id:, rate:, count:)
+      request(Net::HTTP::Put, "/salary/transaction/#{transaction_id}/:addSpecification", {}, body: {
+        payslip: { id: payslip_id }, salaryType: { id: salary_type_id }, rate: rate.to_f, count: count.to_f
+      })
+      nil
+    end
+
+    def delete_salary_run(transaction_id)
+      request(Net::HTTP::Delete, "/salary/transaction/#{transaction_id}", {})
+      nil
     end
 
     private
@@ -38,11 +90,25 @@ module Tripletex
       end
     end
 
+    def pay_details_on(employee, on)
+      employment = Array(employee&.dig("employments")).find do |e|
+        Date.parse(e["startDate"]) <= on && (e["endDate"].blank? || Date.parse(e["endDate"]) >= on)
+      end
+      details = Array(employment&.dig("employmentDetails"))
+        .select { |d| d["date"].present? && Date.parse(d["date"]) <= on }
+        .max_by { |d| Date.parse(d["date"]) }
+      return unless details
+
+      wage = details["hourlyWage"]
+      { "remunerationType" => details["remunerationType"], "hourlyWage" => wage.nil? ? nil : BigDecimal(wage.to_s) }
+    end
+
     def get(path, params = {})
       request(Net::HTTP::Get, path, params)
     end
 
-    def request(method, path, params, body: nil, authenticate: true)
+    # salary: a 401/403 means the key lacks salary access (true by default for salary and employment paths).
+    def request(method, path, params, body: nil, authenticate: true, salary: path.start_with?(*SALARY_PATHS))
       uri = URI("#{@base_url}#{path}")
       uri.query = URI.encode_www_form(params) if params.any?
 
@@ -54,14 +120,23 @@ module Tripletex
         request.body = body.to_json
       end
 
+      sent = false
       response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https", open_timeout: 5, read_timeout: 30) do |http|
+        sent = true # connected; from here on the request may reach Tripletex
         http.request(request)
       end
       parsed = parse(response.body)
+      if response.code.in?(%w[401 403]) && salary
+        raise AccessError, I18n.t("tripletex.errors.salary_access")
+      end
       raise Error, error_message(response, parsed) unless response.is_a?(Net::HTTPSuccess)
 
       parsed
-    rescue Timeout::Error, SocketError, SystemCallError, OpenSSL::SSL::SSLError => e
+    rescue Timeout::Error, SocketError, SystemCallError, OpenSSL::SSL::SSLError, IOError => e
+      if sent && authenticate && method != Net::HTTP::Get
+        raise UncertainError, I18n.t("tripletex.errors.uncertain", message: e.message)
+      end
+
       raise Error, I18n.t("tripletex.errors.unreachable", message: e.message)
     end
 

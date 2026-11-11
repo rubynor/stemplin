@@ -5,7 +5,10 @@ module Tripletex
     FakeHttp = Struct.new(:responses, :requests) do
       def request(request)
         requests << request
-        responses.shift
+        response = responses.shift
+        raise response if response.is_a?(Exception)
+
+        response
       end
     end
 
@@ -25,6 +28,24 @@ module Tripletex
     ensure
       Net::HTTP.define_singleton_method(:start, original)
     end
+
+    def session
+      response(Net::HTTPOK, "200", { value: { token: "session-123" } })
+    end
+
+    def ok(body)
+      response(Net::HTTPOK, "200", body)
+    end
+
+    def query(request)
+      URI.decode_www_form(request.uri.query.to_s).to_h
+    end
+
+    def employment(start_date, end_date, *details)
+      { startDate: start_date, endDate: end_date, employmentDetails: details.map { |date, type, wage| { date: date, remunerationType: type, hourlyWage: wage } } }
+    end
+
+    attr_reader :client
 
     setup do
       @client = Client.new(employee_token: "employee", consumer_token: "consumer", base_url: "https://api-test.tripletex.tech/v2")
@@ -65,6 +86,166 @@ module Tripletex
     test "needs Stemplin's consumer token" do
       client = Client.new(employee_token: "employee", consumer_token: nil)
       assert_raises(Tripletex::Error) { client.company }
+    end
+
+    test "employees lists active employees sorted by name" do
+      with_http(session, ok({ values: [
+        { id: 2, firstName: "Ola", lastName: "Nordmann", email: "ola@example.com", employeeNumber: "2" },
+        { id: 1, firstName: "Kari", lastName: "Nordmann", email: nil, employeeNumber: "" }
+      ] })) do |http|
+        assert_equal [ 1, 2 ], client.employees.map { |e| e["id"] }
+
+        request = http.requests.last
+        assert_kind_of Net::HTTP::Get, request
+        assert_equal "/v2/employee", request.uri.path
+        assert_equal "false", query(request)["isInactive"]
+        assert_equal "id,firstName,lastName,email,employeeNumber", query(request)["fields"]
+      end
+    end
+
+    test "pay_details asks for every employee's employments in one request" do
+      with_http(session, ok({ values: [
+        { id: 7, employments: [ employment("2020-01-01", nil, [ "2020-01-01", "HOURLY_WAGE", 212.5 ]) ] },
+        { id: 8, employments: [] }
+      ] })) do |http|
+        details = client.pay_details([ 7, 8, 9 ], on: Date.new(2026, 10, 31))
+
+        assert_equal({ "remunerationType" => "HOURLY_WAGE", "hourlyWage" => BigDecimal("212.5") }, details[7])
+        assert_kind_of BigDecimal, details[7]["hourlyWage"]
+        assert_nil details[8]
+        assert_nil details[9]
+
+        request = http.requests.last
+        assert_equal "/v2/employee", request.uri.path
+        assert_equal "7,8,9", query(request)["id"]
+        assert_includes query(request)["fields"], "employments(startDate,endDate,employmentDetails(date,remunerationType,hourlyWage))"
+      end
+    end
+
+    test "pay_details picks the details row that applied on the given date" do
+      # employment 2020-01-01..nil with details dated 2024-01-01 (hourlyWage 200),
+      # 2026-06-01 (hourlyWage 250) and 2026-11-01 (hourlyWage 300)
+      with_http(session, ok({ values: [ { id: 7, employments: [
+        employment("2020-01-01", nil, [ "2026-11-01", "HOURLY_WAGE", 300.0 ], [ "2024-01-01", "HOURLY_WAGE", 200.0 ], [ "2026-06-01", "HOURLY_WAGE", 250.0 ])
+      ] } ] })) do
+        assert_equal BigDecimal("250"), client.pay_details([ 7 ], on: Date.new(2026, 10, 31))[7]["hourlyWage"]
+      end
+    end
+
+    test "pay_details is nil when the only employment ended before the date" do
+      with_http(session, ok({ values: [ { id: 7, employments: [
+        employment("2020-01-01", "2026-09-30", [ "2020-01-01", "HOURLY_WAGE", 200.0 ])
+      ] } ] })) do
+        assert_nil client.pay_details([ 7 ], on: Date.new(2026, 10, 31))[7]
+      end
+    end
+
+    test "pay_details uses the employment that covers the date when there are two" do
+      # ended employment (MONTHLY_WAGE) and current one (HOURLY_WAGE, 250)
+      with_http(session, ok({ values: [ { id: 7, employments: [
+        employment("2020-01-01", "2026-05-31", [ "2020-01-01", "MONTHLY_WAGE", 0.0 ]),
+        employment("2026-06-01", nil, [ "2026-06-01", "HOURLY_WAGE", 250.0 ])
+      ] } ] })) do
+        assert_equal "HOURLY_WAGE", client.pay_details([ 7 ], on: Date.new(2026, 10, 31))[7]["remunerationType"]
+      end
+    end
+
+    test "pay_details has a nil wage when Tripletex sends none" do
+      with_http(session, ok({ values: [ { id: 7, employments: [ employment("2020-01-01", nil, [ "2020-01-01", "FEE", nil ]) ] } ] })) do
+        assert_equal({ "remunerationType" => "FEE", "hourlyWage" => nil }, client.pay_details([ 7 ], on: Date.new(2026, 10, 31))[7])
+      end
+    end
+
+    test "salary_types lists active salary types" do
+      with_http(session, ok({ values: [ { id: 40018615, number: "2001", name: "Timelønn" } ] })) do |http|
+        assert_equal [ { "id" => 40018615, "number" => "2001", "name" => "Timelønn" } ], client.salary_types
+
+        request = http.requests.last
+        assert_equal "/v2/salary/type", request.uri.path
+        assert_equal "false", query(request)["isInactive"]
+        assert_equal "id,number,name", query(request)["fields"]
+      end
+    end
+
+    test "create_salary_run creates a run without default lines and returns its ids" do
+      with_http(session, response(Net::HTTPCreated, "201", { value: { id: 5377193, payslips: [ { id: 24486093 } ] } })) do |http|
+        result = client.create_salary_run(employee_id: 7, year: 2026, month: 10, date: Date.new(2026, 11, 11), description: "Stemplin oktober")
+
+        assert_equal({ "transaction_id" => 5377193, "payslip_id" => 24486093 }, result)
+
+        request = http.requests.last
+        assert_kind_of Net::HTTP::Post, request
+        assert_equal "/v2/salary/transaction/:createSalaryRun", request.uri.path
+        assert_equal({ "year" => "2026", "month" => "10", "date" => "2026-11-11", "description" => "Stemplin oktober", "addDefaultSpecifications" => "false" }, query(request))
+        assert_equal [ 7 ], JSON.parse(request.body)
+      end
+    end
+
+    test "add_salary_line adds a line to the payslip" do
+      with_http(session, ok({ value: { id: 158138811, amount: 3082.5 } })) do |http|
+        assert_nil client.add_salary_line(transaction_id: 5377193, payslip_id: 24486093, salary_type_id: 40018615, rate: BigDecimal("250"), count: 12.33)
+
+        request = http.requests.last
+        assert_kind_of Net::HTTP::Put, request
+        assert_equal "/v2/salary/transaction/5377193/:addSpecification", request.uri.path
+        assert_equal({ "payslip" => { "id" => 24486093 }, "salaryType" => { "id" => 40018615 }, "rate" => 250.0, "count" => 12.33 }, JSON.parse(request.body))
+      end
+    end
+
+    test "delete_salary_run deletes the run" do
+      no_content = Net::HTTPNoContent.new("1.1", "204", "").tap { |r| r.instance_variable_set(:@body, ""); r.instance_variable_set(:@read, true) }
+      with_http(session, no_content) do |http|
+        assert_nil client.delete_salary_run(5377193)
+
+        request = http.requests.last
+        assert_kind_of Net::HTTP::Delete, request
+        assert_equal "/v2/salary/transaction/5377193", request.uri.path
+      end
+    end
+
+    test "a timeout on a write raises UncertainError" do
+      with_http(session, Net::ReadTimeout.new) do
+        assert_raises(Tripletex::UncertainError) { client.create_salary_run(employee_id: 7, year: 2026, month: 11, date: Date.new(2026, 11, 11), description: "x") }
+      end
+    end
+
+    test "a timeout on a read stays a plain error" do
+      with_http(session, Net::ReadTimeout.new) do
+        error = assert_raises(Tripletex::Error) { client.salary_types }
+        assert_not_kind_of Tripletex::UncertainError, error
+      end
+    end
+
+    test "a write that never connected stays a plain error" do
+      original = Net::HTTP.method(:start)
+      Net::HTTP.define_singleton_method(:start) { |*, **| raise Errno::ECONNREFUSED }
+      client.instance_variable_set(:@session_token, "session-123")
+
+      error = assert_raises(Tripletex::Error) { client.delete_salary_run(1) }
+      assert_not_kind_of Tripletex::UncertainError, error
+    ensure
+      Net::HTTP.define_singleton_method(:start, original)
+    end
+
+    test "a 403 on a salary call raises AccessError" do
+      with_http(session, response(Net::HTTPForbidden, "403", { message: "Forbidden" })) do
+        error = assert_raises(Tripletex::AccessError) { client.salary_types }
+        assert_equal I18n.t("tripletex.errors.salary_access"), error.message
+      end
+    end
+
+    test "a 401 when reading pay details raises AccessError" do
+      with_http(session, response(Net::HTTPUnauthorized, "401", { message: "Unauthorized" })) do
+        assert_raises(Tripletex::AccessError) { client.pay_details([ 7 ], on: Date.new(2026, 10, 31)) }
+      end
+    end
+
+    test "a 403 outside salary keeps the invalid key message" do
+      with_http(session, response(Net::HTTPForbidden, "403", { message: "Forbidden" })) do
+        error = assert_raises(Tripletex::Error) { client.employees }
+        assert_not_kind_of Tripletex::AccessError, error
+        assert_equal I18n.t("tripletex.errors.invalid_token"), error.message
+      end
     end
   end
 end

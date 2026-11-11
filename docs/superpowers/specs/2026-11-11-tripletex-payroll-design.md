@@ -158,17 +158,18 @@ The branch is unmerged, so delete the unwanted migrations rather than adding rev
 
 ## Tripletex API notes
 
-Checked against the published spec (`https://tripletex.no/v2/openapi.json`, version 2.75.23) on 2026-11-11. Not yet exercised against a live account.
+Checked against the published spec (`https://tripletex.no/v2/openapi.json`, version 2.75.23) and exercised against the Tripletex test environment (`https://api-test.tripletex.tech/v2`) on 2026-11-11. The BETA salary-run endpoints work there; the deprecated `POST /salary/transaction` was not needed.
 
-- **Employees:** `GET /employee` (`isInactive`, `fields`). Has `id`, `firstName`, `lastName`, `email`, `employeeNumber`, `employments`.
-- **Wage:** `GET /employee/employment?employeeId=` and `GET /employee/employment/details?employmentId=`. `EmploymentDetails` has `date`, `remunerationType` (`MONTHLY_WAGE`, `HOURLY_WAGE`, `COMMISION_PERCENTAGE`, `FEE`, `NOT_CHOSEN`, `PIECEWORK_WAGE`), `hourlyWage`, `annualSalary`. `Employment` has `startDate`, `endDate`, `employmentDetails`, `latestSalary`. There is no date filter, so pick the details row with the latest `date` on or before the target date.
-- **Salary types:** `GET /salary/type` (`name`, `number`, `isInactive`).
-- **Payslip:** `POST /salary/transaction` is marked deprecated. The current endpoints are marked BETA:
-  - `POST /salary/transaction/:createSalaryRun` with a body of employee ids and query `year`, `month`, `date`, `description`, `addDefaultSpecifications`,
-  - `PUT /salary/transaction/{id}/:addSpecification` with `payslip.id`, `salaryType`, `rate`, `count`,
-  - `DELETE /salary/transaction/{id}` for cleanup.
-- **Use the BETA endpoints (call).** The first build step is to try this flow against the Tripletex test environment (`TRIPLETEX_BASE_URL=https://api-test.tripletex.tech/v2`). Kasper has a Tripletex test account for this (test consumer token, employee token with salary access, an hourly-paid employee). Ask him for the tokens when that step starts. If the BETA endpoints are unavailable to our consumer token, fall back to the deprecated `POST /salary/transaction` with nested `payslips` and `specifications`.
-- The employee token needs salary access in Tripletex and the company needs the salary module. A 401/403 on a salary call should produce a message that says so, not the generic "invalid token".
+- **Employees:** `GET /employee?isInactive=false&fields=id,firstName,lastName,email,employeeNumber&count=1000`. `isInactive` is a query filter, not a field: asking for it in `fields` is a 422. `employeeNumber` can be `""`.
+- **Wage:** one request covers many employees: `GET /employee?id=1,2,3&fields=id,employments(startDate,endDate,employmentDetails(date,remunerationType,hourlyWage))&count=1000` returns every employee's employments with all their details rows. Do not use the unfiltered `GET /employee/employment` list: in the test company it returned only the token owner's employment (with `employeeId=` it works, but that is one request per employee). There is no date filter: pick the employment with `startDate <= date` and `endDate` null or `>= date`, then its details row with the latest `date <= date`. `hourlyWage` is a number (e.g. `250.0`), `0.0` (not null) when unset; `remunerationType` is `NOT_CHOSEN` on a fresh employment.
+- **Salary types:** `GET /salary/type?isInactive=false&fields=id,number,name&count=1000` (`isInactive` again only a filter). `number` is a string (`"2001"` = Timelønn). The test company has 150+ active types.
+- **Create run:** `POST /salary/transaction/:createSalaryRun?year=2026&month=10&date=2026-11-11&description=...&addDefaultSpecifications=false` with JSON body `[employeeId]` → 201 `{ value: { id, date, year, month, isHistorical, paySlipsAvailableDate, payslips: [{ id }] } }`. The payslip id comes back in the same response.
+- **Add line:** `PUT /salary/transaction/{id}/:addSpecification` with `{ payslip: { id }, salaryType: { id }, rate, count }` → 200 `{ value: { id, rate, count, amount, ... } }`. Tripletex computes `amount = rate × count` (250 × 12.33 = 3082.5).
+- **Tax line:** even with `addDefaultSpecifications=false` the payslip gets a `6000 Skattetrekk` line, recalculated as lines are added (−1541.0 on 3082.5 in a company without tax cards). The payslip's `amount`/`grossAmount` read back as `0.0` while the run is open.
+- **Delete:** `DELETE /salary/transaction/{id}` → 204, empty body. A later `GET` of it is 404 "Object not found".
+- **Employee prerequisites:** `createSalaryRun` fails with 422 `employeeIds: Ansatt N kan ikke få lønn i perioden. Kontroller den ansattes fødselsdato, kommunen for arbeidsgiveravgift og at arbeidsforholdet tilhører en gyldig virksomhet.` unless the employee has a date of birth and the employment belongs to a division (virksomhet, with a municipality). Updating an employment also requires the employee's `dateOfBirth`. These surface through the normal validation-message error.
+- **Errors:** the client raises `Tripletex::AccessError` (`tripletex.errors.salary_access`) on 401/403 from `/salary/*`, `/employee/employment*` and the wage request, and `Tripletex::UncertainError` when a POST/PUT/DELETE fails after the connection was opened (timeouts on reads stay `Tripletex::Error`). A 401/403 response itself was not reproduced live: the test key has full access.
+- The employee token needs salary access in Tripletex and the company needs the salary module.
 
 ## Constraints
 

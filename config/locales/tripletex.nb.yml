@@ -5,6 +5,8 @@ nb:
       not_connected: "Workspacet er ikke koblet til Tripletex."
       invalid_token: "Tripletex avviste nøkkelen. Sjekk at API-nøkkelen er riktig og aktiv."
       unreachable: "Fikk ikke kontakt med Tripletex (%{message})."
+      salary_access: "Tripletex nektet tilgang til lønn. API-nøkkelen må ha tilgang til ansatte og lønn, og selskapet må ha lønnsmodulen."
+      uncertain: "Mistet kontakten med Tripletex (%{message}). Endringen kan ha blitt lagret der; sjekk Tripletex før du prøver igjen."
     integrations:
       title: "Integrasjoner"
       description: "Send timer fra Stemplin til Tripletex som lønnstransaksjoner."
