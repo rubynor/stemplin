@@ -8,7 +8,7 @@ class ToolTestCase < ActiveSupport::TestCase
   def call_tool(tool_class, user: nil, organization: nil, **args)
     headers = {}
     if user
-      token = user.ensure_api_token!
+      token = user.api_tokens.create!(name: "Test").plaintext
       headers["Authorization"] = "Bearer #{token}"
     end
     args[:organization_id] = organization.id if organization

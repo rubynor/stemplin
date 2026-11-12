@@ -12,10 +12,10 @@
       <div class="text-xs text-muted-foreground truncate"><%= current_user&.email %></div>
     </div>
     <div class="h-px bg-border my-1"></div>
-    <%= render RubyUI::Link.new(href: edit_user_registration_path, variant: :ghost, class: "w-full flex justify-start px-2") do %>
+    <%= render RubyUI::Link.new(href: profile_path, variant: :ghost, class: "w-full flex justify-start px-2") do %>
       <div class="w-full flex justify-start items-center gap-x-2">
         <i class="uc-icon text-base text-muted-foreground">&#xebb2;</i>
-        <%= render RubyUI::FormFieldLabel.new { t("common.edit_account")} %>
+        <%= render RubyUI::FormFieldLabel.new { t("profile.title")} %>
       </div>
     <% end %>
     <%= render ButtonComponent.new(path: destroy_user_session_path, method: :delete, variant: :ghost, class: "w-full flex justify-start px-2") do %>

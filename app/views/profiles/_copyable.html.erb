@@ -1,0 +1,8 @@
+<%# locals: (text:) %>
+<%# A value to paste somewhere else, with a button that copies it. %>
+<div class="flex items-center gap-2 mt-2">
+  <code class="flex-1 min-w-0 font-mono text-sm text-foreground bg-surface-muted border border-border rounded-lg px-3 py-2 break-all"><%= text %></code>
+  <%= render ButtonComponent.new(type: "button", variant: :outline, data: { controller: "copy-link", action: "copy-link#copy", copy_link_text_value: text, copy_link_copied_label_value: t("profile.copied") }) do %>
+    <span data-copy-link-target="label"><%= t("profile.copy") %></span>
+  <% end %>
+</div>

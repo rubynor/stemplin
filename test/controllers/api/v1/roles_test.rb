@@ -16,17 +16,6 @@ class Api::V1::RolesTest < Api::V1::BaseTest
     collection.map { |item| item["id"] }.sort
   end
 
-  # BaseTest#api_headers only yields a token the first time it is called for a
-  # user (the plaintext cannot be read back), and these tests make several
-  # requests per user.
-  def api_headers(user, organization: nil)
-    @tokens ||= {}
-    @tokens[user.id] ||= user.regenerate_api_token!
-    headers = { "Authorization" => "Bearer #{@tokens[user.id]}" }
-    headers["X-Organization-Id"] = organization.id.to_s if organization
-    headers
-  end
-
   # -- Member ---------------------------------------------------------------
 
   test "member lists only the clients and tasks of their own projects" do

@@ -49,6 +49,9 @@ application.register("custom-input", CustomInputController)
 import DynamicTaskUrlController from "./dynamic_task_url_controller"
 application.register("dynamic-task-url", DynamicTaskUrlController)
 
+import EmailChangeController from "./email_change_controller"
+application.register("email-change", EmailChangeController)
+
 import FileUploadController from "./file_upload_controller"
 application.register("file-upload", FileUploadController)
 
@@ -105,6 +108,9 @@ application.register("ruby-ui--tabs", RubyUi__TabsController)
 
 import RubyUi__TooltipController from "./ruby_ui/tooltip_controller"
 application.register("ruby-ui--tooltip", RubyUi__TooltipController)
+
+import SectionNavController from "./section_nav_controller"
+application.register("section-nav", SectionNavController)
 
 import SelectMultipleController from "./select_multiple_controller"
 application.register("select-multiple", SelectMultipleController)

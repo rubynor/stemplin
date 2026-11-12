@@ -19,7 +19,7 @@ class GetCurrentUserTool < ApplicationTool
       name: user.name,
       created_at: user.created_at,
       updated_at: user.updated_at,
-      has_api_token: user.api_token_digest.present?,
+      has_api_token: user.api_tokens.exists?,
       current_organization: org ? { id: org.id, name: org.name } : nil
     })
   rescue => e

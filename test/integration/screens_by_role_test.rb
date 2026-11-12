@@ -43,7 +43,7 @@ class ScreensByRoleTest < ActionDispatch::IntegrationTest
     get detailed_reports_path(filter: { task_ids: [ tasks(:debug).id ], user_ids: [ users(:joe).id ] })
     assert_response :success
 
-    get edit_user_registration_path
+    get profile_path
     assert_response :success
 
     get privacy_policy_path
@@ -308,7 +308,7 @@ class ScreensByRoleTest < ActionDispatch::IntegrationTest
 
     test "every screen sends the user to the onboarding wizard" do
       [ root_path, time_regs_path, reports_path, detailed_reports_path, workspace_projects_path,
-        workspace_team_members_path, workspace_settings_path, edit_user_registration_path ].each do |path|
+        workspace_team_members_path, workspace_settings_path, profile_path ].each do |path|
         get path
         assert_redirected_to onboarding_wizard_path(:organization), "expected #{path} to redirect to onboarding"
       end
@@ -355,7 +355,7 @@ class ScreensByRoleTest < ActionDispatch::IntegrationTest
     end
 
     test "authenticated screens redirect to sign in" do
-      [ time_regs_path, reports_path, detailed_reports_path, edit_user_registration_path,
+      [ time_regs_path, reports_path, detailed_reports_path, profile_path,
         onboarding_wizard_path(:organization), workspace_projects_path, workspace_project_path(@project),
         workspace_client_path(@client), workspace_team_members_path, invite_users_workspace_team_members_path,
         workspace_settings_path, edit_workspace_settings_path, export_time_regs_path(project_id: @project.id),

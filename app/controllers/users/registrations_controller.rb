@@ -21,6 +21,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super
   end
 
+  # The account is edited on the profile page, one form per concern. Devise's
+  # combined form is gone, and so is the update that served it.
+  def edit
+    redirect_to profile_path
+  end
+
+  def update
+    redirect_to profile_path
+  end
+
   private
 
   def handle_spam
@@ -31,15 +41,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 
 
-  # GET /resource/edit
-  # def edit
-  #   super
-  # end
-
-  # PUT /resource
-  # def update
-  #   super
-  # end
 
   # DELETE /resource
   # def destroy

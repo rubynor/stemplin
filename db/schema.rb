@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
+ActiveRecord::Schema[7.1].define(version: 2026_11_12_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -28,6 +28,16 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
     t.index ["organization_id"], name: "index_access_infos_on_organization_id"
     t.index ["user_id", "organization_id"], name: "index_access_infos_on_user_id_and_organization_id", unique: true
     t.index ["user_id"], name: "index_access_infos_on_user_id"
+  end
+
+  create_table "api_tokens", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.string "token_digest", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["token_digest"], name: "index_api_tokens_on_token_digest", unique: true
+    t.index ["user_id"], name: "index_api_tokens_on_user_id"
   end
 
   create_table "assigned_tasks", force: :cascade do |t|
@@ -212,6 +222,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
 
   add_foreign_key "access_infos", "organizations"
   add_foreign_key "access_infos", "users"
+  add_foreign_key "api_tokens", "users"
   add_foreign_key "assigned_tasks", "projects"
   add_foreign_key "assigned_tasks", "tasks"
   add_foreign_key "clients", "organizations"

@@ -1,0 +1,35 @@
+<%# locals: (user:, revealed: nil, editing: nil, new_api_token: nil) %>
+<%# revealed       — the token that was just generated. Its secret is rendered
+                     in this one response and never again.
+    editing        — a token whose rename was rejected, carrying its errors.
+    new_api_token  — a token that could not be generated, carrying its errors. %>
+<% api_tokens = user.api_tokens.order(:created_at, :id) %>
+<% new_api_token ||= ApiToken.new %>
+
+<section id="api_token_section" class="surface-card p-5 lg:p-6">
+  <h2 class="section-title"><%= t("api_token.title") %></h2>
+  <p class="text-sm text-muted-foreground mt-1"><%= t("api_token.usage_hint") %></p>
+
+  <% if api_tokens.any? %>
+    <ul class="mt-4 border-y border-border divide-y divide-border">
+      <% api_tokens.each do |api_token| %>
+        <%= render "profiles/api_tokens/api_token", api_token: api_token,
+              revealed: (revealed if revealed == api_token), editing: (editing if editing == api_token) %>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-sm text-secondary-text mt-4"><%= t("api_token.empty") %></p>
+  <% end %>
+
+  <%= form_with model: new_api_token, scope: :api_token, url: profile_api_tokens_path, class: "flex flex-col gap-y-2 mt-4" do |form| %>
+    <%= render AlertComponent.new(variant: :destructive, title: t("common.unable_to_proceed"), message: new_api_token.errors.full_messages) if new_api_token.errors.any? %>
+    <%= render RubyUI::FormFieldLabel.new(for: "new_api_token_name") { t("api_token.new_label") } %>
+    <div class="flex flex-col sm:flex-row gap-3">
+      <div class="sm:flex-1">
+        <%= form.text_field :name, id: "new_api_token_name", required: true, maxlength: 60, autocomplete: "off",
+              placeholder: t("api_token.name_placeholder"), class: "form-input" %>
+      </div>
+      <%= render ButtonComponent.new(type: "submit", variant: :outline) { t("api_token.generate") } %>
+    </div>
+  <% end %>
+</section>

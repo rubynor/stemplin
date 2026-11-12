@@ -7,21 +7,17 @@ class Users::RegistrationsControllerTest < ActionController::TestCase
     sign_in @user
   end
 
-  test "edit page never shows a token on plain visit" do
-    @user.regenerate_api_token!
-
+  test "the old edit address leads to the profile" do
     get :edit
 
-    assert_response :success
-    assert_not_includes response.body, I18n.t("api_token.one_time_notice")
-    assert_includes response.body, I18n.t("api_token.regenerate")
+    assert_redirected_to profile_path
   end
 
-  test "edit page offers to generate a token when none exists" do
-    get :edit
+  test "the old combined update leads to the profile without changing the account" do
+    put :update, params: { user: { first_name: "Rob", email: "new@example.com", current_password: "password" } }
 
-    assert_response :success
-    assert_includes response.body, I18n.t("api_token.status_absent")
-    assert_includes response.body, I18n.t("api_token.generate")
+    assert_redirected_to profile_path
+    assert_equal "Ron", @user.reload.first_name
+    assert_equal "ron@example.com", @user.email
   end
 end
