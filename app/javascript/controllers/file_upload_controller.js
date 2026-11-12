@@ -67,7 +67,7 @@ export default class extends Controller {
 
     const fileNameHolder = newFileElement.querySelector(".filename");
 
-    fileNameHolder.innerHTML = fileName;
+    fileNameHolder.textContent = fileName;
     fileNameHolder.title = fileName;
 
     const isImage = (fileType.split('/')[0] || '') === 'image';

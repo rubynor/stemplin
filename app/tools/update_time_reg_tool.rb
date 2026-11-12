@@ -22,7 +22,9 @@ class UpdateTimeRegTool < ApplicationTool
     update_params[:date_worked] = date_worked unless date_worked.nil?
     update_params[:assigned_task_id] = assigned_task_id unless assigned_task_id.nil?
 
-    time_reg.update!(update_params)
+    time_reg.assign_attributes(update_params)
+    authorize! time_reg, with: TimeRegPolicy, to: :assign?
+    time_reg.save!
 
     JSON.generate(format_time_reg(time_reg))
   rescue => e

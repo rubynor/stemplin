@@ -1,6 +1,7 @@
 module Workspace
   class ProjectsController < WorkspaceController
     include SetCurrency
+    include ScopedProjectParams
 
     before_action :set_project, except: %i[new index create import_modal]
     before_action :prepare_form_data, only: %i[new edit create update]
@@ -66,8 +67,8 @@ module Workspace
 
     def project_params
       p = params.require(:project).permit(:client_id, :name, :description, :billable, :rate_currency, user_ids: [],
-            assigned_tasks_attributes: [ :id, :rate, :_destroy, :task_id, task_attributes: [ :name, :organization_id ] ])
-      convert_user_ids_to_access_info_ids(p)
+            assigned_tasks_attributes: [ :id, :rate, :_destroy, :task_id, task_attributes: [ :name ] ])
+      convert_user_ids_to_access_info_ids(scope_project_params(p))
     end
 
     def convert_user_ids_to_access_info_ids(proj_params)

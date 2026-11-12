@@ -1,6 +1,8 @@
 module Api
   module V1
     class TimeRegsController < BaseController
+      MAX_PER_PAGE = 100
+
       before_action :set_time_reg, only: %i[show update destroy]
 
       def index
@@ -12,7 +14,7 @@ module Api
 
         @pagy, @time_regs = pagy(
           scope.includes(assigned_task: [ :task, { project: :client } ]).order(date_worked: :desc, created_at: :desc),
-          items: (params[:per_page] || 25).to_i
+          items: (params[:per_page] || 25).to_i.clamp(1, MAX_PER_PAGE)
         )
       end
 
@@ -29,7 +31,9 @@ module Api
 
       def update
         authorize! @time_reg
-        @time_reg.update!(time_reg_params)
+        @time_reg.assign_attributes(time_reg_params)
+        authorize! @time_reg, to: :assign?
+        @time_reg.save!
         render :show
       end
 

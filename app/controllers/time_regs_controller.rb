@@ -64,7 +64,9 @@ class TimeRegsController < ApplicationController
 
   def update
     authorize! @time_reg
-    if @time_reg.update(time_reg_params.except(:project_id, :minutes_string))
+    @time_reg.assign_attributes(time_reg_params.except(:project_id, :minutes_string))
+    authorize! @time_reg, to: :assign?
+    if @time_reg.save
       redirect_to time_regs_path(date: @time_reg.date_worked)
     else
       set_assigned_tasks
@@ -108,8 +110,8 @@ class TimeRegsController < ApplicationController
       csv << [ "date", "client", "project", "task", "notes", "minutes", "first name", "last name", "email" ]
       # Add CSV data rows for each time_reg
       time_regs.each do |time_reg|
-        csv << [ time_reg.date_worked, client.name, project.name, time_reg.assigned_task.task.name,
-                time_reg.notes, time_reg.minutes, time_reg.user.first_name, time_reg.user.last_name, time_reg.user.email ]
+        csv << CsvSafe.row([ time_reg.date_worked, client.name, project.name, time_reg.assigned_task.task.name,
+                time_reg.notes, time_reg.minutes, time_reg.user.first_name, time_reg.user.last_name, time_reg.user.email ])
       end
     end
     send_data csv_data, filename: "#{Time.now.to_i}_time_regs_for_#{project.name}.csv"

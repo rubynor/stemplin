@@ -45,6 +45,6 @@ class PasswordResetIntegrationTest < ActionDispatch::IntegrationTest
     user.reload
     assert_nil user.reset_password_token  # No password reset token
     assert_redirected_to new_user_session_path
-    assert_equal I18n.t("devise.passwords.send_paranoid_instructions_check_spam"), flash[:notice]
+    assert_equal I18n.t("devise.passwords.send_paranoid_instructions"), flash[:notice]
   end
 end

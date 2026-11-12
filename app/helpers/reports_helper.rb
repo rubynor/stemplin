@@ -31,9 +31,8 @@ module ReportsHelper
   def filter_check_box(checkbox, checked, options = {})
     checkbox.label(class: "bg-white px-3 py-1.5 rounded-sm cursor-pointer") do
       checkbox_tag = checkbox.check_box(checked: checked, class: "mr-2", **options)
-      label_text = checkbox.text
-
-      "#{checkbox_tag} #{label_text}".html_safe
+      # The label is a name someone typed in, so it must be escaped.
+      safe_join([ checkbox_tag, checkbox.text ], " ")
     end
   end
 
@@ -41,7 +40,7 @@ module ReportsHelper
     form.label(method, class: "font-bold bg-white px-3 py-1.5 rounded-sm cursor-pointer") do
       checkbox_tag = form.check_box(method, checked: checked, class: "mr-2", **options)
 
-      "#{checkbox_tag} #{label_text}".html_safe
+      safe_join([ checkbox_tag, label_text ], " ")
     end
   end
 end

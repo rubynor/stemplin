@@ -358,6 +358,8 @@ nb:
 
 
   alert:
+    too_many_attempts: "For mange forsøk. Vent noen minutter og prøv igjen."
+    invalid_role: "Den rollen kan ikke tildeles."
     does_not_exist: "eksisterer ikke"
     is_already_a_member_of_the_project: "er allerede medlem av prosjektet"
     cannot_remove_last_member_of_the_project: "kan ikke fjerne siste medlem av prosjektet"

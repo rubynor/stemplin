@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
+  include AuthRateLimiting
+
   invisible_captcha prepend: true, only: [ :create ], on_spam: :handle_spam, on_timestamp_spam: :handle_spam, scope: :user
 
   # If you have extra params to permit, append them to the sanitizer.

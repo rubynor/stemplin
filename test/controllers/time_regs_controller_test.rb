@@ -40,6 +40,7 @@ class TimeRegsControllerTest < ActionController::TestCase
 
     test "should record time_reg when valid" do
       used_project = @user.current_organization.projects.first
+      ProjectAccess.create!(access_info: @user.access_info, project: used_project)
       assert_difference("TimeReg.count") do
         post :create, params: { time_reg: { date_worked: @current_date, minutes: 60, project_id: used_project.id, assigned_task_id: used_project.assigned_tasks.first.id } }
       end
@@ -48,6 +49,7 @@ class TimeRegsControllerTest < ActionController::TestCase
 
     test "should record time_reg when valid and start timer when minutes where not provided" do
       used_project = @user.current_organization.projects.first
+      ProjectAccess.create!(access_info: @user.access_info, project: used_project)
       assert_difference("TimeReg.count") do
         post :create, params: { time_reg: { date_worked: @current_date, project_id: used_project.id, assigned_task_id: used_project.assigned_tasks.first.id } }
       end

@@ -10,8 +10,8 @@ class Users::RegistrationsIntegrationTest < ActionDispatch::IntegrationTest
         first_name: "Test",
         last_name: "Name",
         email: "test@test",
-        password: "123123",
-        password_confirmation: "123123"
+        password: "12312312",
+        password_confirmation: "12312312"
       }
     }
 
@@ -27,8 +27,8 @@ class Users::RegistrationsIntegrationTest < ActionDispatch::IntegrationTest
         first_name: "Test",
         last_name: "Name",
         email: "test@test",
-        password: "123123",
-        password_confirmation: "123123",
+        password: "12312312",
+        password_confirmation: "12312312",
         honeypot_field: "bot data"
       }
     }

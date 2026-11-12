@@ -55,7 +55,8 @@ class AccessInfo < ApplicationRecord
   def update_project_accesses(project_ids)
     if project_restricted?
       current_access_ids = projects.ids
-      new_access_ids = (project_ids || []).reject(&:blank?).map(&:to_i)
+      # Only the organization's own projects: an id from elsewhere is dropped.
+      new_access_ids = organization.projects.where(id: (project_ids || []).reject(&:blank?)).ids
 
       ids_to_add = new_access_ids - current_access_ids
       ids_to_remove = current_access_ids - new_access_ids

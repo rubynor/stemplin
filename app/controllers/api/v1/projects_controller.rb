@@ -1,6 +1,8 @@
 module Api
   module V1
     class ProjectsController < BaseController
+      include ScopedProjectParams
+
       before_action :set_project, only: %i[show update destroy]
 
       def index
@@ -14,6 +16,9 @@ module Api
       end
 
       def create
+        # Only admins manage projects; checked before the params are resolved so
+        # everyone else gets a 403 whatever ids they sent.
+        authorize! Project, to: :index?
         @project = Project.new(project_params)
         authorize! @project
         @project.save!
@@ -45,8 +50,8 @@ module Api
       end
 
       def project_params
-        params.require(:project).permit(:name, :description, :billable, :rate_currency, :client_id,
-          assigned_tasks_attributes: [ :id, :rate, :_destroy, :task_id, task_attributes: [ :name, :organization_id ] ])
+        scope_project_params(params.require(:project).permit(:name, :description, :billable, :rate_currency, :client_id,
+          assigned_tasks_attributes: [ :id, :rate, :_destroy, :task_id, task_attributes: [ :name ] ]))
       end
     end
   end

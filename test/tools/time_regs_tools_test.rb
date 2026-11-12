@@ -102,6 +102,7 @@ class CreateTimeRegToolTest < ToolTestCase
   end
 
   test "creates a time reg" do
+    ProjectAccess.create!(access_info: @joe.access_info(@org), project: @assigned_task.project)
     result = call_tool(CreateTimeRegTool, user: @joe, organization: @org,
       assigned_task_id: @assigned_task.id, minutes: 60, date_worked: Date.today.to_s, notes: "Test work")
     parsed = parse_result(result)
