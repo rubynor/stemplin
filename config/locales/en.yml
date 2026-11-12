@@ -393,6 +393,7 @@ en:
   profile:
     title: "Profile"
     subtitle: "Your personal details, password and API access."
+    sections: "Sections of this page"
     personal_information: "Personal information"
     password: "Password"
     update_password: "Update password"

@@ -3,13 +3,46 @@
     the record carrying its errors; the other one renders the user as saved. %>
 <% password_user = @password_user || current_user %>
 
+<%# The page is long, so its cards are listed beside it (above it on small
+    screens). The list stays in view, marks the card being read, and jumps to
+    the one clicked. Each entry is a card's element id and its heading. %>
+<% sections = {
+     profile_personal: t("profile.personal_information"),
+     profile_password: t("profile.password"),
+     api_token_section: t("api_token.title"),
+     profile_cli: t("profile.cli.title"),
+     profile_claude: t("profile.claude.title")
+   } %>
+
 <div class="page-shell py-6 lg:py-8">
-  <div class="max-w-2xl mx-auto flex flex-col gap-y-6">
-    <div>
+  <div class="max-w-4xl mx-auto" data-controller="section-nav"
+       data-section-nav-active-class="bg-primary-50 text-primary-700 font-semibold"
+       data-section-nav-inactive-class="text-secondary-text font-medium hover:bg-accent hover:text-foreground">
+    <div class="mb-4 lg:mb-6">
       <h1 class="page-title"><%= t("profile.title") %></h1>
       <p class="page-subtitle"><%= t("profile.subtitle") %></p>
     </div>
 
+    <div class="grid grid-cols-1 lg:grid-cols-[13rem_minmax(0,1fr)] gap-x-6 gap-y-4">
+      <%# Sits under the top bar: a strip on small screens, a column on large. %>
+      <nav aria-label="<%= t("profile.sections") %>"
+           class="sticky top-16 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 py-2 bg-canvas/95 backdrop-blur border-b border-border
+                  lg:top-24 lg:self-start lg:mx-0 lg:px-0 lg:py-0 lg:bg-transparent lg:backdrop-blur-none lg:border-b-0">
+        <%# On small screens the links run off the right edge; the fade says so. %>
+        <ul class="flex flex-row lg:flex-col gap-1 overflow-x-auto no-scrollbar data-[more=true]:[mask-image:linear-gradient(to_right,black_75%,transparent)]"
+            data-section-nav-target="list" data-action="scroll->section-nav#fade">
+          <% sections.each do |id, heading| %>
+            <li>
+              <%= link_to heading, "##{id}",
+                    class: "block rounded-lg px-3 py-2 text-sm whitespace-nowrap transition-colors text-secondary-text font-medium hover:bg-accent hover:text-foreground",
+                    data: { section_nav_target: "link", action: "section-nav#jump" } %>
+            </li>
+          <% end %>
+        </ul>
+      </nav>
+
+      <%# scroll-mt keeps a card clear of the top bar (and the strip) when jumped to. %>
+      <div class="flex flex-col gap-y-6 [&>section]:scroll-mt-32 lg:[&>section]:scroll-mt-24">
     <section id="profile_personal" class="surface-card p-5 lg:p-6">
       <h2 class="section-title"><%= t("profile.personal_information") %></h2>
       <%= form_with model: @user, scope: :user, url: profile_path, method: :patch, class: "flex flex-col gap-y-4 mt-4",
@@ -71,5 +104,7 @@
     <%= render "profiles/api_tokens/section", user: current_user %>
     <%= render "profiles/cli", organization: current_user.current_organization %>
     <%= render "profiles/claude" %>
+      </div>
+    </div>
   </div>
 </div>

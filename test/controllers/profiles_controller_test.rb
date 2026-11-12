@@ -25,6 +25,17 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_select "#profile_personal input[name='user[email]'][value=?]", "ron@example.com"
   end
 
+  test "the section navigation has a link to every card on the page, and nothing else" do
+    sign_in @user
+
+    get profile_path
+
+    cards = css_select("main section[id]").map { |section| section["id"] }
+    links = css_select("main nav a").map { |link| link["href"] }
+    assert_equal 5, cards.size
+    assert_equal cards.map { |id| "##{id}" }, links
+  end
+
   test "the navigation bar links to the profile" do
     sign_in @user
 

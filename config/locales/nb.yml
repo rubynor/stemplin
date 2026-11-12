@@ -411,6 +411,7 @@ nb:
   profile:
     title: "Profil"
     subtitle: "Dine personopplysninger, passord og API-tilgang."
+    sections: "Seksjoner på denne siden"
     personal_information: "Personopplysninger"
     password: "Passord"
     update_password: "Oppdater passord"
