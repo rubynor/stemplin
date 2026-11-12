@@ -178,3 +178,15 @@ class DeleteTimeRegToolTest < ToolTestCase
     assert parsed.key?("error")
   end
 end
+
+class UpdateTimeRegToolSecurityTest < ToolTestCase
+  test "cannot move a time reg to another organization's task" do
+    time_reg = time_regs(:time_reg_1)
+
+    result = call_tool(UpdateTimeRegTool, user: users(:joe), organization: organizations(:organization_one),
+      id: time_reg.id, assigned_task_id: assigned_task(:org_two_task).id)
+
+    assert_equal "Forbidden", parse_result(result)["error"]
+    assert_equal assigned_task(:task_1), time_reg.reload.assigned_task
+  end
+end
