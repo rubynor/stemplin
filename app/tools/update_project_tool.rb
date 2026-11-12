@@ -21,7 +21,7 @@ class UpdateProjectTool < ApplicationTool
     attrs[:name] = name if name
     attrs[:description] = description if description
     attrs[:billable] = billable unless billable.nil?
-    attrs[:client_id] = client_id if client_id
+    attrs[:client_id] = authorized_scope(Client, type: :relation, with: ClientPolicy).find(client_id).id if client_id
     project.rate_currency = rate_currency if rate_currency
     project.update!(attrs)
 

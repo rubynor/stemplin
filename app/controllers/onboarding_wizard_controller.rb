@@ -4,7 +4,12 @@ class OnboardingWizardController < ApplicationController
 
   steps :organization, :setup_choice, :client, :project, :tasks, :finish
 
+  # Setting up clients, projects and tasks is for the organization's admins:
+  # the wizard must not be a way around the workspace policies.
+  SETUP_STEPS = %i[client project tasks].freeze
+
   before_action :authenticate_user!
+  before_action :require_organization_admin, if: -> { SETUP_STEPS.include?(step) }
   layout "devise"
 
   def show
@@ -21,10 +26,10 @@ class OnboardingWizardController < ApplicationController
     when :client
       @client = Client.new(organization: current_user.current_organization)
     when :project
-      @client = Client.find(session[:client_id])
-      @project = Project.new(client_id: session[:client_id], rate: 0)
+      @client = wizard_client
+      @project = Project.new(client: @client, rate: 0)
     when :tasks
-      @project = Project.find(session[:project_id])
+      @project = wizard_project
       @task = Task.new(organization: current_user.current_organization)
     end
     render_wizard
@@ -46,7 +51,7 @@ class OnboardingWizardController < ApplicationController
       session[:client_id] = @client.id
       redirect_to next_wizard_path
     when :project
-      @project = Project.new(project_params.merge(client_id: session[:client_id], onboarding: true))
+      @project = Project.new(project_params.merge(client: wizard_client, onboarding: true))
       @project.save!
       session[:project_id] = @project.id
       access_info = current_user.access_info(@project.organization)
@@ -55,7 +60,7 @@ class OnboardingWizardController < ApplicationController
     when :tasks
       @task = Task.new(task_params.merge(organization: current_user.current_organization))
       @task.save!
-      AssignedTask.create!(project_id: session[:project_id], task: @task)
+      AssignedTask.create!(project: wizard_project, task: @task)
       redirect_to next_wizard_path
     else
       redirect_to stored_location_for(:user) || root_path
@@ -67,6 +72,22 @@ class OnboardingWizardController < ApplicationController
   end
 
   private
+
+  def require_organization_admin
+    return redirect_to(wizard_path(:organization)) if current_user.organizations.empty?
+
+    redirect_to root_path unless current_user.organization_admin?
+  end
+
+  # The client and project made earlier in the wizard, looked up within the
+  # current organization.
+  def wizard_client
+    current_user.current_organization.clients.find(session[:client_id])
+  end
+
+  def wizard_project
+    Project.owned_by(current_user.current_organization).find(session[:project_id])
+  end
 
   def organization_params
     params.require(:organization).permit(:name, :currency)

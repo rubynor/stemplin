@@ -1,5 +1,6 @@
 class Users::PasswordsController < Devise::PasswordsController
   include Rails.application.routes.url_helpers
+  include AuthRateLimiting
 
   invisible_captcha prepend: true, only: [ :create ], on_spam: :handle_spam, on_timestamp_spam: :handle_spam, scope: :user
 
@@ -7,7 +8,8 @@ class Users::PasswordsController < Devise::PasswordsController
     user = User.find_by(email: resource_params[:email])
     if user&.pending_invitation?
       resend_invitation(user)
-      flash[:notice] = t("devise.passwords.send_paranoid_instructions_check_spam")
+      # Same notice as any other address gets, so the form doesn't reveal who has an account.
+      flash[:notice] = t("devise.passwords.send_paranoid_instructions")
       redirect_to new_user_session_path
     else
       super

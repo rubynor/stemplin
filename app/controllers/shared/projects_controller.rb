@@ -42,8 +42,8 @@ module Shared
       csv = CSV.generate(headers: true) do |rows|
         rows << %w[date project task consultant notes minutes hours amount currency]
         time_regs.each do |time_reg|
-          rows << [ time_reg.date_worked, @project.name, time_reg.assigned_task.task&.name, time_reg.user.name, time_reg.notes,
-                   time_reg.minutes, (time_reg.minutes / 60.0).round(2), (summary.amount_for(time_reg) / 100.0).round(2), summary.currency ]
+          rows << CsvSafe.row([ time_reg.date_worked, @project.name, time_reg.assigned_task.task&.name, time_reg.user.name, time_reg.notes,
+                   time_reg.minutes, (time_reg.minutes / 60.0).round(2), (summary.amount_for(time_reg) / 100.0).round(2), summary.currency ])
         end
       end
       send_data csv, type: "text/csv", filename: "#{@project.name.parameterize}_#{@filter.start_date}_#{@filter.end_date}.csv"

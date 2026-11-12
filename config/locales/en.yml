@@ -340,6 +340,8 @@ en:
     deletion_of_he_project: "Do you want to proceed with the deletion of the project"
 
   alert:
+    too_many_attempts: "Too many attempts. Please wait a few minutes and try again."
+    invalid_role: "That role can not be assigned."
     does_not_exist: "does not exist"
     is_already_a_member_of_the_project: "is already a member of the project"
     cannot_remove_last_member_of_the_project: "cannot remove last member of the project"

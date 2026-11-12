@@ -126,6 +126,14 @@ class UpdateProjectToolTest < ToolTestCase
     @project = projects(:project_1)
   end
 
+  test "cannot move a project to another organization's client" do
+    result = call_tool(UpdateProjectTool, user: @admin, organization: @org,
+      id: @project.id, client_id: clients(:f_corp).id)
+
+    assert_equal "Not found", parse_result(result)["error"]
+    assert_equal clients(:e_corp), @project.reload.client
+  end
+
   test "updates a project name" do
     result = call_tool(UpdateProjectTool, user: @admin, organization: @org,
       id: @project.id, name: "Updated CRM")

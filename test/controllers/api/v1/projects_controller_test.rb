@@ -63,4 +63,28 @@ class Api::V1::ProjectsControllerTest < Api::V1::BaseTest
     end
     assert_response :forbidden
   end
+
+  test "update cannot move a project to another organization's client" do
+    admin = users(:organization_admin)
+    project = projects(:project_1)
+
+    patch api_v1_project_path(project),
+      params: { project: { client_id: clients(:f_corp).id } },
+      headers: api_headers(admin, organization: organizations(:organization_one))
+
+    assert_response :not_found
+    assert_equal clients(:e_corp), project.reload.client
+  end
+
+  test "create ignores an organization_id on a nested task" do
+    admin = users(:organization_admin)
+
+    post api_v1_projects_path,
+      params: { project: { name: "With smuggled task", client_id: clients(:e_corp).id, rate_currency: "0",
+        assigned_tasks_attributes: [ { rate: 0, task_attributes: { name: "Smuggled API task", organization_id: organizations(:organization_two).id } } ] } },
+      headers: api_headers(admin, organization: organizations(:organization_one))
+
+    assert_response :created
+    assert_equal organizations(:organization_one), Task.find_by!(name: "Smuggled API task").organization
+  end
 end

@@ -114,7 +114,7 @@ export default class extends Controller {
             const textElement = newOption.querySelector("span");
 
             newOption.firstElementChild.dataset.value = value;
-            textElement.innerHTML = label;
+            textElement.textContent = label;
 
             this.listTarget.appendChild(newOption);
         }

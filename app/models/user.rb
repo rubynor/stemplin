@@ -88,6 +88,9 @@ class User < ApplicationRecord
 
   # Re-inviting someone whose membership was archived restores it.
   def update_or_create_access_info(role, organization)
+    # `super_admin` is not a role an organization can hand out.
+    raise ArgumentError, I18n.t("alert.invalid_role") unless AccessInfo.allowed_organization_roles.include?(role.to_s)
+
     access_info = all_access_infos.find_by(organization: organization)
     if access_info
       access_info.update!(role: AccessInfo.roles[role], archived_at: nil)

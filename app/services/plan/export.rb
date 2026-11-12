@@ -34,7 +34,7 @@ module Plan
         rows.sort_by { |key, _| key.map { |part| part.to_s.downcase } }.each do |key, minutes|
           next if minutes.sum.zero?
 
-          csv << key + minutes.map { |value| hours(value) } + [ hours(minutes.sum) ]
+          csv << CsvSafe.row(key) + minutes.map { |value| hours(value) } + [ hours(minutes.sum) ]
         end
       end
     end

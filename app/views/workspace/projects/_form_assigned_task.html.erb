@@ -17,7 +17,6 @@
       <% unless assigned_task.task.id %>
         <%= assigned_task_form.fields_for :task do |task_form| %>
           <%= task_form.hidden_field :name %>
-          <%= task_form.hidden_field :organization_id %>
         <% end %>
       <% end %>
     <% end %>

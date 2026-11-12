@@ -36,7 +36,7 @@ export default class extends Controller {
             const button = newItem.querySelector("button[type='button']");
 
             newItem.firstElementChild.dataset.value = value;
-            textElement.innerHTML = label;
+            textElement.textContent = label;
             inputElement.value = value;
             Object.assign(button.dataset, { value, label, itemType });
 

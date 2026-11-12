@@ -34,6 +34,7 @@ class Api::V1::TimeRegsControllerTest < Api::V1::BaseTest
   end
 
   test "create time reg" do
+    ProjectAccess.create!(access_info: @user.access_info, project: @assigned_task.project)
     assert_difference("TimeReg.count") do
       post api_v1_time_regs_path,
         params: { time_reg: { date_worked: Date.today, minutes: 60, assigned_task_id: @assigned_task.id } },
@@ -60,5 +61,21 @@ class Api::V1::TimeRegsControllerTest < Api::V1::BaseTest
     other_user_time_reg = time_regs(:time_reg_2)
     get api_v1_time_reg_path(other_user_time_reg), headers: api_headers(@user)
     assert_response :not_found
+  end
+
+  test "update cannot move a time reg to another organization's task" do
+    patch api_v1_time_reg_path(@time_reg),
+      params: { time_reg: { assigned_task_id: assigned_task(:org_two_task).id } },
+      headers: api_headers(@user)
+
+    assert_response :forbidden
+    assert_equal assigned_task(:task_1), @time_reg.reload.assigned_task
+  end
+
+  test "index caps per_page" do
+    get api_v1_time_regs_path(per_page: 100_000), headers: api_headers(@user)
+
+    assert_response :success
+    assert_equal Api::V1::TimeRegsController::MAX_PER_PAGE, assigns(:pagy).vars[:items]
   end
 end
