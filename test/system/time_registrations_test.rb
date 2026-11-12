@@ -12,10 +12,10 @@ class TimeRegistrationsTest < ApplicationSystemTestCase
 
       # The dialog component moves the form out of its turbo frame, so the
       # fields are addressed directly rather than scoped to the frame.
-      select projects(:project_1).name, from: "time_reg_project_id"
+      custom_select projects(:project_1).name, from: "time_reg_project_id"
       # The task list is filled in by the time-tasks Stimulus controller in
       # response to the project selection; Capybara waits for it to appear.
-      select tasks(:coding).name, from: "time_reg_assigned_task_id"
+      custom_select tasks(:coding).name, from: "time_reg_assigned_task_id"
       fill_in "time_reg_notes", with: "Pair programming on the invoice screen"
       fill_in "time_reg_minutes_string", with: "1:30"
       find("form#new_time_reg button[type='submit']").click

@@ -29,7 +29,7 @@ module ReportsHelper
   end
 
   def filter_check_box(checkbox, checked, options = {})
-    checkbox.label(class: "bg-white px-3 py-1.5 rounded-sm cursor-pointer") do
+    checkbox.label(class: "flex items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-accent") do
       checkbox_tag = checkbox.check_box(checked: checked, class: "mr-2", **options)
       label_text = checkbox.text
 
@@ -38,7 +38,7 @@ module ReportsHelper
   end
 
   def single_filter_check_box(form, method, label_text, checked, options = {})
-    form.label(method, class: "font-bold bg-white px-3 py-1.5 rounded-sm cursor-pointer") do
+    form.label(method, class: "flex items-center font-semibold px-2 py-1.5 rounded-md cursor-pointer hover:bg-accent") do
       checkbox_tag = form.check_box(method, checked: checked, class: "mr-2", **options)
 
       "#{checkbox_tag} #{label_text}".html_safe

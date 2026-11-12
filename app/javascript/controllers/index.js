@@ -46,6 +46,9 @@ application.register("custom-dropdown", CustomDropdownController)
 import CustomInputController from "./custom_input_controller"
 application.register("custom-input", CustomInputController)
 
+import CustomSelectController from "./custom_select_controller"
+application.register("custom-select", CustomSelectController)
+
 import DynamicTaskUrlController from "./dynamic_task_url_controller"
 application.register("dynamic-task-url", DynamicTaskUrlController)
 

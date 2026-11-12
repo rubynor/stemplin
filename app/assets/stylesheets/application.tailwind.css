@@ -219,8 +219,14 @@
            focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/25
            disabled:cursor-not-allowed disabled:opacity-60;
   }
-  .form-checkbox {
-    @apply h-4 w-4 rounded border-input text-primary-600 focus:ring-2 focus:ring-ring/25 focus:ring-offset-0;
+  /* Every checkbox gets the same look, whether or not it carries the class. */
+  .form-checkbox,
+  input[type="checkbox"] {
+    @apply h-4 w-4 shrink-0 cursor-pointer rounded border-input bg-background text-primary-600 shadow-xs transition-colors
+           hover:border-primary
+           focus:ring-2 focus:ring-ring/25 focus:ring-offset-0
+           checked:border-primary-600 indeterminate:border-primary-600
+           disabled:cursor-not-allowed disabled:opacity-60;
   }
   .form-error {
     @apply text-xs text-destructive-foreground mt-1.5;

@@ -12,7 +12,7 @@
           <%= render RubyUI::FormField.new do %>
             <%= render RubyUI::FormFieldLabel.new { t("common.role") } %>
             <%= render RubyUI::FormFieldHint.new { t("common.select_organization_user") } %>
-            <%= form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { prompt: t("common.select_role"), selected: selected_role }, required: true, class: "form-input", data: { show_on_value_target: "input" } %>
+            <%= form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { prompt: t("common.select_role"), selected: selected_role }, required: true, class: "form-input", data: custom_select_data(show_on_value_target: "input") %>
           <% end %>
 
           <%= render RubyUI::FormField.new(data: { show_on_value_target: "toggle" }) do  %>

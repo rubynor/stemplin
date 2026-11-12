@@ -15,7 +15,7 @@
           <% end %>
           <%= render RubyUI::FormField.new(class: "flex flex-col") do  %>
             <%= render RubyUI::FormFieldLabel.new { t("common.currency") } %>
-            <%= form.select :currency, Stemplin.config.currencies.keys.map { |code| [ currency_title_and_code(code), code ] }, { include_blank: true }, required: true, class: "form-input" %>
+            <%= form.select :currency, Stemplin.config.currencies.keys.map { |code| [ currency_title_and_code(code), code ] }, { include_blank: true }, required: true, class: "form-input", data: custom_select_data %>
             <% @organization.errors.full_messages_for(:currency).each do |message|%>
               <%= render RubyUI::FormFieldError.new(class: "w-full form-error") { message }  %>
             <% end %>

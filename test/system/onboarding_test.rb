@@ -27,7 +27,9 @@ class OnboardingTest < ApplicationSystemTestCase
   private
 
   def select_currency(code)
-    option = find("#organization_currency option[value='#{code}']").text
-    select option, from: "organization_currency"
+    # The native select is hidden behind the styled dropdown, so its option
+    # is read without regard to visibility.
+    option = find("#organization_currency option[value='#{code}']", visible: :all).text
+    custom_select option, from: "organization_currency"
   end
 end

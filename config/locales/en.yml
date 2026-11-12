@@ -71,6 +71,8 @@ en:
         timer_running: "Another timer is already running"
 
   common:
+    search: "Search…"
+    no_results: "No results"
     client: "Client"
     clients: "Clients"
     tasks: "Tasks"
