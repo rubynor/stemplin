@@ -219,8 +219,14 @@
            focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/25
            disabled:cursor-not-allowed disabled:opacity-60;
   }
-  .form-checkbox {
-    @apply h-4 w-4 rounded border-input text-primary-600 focus:ring-2 focus:ring-ring/25 focus:ring-offset-0;
+  /* Every checkbox gets the same look, whether or not it carries the class. */
+  .form-checkbox,
+  input[type="checkbox"] {
+    @apply h-4 w-4 shrink-0 cursor-pointer rounded border-input bg-background text-primary-600 shadow-xs transition-colors
+           hover:border-primary
+           focus:ring-2 focus:ring-ring/25 focus:ring-offset-0
+           checked:border-primary-600 indeterminate:border-primary-600
+           disabled:cursor-not-allowed disabled:opacity-60;
   }
   .form-error {
     @apply text-xs text-destructive-foreground mt-1.5;
@@ -307,4 +313,47 @@
 
 .hide-table-overflow > div {
   overflow: unset !important; /* Disable overflow on div wrapping table component from PhlexUI */
+}
+
+/* Scrollbars — a slim, pill-shaped thumb on a transparent track, in the
+   same grey as muted text. The transparent border insets the thumb from
+   the edge, and the track margin keeps it clear of rounded corners. */
+@layer base {
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    min-height: 32px;
+    min-width: 32px;
+    border: 3px solid transparent;
+    border-radius: 9999px;
+    background-color: rgb(var(--muted-foreground) / 0.35);
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--muted-foreground) / 0.6);
+  }
+  ::-webkit-scrollbar-thumb:active {
+    background-color: rgb(var(--muted-foreground) / 0.8);
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  /* The arrow buttons at either end are dropped entirely. */
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  /* Firefox has no scrollbar pseudo-elements; this is its closest match. */
+  @supports not selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: rgb(var(--muted-foreground) / 0.35) transparent;
+    }
+  }
 }

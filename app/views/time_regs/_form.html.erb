@@ -56,7 +56,8 @@
                 <div class="mb-4">
                   <%= form.label :user, t("common.member"), class: 'form-label' %>
                   <%= form.collection_select :user_id, (team_members || [] ), :id, ->(member) { "#{member.first_name} #{member.last_name}" }, { selected: "", prompt: t("common.select_member") }, {
-                    class: 'form-input'
+                    class: 'form-input',
+                    data: custom_select_data
                   } %>
                   <% time_reg.errors.full_messages_for(:user).each do |message| %>
                     <div class="form-error"><%= t("common.select_member") %></div>
@@ -83,7 +84,7 @@
                   prompt: t('common.select_project'),
                 }, {
                   class: 'form-input',
-                  data: { action: "change->custom-disable#toggleElement", custom_disable_enable_param: true }
+                  data: custom_select_data(action: "change->custom-disable#toggleElement", custom_disable_enable_param: true)
                 } %>
               </div>
 
@@ -91,7 +92,8 @@
                 <%= form.label :assigned_task_id, t('task.assign_task'), class: 'form-label' %>
                 <%= form.collection_select :assigned_task_id, (assigned_tasks || [] ), :id, :name, {
                   selected: time_reg.assigned_task&.id, include_blank: !time_reg.assigned_task }, {
-                                              class: 'form-input'
+                                              class: 'form-input',
+                                              data: custom_select_data
                                             } %>
                 <% time_reg.errors.full_messages_for(:assigned_task).each do |message| %>
                   <div class="form-error"><%= t('alert.please_select_a_task') %></div>

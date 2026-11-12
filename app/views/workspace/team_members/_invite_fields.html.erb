@@ -4,7 +4,7 @@
       <%= user_form.email_field :email, placeholder: t("common.email"), required: true, value: user_params.email, class: "border-border rounded-md w-full email-input invalid:border-red-600 placeholder:text-muted-foreground" %>
     <% end %>      
     <%= content_tag :div, class: "w-full sm:w-4/12 sm:px-2" do %>
-      <%= user_form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { selected: user_params.role, required: true }, class: "form-input", data: { show_on_value_target: "input" } %>
+      <%= user_form.select :role, roles.map { |role| [t("access_info.role." + role), role] }, { selected: user_params.role, required: true }, class: "form-input", data: custom_select_data(show_on_value_target: "input") %>
     <% end %>
     <%= content_tag :div, class: "w-full sm:w-3/12" do %>
       <%= content_tag :div, data: { show_on_value_target: "toggle" } do %>

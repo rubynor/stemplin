@@ -9,6 +9,19 @@ module ApplicationHelper
     format("%02d:%02d", hours, minutes)
   end
 
+  # Data attributes that turn a native <select> into the styled dropdown.
+  # Merge in whatever other data attributes the select needs:
+  #   form.select :role, roles, {}, class: "form-input", data: custom_select_data(action: "change->foo#bar")
+  def custom_select_data(extra = {})
+    extra = extra.symbolize_keys
+    {
+      **extra,
+      controller: [ "custom-select", extra[:controller] ].compact.join(" "),
+      custom_select_search_placeholder_value: t("common.search"),
+      custom_select_empty_text_value: t("common.no_results")
+    }
+  end
+
   def format_date(date)
     date.strftime("%A, %d. %b")
   end

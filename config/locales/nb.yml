@@ -87,6 +87,8 @@ nb:
         timer_running: "En annen stoppeklokke går fortsatt"
 
   common:
+    search: "Søk…"
+    no_results: "Ingen treff"
     client: "Kunde"
     clients: "Kunder"
     tasks: "Oppgaver"

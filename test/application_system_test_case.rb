@@ -37,6 +37,13 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     assert_no_selector "#flash [data-controller='snackbar']", visible: :all
   end
 
+  # Picks an option from a styled dropdown (the custom-select controller),
+  # addressed by the id of the native select it stands in for.
+  def custom_select(text, from:)
+    find("[data-custom-select-trigger][data-custom-select-for='#{from}']").click
+    find("[data-custom-select-popover][data-custom-select-for='#{from}'] [role='option']", text: text, exact_text: true).click
+  end
+
   def after_teardown
     dump_browser_console if failed?
   ensure

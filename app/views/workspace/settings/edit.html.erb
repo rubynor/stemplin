@@ -10,7 +10,7 @@
         <%= render RubyUI::TableRow.new do %>
           <%= render RubyUI::TableCell.new(class: "py-4 font-medium") { t("common.currency") } %>
           <%= render RubyUI::TableCell.new(class: "py-4") do %>
-            <%= form.select :currency, for_select(@available_currencies), { required: true }, class: "form-input" %>
+            <%= form.select :currency, for_select(@available_currencies), { required: true }, class: "form-input", data: custom_select_data %>
           <% end %>
         <% end %>
         <%= render RubyUI::TableRow.new do %>

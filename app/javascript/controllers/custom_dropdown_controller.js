@@ -1,40 +1,99 @@
 import { Controller } from '@hotwired/stimulus'
+import { computePosition, autoUpdate, offset, flip, shift, size } from '@floating-ui/dom'
+
+const MAX_HEIGHT = 320;
+// Below this much room under the trigger, the panel opens upward instead.
+const MIN_HEIGHT_BELOW = 200;
 
 export default class extends Controller {
   static targets = ['trigger', 'content'];
   static values = { closeBackgroundDelay: Boolean };
 
-  contentTargetConnected() {
-    window.addEventListener('resize', () => this.resizeContent());
+  disconnect() {
+    this.stopAutoUpdate?.();
   }
 
-  resizeContent() {
-    if (!this.originalContentHeight) {
-      this.originalContentHeight = this.contentTarget.getBoundingClientRect().height;
-    }
+  // Called from the trigger's click action (toggles) or with a boolean.
+  toggleContent(open) {
+    const shouldOpen = typeof open === 'boolean' ? open : !this.isOpen();
 
-    let triggerBottom = this.triggerTarget.getBoundingClientRect().bottom;
-    const availableContentSpace = window.innerHeight - triggerBottom - 20;
-
-    if (this.originalContentHeight > availableContentSpace) {
-      this.contentTarget.style.bottom = -availableContentSpace + "px";
-    } else {
-      this.contentTarget.style.bottom = "unset";
-    }
-  }
-
-  toggleContent(isActionOpen = true) {
     this.closeOtherDropdowns();
-    this.contentTarget.classList.toggle('hidden', !isActionOpen);
-    this.contentTarget.classList.toggle('absolute', isActionOpen);
+    if (shouldOpen) {
+      this.show();
+    } else {
+      this.hide(this.contentTarget);
+    }
+  }
 
-    this.resizeContent()
+  // The panel holds form fields, so it has to stay where it is in the DOM.
+  // Promoting it to the browser's top layer lets it escape a dialog's
+  // scroll area and stacking context without moving it.
+  show() {
+    const content = this.contentTarget;
+    content.classList.remove('hidden');
+
+    if (typeof content.showPopover !== 'function') {
+      content.classList.add('absolute');
+      return;
+    }
+
+    content.setAttribute('popover', 'manual');
+    // Clear the browser's centring and the in-flow offset before measuring.
+    Object.assign(content.style, { position: 'fixed', inset: 'auto', left: '0', top: '0', margin: '0' });
+    content.showPopover();
+
+    this.stopAutoUpdate?.();
+    this.stopAutoUpdate = autoUpdate(this.triggerTarget, content, () => this.position());
+  }
+
+  hide(content) {
+    content.classList.add('hidden');
+    content.classList.remove('absolute');
+    if (content.hasAttribute('popover') && content.matches(':popover-open')) {
+      content.hidePopover();
+    }
+    if (content === this.contentTarget) {
+      this.stopAutoUpdate?.();
+      this.stopAutoUpdate = null;
+    }
+  }
+
+  position() {
+    const content = this.contentTarget;
+    // Another dropdown may have closed this one directly.
+    if (!this.isOpen()) {
+      this.stopAutoUpdate?.();
+      this.stopAutoUpdate = null;
+      return;
+    }
+
+    const matchTriggerWidth = content.classList.contains('w-full');
+    // Prefer opening downward and scrolling over covering what is above.
+    const roomBelow = window.innerHeight - this.triggerTarget.getBoundingClientRect().bottom - 16;
+
+    computePosition(this.triggerTarget, content, {
+      strategy: 'fixed',
+      placement: 'bottom-start',
+      middleware: [
+        offset(8),
+        ...(roomBelow < MIN_HEIGHT_BELOW ? [flip({ padding: 8 })] : []),
+        shift({ padding: 8 }),
+        size({
+          padding: 8,
+          apply: ({ rects, availableHeight, elements }) => {
+            elements.floating.style.maxHeight = `${Math.max(120, Math.min(availableHeight, MAX_HEIGHT))}px`;
+            if (matchTriggerWidth) elements.floating.style.width = `${rects.reference.width}px`;
+          },
+        }),
+      ],
+    }).then(({ x, y }) => {
+      Object.assign(content.style, { left: `${Math.round(x)}px`, top: `${Math.round(y)}px` });
+    });
   }
 
   closeOtherDropdowns() {
     document.querySelectorAll('.custom-dropdown-component-content').forEach(content => {
-      content.classList.add('hidden');
-      content.classList.remove('absolute');
+      if (content !== this.contentTarget) this.hide(content);
     });
   }
 
