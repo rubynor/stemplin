@@ -1,0 +1,49 @@
+<%# locals: (api_token:, revealed: nil, editing: nil) %>
+<%# One row with two faces: the label with its actions, and the rename form.
+    The visibility controller swaps them. %>
+<li id="<%= dom_id(api_token) %>" class="py-3" data-controller="visibility">
+  <%= content_tag :div, class: class_names("flex flex-wrap items-center gap-x-4 gap-y-2", hidden: editing), data: { visibility_target: "hideable" } do %>
+    <div class="min-w-0 flex-1">
+      <div class="text-sm font-medium text-primary-text truncate"><%= api_token.name %></div>
+      <div class="text-xs text-muted-foreground"><%= t("api_token.created_on", date: l(api_token.created_at.to_date, format: "%-d %b %Y")) %></div>
+    </div>
+    <% unless revealed %>
+      <span class="font-mono text-sm text-muted-foreground tracking-widest select-none" title="<%= t("api_token.hidden") %>">
+        <span aria-hidden="true">••••••••••••••••</span>
+        <span class="sr-only"><%= t("api_token.hidden") %></span>
+      </span>
+    <% end %>
+    <div class="flex items-center gap-x-1">
+      <%= render ButtonComponent.new(type: "button", variant: :ghost, data: { action: "visibility#toggleTargets" }) { t("api_token.rename") } %>
+      <%= render ButtonComponent.new(variant: :destructive, method: :delete, path: profile_api_token_path(api_token),
+            form: { data: { turbo_confirm: t("api_token.delete_confirm", name: api_token.name) } }) { t("common.delete") } %>
+    </div>
+  <% end %>
+
+  <%= form_with model: (editing || api_token), scope: :api_token, url: profile_api_token_path(api_token), method: :patch,
+        class: class_names("flex flex-col gap-y-2", hidden: !editing), data: { visibility_target: "hideable" } do |form| %>
+    <%= render AlertComponent.new(variant: :destructive, title: t("common.unable_to_proceed"), message: editing.errors.full_messages) if editing&.errors&.any? %>
+    <div class="flex flex-col sm:flex-row gap-3">
+      <div class="sm:flex-1">
+        <%= form.text_field :name, id: dom_id(api_token, :name), required: true, maxlength: 60, autocomplete: "off",
+              aria: { label: t("api_token.label") }, class: "form-input" %>
+      </div>
+      <div class="flex items-center gap-x-2">
+        <%= render ButtonComponent.new(type: "submit") { t("common.save") } %>
+        <%= render ButtonComponent.new(type: "button", variant: :ghost, data: { action: "visibility#toggleTargets" }) { t("common.cancel") } %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if revealed %>
+    <div class="flex flex-col gap-y-2 mt-3 p-4 bg-warning border border-warning-foreground/30 rounded-lg">
+      <span class="text-sm font-semibold text-warning-foreground"><%= t("api_token.one_time_notice") %></span>
+      <div class="flex flex-wrap items-center gap-3">
+        <code class="font-mono text-sm text-foreground select-all break-all flex-1"><%= revealed.plaintext %></code>
+        <%= render ButtonComponent.new(type: "button", variant: :outline, data: { controller: "copy-link", action: "copy-link#copy", copy_link_text_value: revealed.plaintext, copy_link_copied_label_value: t("profile.copied") }) do %>
+          <span data-copy-link-target="label"><%= t("profile.copy") %></span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</li>

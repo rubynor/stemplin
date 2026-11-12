@@ -1,0 +1,11 @@
+<%# How to give Claude Code the Stemplin skill from the CLI repository
+    (github.com/rubynor/stemplin-cli). It reads the same ~/.stemplinrc the CLI
+    does, which is why the command line card comes first. %>
+<section id="profile_claude" class="surface-card p-5 lg:p-6">
+  <h2 class="section-title"><%= t("profile.claude.title") %></h2>
+  <p class="text-sm text-muted-foreground mt-1"><%= t("profile.claude.intro") %></p>
+
+  <p class="text-sm text-secondary-text mt-4"><%= t("profile.claude.requires_cli") %></p>
+  <%= render "profiles/copyable", text: stemplin_claude_skill_install_command %>
+  <p class="text-xs text-muted-foreground mt-2"><%= t("profile.claude.after_install") %></p>
+</section>

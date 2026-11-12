@@ -3,6 +3,20 @@ module ApplicationHelper
     "https://stemplin.com/"
   end
 
+  STEMPLIN_CLI_FILES = "https://raw.githubusercontent.com/rubynor/stemplin-cli/main"
+
+  # Installs the `stemplin` command from the public CLI repository.
+  def stemplin_cli_install_command
+    "curl -sSL #{STEMPLIN_CLI_FILES}/install.sh | bash"
+  end
+
+  # Installs the Stemplin skill for Claude Code. Claude Code only loads a skill
+  # that sits in a folder of its own as SKILL.md, so that is where it goes.
+  def stemplin_claude_skill_install_command
+    skill = "~/.claude/skills/stemplin-api"
+    "mkdir -p #{skill} && curl -sSL #{STEMPLIN_CLI_FILES}/skill/stemplin-api.md -o #{skill}/SKILL.md"
+  end
+
   def format_duration(total_minutes)
     hours = total_minutes / 60
     minutes = total_minutes % 60

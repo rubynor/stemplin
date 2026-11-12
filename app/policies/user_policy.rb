@@ -11,8 +11,9 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
-  def regenerate_token?
-    true
+  # The profile page: personal details, password and API token. Only ever your own.
+  def manage_profile?
+    record == user
   end
 
   # Admins also see members who have been archived: their time regs are still

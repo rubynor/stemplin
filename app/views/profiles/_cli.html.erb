@@ -1,0 +1,63 @@
+<%# locals: (organization:) %>
+<%# How to connect the Stemplin CLI (github.com/rubynor/stemplin-cli) to this
+    account. The address and organization id are filled in for this server and
+    this user, so the only thing left to bring is a token. %>
+<% step_number = "h-6 w-6 rounded-full bg-primary-50 text-primary-700 text-xs font-semibold flex items-center justify-center shrink-0" %>
+<% setting_name = "font-mono text-xs font-semibold text-secondary-text" %>
+
+<section id="profile_cli" class="surface-card p-5 lg:p-6">
+  <h2 class="section-title"><%= t("profile.cli.title") %></h2>
+  <p class="text-sm text-muted-foreground mt-1"><%= t("profile.cli.intro") %></p>
+
+  <ol class="flex flex-col gap-y-5 mt-5">
+    <li class="flex gap-x-3">
+      <span class="<%= step_number %>">1</span>
+      <div class="min-w-0 flex-1">
+        <h3 class="text-sm font-medium text-primary-text"><%= t("profile.cli.token_step") %></h3>
+        <p class="text-sm text-secondary-text mt-1"><%= t("profile.cli.token_hint") %></p>
+      </div>
+    </li>
+
+    <li class="flex gap-x-3">
+      <span class="<%= step_number %>">2</span>
+      <div class="min-w-0 flex-1">
+        <h3 class="text-sm font-medium text-primary-text"><%= t("profile.cli.install_step") %></h3>
+        <%= render "profiles/copyable", text: stemplin_cli_install_command %>
+        <p class="text-xs text-muted-foreground mt-2"><%= t("profile.cli.install_hint") %></p>
+      </div>
+    </li>
+
+    <li class="flex gap-x-3">
+      <span class="<%= step_number %>">3</span>
+      <div class="min-w-0 flex-1">
+        <h3 class="text-sm font-medium text-primary-text"><%= t("profile.cli.answers_step") %></h3>
+        <dl class="flex flex-col gap-y-4 mt-3">
+          <div>
+            <dt class="<%= setting_name %>">STEMPLIN_URL</dt>
+            <dd><%= render "profiles/copyable", text: root_url.chomp("/") %></dd>
+          </div>
+          <div>
+            <dt class="<%= setting_name %>">STEMPLIN_API_TOKEN</dt>
+            <dd class="text-sm text-secondary-text mt-1"><%= t("profile.cli.token_answer") %></dd>
+          </div>
+          <div>
+            <dt class="<%= setting_name %>">STEMPLIN_ORG_ID</dt>
+            <dd>
+              <%= render "profiles/copyable", text: organization.id.to_s %>
+              <p class="text-xs text-muted-foreground mt-2"><%= t("profile.cli.organization_hint", organization: organization.name) %></p>
+            </dd>
+          </div>
+        </dl>
+        <p class="text-xs text-muted-foreground mt-4"><%= t("profile.cli.config_file_hint") %></p>
+      </div>
+    </li>
+
+    <li class="flex gap-x-3">
+      <span class="<%= step_number %>">4</span>
+      <div class="min-w-0 flex-1">
+        <h3 class="text-sm font-medium text-primary-text"><%= t("profile.cli.check_step") %></h3>
+        <%= render "profiles/copyable", text: "stemplin me" %>
+      </div>
+    </li>
+  </ol>
+</section>

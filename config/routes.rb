@@ -11,8 +11,11 @@ Rails.application.routes.draw do
     root to: "time_regs#index", as: :authenticated_root
   end
 
-  namespace :users do
-    resource :api_token, only: :create
+  resource :profile, only: %i[show update] do
+    scope module: :profiles do
+      resource :password, only: :update
+      resources :api_tokens, only: %i[create update destroy]
+    end
   end
 
   root to: redirect("users/sign_in")

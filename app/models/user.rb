@@ -4,9 +4,10 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  self.ignored_columns += [ "is_verified", "api_token" ]
+  self.ignored_columns += [ "is_verified", "api_token", "api_token_digest" ]
 
   has_many :time_regs
+  has_many :api_tokens, dependent: :destroy
   # `access_infos` only covers organizations the user is still a member of, so
   # everything derived from it (organizations, current organization, policy
   # scopes) ignores memberships that were archived when the user left.
@@ -102,19 +103,7 @@ class User < ApplicationRecord
     access_info.super_admin?
   end
 
-  def regenerate_api_token!
-    token = SecureRandom.base58(24)
-    update!(api_token_digest: Digest::SHA256.hexdigest(token))
-    token
-  end
-
-  def ensure_api_token!
-    regenerate_api_token! unless api_token_digest?
-  end
-
   def self.find_by_api_token(token)
-    return nil if token.blank?
-
-    find_by(api_token_digest: Digest::SHA256.hexdigest(token))
+    ApiToken.find_by_plaintext(token)&.user
   end
 end

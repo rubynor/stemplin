@@ -16,12 +16,14 @@ Stemplin provides a REST API under `/api/v1/` with Bearer token authentication.
 
 ### Authentication
 
-Generate an API token via the Rails console:
+Generate an API token on your profile page (user menu → Profile → API tokens). You can have several, each with a label of your own, and rename or delete them there.
+
+Or from the Rails console:
 
 ```ruby
 user = User.find_by(email: "you@example.com")
-token = user.regenerate_api_token!
-puts token # save this — it's only shown once
+token = user.api_tokens.create!(name: "Console")
+puts token.plaintext # save this — it's only shown once
 ```
 
 Use the token in requests:
@@ -40,7 +42,7 @@ The `X-Organization-Id` header is optional — if omitted, the user's default or
 |--------|------|-------------|
 | GET | `/api/v1/users/me` | Current user info |
 | GET | `/api/v1/users` | List organization users |
-| PATCH | `/api/v1/api_token` | Regenerate API token (returns new token) |
+| PATCH | `/api/v1/api_token` | Regenerate the token making the request (returns the new one) |
 | GET | `/api/v1/organizations` | List organizations |
 | GET | `/api/v1/organizations/:id` | Show organization |
 | GET/POST | `/api/v1/clients` | List / create clients |

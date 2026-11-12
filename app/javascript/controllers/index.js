@@ -49,6 +49,9 @@ application.register("custom-input", CustomInputController)
 import DynamicTaskUrlController from "./dynamic_task_url_controller"
 application.register("dynamic-task-url", DynamicTaskUrlController)
 
+import EmailChangeController from "./email_change_controller"
+application.register("email-change", EmailChangeController)
+
 import FileUploadController from "./file_upload_controller"
 application.register("file-upload", FileUploadController)
 

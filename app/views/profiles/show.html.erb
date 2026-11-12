@@ -1,0 +1,75 @@
+<% content_for :title, t("profile.title") %>
+<%# Only one form is submitted at a time. The card that was submitted renders
+    the record carrying its errors; the other one renders the user as saved. %>
+<% password_user = @password_user || current_user %>
+
+<div class="page-shell py-6 lg:py-8">
+  <div class="max-w-2xl mx-auto flex flex-col gap-y-6">
+    <div>
+      <h1 class="page-title"><%= t("profile.title") %></h1>
+      <p class="page-subtitle"><%= t("profile.subtitle") %></p>
+    </div>
+
+    <section id="profile_personal" class="surface-card p-5 lg:p-6">
+      <h2 class="section-title"><%= t("profile.personal_information") %></h2>
+      <%= form_with model: @user, scope: :user, url: profile_path, method: :patch, class: "flex flex-col gap-y-4 mt-4",
+            data: { controller: "email-change", email_change_original_value: @user.email_was } do |form| %>
+        <%= render AlertComponent.new(variant: :destructive, title: t("common.unable_to_proceed"), message: @user.errors.full_messages) if @user.errors.any? %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
+            <%= render RubyUI::FormFieldLabel.new(for: "profile_first_name") { t("registration.first_name") } %>
+            <%= form.text_field :first_name, id: "profile_first_name", autocomplete: "given-name", required: true, class: "form-input" %>
+          <% end %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
+            <%= render RubyUI::FormFieldLabel.new(for: "profile_last_name") { t("registration.last_name") } %>
+            <%= form.text_field :last_name, id: "profile_last_name", autocomplete: "family-name", required: true, class: "form-input" %>
+          <% end %>
+        </div>
+        <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
+          <%= render RubyUI::FormFieldLabel.new(for: "profile_email") { t("registration.email") } %>
+          <%= form.email_field :email, id: "profile_email", autocomplete: "email", required: true, class: "form-input",
+                data: { email_change_target: "email", action: "input->email-change#toggle" } %>
+        <% end %>
+        <%# Shown once the email is edited; the server asks for it either way. %>
+        <%= content_tag :div, class: class_names("flex flex-col gap-y-2", hidden: !@user.email_changed?), data: { email_change_target: "confirmation" } do %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
+            <%= render RubyUI::FormFieldLabel.new(for: "profile_email_current_password") { t("registration.current_password") } %>
+            <%= form.password_field :current_password, id: "profile_email_current_password", autocomplete: "current-password", class: "form-input" %>
+          <% end %>
+          <p class="text-sm text-muted-foreground"><%= t("profile.email_change_hint") %></p>
+        <% end %>
+        <div class="flex justify-end">
+          <%= render ButtonComponent.new(type: "submit") { t("common.save") } %>
+        </div>
+      <% end %>
+    </section>
+
+    <section id="profile_password" class="surface-card p-5 lg:p-6">
+      <h2 class="section-title"><%= t("profile.password") %></h2>
+      <%= form_with model: password_user, scope: :user, url: profile_password_path, method: :patch, class: "flex flex-col gap-y-4 mt-4" do |form| %>
+        <%= render AlertComponent.new(variant: :destructive, title: t("common.unable_to_proceed"), message: password_user.errors.full_messages) if password_user.errors.any? %>
+        <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
+          <%= render RubyUI::FormFieldLabel.new(for: "profile_current_password") { t("registration.current_password") } %>
+          <%= form.password_field :current_password, id: "profile_current_password", autocomplete: "current-password", required: true, class: "form-input" %>
+        <% end %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
+            <%= render RubyUI::FormFieldLabel.new(for: "profile_new_password") { t("registration.new_password") } %>
+            <%= form.password_field :password, id: "profile_new_password", autocomplete: "new-password", required: true, class: "form-input" %>
+          <% end %>
+          <%= render RubyUI::FormField.new(class: "flex flex-col") do %>
+            <%= render RubyUI::FormFieldLabel.new(for: "profile_password_confirmation") { t("registration.confirm_password") } %>
+            <%= form.password_field :password_confirmation, id: "profile_password_confirmation", autocomplete: "new-password", required: true, class: "form-input" %>
+          <% end %>
+        </div>
+        <div class="flex justify-end">
+          <%= render ButtonComponent.new(type: "submit") { t("profile.update_password") } %>
+        </div>
+      <% end %>
+    </section>
+
+    <%= render "profiles/api_tokens/section", user: current_user %>
+    <%= render "profiles/cli", organization: current_user.current_organization %>
+    <%= render "profiles/claude" %>
+  </div>
+</div>
