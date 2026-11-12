@@ -259,12 +259,15 @@ export default class extends Controller {
   }
 
   position() {
+    // Prefer opening downward and scrolling; flip up only when there is
+    // too little room below to show a usable list.
+    const roomBelow = window.innerHeight - this.trigger.getBoundingClientRect().bottom - 12
     computePosition(this.trigger, this.popover, {
       strategy: "fixed",
       placement: "bottom-start",
       middleware: [
         offset(4),
-        flip({ padding: 8 }),
+        ...(roomBelow < 200 ? [flip({ padding: 8 })] : []),
         size({
           padding: 8,
           apply: ({ rects, availableHeight, elements }) => {

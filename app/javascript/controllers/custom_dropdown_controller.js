@@ -2,6 +2,8 @@ import { Controller } from '@hotwired/stimulus'
 import { computePosition, autoUpdate, offset, flip, shift, size } from '@floating-ui/dom'
 
 const MAX_HEIGHT = 320;
+// Below this much room under the trigger, the panel opens upward instead.
+const MIN_HEIGHT_BELOW = 200;
 
 export default class extends Controller {
   static targets = ['trigger', 'content'];
@@ -66,13 +68,15 @@ export default class extends Controller {
     }
 
     const matchTriggerWidth = content.classList.contains('w-full');
+    // Prefer opening downward and scrolling over covering what is above.
+    const roomBelow = window.innerHeight - this.triggerTarget.getBoundingClientRect().bottom - 16;
 
     computePosition(this.triggerTarget, content, {
       strategy: 'fixed',
       placement: 'bottom-start',
       middleware: [
         offset(8),
-        flip({ padding: 8 }),
+        ...(roomBelow < MIN_HEIGHT_BELOW ? [flip({ padding: 8 })] : []),
         shift({ padding: 8 }),
         size({
           padding: 8,
