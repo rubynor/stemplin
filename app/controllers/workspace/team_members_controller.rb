@@ -132,10 +132,10 @@ module Workspace
       @project_restricted_roles = AccessInfo.project_restricted_roles
     end
 
-    # Only touches the link when the employee list was loaded: if Tripletex is down the
-    # field is a stale snapshot, and a stored link must not be cleared by it.
+    # Stores what the form submitted without asking Tripletex: the form always offers the stored
+    # link as an option, also when the employee list could not be loaded.
     def link_tripletex_employee(access_info)
-      return if tripletex_employees.nil? || tripletex_employees_error
+      return unless current_user.current_organization.tripletex_integration
       return unless edit_team_member_params.key?(:tripletex_employee_id)
 
       access_info.update!(tripletex_employee_id: edit_team_member_params[:tripletex_employee_id].presence)

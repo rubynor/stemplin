@@ -92,6 +92,19 @@ class TimeLocksControllerTest < ActionController::TestCase
     assert flash[:alert].present?
   end
 
+  test "nobody can lock a month from before the connection" do
+    old = @last - 2.months
+    @member.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: old + 1)
+
+    [ @member, @admin ].each do |user|
+      sign_in user
+      assert_no_difference -> { TimeLock.count } do
+        post :create, params: { month: old.strftime("%Y-%m"), user_id: @member.id }
+      end
+      assert_includes flash[:alert], I18n.t("tripletex.locks.errors.before_connection", month: I18n.l(@last, format: "%B %Y"))
+    end
+  end
+
   test "an invalid month is rejected" do
     sign_in @member
     assert_no_difference -> { TimeLock.count } do
@@ -180,6 +193,14 @@ class TimeLocksControllerTest < ActionController::TestCase
     test "skips months before the cutoff" do
       connect(Time.current)
       log(@last.last_month + 1)
+      assert_nil TimeLock.next_lockable_period(user: @user, organization: @organization)
+      log(@last + 1)
+      assert_equal @last, TimeLock.next_lockable_period(user: @user, organization: @organization)
+    end
+
+    test "skips a month with only empty entries" do
+      connect(Time.current - 6.months)
+      TimeReg.create!(user: @user, assigned_task: @task, minutes: 0, date_worked: @last.last_month + 1)
       assert_nil TimeLock.next_lockable_period(user: @user, organization: @organization)
       log(@last + 1)
       assert_equal @last, TimeLock.next_lockable_period(user: @user, organization: @organization)

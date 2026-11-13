@@ -12,6 +12,7 @@ class TimeLock < ApplicationRecord
   validate :month_has_ended, on: :create
   validate :no_running_timer, on: :create
   validate :has_hours, on: :create
+  validate :not_before_connection, on: :create
 
   # Paid hours stay locked whichever path tries to unlock them.
   before_destroy { throw :abort if sent? }
@@ -26,16 +27,16 @@ class TimeLock < ApplicationRecord
     where(organization_id: organization_id, user_id: user_id).for_period(date).exists?
   end
 
-  # The oldest ended month with hours and no lock, from the month before the
-  # integration was connected onwards. Nil when there is nothing to lock.
+  # The oldest ended month with hours and no lock, from the first lockable month onwards.
+  # Nil when there is nothing to lock.
   def self.next_lockable_period(user:, organization:)
-    integration = organization.tripletex_integration
-    return unless integration
+    first_month = first_lockable_period(organization)
+    return unless first_month
 
-    first_month = connected_on(integration).last_month.beginning_of_month
     locked = where(organization_id: organization.id, user_id: user.id).pluck(:period)
     months = kept_time_regs(user_id: user.id, organization_id: organization.id)
              .where(date_worked: first_month...Date.current.beginning_of_month)
+             .where(minutes: 1..) # a month of only empty entries has nothing to lock
              .distinct.pluck(Arel.sql("date_trunc('month', time_regs.date_worked)::date"))
     (months - locked).min
   end
@@ -53,10 +54,11 @@ class TimeLock < ApplicationRecord
   end
   private_class_method :kept_time_regs
 
-  def self.connected_on(integration)
-    integration.connected_at.to_date
+  # The month before the integration was connected: earlier months were paid outside Stemplin.
+  # Nil without an integration.
+  def self.first_lockable_period(organization)
+    organization.tripletex_integration&.connected_at&.to_date&.last_month&.beginning_of_month
   end
-  private_class_method :connected_on
 
   def locked_by_other?
     locked_by_id != user_id
@@ -87,6 +89,16 @@ class TimeLock < ApplicationRecord
     return if TimeLock.minutes_in(user:, organization:, period:).positive?
 
     errors.add(:base, I18n.t("tripletex.locks.errors.no_hours"))
+  end
+
+  # Without an integration there is no cutoff; the policy refuses those locks.
+  def not_before_connection
+    return if period.blank? || organization.blank?
+
+    first_month = TimeLock.first_lockable_period(organization)
+    return if first_month.nil? || period >= first_month
+
+    errors.add(:base, I18n.t("tripletex.locks.errors.before_connection", month: I18n.l(first_month, format: "%B %Y")))
   end
 
   def no_running_timer

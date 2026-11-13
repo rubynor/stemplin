@@ -48,18 +48,29 @@ module Workspace
     # Months that were never sent would stay locked with nobody able to unlock them, so they are released.
     # Months with a sent payout stay locked. The employee links are cleared too: the stored company id goes with
     # the integration, so a later connection to another company could not tell the old links are foreign.
+    # Refused while a payout is pending or unclear: resolving it needs the integration, and its month
+    # would otherwise stay locked with nobody able to unlock it.
     def destroy
       @tripletex_integration = @organization.tripletex_integration || @organization.build_tripletex_integration
       authorize! @tripletex_integration
       return redirect_to workspace_integrations_path unless @tripletex_integration.persisted?
 
-      ActiveRecord::Base.transaction do
+      disconnected = ActiveRecord::Base.transaction do
         # Row locks serialize this with a payout being inserted for one of these months.
-        @organization.time_locks.lock.reject(&:sent?).each(&:destroy!)
+        locks = @organization.time_locks.lock.to_a
+        next false if @organization.payroll_payouts.where.not(status: :sent).exists?
+
+        locks.reject(&:sent?).each(&:destroy!)
         @organization.access_infos.update_all(tripletex_employee_id: nil)
         @tripletex_integration.destroy!
+        true
       end
-      redirect_to workspace_integrations_path, flash: { success: t("tripletex.integrations.disconnected") }
+
+      if disconnected
+        redirect_to workspace_integrations_path, flash: { success: t("tripletex.integrations.disconnected") }
+      else
+        redirect_to workspace_integrations_path, flash: { error: t("tripletex.integrations.unresolved_payouts") }
+      end
     end
 
     private

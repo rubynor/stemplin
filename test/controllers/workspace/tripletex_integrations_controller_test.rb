@@ -133,12 +133,8 @@ module Workspace
       lock.save!(validate: false)
       sent = TimeLock.new(organization: @organization, user: @admin, locked_by: @admin, period: Date.new(2026, 1, 1))
       sent.save!(validate: false)
-      unclear = TimeLock.new(organization: @organization, user: users(:joe), locked_by: @admin, period: Date.new(2026, 1, 1))
-      unclear.save!(validate: false)
-      { @admin => :sent, users(:joe) => :unclear }.each do |user, status|
-        PayrollPayout.create!(organization: @organization, user: user, period: Date.new(2026, 1, 1), status: status, minutes: 60,
-                              hours: 1, hourly_wage: 250, amount: 250, tripletex_employee_id: 7, sent_by: @admin)
-      end
+      PayrollPayout.create!(organization: @organization, user: @admin, period: Date.new(2026, 1, 1), status: :sent, minutes: 60,
+                            hours: 1, hourly_wage: 250, amount: 250, tripletex_employee_id: 7, sent_by: @admin)
 
       assert_no_difference -> { PayrollPayout.count } do
         delete :destroy
@@ -147,9 +143,31 @@ module Workspace
       assert_nil @organization.reload.tripletex_integration
       assert_not TimeLock.exists?(lock.id)
       assert TimeLock.exists?(sent.id)
-      assert TimeLock.exists?(unclear.id)
       assert_nil access_info.reload.tripletex_employee_id
       assert_nil archived.reload.tripletex_employee_id
+    end
+
+    test "disconnecting is refused while a payout is pending or unclear" do
+      connected_integration(company_id: 42)
+      access_info = link_member(users(:organization_user), 77)
+      unsent = TimeLock.new(organization: @organization, user: users(:organization_user), locked_by: @admin, period: Date.new(2026, 1, 1))
+      unsent.save!(validate: false)
+      lock = TimeLock.new(organization: @organization, user: users(:joe), locked_by: @admin, period: Date.new(2026, 1, 1))
+      lock.save!(validate: false)
+      payout = PayrollPayout.create!(organization: @organization, user: users(:joe), period: Date.new(2026, 1, 1), status: :unclear, minutes: 60,
+                                     hours: 1, hourly_wage: 250, amount: 250, tripletex_employee_id: 7, sent_by: @admin)
+
+      %i[unclear pending].each do |status|
+        payout.update!(status: status)
+        delete :destroy
+
+        assert_redirected_to workspace_integrations_path
+        assert_equal I18n.t("tripletex.integrations.unresolved_payouts"), flash[:error]
+        assert_not_nil @organization.reload.tripletex_integration
+        assert TimeLock.exists?(unsent.id)
+        assert TimeLock.exists?(lock.id)
+        assert_equal 77, access_info.reload.tripletex_employee_id
+      end
     end
 
     test "disconnecting and connecting a different company leaves no employee links" do

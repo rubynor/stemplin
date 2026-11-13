@@ -23,6 +23,7 @@ en:
       salary_type_saved: "Salary type saved."
       salary_types_unavailable: "Could not load salary types from Tripletex (%{message}). The saved choice is kept."
       disconnected: "Tripletex has been disconnected."
+      unresolved_payouts: "Tripletex cannot be disconnected while a payout is still being sent or is unclear. Resolve those on the Payroll page first."
     setup:
       title: "Connect Tripletex"
       missing_consumer_token: "The server is missing TRIPLETEX_CONSUMER_TOKEN. Connecting will not work until it is set."
@@ -50,6 +51,7 @@ en:
         period_not_first_of_month: "must be the first day of a month"
         already_sent: "This month has already been sent to payroll and cannot be unlocked."
         month_not_ended: "can only be locked after the month has ended"
+        before_connection: "Months before %{month} cannot be locked: they are from before Tripletex was connected."
     team_members:
       employee: "Tripletex employee"
       none: "Not linked"

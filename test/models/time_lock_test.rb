@@ -29,6 +29,16 @@ class TimeLockTest < ActiveSupport::TestCase
     assert_includes lock.errors[:base], I18n.t("tripletex.locks.errors.no_hours")
   end
 
+  test "rejects a month from before the month before the connection" do
+    TripletexIntegration.create!(organization: @organization, employee_token: "t", connected_at: Time.current)
+    @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: @last.last_month + 1)
+
+    assert build_lock.valid?
+    lock = build_lock(period: @last.last_month)
+    assert_not lock.valid?
+    assert_includes lock.errors[:base], I18n.t("tripletex.locks.errors.before_connection", month: I18n.l(@last, format: "%B %Y"))
+  end
+
   test "rejects the current month" do
     lock = build_lock(period: Date.current.beginning_of_month)
     assert_not lock.valid?

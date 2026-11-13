@@ -23,6 +23,7 @@ nb:
       salary_type_saved: "Lønnsart lagret."
       salary_types_unavailable: "Kunne ikke hente lønnsarter fra Tripletex (%{message}). Det lagrede valget beholdes."
       disconnected: "Tripletex er koblet fra."
+      unresolved_payouts: "Tripletex kan ikke kobles fra mens en utbetaling fortsatt sendes eller er uavklart. Avklar dem på Lønn-siden først."
     setup:
       title: "Koble til Tripletex"
       missing_consumer_token: "Serveren mangler TRIPLETEX_CONSUMER_TOKEN. Tilkoblingen virker ikke før den er satt."
@@ -50,6 +51,7 @@ nb:
         period_not_first_of_month: "må være den første dagen i en måned"
         already_sent: "Denne måneden er allerede sendt til lønn og kan ikke låses opp."
         month_not_ended: "kan først låses etter at måneden er over"
+        before_connection: "Måneder før %{month} kan ikke låses: de er fra før Tripletex ble koblet til."
     team_members:
       employee: "Tripletex-ansatt"
       none: "Ikke koblet"

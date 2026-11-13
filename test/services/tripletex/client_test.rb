@@ -146,6 +146,23 @@ module Tripletex
       end
     end
 
+    test "pay_details finds an employment that ended during the month" do
+      with_http(session, ok({ values: [ { id: 7, employments: [
+        employment("2020-01-01", "2026-10-15", [ "2020-01-01", "HOURLY_WAGE", 200.0 ])
+      ] } ] })) do
+        assert_equal BigDecimal("200"), client.pay_details([ 7 ], on: Date.new(2026, 10, 31))[7]["hourlyWage"]
+      end
+    end
+
+    test "pay_details uses the latest employment when two overlap the month" do
+      with_http(session, ok({ values: [ { id: 7, employments: [
+        employment("2026-10-16", nil, [ "2026-10-16", "HOURLY_WAGE", 250.0 ]),
+        employment("2020-01-01", "2026-10-15", [ "2020-01-01", "MONTHLY_WAGE", 0.0 ])
+      ] } ] })) do
+        assert_equal BigDecimal("250"), client.pay_details([ 7 ], on: Date.new(2026, 10, 31))[7]["hourlyWage"]
+      end
+    end
+
     test "pay_details uses the employment that covers the date when there are two" do
       # ended employment (MONTHLY_WAGE) and current one (HOURLY_WAGE, 250)
       with_http(session, ok({ values: [ { id: 7, employments: [

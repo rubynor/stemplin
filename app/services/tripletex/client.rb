@@ -38,8 +38,9 @@ module Tripletex
         .sort_by { |employee| [ employee["firstName"].to_s.downcase, employee["lastName"].to_s.downcase ] }
     end
 
-    # What each employee is paid on the given date, from the employment that covers it and the latest
-    # details row dated on or before it. nil when no employment covers the date.
+    # What each employee is paid for the month that ends on the given date, from the employment that
+    # overlaps that month (the latest one when several do, so someone who left mid-month is still found)
+    # and its latest details row dated on or before the date. nil when no employment overlaps the month.
     # One request: employments are nested on /employee (the unfiltered /employee/employment list is incomplete).
     # => { 7 => { "remunerationType" => "HOURLY_WAGE", "hourlyWage" => BigDecimal("250") }, 8 => nil }
     def pay_details(employee_ids, on:)
@@ -104,10 +105,11 @@ module Tripletex
     end
 
     def pay_details_on(employee, on)
-      employment = Array(employee&.dig("employments")).find do |e|
+      month_start = on.beginning_of_month
+      employment = Array(employee&.dig("employments")).select do |e|
         # An employment without a start date covers no date.
-        e["startDate"].present? && Date.parse(e["startDate"]) <= on && (e["endDate"].blank? || Date.parse(e["endDate"]) >= on)
-      end
+        e["startDate"].present? && Date.parse(e["startDate"]) <= on && (e["endDate"].blank? || Date.parse(e["endDate"]) >= month_start)
+      end.max_by { |e| Date.parse(e["startDate"]) }
       details = Array(employment&.dig("employmentDetails"))
         .select { |d| d["date"].present? && Date.parse(d["date"]) <= on }
         .max_by { |d| Date.parse(d["date"]) }

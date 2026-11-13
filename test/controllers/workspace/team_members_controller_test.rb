@@ -373,10 +373,18 @@ module  Workspace
       access_info = user.access_info(@organization_admin.current_organization)
       access_info.update!(tripletex_employee_id: 7)
       connect_tripletex(error: "boom")
-      patch :update, params: { id: user.id, user: { role: :organization_spectator, tripletex_employee_id: "", project_ids: [] } }
+      patch :update, params: { id: user.id, user: { role: :organization_spectator, tripletex_employee_id: "7", project_ids: [] } }
 
       assert_equal "organization_spectator", access_info.reload.role
       assert_equal 7, access_info.tripletex_employee_id
+    end
+
+    test "update stores the submitted link without asking Tripletex" do
+      user = users(:organization_user)
+      connect_tripletex(error: "boom")
+      patch :update, params: { id: user.id, user: { role: :organization_user, tripletex_employee_id: "7", project_ids: [] } }
+
+      assert_equal 7, user.access_info(@organization_admin.current_organization).reload.tripletex_employee_id
     end
 
     test "update ignores the employee param without an integration" do
