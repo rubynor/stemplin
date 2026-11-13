@@ -15,7 +15,7 @@ class FakeTripletexApi
     def reset = self.current = nil
   end
 
-  attr_reader :salary_runs, :salary_lines, :deleted_runs, :pay_details_calls
+  attr_reader :salary_runs, :salary_lines, :deleted_runs, :pay_details_calls, :employees_calls
 
   def initialize(company: { "id" => 42, "name" => "Firma AS" }, error: nil, employees: [], pay_details: {}, salary_types: [],
                  run_error: nil, line_error: nil, delete_error: nil)
@@ -31,6 +31,7 @@ class FakeTripletexApi
     @salary_lines = []
     @deleted_runs = []
     @pay_details_calls = []
+    @employees_calls = 0
   end
 
   def company
@@ -39,6 +40,7 @@ class FakeTripletexApi
   end
 
   def employees
+    @employees_calls += 1
     raise Tripletex::Error, @error if @error
     @employees
   end

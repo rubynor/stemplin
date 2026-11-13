@@ -206,6 +206,24 @@ class TimeLocksControllerTest < ActionController::TestCase
       assert_equal @last, TimeLock.next_lockable_period(user: @user, organization: @organization)
     end
 
+    test "offers a month that has an empty entry next to real hours" do
+      connect(Time.current - 6.months)
+      TimeReg.create!(user: @user, assigned_task: @task, minutes: 0, date_worked: @last + 1)
+      log(@last + 2)
+      assert_equal @last, TimeLock.next_lockable_period(user: @user, organization: @organization)
+    end
+
+    test "every period it offers can be locked" do
+      connect(Time.current)
+      TimeReg.create!(user: @user, assigned_task: @task, minutes: 0, date_worked: @last.last_month + 1)
+      log(@last.last_month + 2)
+      log(@last + 1)
+
+      period = TimeLock.next_lockable_period(user: @user, organization: @organization)
+      assert_equal @last, period
+      assert TimeLock.new(organization: @organization, user: @user, locked_by: @user, period: period).valid?
+    end
+
     test "ignores the current month and discarded entries" do
       connect(Time.current - 6.months)
       log(Date.current.beginning_of_month)

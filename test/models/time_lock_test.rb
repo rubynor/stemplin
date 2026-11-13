@@ -29,6 +29,38 @@ class TimeLockTest < ActiveSupport::TestCase
     assert_includes lock.errors[:base], I18n.t("tripletex.locks.errors.no_hours")
   end
 
+  test "rejects a month with only empty entries" do
+    joe = users(:joe)
+    joe.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 0, date_worked: @last + 1)
+
+    lock = build_lock(user: joe)
+    assert_not lock.valid?
+    assert_includes lock.errors[:base], I18n.t("tripletex.locks.errors.no_hours")
+  end
+
+  test "allows the month before the connection, also when connected on the first of a month" do
+    travel_to Date.current.beginning_of_month.in_time_zone + 1.hour do
+      TripletexIntegration.create!(organization: @organization, employee_token: "t", connected_at: Time.current)
+      assert build_lock.valid?
+    end
+  end
+
+  test "a lock from before the cutoff stays valid when Tripletex is reconnected later" do
+    integration = TripletexIntegration.create!(organization: @organization, employee_token: "t", connected_at: Time.current)
+    lock = build_lock
+    lock.save!
+
+    integration.update!(connected_at: 3.months.from_now)
+    assert lock.reload.valid?
+    assert_not build_lock(user: @admin).valid?
+  end
+
+  test "has no cutoff without an integration" do
+    old = @last - 12.months
+    @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: old + 1)
+    assert build_lock(period: old).valid?
+  end
+
   test "rejects a month from before the month before the connection" do
     TripletexIntegration.create!(organization: @organization, employee_token: "t", connected_at: Time.current)
     @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: @last.last_month + 1)

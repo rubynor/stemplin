@@ -170,6 +170,47 @@ module Workspace
       end
     end
 
+    test "disconnecting works once the unclear payout is released, and frees its month" do
+      connected_integration(company_id: 42)
+      lock = TimeLock.new(organization: @organization, user: users(:joe), locked_by: @admin, period: Date.new(2026, 1, 1))
+      lock.save!(validate: false)
+      payout = PayrollPayout.create!(organization: @organization, user: users(:joe), period: Date.new(2026, 1, 1), status: :unclear, minutes: 60,
+                                     hours: 1, hourly_wage: 250, amount: 250, tripletex_employee_id: 7, sent_by: @admin)
+
+      delete :destroy
+      assert_not_nil @organization.reload.tripletex_integration
+
+      payout.release!
+      delete :destroy
+
+      assert_nil @organization.reload.tripletex_integration
+      assert_not TimeLock.exists?(lock.id)
+    end
+
+    test "disconnecting works once the unclear payout is marked sent, and keeps its month locked" do
+      connected_integration(company_id: 42)
+      lock = TimeLock.new(organization: @organization, user: users(:joe), locked_by: @admin, period: Date.new(2026, 1, 1))
+      lock.save!(validate: false)
+      payout = PayrollPayout.create!(organization: @organization, user: users(:joe), period: Date.new(2026, 1, 1), status: :unclear, minutes: 60,
+                                     hours: 1, hourly_wage: 250, amount: 250, tripletex_employee_id: 7, sent_by: @admin)
+
+      payout.mark_sent!(by: @admin)
+      delete :destroy
+
+      assert_nil @organization.reload.tripletex_integration
+      assert TimeLock.exists?(lock.id)
+    end
+
+    test "an unclear payout in another organization does not block disconnecting" do
+      connected_integration(company_id: 42)
+      PayrollPayout.create!(organization: organizations(:organization_two), user: users(:joe), period: Date.new(2026, 1, 1), status: :unclear,
+                            minutes: 60, hours: 1, hourly_wage: 250, amount: 250, tripletex_employee_id: 7, sent_by: @admin)
+
+      delete :destroy
+
+      assert_nil @organization.reload.tripletex_integration
+    end
+
     test "disconnecting and connecting a different company leaves no employee links" do
       connected_integration(company_id: 41)
       access_info = link_member(users(:organization_user), 77)

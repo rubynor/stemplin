@@ -154,6 +154,39 @@ module Tripletex
       end
     end
 
+    test "pay_details finds an employment that ended on the first day of the month" do
+      with_http(session, ok({ values: [ { id: 7, employments: [
+        employment("2020-01-01", "2026-10-01", [ "2020-01-01", "HOURLY_WAGE", 200.0 ])
+      ] } ] })) do
+        assert_equal BigDecimal("200"), client.pay_details([ 7 ], on: Date.new(2026, 10, 31))[7]["hourlyWage"]
+      end
+    end
+
+    test "pay_details finds an employment that started on the last day of the month" do
+      with_http(session, ok({ values: [ { id: 7, employments: [
+        employment("2026-10-31", nil, [ "2026-10-31", "HOURLY_WAGE", 200.0 ])
+      ] } ] })) do
+        assert_equal BigDecimal("200"), client.pay_details([ 7 ], on: Date.new(2026, 10, 31))[7]["hourlyWage"]
+      end
+    end
+
+    test "pay_details is nil when the only employment starts after the month" do
+      with_http(session, ok({ values: [ { id: 7, employments: [
+        employment("2026-11-01", nil, [ "2026-11-01", "HOURLY_WAGE", 200.0 ])
+      ] } ] })) do
+        assert_nil client.pay_details([ 7 ], on: Date.new(2026, 10, 31))[7]
+      end
+    end
+
+    test "pay_details ignores a later employment that has not started when the member left mid-month" do
+      with_http(session, ok({ values: [ { id: 7, employments: [
+        employment("2026-12-01", nil, [ "2026-12-01", "HOURLY_WAGE", 300.0 ]),
+        employment("2020-01-01", "2026-10-15", [ "2020-01-01", "HOURLY_WAGE", 200.0 ])
+      ] } ] })) do
+        assert_equal BigDecimal("200"), client.pay_details([ 7 ], on: Date.new(2026, 10, 31))[7]["hourlyWage"]
+      end
+    end
+
     test "pay_details uses the latest employment when two overlap the month" do
       with_http(session, ok({ values: [ { id: 7, employments: [
         employment("2026-10-16", nil, [ "2026-10-16", "HOURLY_WAGE", 250.0 ]),

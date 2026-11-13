@@ -381,10 +381,32 @@ module  Workspace
 
     test "update stores the submitted link without asking Tripletex" do
       user = users(:organization_user)
-      connect_tripletex(error: "boom")
+      fake = connect_tripletex(error: "boom")
       patch :update, params: { id: user.id, user: { role: :organization_user, tripletex_employee_id: "7", project_ids: [] } }
 
       assert_equal 7, user.access_info(@organization_admin.current_organization).reload.tripletex_employee_id
+      assert_equal 0, fake.employees_calls
+    end
+
+    test "update clears the link when none is chosen, also when Tripletex is unavailable" do
+      user = users(:organization_user)
+      access_info = user.access_info(@organization_admin.current_organization)
+      access_info.update!(tripletex_employee_id: 7)
+      connect_tripletex(error: "boom")
+      patch :update, params: { id: user.id, user: { role: :organization_user, tripletex_employee_id: "", project_ids: [] } }
+
+      assert_nil access_info.reload.tripletex_employee_id
+    end
+
+    test "update leaves the link alone when the field is not submitted" do
+      user = users(:organization_user)
+      access_info = user.access_info(@organization_admin.current_organization)
+      access_info.update!(tripletex_employee_id: 7)
+      connect_tripletex
+      patch :update, params: { id: user.id, user: { role: :organization_spectator, project_ids: [] } }
+
+      assert_equal "organization_spectator", access_info.reload.role
+      assert_equal 7, access_info.tripletex_employee_id
     end
 
     test "update ignores the employee param without an integration" do
