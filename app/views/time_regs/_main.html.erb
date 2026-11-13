@@ -39,7 +39,7 @@
         <%= render partial: "time_regs/empty" %>
       <% else %>
         <% @time_regs.each do |time_reg| %>
-          <%= render partial: "time_regs/time_reg", locals: { time_reg: time_reg } %>
+          <%= render partial: "time_regs/time_reg", locals: { time_reg: time_reg, locked: @month_locked } %>
         <% end %>
       <% end %>
     </div>

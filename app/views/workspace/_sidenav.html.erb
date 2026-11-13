@@ -8,6 +8,16 @@
     label: t("common.team_members"), icon: "&#xebb3;", path: workspace_team_members_path,
     matches: [ workspace_team_members_path, invite_users_workspace_team_members_path ]
   }
+  if current_user.organization_admin? && current_user.current_organization&.tripletex_integration
+    items << {
+      label: t("tripletex.payroll.title"), icon: "&#xe8bb;", path: workspace_payroll_path,
+      matches: [ workspace_payroll_path ]
+    }
+  end
+  items << {
+    label: t("tripletex.integrations.title"), icon: "&#xead2;", path: workspace_integrations_path,
+    matches: [ workspace_integrations_path, new_workspace_tripletex_integration_path ]
+  }
   items << {
     label: t("common.settings"), icon: "&#xe8f2;", path: workspace_settings_path,
     matches: [ workspace_settings_path, edit_workspace_settings_path ]

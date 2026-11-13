@@ -32,4 +32,24 @@ class AccessInfoTest < ActiveSupport::TestCase
   test "should return allowed organization roles" do
     assert_equal AccessInfo.allowed_organization_roles, %w[organization_user organization_admin organization_spectator]
   end
+
+  test "a Tripletex employee can be linked to one member per organization" do
+    access_infos(:access_info_org1_admin).update!(tripletex_employee_id: 7)
+    other = AccessInfo.new(user: @user, organization: @organization, tripletex_employee_id: 7)
+
+    assert_not other.valid?
+    assert_includes other.errors[:tripletex_employee_id], I18n.t("tripletex.team_members.errors.employee_taken")
+  end
+
+  test "members without a Tripletex link do not conflict" do
+    access_infos(:access_info_org1_admin).update!(tripletex_employee_id: nil)
+    assert AccessInfo.new(user: @user, organization: @organization).valid?
+  end
+
+  test "the same Tripletex employee id can be linked in different organizations" do
+    access_infos(:access_info_org1_admin).update!(tripletex_employee_id: 7)
+    other = AccessInfo.new(user: @user, organization: organizations(:organization_two), tripletex_employee_id: 7)
+
+    assert other.valid?
+  end
 end

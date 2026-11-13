@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
   root to: redirect("users/sign_in")
 
+  resources :time_locks, only: %i[create destroy]
+
   get "privacy-policy", to: "privacy_policy#index", as: :privacy_policy
 
   match "/404", to: "errors#not_found", via: :all
@@ -91,6 +93,15 @@ Rails.application.routes.draw do
     end
 
     resource :settings, only: [ :show, :edit, :update ]
+    resource :integrations, only: :show
+    resource :payroll, only: :show, controller: "payroll"
+    resources :payroll_payouts, only: :create do
+      member do
+        patch :mark_sent
+        delete :release
+      end
+    end
+    resource :tripletex_integration, only: %i[new create update destroy], path: "integrations/tripletex"
   end
 
   namespace :shared do

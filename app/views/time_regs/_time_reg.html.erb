@@ -47,6 +47,11 @@
     </span>
 
     <div class="flex items-center gap-x-2">
+      <% if locked %>
+        <%= render RubyUI::Badge.new(variant: :gray, size: :sm) do %>
+          <%= t("tripletex.locks.locked") %>
+        <% end %>
+      <% else %>
       <% if time_reg.date_worked != Date.today && !time_reg.active? %>
         <%= render TooltipComponent.new(note: t("time_regs.copy_to_today_tooltip"), options: { placement: "top", delay: 500 }) do %>
           <% if current_user.current_organization.advanced_time_copying? %>
@@ -100,6 +105,7 @@
         <%= render ButtonComponent.new(variant: :destructive, method: :delete, path: time_reg_path(time_reg), icon: true, aria: { label: t("common.delete") }, form: { data: { turbo_confirm: turbo_body } }) do %>
           <i class="uc-icon text-base">&#xeb97;</i>
         <% end %>
+      <% end %>
       <% end %>
     </div>
   </div>

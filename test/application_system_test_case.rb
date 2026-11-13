@@ -39,11 +39,22 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   def after_teardown
     dump_browser_console if failed?
+    leave_page
   ensure
     super
   end
 
   private
+
+  # Capybara's reset deletes cookies before it leaves the page. A request still in flight then
+  # (the plan app's data fetch, say) can answer after the delete and set the session cookie again,
+  # so the next test starts signed in and never sees the sign-in form. Leaving the page first
+  # aborts those requests.
+  def leave_page
+    page.driver.browser.navigate.to("about:blank")
+  rescue => error
+    warn "Could not leave the page before reset: #{error.class}: #{error.message}"
+  end
 
   # Keep diagnostics on failures without instrumenting every page interaction.
   def dump_browser_console

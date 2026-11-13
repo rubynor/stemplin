@@ -170,6 +170,17 @@ class DeleteTimeRegToolTest < ToolTestCase
     assert @time_reg.reload.discarded?
   end
 
+  test "returns the lock error for an entry in a locked month" do
+    last = Date.current.last_month.beginning_of_month
+    time_reg = @joe.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: last + 1)
+    TimeLock.create!(organization: @org, user: @joe, locked_by: users(:organization_admin), period: last)
+
+    parsed = parse_result(call_tool(DeleteTimeRegTool, user: @joe, organization: @org, id: time_reg.id))
+
+    assert_equal I18n.t("tripletex.locks.errors.month_locked", month: I18n.l(last, format: "%B %Y")), parsed["error"]
+    assert time_reg.reload.kept?
+  end
+
   test "returns error for another users time reg" do
     ron_time_reg = time_regs(:time_reg_2)
     result = call_tool(DeleteTimeRegTool, user: @joe, organization: @org, id: ron_time_reg.id)

@@ -1,0 +1,55 @@
+<% content_for :title, t("tripletex.payroll.title") %>
+<% rows = @overview.rows %>
+<% error = @overview.error %>
+<% no_salary_type = @integration.hourly_salary_type_id.nil? %>
+
+<div class="flex flex-col gap-y-6">
+  <div class="section-head">
+    <div class="flex flex-row flex-wrap items-center gap-3">
+      <span class="section-title"><%= t("tripletex.payroll.title") %></span>
+    </div>
+    <div class="toolbar-segment">
+      <%= link_to workspace_payroll_path(month: payroll_month_param(@period.prev_month)), class: "rotate-180", aria: { label: t("tripletex.payroll.previous_month") } do %>
+        <i class="uc-icon text-lg">&#xe81f;</i>
+      <% end %>
+      <span class="flex items-center px-3 text-sm font-medium text-primary-text" data-role="month"><%= l(@period, format: "%B %Y") %></span>
+      <%= link_to workspace_payroll_path(month: payroll_month_param(@period.next_month)), aria: { label: t("tripletex.payroll.next_month") } do %>
+        <i class="uc-icon text-lg">&#xe81f;</i>
+      <% end %>
+    </div>
+  </div>
+
+  <% if error %>
+    <%= render AlertComponent.new(variant: :destructive, title: t("tripletex.payroll.unavailable"), message: error) %>
+  <% elsif no_salary_type %>
+    <%= render AlertComponent.new(variant: :warning, title: t("tripletex.payroll.title"), message: t("tripletex.payroll.choose_salary_type")) %>
+    <%= link_to t("tripletex.payroll.go_to_integrations"), workspace_integrations_path, class: "text-sm text-primary font-medium hover:underline underline-offset-4" %>
+  <% end %>
+
+  <% unless @month_ended %>
+    <p class="text-sm text-muted-foreground"><%= t("tripletex.payroll.month_not_ended") %></p>
+  <% end %>
+
+  <div>
+    <%= render RubyUI::Table.new(class: "table-stack") do %>
+      <%= render RubyUI::TableHeader.new do %>
+        <%= render RubyUI::TableRow.new do %>
+          <%= render RubyUI::TableHead.new { t("common.name") } %>
+          <%= render RubyUI::TableHead.new(class: "text-right") { t("common.hours") } %>
+          <%= render RubyUI::TableHead.new(class: "text-right") { t("tripletex.payroll.hourly_wage") } %>
+          <%= render RubyUI::TableHead.new(class: "text-right") { t("tripletex.payroll.amount") } %>
+          <%= render RubyUI::TableHead.new { t("tripletex.payroll.status") } %>
+          <%= render RubyUI::TableHead.new { t("common.actions") } %>
+        <% end %>
+      <% end %>
+      <%= render RubyUI::TableBody.new(id: :payroll_rows) do %>
+        <% rows.each do |row| %>
+          <%= render partial: "workspace/payroll/row", locals: { row: row, period: @period, month_ended: @month_ended, error: error, no_salary_type: no_salary_type } %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <% if rows.empty? %>
+      <p class="py-8 text-center text-sm text-muted-foreground"><%= t("tripletex.payroll.empty") %></p>
+    <% end %>
+  </div>
+</div>

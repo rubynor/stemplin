@@ -37,6 +37,8 @@ module Api
         authorize! @time_reg
         @time_reg.discard!
         head :no_content
+      rescue ActiveRecord::RecordNotDestroyed, Discard::RecordNotDiscarded
+        render json: { errors: @time_reg.errors.full_messages }, status: :unprocessable_entity
       end
 
       private

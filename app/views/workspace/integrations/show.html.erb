@@ -1,0 +1,64 @@
+<% content_for :title, t("tripletex.integrations.title") %>
+
+<div class="flex flex-col gap-y-6">
+  <div class="section-head">
+    <span class="section-title"><%= t("tripletex.integrations.title") %></span>
+  </div>
+
+  <div class="rounded-lg border border-border p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+    <div class="flex items-start gap-x-4 grow">
+      <div class="w-10 h-10 shrink-0 rounded-lg bg-primary-50 text-primary-700 flex items-center justify-center">
+        <i class="uc-icon text-xl">&#xea3b;</i>
+      </div>
+      <div class="flex flex-col gap-y-1">
+        <div class="flex items-center gap-x-2">
+          <span class="font-semibold text-primary-text">Tripletex</span>
+          <% if @tripletex_integration %>
+            <%= render RubyUI::Badge.new(size: :sm, variant: :green) { t("tripletex.integrations.status_connected") } %>
+          <% end %>
+        </div>
+        <% if @tripletex_integration %>
+          <span class="text-sm text-secondary-text">
+            <%= t("tripletex.integrations.connected_to", company: @tripletex_integration.company_name || "–", date: @tripletex_integration.connected_at.strftime("%d.%m.%Y")) %>
+          </span>
+        <% else %>
+          <span class="text-sm text-secondary-text"><%= t("tripletex.integrations.description") %></span>
+        <% end %>
+      </div>
+    </div>
+    <div class="flex flex-row gap-2 shrink-0">
+      <% if @tripletex_integration %>
+        <%= render ButtonComponent.new(variant: :outline, path: new_workspace_tripletex_integration_path, method: :get) { t("tripletex.integrations.change_token") } %>
+        <%= render ButtonComponent.new(variant: :destructive, path: workspace_tripletex_integration_path, method: :delete, form: { data: { turbo_confirm: t("tripletex.integrations.disconnect_confirmation") } }) { t("tripletex.integrations.disconnect") } %>
+      <% else %>
+        <%= render ButtonComponent.new(path: new_workspace_tripletex_integration_path, method: :get) do %>
+          <span><%= t("tripletex.integrations.connect") %></span>
+          <i class="uc-icon text-lg">&#xea5f;</i>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @tripletex_integration %>
+    <%= form_with model: @tripletex_integration, scope: :tripletex_integration, url: workspace_tripletex_integration_path, method: :patch, class: "rounded-lg border border-border p-5 flex flex-col gap-4" do |form| %>
+      <%= render RubyUI::FormField.new do %>
+        <%= render RubyUI::FormFieldLabel.new(for: "tripletex_integration_hourly_salary_type_id") { t("tripletex.integrations.salary_type") } %>
+        <%= render RubyUI::FormFieldHint.new { t("tripletex.integrations.salary_type_hint") } %>
+        <%
+          selected = selected_salary_type_id
+          options = salary_types.map { |type| [ "#{type["number"]} #{type["name"]}", type["id"] ] }
+          if selected.present? && options.none? { |option| option[1] == selected }
+            options.unshift([ "##{selected}", selected ])
+          end
+        %>
+        <%= form.select :hourly_salary_type_id, options, { include_blank: t("tripletex.integrations.salary_type_none"), selected: selected }, class: "form-input" %>
+        <% if salary_types_error %>
+          <%= render RubyUI::FormFieldError.new(class: "w-full form-error") { t("tripletex.integrations.salary_types_unavailable", message: salary_types_error) } %>
+        <% end %>
+      <% end %>
+      <div>
+        <%= render ButtonComponent.new(type: :submit) { t("common.save") } %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

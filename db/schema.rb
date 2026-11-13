@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
+ActiveRecord::Schema[7.1].define(version: 2026_11_11_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -25,6 +25,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
     t.integer "plan_weekly_capacity_minutes"
     t.integer "plan_work_days", default: 31, null: false
     t.datetime "archived_at"
+    t.bigint "tripletex_employee_id"
+    t.index ["organization_id", "tripletex_employee_id"], name: "index_access_infos_on_organization_and_tripletex_employee", unique: true, where: "(tripletex_employee_id IS NOT NULL)"
     t.index ["organization_id"], name: "index_access_infos_on_organization_id"
     t.index ["user_id", "organization_id"], name: "index_access_infos_on_user_id_and_organization_id", unique: true
     t.index ["user_id"], name: "index_access_infos_on_user_id"
@@ -59,6 +61,29 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
     t.string "currency"
     t.boolean "advanced_time_copying", default: false, null: false
     t.integer "plan_default_capacity_minutes", default: 2250, null: false
+  end
+
+  create_table "payroll_payouts", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.bigint "user_id", null: false
+    t.date "period", null: false
+    t.integer "status", default: 0, null: false
+    t.integer "minutes", null: false
+    t.decimal "hours", precision: 8, scale: 2, null: false
+    t.decimal "hourly_wage", precision: 12, scale: 2, null: false
+    t.decimal "amount", precision: 12, scale: 2, null: false
+    t.bigint "tripletex_employee_id", null: false
+    t.bigint "tripletex_transaction_id"
+    t.bigint "tripletex_payslip_id"
+    t.bigint "sent_by_id", null: false
+    t.datetime "sent_at"
+    t.text "error_message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id", "user_id", "period"], name: "index_payroll_payouts_on_organization_user_period", unique: true
+    t.index ["organization_id"], name: "index_payroll_payouts_on_organization_id"
+    t.index ["sent_by_id"], name: "index_payroll_payouts_on_sent_by_id"
+    t.index ["user_id"], name: "index_payroll_payouts_on_user_id"
   end
 
   create_table "plan_assignments", force: :cascade do |t|
@@ -171,6 +196,31 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
     t.index ["user_id"], name: "index_time_regs_on_user_id"
   end
 
+  create_table "time_locks", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.bigint "user_id", null: false
+    t.date "period", null: false
+    t.bigint "locked_by_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["locked_by_id"], name: "index_time_locks_on_locked_by_id"
+    t.index ["organization_id", "user_id", "period"], name: "index_time_locks_on_organization_user_period", unique: true
+    t.index ["organization_id"], name: "index_time_locks_on_organization_id"
+    t.index ["user_id"], name: "index_time_locks_on_user_id"
+  end
+
+  create_table "tripletex_integrations", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.text "employee_token", null: false
+    t.bigint "company_id"
+    t.string "company_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "hourly_salary_type_id"
+    t.datetime "connected_at", null: false
+    t.index ["organization_id"], name: "index_tripletex_integrations_on_organization_id", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -215,6 +265,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
   add_foreign_key "assigned_tasks", "projects"
   add_foreign_key "assigned_tasks", "tasks"
   add_foreign_key "clients", "organizations"
+  add_foreign_key "payroll_payouts", "organizations"
+  add_foreign_key "payroll_payouts", "users"
+  add_foreign_key "payroll_payouts", "users", column: "sent_by_id"
   add_foreign_key "plan_assignments", "organizations"
   add_foreign_key "plan_assignments", "plan_placeholders", column: "placeholder_id"
   add_foreign_key "plan_assignments", "projects"
@@ -231,4 +284,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_29_140000) do
   add_foreign_key "tasks", "organizations"
   add_foreign_key "time_regs", "assigned_tasks"
   add_foreign_key "time_regs", "users"
+  add_foreign_key "time_locks", "organizations"
+  add_foreign_key "time_locks", "users"
+  add_foreign_key "time_locks", "users", column: "locked_by_id"
+  add_foreign_key "tripletex_integrations", "organizations"
 end

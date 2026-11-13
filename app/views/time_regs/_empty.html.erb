@@ -4,8 +4,10 @@
     <span class="font-semibold text-base text-primary-text"><%= t("common.no_time_registrations_on_this_day") %></span>
     <span class="text-sm text-muted-foreground"><%= t("common.there_were_no_time_registrations_recorded") %></span>
   </div>
-  <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: @chosen_date), method: :post, variant: :secondary) do %>
-    <i class="uc-icon text-lg">&#xeb5b;</i>
-    <span><%= t("common.log_time") %></span>
+  <% unless @month_locked %>
+    <%= render ButtonComponent.new(path: new_modal_time_regs_path(date: @chosen_date), method: :post, variant: :secondary) do %>
+      <i class="uc-icon text-lg">&#xeb5b;</i>
+      <span><%= t("common.log_time") %></span>
+    <% end %>
   <% end %>
 <% end %>

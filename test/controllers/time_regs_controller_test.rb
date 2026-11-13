@@ -31,6 +31,57 @@ class TimeRegsControllerTest < ActionController::TestCase
       end
     end
 
+    test "offers to lock the oldest ended month when the organization is connected" do
+      TripletexIntegration.create!(organization: organizations(:organization_one), employee_token: "t", created_at: 3.months.ago)
+      last = Date.current.last_month.beginning_of_month
+      @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 90, date_worked: last + 2)
+
+      get :index
+      assert_equal last, assigns(:lockable_period)
+      assert_equal 90, assigns(:lockable_minutes)
+      assert_select "button", text: /#{Regexp.escape(I18n.t("tripletex.locks.lock_button", month: I18n.l(last, format: "%B %Y")))}/
+    end
+
+    test "hides edit controls on a locked day" do
+      last = Date.current.last_month.beginning_of_month
+      reg = @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: last + 2)
+      get :index, params: { date: (last + 2).to_s }
+      assert_select "a[href=?], form[action=?]", edit_modal_time_reg_path(reg, date: last + 2), edit_modal_time_reg_path(reg, date: last + 2), minimum: 1
+
+      TimeLock.create!(organization: organizations(:organization_one), user: @user,
+                       locked_by: users(:organization_admin), period: last)
+      get :index, params: { date: (last + 2).to_s }
+      assert_select "form[action=?]", edit_modal_time_reg_path(reg, date: last + 2), count: 0
+      assert_select "form[action=?]", time_reg_path(reg), count: 0
+      assert_select "form[action=?]", new_modal_time_regs_path(date: last + 2), count: 0
+      assert_select "span", text: I18n.t("tripletex.locks.locked")
+    end
+
+    test "an empty locked day does not offer to log time" do
+      last = Date.current.last_month.beginning_of_month
+      get :index, params: { date: (last + 2).to_s }
+      assert_select "form[action=?]", new_modal_time_regs_path(date: last + 2), minimum: 1
+
+      @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: last + 5)
+      TimeLock.create!(organization: organizations(:organization_one), user: @user,
+                       locked_by: users(:organization_admin), period: last)
+      get :index, params: { date: (last + 2).to_s }
+      assert_select "form[action=?]", new_modal_time_regs_path(date: last + 2), count: 0
+    end
+
+    test "destroying an entry in a locked month flashes the error and keeps the entry" do
+      last = Date.current.last_month
+      reg = @user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 30, date_worked: last.beginning_of_month + 2)
+      TimeLock.create!(organization: organizations(:organization_one), user: @user,
+                       locked_by: users(:organization_admin), period: last.beginning_of_month)
+
+      delete :destroy, params: { id: reg.id }
+
+      assert_redirected_to time_regs_path
+      assert_includes flash[:alert], I18n.l(last, format: "%B %Y")
+      assert TimeReg.find(reg.id).kept?
+    end
+
     test "should destroy time_reg" do
       assert_authorized_to(:destroy?, @time_reg) do
         delete :destroy, params: { id: @time_reg.id }
@@ -127,6 +178,30 @@ class TimeRegsControllerTest < ActionController::TestCase
     end
   end
 
+  class SpectatorUser < TimeRegsControllerTest
+    # TimeRegPolicy#index? already turns spectators away; this checks the lock
+    # state on its own, so the policy is let through for the duration of the test.
+    test "a spectator with qualifying hours does not get the lock button" do
+      user = users(:organization_spectator)
+      TripletexIntegration.create!(organization: organizations(:organization_one), employee_token: "t", created_at: 3.months.ago)
+      last = Date.current.last_month.beginning_of_month
+      user.time_regs.create!(assigned_task: assigned_task(:task_1), minutes: 90, date_worked: last + 2)
+      sign_in user
+
+      original = TimeRegPolicy.instance_method(:index?)
+      TimeRegPolicy.send(:define_method, :index?) { true }
+      begin
+        get :index
+      ensure
+        TimeRegPolicy.send(:define_method, :index?, original)
+      end
+
+      assert_response :success
+      assert_nil assigns(:lockable_period)
+      assert_select "button", text: /#{Regexp.escape(I18n.t("tripletex.locks.lock_button", month: I18n.l(last, format: "%B %Y")))}/, count: 0
+    end
+  end
+
   class AdminUser < TimeRegsControllerTest
     setup do
       @admin = users(:organization_admin)
@@ -173,8 +248,7 @@ class TimeRegsControllerTest < ActionController::TestCase
     end
 
     test "should export the project's time regs as csv" do
-      time_reg = @project.time_regs.first
-      assert_not_nil time_reg, "fixture project is expected to have time registrations"
+      assert_predicate @project.time_regs, :any?, "fixture project is expected to have time registrations"
 
       get :export, params: { project_id: @project.id }
 
@@ -185,11 +259,11 @@ class TimeRegsControllerTest < ActionController::TestCase
       assert_equal [ "date", "client", "project", "task", "notes", "minutes", "first name", "last name", "email" ], rows.first
       assert_equal @project.time_regs.count, rows.size - 1
 
-      exported = rows[1..].find { |row| row[4] == time_reg.notes }
-      assert_not_nil exported, "expected the time registration to be part of the export"
-      assert_equal @project.client.name, exported[1]
-      assert_equal @project.name, exported[2]
-      assert_equal time_reg.user.email, exported[8]
+      expected = @project.time_regs.includes(:user, assigned_task: :task).map do |reg|
+        [ reg.date_worked.to_s, @project.client.name, @project.name, reg.assigned_task.task.name,
+          reg.notes, reg.minutes.to_s, reg.user.first_name, reg.user.last_name, reg.user.email ]
+      end
+      assert_equal expected.sort_by(&:to_s), rows[1..].map { |row| row.map(&:to_s) }.sort_by(&:to_s)
     end
 
     test "should not export a project belonging to another organization" do
